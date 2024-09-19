@@ -1,0 +1,150 @@
+<header>
+    <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+        <div class="text-2xl font-bold text-gray-800 ">
+            Travel
+        </div>
+        <nav class="hidden md:flex space-x-6">
+            <a href="#" class="text-gray-800 hover:text-indigo-600">Home</a>
+            <a href="#" class="text-gray-800 hover:text-indigo-600">Agencies</a>
+            <a href="#" class="text-gray-800 hover:text-indigo-600">Packages</a>
+            <a href="#" class="text-gray-800 hover:text-indigo-600">Contact</a>
+        </nav>
+        <div>
+            <button class=" hidden md:inline px-5 py-1 me-1 border hover:border-gray-500 rounded-md" [routerLink]="[ '/login']">
+                Login
+            </button>
+            <button class="hidden md:inline px-5 py-1 ms-1 border hover:border-gray-500 rounded-md" [routerLink]="[ '/signup']">
+                Signup
+            </button>    
+        </div>
+        <button mat-icon-button color="accent" class="md:hidden" id="md-menu" (click)="toggleMenu()">
+            <mat-icon>menu</mat-icon>
+        </button>
+    </div>
+    <div class="md:hidden " *ngIf="isMenuOpen">
+        <nav class="flex flex-col space-y-4 px-4 py-2">
+            <a href="#" class="text-gray-800 hover:text-indigo-600">Home</a>
+            <a href="#" class="text-gray-800 hover:text-indigo-600">Agencies</a>
+            <a href="#" class="text-gray-800 hover:text-indigo-600">Packages</a>
+            <a href="#" class="text-gray-800 hover:text-indigo-600">Contact</a>
+            <a [routerLink]="[ '/login' ]" class="text-gray-800 hover:text-indigo-600">Login</a>
+            <a [routerLink]="[ '/signup' ]" class="text-gray-800 hover:text-indigo-600">signup</a>
+        </nav>
+    </div>
+</header>
+<main>
+    <section>
+        <div class="container mx-auto flex flex-col items-center justify-center space-y-2 md:space-y-24 md:flex-row">
+            <div>
+                <div class="text-gray-800 text-2xl font-semibold md:text-4xl ">
+                    <p>Start your journey</p>
+                    <p>by one click, explore</p>
+                    <p>beutiful world!</p>
+                </div>
+                <div class="text-xs text-gray-600">
+                    <p>plane and book your perfect trip with expert advice, travel tips,</p>
+                    <p>destination informatuon and inspiration from us!</p>
+                </div>
+            </div>
+            <div>
+                <img src="assets/images/girl-with-camera.png" width="400" alt="Girl with Camera" class="md:ml-8 ">
+            </div>
+        </div>
+    </section>
+    <section class="py-8">
+        <div class="container mx-auto my-10 text-center">
+          <p class="text-gray-600 text-2xl font-semibold">Popular Destinations</p>
+          <p class="text-gray-600 text-xs mb-6">Vacations to make your experience enjoyable!</p>
+        </div>
+      
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 px-10">
+          <div class="shadow-lg border rounded-lg overflow-hidden">
+            <img src="assets/images/italy-pic.jpg" alt="italy-pic" class="w-full h-40 object-cover">
+            <div class="p-4">
+              <div class="flex items-center text-sm text-gray-500">
+                <mat-icon class="text-[18px] text-gray-500">location_on</mat-icon>
+                <p class="ml-2">Romeo, Italy</p>
+              </div>
+              <p class="mt-2 font-semibold text-lg text-gray-800">Italy</p>
+            </div>
+          </div>
+          <div class="shadow-lg border rounded-lg overflow-hidden">
+            <img src="assets/images/italy-pic.jpg" alt="italy-pic" class="w-full h-40 object-cover">
+            <div class="p-4">
+              <div class="flex items-center text-sm text-gray-500">
+                <mat-icon class="text-[18px] text-gray-500">location_on</mat-icon>
+                <p class="ml-2">Romeo, Italy</p>
+              </div>
+              <p class="mt-2 font-semibold text-lg text-gray-800">Italy</p>
+            </div>
+          </div>
+          <div class="shadow-lg border rounded-lg overflow-hidden">
+            <img src="assets/images/italy-pic.jpg" alt="italy-pic" class="w-full h-40 object-cover">
+            <div class="p-4">
+              <div class="flex items-center text-sm text-gray-500">
+                <mat-icon class="text-[18px] text-gray-500">location_on</mat-icon>
+                <p class="ml-2">Romeo, Italy</p>
+              </div>
+              <p class="mt-2 font-semibold text-lg text-gray-800">Italy</p>
+            </div>
+          </div>
+          <div class="shadow-lg border rounded-lg overflow-hidden">
+            <img src="assets/images/italy-pic.jpg" alt="italy-pic" class="w-full h-40 object-cover">
+            <div class="p-4">
+              <div class="flex items-center text-sm text-gray-500">
+                <mat-icon class="text-[18px] text-gray-500">location_on</mat-icon>
+                <p class="ml-2">Romeo, Italy</p>
+              </div>
+              <p class="mt-2 font-semibold text-lg text-gray-800">Italy</p>
+            </div>
+          </div>
+        </div>
+      </section>    
+<section class="py-8">
+  <div class="container mx-auto px-4 flex flex-col md:flex-row items-center justify-center">
+    <!-- Image Section -->
+    <div class="mb-6 md:mb-0 md:w-1/2 flex justify-center">
+      <img src="assets/images/why-us.png" class="w-full md:w-[450px]" alt="Why Choose Us">
+    </div>
+
+    <!-- Text Section -->
+    <div class="md:w-1/2">
+      <p class="text-3xl md:text-4xl font-bold text-center md:text-left mb-4">Why Choose Us</p>
+      <p class="text-center md:text-left">Enjoy different experiences in every place you visit and </p>
+      <p class="text-center md:text-left mb-6">discover new and affordable adventures, of course.</p>
+
+      <!-- List Items -->
+      <div class="space-y-4">
+        <div class="flex md:w-[500px] hover:bg-white py-3 rounded-lg transition-all duration-300 ease-in-out transform hover:scale-105">
+            <mat-icon class="text-[28px] text-gray-400 font-semibold mr-4">percent</mat-icon>
+            <div>
+              <p class="font-bold">Offered Packages</p>
+              <p>Lorem ipsum dolor sit amet, consectetur.</p>
+            </div>
+          </div>          
+        <div class="flex md:w-[500px] hover:bg-white py-3 rounded-lg transition-all duration-300 ease-in-out transform hover:scale-105">
+            <mat-icon class="text-[28px] text-blue-400 font-semibold mr-4">home_work</mat-icon>
+            <div>
+              <p class="font-bold">Accomodation</p>
+              <p>Lorem ipsum dolor sit amet, consectetur.</p>
+            </div>
+          </div>          
+        <div class="flex md:w-[500px] hover:bg-white py-3 rounded-lg transition-all duration-300 ease-in-out transform hover:scale-105">
+            <mat-icon class="text-[28px] text-green-400 font-semibold mr-4">luggage</mat-icon>
+            <div>
+              <p class="font-bold">Packaged Tour</p>
+              <p>Lorem ipsum dolor sit amet, consectetur.</p>
+            </div>
+          </div>          
+        <div class="flex md:w-[500px] hover:bg-white py-3 rounded-lg transition-all duration-300 ease-in-out transform hover:scale-105">
+            <mat-icon class="text-[28px] text-yellow-400 font-semibold mr-4">lock</mat-icon>
+            <div>
+              <p class="font-bold">Security</p>
+              <p>Lorem ipsum dolor sit amet, consectetur.</p>
+            </div>
+          </div>          
+      </div>
+    </div>
+  </div>
+</section>
+</main>
