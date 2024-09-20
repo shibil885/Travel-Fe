@@ -1,1 +1,16 @@
-<p class="text-red-500">login works!</p>
+<main class="min-h-screen flex items-center justify-center bg-slate-300">
+    <div class="w-full max-w-sm  p-8 rounded-lg shadow-lg bg-[#697565]">
+        <h1 class="text-3xl text-accent text-center mb-6"><b>AdminLogin</b></h1>
+        <form>
+            <div class="mb-4">
+                <label for="email" class="block text-accent-light text-sm font-semibold mb-2">Email</label>
+                <input type="email" id="email" class="w-full px-4 py-2 rounded-lg bg-gray-100 text-accent-light focus:outline-none focus:ring-2 focus:ring-accent" name="email" placeholder="Enter your email" [(ngModel)]="email">
+            </div>
+            <div class="mb-6">
+                <label for="password" class="block text-accent-light text-sm font-semibold mb-2">Password</label>
+                <input type="password" id="password" class="w-full px-4 py-2 rounded-lg bg-gray-100 text-accent-light focus:outline-none focus:ring-2 focus:ring-accent" name="password" placeholder="Enter your password" [(ngModel)]="password">
+            </div>
+            <button type="submit" class="px-8 py-2 bg-[#3C3D37]  rounded-lg hover:bg-[#929191] transition duration-300" (click)="onSubmit()">Login</button>
+        </form>
+    </div>
+</main>
