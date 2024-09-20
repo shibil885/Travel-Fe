@@ -5,4 +5,5 @@ export const adminRouter: Routes = [
     { path: 'admin/login', component: LoginComponent },
     { path: 'admin', redirectTo: 'admin/home', pathMatch: 'full' },
     { path: 'admin/home', loadComponent: () => import('../components/admin/home/home.component').then(m => m.HomeComponent) },
+    { path: 'admin/categories', loadComponent: () => import('../components/admin/categories/categories.component').then(m => m.CategoriesComponent)}
 ];
