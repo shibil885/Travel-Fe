@@ -1,0 +1,29 @@
+<div class="overflow-x-auto">
+  <table class="min-w-full table-auto">
+    <thead>
+      <tr>
+        <th *ngFor="let column of columns" 
+            (click)="sort(column.key)" 
+            class="px-4 py-2 text-left bg-gray-200 text-gray-700 font-semibold uppercase tracking-wider cursor-pointer">
+          {{ column.title }}
+          <span *ngIf="sortable">↑↓</span>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of data" class="border-b border-gray-200">
+        <td *ngFor="let column of columns" class="px-4 py-2">
+          
+          <ng-container *ngIf="column.key === 'is_Active'; else othercontent">
+            {{item[column.key] ? 'Active': 'Inactive'}}
+            <button class="ml-5 px-4 py-2 bg-gray-400 text-white rounded-md" (click)="changeStatus(item)">
+              {{item[column.key] ? 'Block': 'Unblock'}}
+            </button>
+          </ng-container>
+          <ng-template #othercontent>
+            {{item[column.key]}}
+          </ng-template> 
+      </tr>
+    </tbody>
+  </table>
+</div>
