@@ -1,7 +1,9 @@
 import { AdminReduce } from "./admin/admin.reducer";
+import { AgencyReducer } from "./agency/agency.reducer";
 import { UserReducer } from "./user/user.reducer";
 
 export const AppState = {
     user: UserReducer,
-    admin: AdminReduce
+    agency: AgencyReducer,
+    admin: AdminReduce,
 }

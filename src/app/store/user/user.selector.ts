@@ -23,3 +23,11 @@ export const selectLoading = createSelector(
     selectUserState,
     (state: UserState) => state.loading
 )
+export const selectRenderOtpUser = createSelector(
+    selectUserState,
+    (state: UserState) => state.renderOtp
+)
+export const selectEmail = createSelector(
+    selectUserState,
+    (state: UserState) => state.user?.email
+)

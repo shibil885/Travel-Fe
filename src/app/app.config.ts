@@ -11,17 +11,21 @@ import { UserEffect } from './store/user/user.effect';
 import { provideHttpClient, withFetch } from '@angular/common/http';
 import { adminRouter } from './routes/admin.router';
 import { AdminEffects } from './store/admin/admin.effect';
+import { agencyRouter } from './routes/agency.router';
+import { AgencyEffect } from './store/agency/agency.effects';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(userRouter),
     provideRouter(adminRouter),
+    provideRouter(agencyRouter),
     provideClientHydration(),
     provideAnimationsAsync(),
     provideHttpClient(withFetch()),
     provideStore(),
     provideStore(AppState),
     provideEffects(UserEffect),
-    provideEffects(AdminEffects)
+    provideEffects(AdminEffects),
+    provideEffects(AgencyEffect)
 ]
 };

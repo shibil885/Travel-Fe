@@ -1,1 +1,150 @@
-<p>signup works!</p>
+<main class="flex justify-center items-center h-screen">
+    <div class="bg-white p-8 rounded-xl shadow-lg w-full max-w-4xl" *ngIf="renderSignup">
+        <h2 class="text-3xl font-extrabold mb-3 text-center text-gray-900">Register Your Account</h2>
+        <p class="text-red-500 text-center mb-4 " *ngIf="isInvalidForm">Fill required inputes</p>
+        <!-- Circle for displaying the selected profile image -->
+        <!-- <div class="flex justify-center mb-6">
+            <div class="w-24 h-24 rounded-full border-4 border-gray-300 overflow-hidden">
+                <img *ngIf="imageSrc" [src]="imageSrc" alt="Profile Picture" class="w-full h-full object-cover">
+                <div *ngIf="!imageSrc" class="w-full h-full bg-gray-200 flex items-center justify-center">
+                    <span class="text-gray-500">No Image</span>
+                </div>
+            </div>
+        </div> -->
+
+        <!-- Button to select a profile picture -->
+        <!-- <div class="flex justify-center mb-3">
+            <label for="profilePicture" class="cursor-pointer p-2 bg-gray-700 text-white rounded-md hover:bg-gray-800 transition-colors">
+                Select Profile Picture
+            </label>
+        </div>
+
+        <p class="text-center text-red-500 mb-3" *ngIf="reactiveForm.invalid && reactiveForm.touched || isInvalidForm">
+            Fill required inputs
+        </p> -->
+
+        <form (ngSubmit)="onSubmit()" [formGroup]="reactiveForm" class="space-y-6">
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label for="userName" class="block text-sm font-semibold text-gray-700">Username</label>
+                    <input id="userName" formControlName="userName" type="text"
+                        class="form-input w-full p-3 rounded-md bg-gray-100 text-gray-900 focus:ring focus:ring-gray-500">
+                    <small class="text-red-600 block"
+                        *ngIf="reactiveForm.get('userName')?.errors?.['required'] && reactiveForm.get('userName')?.touched">
+                        *Username is required
+                    </small>
+                    <small class="text-red-600 block"
+                        *ngIf="reactiveForm.get('userName')?.errors?.['minlength'] && reactiveForm.get('userName')?.touched">
+                        *Username must be at least 3 characters long
+                    </small>
+                </div>
+
+                <div>
+                    <label for="email" class="block text-sm font-semibold text-gray-700">Email</label>
+                    <input id="email" formControlName="email" type="email"
+                        class="form-input w-full p-3 rounded-md bg-gray-100 text-gray-900 focus:ring focus:ring-gray-500"
+                        autocomplete="on">
+                    <small class="text-red-600 block"
+                        *ngIf="reactiveForm.get('email')?.errors?.['required'] && reactiveForm.get('email')?.touched">
+                        *A valid email is required
+                    </small>
+                    <small class="text-red-600 block"
+                        *ngIf="reactiveForm.get('email')?.errors?.['isExistingEmail'] && reactiveForm.get('email')?.invalid">
+                        *Email already exist
+                    </small>
+                </div>
+
+                <div>
+                    <label for="phone" class="block text-sm font-semibold text-gray-700">Phone</label>
+                    <input id="phone" formControlName="phone" type="tel"
+                        class="form-input w-full p-3 rounded-md bg-gray-100 text-gray-900 focus:ring focus:ring-gray-500">
+                    <small class="text-red-600 block"
+                        *ngIf="reactiveForm.get('phone')?.errors?.['required'] && reactiveForm.get('phone')?.touched">
+                        *Phone number is required
+                    </small>
+                    <small class="text-red-600 block"
+                        *ngIf="reactiveForm.get('phone')?.errors?.['invalidPhone'] && reactiveForm.get('phone')?.touched">
+                        *Enter a valid phone number
+                    </small>
+                </div>
+
+                <div>
+                    <label for="address" class="block text-sm font-semibold text-gray-700">Address</label>
+                    <input id="address" formControlName="address" type="text"
+                        class="form-input w-full p-3 rounded-md bg-gray-100 text-gray-900 focus:ring focus:ring-gray-500">
+                    <small class="text-red-600 block"
+                        *ngIf="reactiveForm.get('address')?.errors?.['required'] && reactiveForm.get('address')?.touched">
+                        *Address is required
+                    </small>
+                    <small class="text-red-600 block"
+                        *ngIf="reactiveForm.get('address')?.errors?.['notValidAddress'] && reactiveForm.get('address')?.touched">
+                        *Enter a valid address
+                        <b class="block">eg:123 MG Road, Bangalore, Karnataka, 560001</b>
+                    </small>
+                </div>
+
+            </div>
+
+            <div>
+                <label for="password" class="block text-sm font-semibold text-gray-700">Password</label>
+                <input id="password" formControlName="password" type="password"
+                    class="form-input w-full p-3 rounded-md bg-gray-100 text-gray-900 focus:ring focus:ring-gray-500">
+                <small class="text-red-600 block"
+                    *ngIf="reactiveForm.get('password')?.errors?.['required'] && reactiveForm.get('password')?.touched">
+                    *Password is required
+                </small>
+                <small class="text-red-600 block"
+                    *ngIf="reactiveForm.get('password')?.errors?.['minlength'] && reactiveForm.get('password')?.touched">*Password
+                    must be at least 8 characters long
+                </small>
+                <small class="text-red-600 block"
+                    *ngIf="reactiveForm.get('password')?.errors?.['upperCase'] && reactiveForm.get('password')?.touched">*Password
+                    must contain at least one uppercase letter
+                </small>
+                <small class="text-red-600 block"
+                    *ngIf="reactiveForm.get('password')?.errors?.['lowerCase'] && reactiveForm.get('password')?.touched">*Password
+                    must contain at least one lowercase letter
+                </small>
+                <small class="text-red-600 block"
+                    *ngIf="reactiveForm.get('password')?.errors?.['noDigit'] && reactiveForm.get('password')?.touched">*Password
+                    must contain at least one digit
+                </small>
+                <small class="text-red-600 block"
+                    *ngIf="reactiveForm.get('password')?.errors?.['specialChar'] && reactiveForm.get('password')?.touched">*Password
+                    must contain at least one special character (&#64;, $, !, %, *, ?, &)
+                </small>
+            </div>
+            <div>
+                <label for="password" class="block text-sm font-semibold text-gray-700">Confirm Password</label>
+                <input id="password" formControlName="confirmPassword" type="password"
+                    class="form-input w-full p-3 rounded-md bg-gray-100 text-gray-900 focus:ring focus:ring-gray-500">
+                <small class="text-red-600 block"
+                    *ngIf="reactiveForm.get('confirmPassword')?.errors?.['required'] && reactiveForm.get('confirmPassword')?.touched">
+                    *Password is required
+                </small>
+                <small class="text-red-600 block"
+                    *ngIf="reactiveForm.get('confirmPassword')?.errors?.['passwordMismatch'] && reactiveForm.get('confirmPassword')?.touched">
+                    *Password not match
+                </small>
+            </div>
+            <!-- 
+           <div>
+                <input id="profilePicture" name="profilePicture" formControlName="profilePicture" type="file"
+                    class="w-1/12" accept="image/*" (change)="onFileChange($event)" style="display: none;">
+                <small class="text-red-600 block"
+                    *ngIf="reactiveForm.get('profilePicture')?.errors?.['invalidFileType'] && reactiveForm.get('profilePicture')?.touched">
+                    *Only image files are allowed
+                </small>
+            </div> -->
+
+            <div>
+                <button type="submit"
+                    class="w-full p-3 bg-gray-700 text-white rounded-lg hover:bg-gray-800 transition-colors">
+                    Register
+                </button>
+            </div>
+        </form>
+    </div>
+    <app-otp *ngIf="renderOtp$ | async"></app-otp>
+</main>

@@ -1,0 +1,22 @@
+/* otp.component.css */
+h2 {
+    color: #4ecdc4; /* Teal for heading */
+  }
+  
+  input {
+    background-color: #3a3f47; /* Dark background for input fields */
+  }
+  
+  button {
+    background-color: #4ecdc4; /* Teal button */
+  }
+  
+  button:hover {
+    background-color: #38a89d; /* Slightly darker teal on hover */
+  }
+  
+  .form-container {
+    background-color: #2c3531; /* Similar to your registration page background */
+    color: #ffffff; /* Light text color */
+  }
+  

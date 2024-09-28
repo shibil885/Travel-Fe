@@ -1,1 +1,39 @@
-<p>home works!</p>
+<section *ngIf="!isConfirmed"
+  class="flex justify-center items-center h-screen bg-gradient-to-b from-blue-100 via-white to-gray-50">
+  <div
+    class="bg-white p-10 rounded-3xl shadow-lg w-full max-w-lg text-center transform transition duration-300 ease-in-out hover:shadow-2xl">
+    <div class="flex justify-center mb-6">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-20 w-20 text-green-500" fill="none" viewBox="0 0 24 24"
+        stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M9 12l2 2 4-4m0 0l4 4M9 12l-4 4m4-4l4-4" />
+      </svg>
+    </div>
+    <h2 class="text-4xl font-extrabold text-blue-600 mb-4">You're Almost There!</h2>
+    <p class="text-lg text-gray-600 mb-8">
+      Your agency registration was successful. We're reviewing your details, and you'll receive an email once the admin
+      confirms your account.
+    </p>
+    <div class="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-6">
+      <p class="text-gray-500 font-semibold">Admin Confirmation Pending</p>
+    </div>
+    <p class="text-gray-500">
+      Feel free to <a href="/contact" class="text-blue-500 font-medium hover:text-blue-400 transition">contact us</a>
+      for further assistance.
+    </p>
+  </div>
+</section>
+
+
+<main class="bg-[#F1F1F2] min-h-screen" *ngIf="isConfirmed">
+  <div class="md:bg-white rounded-br-3xl sticky top-0">
+    <app-header></app-header>
+  </div>
+  <div>
+    <app-side-bar class="lg:w-64 sm:w-16"></app-side-bar>
+    <mat-icon class="hidden text-red-500 w-16">lists</mat-icon>
+    <h1 class="text-green-500 text-2xl font-bold text-center mt-28">
+      Wclm Back
+    </h1>
+  </div>
+</main>

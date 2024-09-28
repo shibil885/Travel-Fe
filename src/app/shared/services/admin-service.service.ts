@@ -12,7 +12,9 @@ export class AdminService {
   private api = 'http://localhost:3000'; 
 
   constructor(private http: HttpClient) {}
-
+  login(adminData: any) {
+    return this.http.post<{ token: string }>(`${this.api}/auth/admin`,adminData)
+  }
   getAllUsers(): Observable<{message: string,success: boolean, users: any[]}> {
     return this.http.get<{message: string,success: boolean, users: any[]}>(`${this.api}/admin/users`).pipe(
       map(data =>  data),
@@ -51,4 +53,5 @@ export class AdminService {
       })
     )
   }
+  
 }

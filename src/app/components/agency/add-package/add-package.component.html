@@ -1,0 +1,205 @@
+<main>
+    <h2 class="text-3xl font-extrabold mb-8 text-gray-900">Add Package</h2>
+    <div class="flex justify-center items-center ">
+        <div class="bg-white p-8 rounded-xl shadow-lg w-full max-w-4xl">
+            <form class="space-y-6" [formGroup]="packageForm" (ngSubmit)="onSubmit()">
+
+                <!-- Package Information -->
+                <fieldset class="space-y-6">
+                    <legend class="text-lg font-semibold text-red-900">Package Information</legend>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label for="Name" class="block text-sm font-semibold text-gray-700">Name</label>
+                            <input id="Name" type="text"
+                                class="form-input w-full p-3 rounded-md bg-gray-100 text-gray-900 focus:ring focus:ring-gray-50"
+                                formControlName="name">
+                            <small class="text-red-500 block"
+                                *ngIf="packageForm.get('name')?.errors?.['required'] && packageForm.get('name')?.touched">*Name
+                                is required
+                            </small>
+                            <small class="text-red-500 block"
+                                *ngIf="packageForm.get('name')?.errors?.['minlength'] && packageForm.get('name')?.touched">*Name
+                                must be in 3 char
+                            </small>
+                            <small class="text-red-500 block"
+                                *ngIf="packageForm.get('name')?.errors?.['invalidChar'] && packageForm.get('name')?.touched">*Name
+                                can only contain letters, numbers, spaces, (-) and (')
+                            </small>
+                            <small class="text-red-500 block"
+                                *ngIf="packageForm.get('name')?.errors?.['endWithSpace'] && packageForm.get('name')?.touched">*Name
+                                cannot start or end with spaces
+                            </small>
+                            <small class="text-red-500 block"
+                                *ngIf="packageForm.get('name')?.errors?.['letterOrNumber'] && packageForm.get('name')?.touched">*Name
+                                must start with a letter or number
+                            </small>
+                        </div>
+                        <div>
+                            <label for="category" class="block text-sm font-semibold text-gray-700">Category</label>
+                            <select id="category"
+                                class="form-input w-full p-3 rounded-md bg-gray-100 text-gray-900 focus:ring focus:ring-gray-50"
+                                formControlName="category">
+                                <option value="f">Option 1</option>
+                                <option value="d">Option 2</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <label for="description" class="block text-sm font-semibold text-gray-700">Description</label>
+                        <textarea id="description"
+                            class="form-input w-full p-6 rounded-md bg-gray-100 text-gray-900 focus:ring focus:ring-gray-50"
+                            formControlName="description"></textarea>
+                        <small class="text-red-500 block"
+                            *ngIf="packageForm.get('description')?.errors?.['invalidDescription'] && packageForm.get('description')?.touched">*Description
+                            must be between 20 and 500 characters and can contain only letters, numbers, and
+                            punctuation.
+                        </small>
+                    </div>
+                </fieldset>
+
+                <!-- Travel Information -->
+                <fieldset class="space-y-6">
+                    <legend class="text-lg font-semibold text-red-900">Travel Information</legend>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label for="departure" class="block text-sm font-semibold text-gray-700">Departure</label>
+                            <input id="departure" type="text"
+                                class="form-input w-full p-3 rounded-md bg-gray-100 text-gray-900 focus:ring focus:ring-gray-50"
+                                formControlName="departure">
+                            <small class="text-red-500 block"
+                                *ngIf="packageForm.get('departure')?.errors?.['minlength'] && packageForm.get('departure')?.touched">*Departure
+                                need atleast 4 characters
+                            </small>
+                            <small class="text-red-500 block"
+                                *ngIf="packageForm.get('departure')?.errors?.['required'] && packageForm.get('departure')?.touched">*Departure
+                                is required
+                            </small>
+                            <small class="text-red-500 block"
+                                *ngIf="packageForm.get('departure')?.errors?.['invalidPlace'] && packageForm.get('departure')?.touched">*Enter
+                                a valid place
+                            </small>
+
+                        </div>
+                        <div>
+                            <label for="final_destination" class="block text-sm font-semibold text-gray-700">Final
+                                Destination</label>
+                            <input id="final_destination" type="text"
+                                class="form-input w-full p-3 rounded-md bg-gray-100 text-gray-900 focus:ring focus:ring-gray-50"
+                                formControlName="finalDestination">
+                            <small class="text-red-500 block"
+                                *ngIf="packageForm.get('finalDestination')?.errors?.['required'] && packageForm.get('finalDestination')?.touched">*Destination
+                                is required
+                            </small>
+                            <small class="text-red-500 block"
+                                *ngIf="packageForm.get('finalDestination')?.errors?.['minlength'] && packageForm.get('finalDestination')?.touched">*Enter
+                                need atleast 4 characters
+                            </small>
+                            <small class="text-red-500 block"
+                                *ngIf="packageForm.get('finalDestination')?.errors?.['invalidPlace'] && packageForm.get('finalDestination')?.touched">*Enter
+                                a valid place
+                            </small>
+                        </div>
+                        <div>
+                            <label for="country" class="block text-sm font-semibold text-gray-700">Country</label>
+                            <input id="country" type="text"
+                                class="form-input w-full p-3 rounded-md bg-gray-100 text-gray-900 focus:ring focus:ring-gray-50"
+                                formControlName="country">
+                            <small class="text-red-500 block"
+                                *ngIf="packageForm.get('country')?.errors?.['invalidCountry'] && packageForm.get('country')?.touched">*Enter
+                                a valid country name
+                            </small>
+                        </div>
+                        <div>
+                            <label for="people" class="block text-sm font-semibold text-gray-700">No Of People</label>
+                            <input id="people" type="text"
+                                class="form-input w-full p-3 rounded-md bg-gray-100 text-gray-900 focus:ring focus:ring-gray-50"
+                                formControlName="people">
+                            <small class="text-red-500 block"
+                                *ngIf="packageForm.get('people')?.errors?.['invalidNumberOfPeople'] && packageForm.get('people')?.touched">*Enter
+                                a valid number
+                            </small>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <!-- Package Features -->
+                <fieldset class="space-y-6">
+                    <legend class="text-lg font-semibold text-red-900">Package Features</legend>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label for="included" class="block text-sm font-semibold text-gray-700">Included</label>
+                            <small class="text-red-500" *ngIf="invalidIncluded">Field is required</small>
+                            <div formArrayName="included">
+                                <div class="flex items-center mb-2"
+                                    *ngFor="let control of included.controls; let i = index">
+                                    <input [formControlName]="i" id="included-{{i}}" type="text"
+                                        class="form-input w-full p-3 rounded-md bg-gray-100 text-gray-900 focus:ring focus:ring-gray-50">
+                                    <button type="button" mat-mini-fab color="warn" class="ml-3"
+                                        (click)="removeIncluded(i)">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <button type="button" mat-mini-fab color="primary" class="mt-3" (click)="addIncludes()">
+                                <mat-icon>add</mat-icon>
+                            </button>
+                        </div>
+
+                        <div>
+                            <label for="notIncluded" class="block text-sm font-semibold text-gray-700">Not
+                                Included</label>
+                            <small class="text-red-500" *ngIf="invalidNotIncluded">Field is required</small>
+                            <div formArrayName="notIncluded">
+                                <div class="flex items-center mb-2"
+                                    *ngFor="let control of notIncluded.controls; let i = index">
+                                    <input [formControlName]="i" id="notIncluded-{{i}}" type="text"
+                                        class="form-input w-full p-3 rounded-md bg-gray-100 text-gray-900 focus:ring focus:ring-gray-50">
+                                    <button type="button" mat-mini-fab color="warn" class="ml-3"
+                                        (click)="removeNotIncluded(i)">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                </div>
+                            </div>
+                            <button type="button" mat-mini-fab color="primary" class="mt-3" (click)="addNotIncludes()">
+                                <mat-icon>add</mat-icon>
+                            </button>
+                        </div>
+
+                        <div>
+                            <label for="days" class="block text-sm font-semibold text-gray-700">Days</label>
+                            <input id="days" type="text"
+                                class="form-input w-full p-3 rounded-md bg-gray-100 text-gray-900 focus:ring focus:ring-gray-50"
+                                formControlName="days">
+                        </div>
+                    </div>
+
+                    <div class="mt-6">
+                        <h3 class="text-lg font-semibold text-gray-700">Tour Plans</h3>
+                        <div formArrayName="tourPlans">
+                            <div *ngFor="let day of tourPlans.controls; let i = index" [formGroupName]="i" class="mb-4">
+                                <label class="block">Day {{ i + 1 }} Plan</label>
+                                <textarea formControlName="description" rows="3"
+                                    class="form-textarea mt-1 block w-full p-2 rounded-md bg-gray-100 text-gray-900 focus:ring focus:ring-gray-50"></textarea>
+                                <small *ngIf="day.get('description')?.invalid && day.get('description')?.touched"
+                                    class="text-red-500">
+                                    Description is required.
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <!-- Submit Button -->
+                <div class="flex flex-col">
+                    <small class="text-red-500 text-center mb-2" *ngIf="invalidForm">Fill All Fields</small>
+                    <button type="submit"
+                        class="w-full p-3 bg-gray-700 text-white rounded-lg hover:bg-gray-800 transition-colors">
+                        Add
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</main>

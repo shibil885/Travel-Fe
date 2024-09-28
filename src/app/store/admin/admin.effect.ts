@@ -1,22 +1,22 @@
 import { Injectable } from "@angular/core";
-import { AuthAdminService } from "../../services/admin/auth-admin.service";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import * as adminActions from '../admin/admin.action';
 import { catchError, map, of, switchMap, tap } from "rxjs";
 
 import { Router } from "@angular/router";
+import { AdminService } from "../../shared/services/admin-service.service";
 
 @Injectable()
 export class AdminEffects {
     constructor(
-        private authService: AuthAdminService,
+        private adminService: AdminService,
         private action$: Actions,
         private router: Router
     ) {}
     adminLogin$ = createEffect(() => this.action$.pipe(
         ofType(adminActions.adminLogin),
         switchMap((action) => 
-            this.authService.login(action).pipe(
+            this.adminService.login(action).pipe(
                 map((data) => adminActions.adminLoginsuccess({ token: data.token})),
                 catchError((error) => {
                     console.log(error);

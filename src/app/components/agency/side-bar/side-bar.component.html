@@ -1,0 +1,96 @@
+<aside>
+    <!-- Sidebar for large screens -->
+    <div class="hidden lg:block fixed top-[65.5px] left-0 w-64 h-screen bg-white shadow-xl">
+        <div class="mt-8">
+            <h1 class="text-center text-xl font-bold text-[#431707]">Agency Dashboard</h1>
+        </div>
+        <hr class="mt-5 border border-[#C76C74]">
+        <div class="mt-5 space-y-2">
+            <a
+                class="flex items-center justify-start px-5 py-4 space-x-4 text-[#C76C74] hover:bg-[#F2D9DA] hover:text-[#431707] rounded-md transition-all duration-300 ease-in-out cursor-pointer">
+                <mat-icon class="text-xl">dashboard</mat-icon>
+                <p class="text-base font-medium">Dashboard</p>
+            </a>
+            <a
+                class="flex items-center justify-start px-5 py-4 space-x-4 text-[#C76C74] hover:bg-[#F2D9DA] hover:text-[#431707] rounded-md transition-all duration-300 ease-in-out cursor-pointer">
+                <mat-icon class="text-xl">groups</mat-icon>
+                <p class="text-base font-medium">Users</p>
+            </a>
+            <a
+                class="flex items-center justify-start px-5 py-4 space-x-4 text-[#C76C74] hover:bg-[#F2D9DA] hover:text-[#431707] rounded-md transition-all duration-300 ease-in-out cursor-pointer">
+                <mat-icon class="text-xl">badge</mat-icon>
+                <p class="text-base font-medium">Agencies</p>
+            </a>
+            <a
+                class="flex items-center justify-start px-5 py-4 space-x-4 text-[#C76C74] hover:bg-[#F2D9DA] hover:text-[#431707] rounded-md transition-all duration-300 ease-in-out cursor-pointer">
+                <mat-icon class="text-xl">library_books</mat-icon>
+                <p class="text-base font-medium">Booking</p>
+            </a>
+            <a
+                [routerLink]="[ 'categories']"
+                class="flex items-center justify-start px-5 py-4 space-x-4 text-[#C76C74] hover:bg-[#F2D9DA] hover:text-[#431707] rounded-md transition-all duration-300 ease-in-out cursor-pointer">
+                <mat-icon class="text-xl">category</mat-icon>
+                <p class="text-base font-medium">Categories</p>
+            </a>
+            <a
+                class="flex items-center justify-start px-5 py-4 space-x-4 text-[#C76C74] hover:bg-[#F2D9DA] hover:text-[#431707] rounded-md transition-all duration-300 ease-in-out cursor-pointer">
+                <mat-icon class="text-xl">notifications</mat-icon>
+                <p class="text-base font-medium">Notifications</p>
+            </a>
+            <a
+                class="flex items-center justify-start px-5 py-4 space-x-4 text-[#C76C74] hover:bg-[#F2D9DA] hover:text-[#431707] rounded-md transition-all duration-300 ease-in-out cursor-pointer">
+                <mat-icon class="text-xl">shopping_cart</mat-icon>
+                <p class="text-base font-medium">Coupon</p>
+            </a>
+        </div>
+        <hr class="mt-5 border border-[#C76C74]">
+        <a
+            class="flex items-center justify-start px-5 py-4 space-x-4 text-red-500 hover:bg-[#F2D9DA] hover:text-[#431707] rounded-md transition-all duration-300 ease-in-out cursor-pointer">
+            <mat-icon class="text-xl">logout</mat-icon>
+            <p class="text-base font-medium">Logout</p>
+        </a>
+    </div>
+
+    <!-- Sidebar for small screens -->
+    <div class=" hidden md:block lg:hidden fixed top-[65.5px] left-0 w-16 h-screen bg-white shadow-xl">
+        <div class="mt-8">
+            <h1 class="text-center text-xs font-bold text-[#431707]">Admin</h1>
+        </div>
+        <hr class="mt-5 border border-[#C76C74]">
+        <div class="mt-5 space-y-2">
+            <a
+                class="flex justify-center px-3 py-4 text-[#C76C74] hover:bg-[#F2D9DA] hover:text-[#431707] rounded-md transition-all duration-300 ease-in-out cursor-pointer">
+                <mat-icon class="text-xl">dashboard</mat-icon>
+            </a>
+            <a
+                class="flex justify-center px-3 py-4 text-[#C76C74] hover:bg-[#F2D9DA] hover:text-[#431707] rounded-md transition-all duration-300 ease-in-out cursor-pointer">
+                <mat-icon class="text-xl">groups</mat-icon>
+            </a>
+            <a
+                class="flex justify-center px-3 py-4 text-[#C76C74] hover:bg-[#F2D9DA] hover:text-[#431707] rounded-md transition-all duration-300 ease-in-out cursor-pointer">
+                <mat-icon class="text-xl">badge</mat-icon>
+            </a>
+            <a
+                class="flex justify-center px-3 py-4 text-[#C76C74] hover:bg-[#F2D9DA] hover:text-[#431707] rounded-md transition-all duration-300 ease-in-out cursor-pointer">
+                <mat-icon class="text-xl">library_books</mat-icon>
+            </a>
+            <a
+                class="flex justify-center px-3 py-4 text-[#C76C74] hover:bg-[#F2D9DA] hover:text-[#431707] rounded-md transition-all duration-300 ease-in-out cursor-pointer">
+                <mat-icon class="text-xl">category</mat-icon>
+            </a>
+            <a
+                class="flex justify-center px-3 py-4 text-[#C76C74] hover:bg-[#F2D9DA] hover:text-[#431707] rounded-md transition-all duration-300 ease-in-out cursor-pointer">
+                <mat-icon class="text-xl">notifications</mat-icon>
+            </a>
+            <a
+                class="flex justify-center px-3 py-4 text-[#C76C74] hover:bg-[#F2D9DA] hover:text-[#431707] rounded-md transition-all duration-300 ease-in-out cursor-pointer">
+                <mat-icon class="text-xl">shopping_cart</mat-icon>
+            </a>
+        </div>
+        <hr class="mt-5 border border-[#C76C74]">
+        <a
+            class="flex justify-center px-3 py-4 text-red-500 hover:bg-[#F2D9DA] hover:text-[#431707] rounded-md transition-all duration-300 ease-in-out cursor-pointer">
+            <mat-icon class="text-xl">logout</mat-icon>
+        </a>
+    </div>
+</aside>
