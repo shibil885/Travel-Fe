@@ -6,6 +6,7 @@ import { title } from 'node:process';
 import { TableComponent } from '../../../shared/components/table/table.component';
 import { CommonModule } from '@angular/common';
 import { AddPackageComponent } from "../add-package/add-package.component";
+import { AgencyService } from '../../../shared/services/agency.service';
 
 @Component({
   selector: 'app-packages',
@@ -33,8 +34,10 @@ export class PackagesComponent {
   ];
   data = [];
 
+  constructor(private agencyService: AgencyService) {}
+
   ngOnInit(): void {
-    this.renderAddForm = true;
+   this.renderTable = true;
   }
   addPackage() {
     this.renderTable = false;

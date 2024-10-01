@@ -15,13 +15,14 @@ import { IAgency } from '../../../models/agency.model';
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
 })
-export class HomeComponent {
+export class HomeComponent {  
   email!: string | undefined ;
   isConfirmed!: boolean;
   constructor(private agencyService: AgencyService, private store: Store) {}
   ngOnInit(): void {
     this.store.select(selectAgency).subscribe((data) => this.email = data?.contact.email)
     this.agencyService.isConfirmed(this.email).subscribe((status) => {
+      console.log(status);
       this.isConfirmed = status;
     });
   }

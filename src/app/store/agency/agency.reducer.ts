@@ -4,7 +4,6 @@ import { IAgency } from '../../models/agency.model';
 
 export interface AgencyState {
   agency: IAgency | null;
-  token: string;
   error: string;
   loading: boolean;
   renderOtp: boolean;
@@ -12,7 +11,6 @@ export interface AgencyState {
 
 export const initialAgencyState: AgencyState = {
   agency: null,
-  token: '',
   error: '',
   renderOtp: false,
   loading: false,
@@ -20,10 +18,9 @@ export const initialAgencyState: AgencyState = {
 
 export const AgencyReducer = createReducer(
   initialAgencyState,
-  on(agencyActions.agencyLoginSuccess, (state, { token, agency }) => {
+  on(agencyActions.agencyLoginSuccess, (state, {agency }) => {
     return {
       ...state,
-      token: token,
       agency: agency,
       loading: false,
     };
@@ -48,10 +45,9 @@ export const AgencyReducer = createReducer(
       renderOtp: true,
     };
   }),
-  on(agencyActions.agencySignupSuccess, (state, { agency, token }) => {
+  on(agencyActions.agencySignupSuccess, (state, { agency }) => {
     return {
       ...state,
-      token: token,
       agency: agency,
     };
   }),

@@ -7,7 +7,7 @@ export const agencyLogin = createAction(
 );
 export const agencyLoginSuccess = createAction(
   '[Login Component] agencyLoginSuccess',
-  props<{ token: string; agency: IAgency }>()
+  props<{  agency: IAgency }>()
 );
 export const agencyLoginError = createAction(
   '[Login Component] agencyLoginError',
@@ -30,7 +30,7 @@ export const agencySignup = createAction(
 
 export const agencySignupSuccess = createAction(
   '[Signup Component] agencySignupSuccess',
-  props<{ agency: IAgency; token: string }>()
+  props<{ agency: IAgency; }>()
 );
 
 export const agencySignupError = createAction(

@@ -1,33 +1,27 @@
-import { createFeatureSelector, createSelector } from "@ngrx/store";
-import { AgencyState } from "./agency.reducer";
+import { createFeatureSelector, createSelector } from '@ngrx/store';
+import { AgencyState } from './agency.reducer';
 
-export const selecAgencyState = createFeatureSelector< AgencyState > ('agency');
-
+export const selecAgencyState = createFeatureSelector<AgencyState>('agency');
 
 export const selectAgency = createSelector(
-    selecAgencyState,
-    (state:AgencyState) => state.agency
-)
-
-export const selectToken = createSelector(
-    selecAgencyState,
-    (state: AgencyState ) => state.token
-)
+  selecAgencyState,
+  (state: AgencyState) => state.agency
+);
 
 export const selectError = createSelector(
-    selecAgencyState,
-    (state:AgencyState) => state.error
-)
+  selecAgencyState,
+  (state: AgencyState) => state.error
+);
 
 export const selectLoading = createSelector(
-    selecAgencyState,
-    (state: AgencyState) => state.loading
-)
+  selecAgencyState,
+  (state: AgencyState) => state.loading
+);
 export const selectRenderOtpAgency = createSelector(
-    selecAgencyState,
-    (state: AgencyState) => state.renderOtp
-)
+  selecAgencyState,
+  (state: AgencyState) => state.renderOtp
+);
 export const selectEmail = createSelector(
-    selecAgencyState,
-    (state: AgencyState) => state.agency?.contact?.email
-)
+  selecAgencyState,
+  (state: AgencyState) => state.agency?.contact?.email
+);

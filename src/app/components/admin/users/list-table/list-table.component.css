@@ -1,0 +1,43 @@
+.table-container {
+    overflow-x: auto; /* Allows the table to scroll horizontally on small screens */
+  }
+  
+  .table-auto {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+  }
+  
+  th, td {
+    padding: 12px 15px;
+    text-align: left;
+  }
+  
+  th {
+    background-color: #f8f9fa;
+    color: #333;
+    font-weight: 600;
+  }
+  
+  tbody tr {
+    transition: background-color 0.3s ease;
+  }
+  
+  tbody tr:hover {
+    background-color: #f1f1f1;
+  }
+  
+  td {
+    border-bottom: 1px solid #e5e7eb;
+  }
+  
+  @media screen and (max-width: 640px) {
+    .table-auto {
+      font-size: 14px;
+    }
+  
+    th, td {
+      padding: 8px 10px;
+    }
+  }
+  

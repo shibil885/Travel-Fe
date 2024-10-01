@@ -1,0 +1,19 @@
+.snack-success {
+    background-color: #4caf50;
+    color: white;
+    font-weight: bold;
+    border-radius: 4px;
+  }
+  
+  .snack-error {
+    background-color: #f44336;
+    color: white;
+    font-weight: bold;
+    border-radius: 4px;
+  }
+  
+  .mat-snack-bar-container {
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    font-size: 16px;
+  }
+  

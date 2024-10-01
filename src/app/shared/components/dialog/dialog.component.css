@@ -1,0 +1,35 @@
+.modal-container {
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    border-radius: 12px;
+  }
+  
+  .fade-in {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  .modal-container h2 {
+    font-size: 1.75rem;
+    color: #333;
+  }
+  
+  .modal-container p {
+    color: #555;
+    font-size: 1.125rem;
+  }
+  
+  .modal-container button {
+    transition: background-color 0.2s, transform 0.2s ease;
+  }
+  
+  .modal-container button:hover {
+    transform: scale(1.05);
+  }
+  
+  .modal-container button:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(255, 0, 0, 0.3);
+  }
+  

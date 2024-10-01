@@ -9,7 +9,8 @@ export class PackageService {
 
   constructor(private http: HttpClient) {}
 
-  // addPackages(packageData: FormData) {
-  //   return this.http.post(`${this.api}/add/`,packageData{params:['kk']})
-  // }
+  addPackages(packageData: any) {
+    return this.http.post(`${this.api}/add/`,packageData, { withCredentials: true});
+  }
 }
+  

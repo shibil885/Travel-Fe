@@ -4,23 +4,24 @@ import * as agencyActions from './agency.action';
 import { catchError, map, of, switchMap, tap } from 'rxjs';
 import { Router } from '@angular/router';
 import { AgencyService } from '../../shared/services/agency.service';
+import { AgencyAuthService } from '../../auth/services/agency/agency-auth.service';
 
 @Injectable()
 export class AgencyEffect {
   constructor(
     private actions$: Actions,
     private agencyService: AgencyService,
-    private router: Router
+    private router: Router,
+    private agencyAuth: AgencyAuthService,
   ) {}
 
   agencyLogin$ = createEffect(() =>
     this.actions$.pipe(
       ofType(agencyActions.agencyLogin),
       switchMap((data) =>
-        this.agencyService.login(data).pipe(
+        this.agencyAuth.login(data).pipe(
           map((data) => {
             return agencyActions.agencyLoginSuccess({
-              token: data.token,
               agency: data.agency,
             });
           }),
@@ -46,7 +47,6 @@ export class AgencyEffect {
       this.actions$.pipe(
         ofType(agencyActions.agencyLoginSuccess),
         tap((action) => {
-          localStorage.setItem('agencytoken', action.token);
           this.router.navigate(['/agency/home']);
         })
       ),
@@ -77,13 +77,13 @@ export class AgencyEffect {
       switchMap((data) =>
         this.agencyService.verifyOtp({ otp: data.otp, email: data.email }).pipe(
           map((response) => {
+            console.log('from verify otp');
             return agencyActions.agencySignupSuccess({
-              agency: response.email,
-              token: response.token,
+              agency: response.agency,
             });
           }),
           catchError((error) =>
-            of(agencyActions.submitOtpError(error.error.message))
+            of(agencyActions.submitOtpError(error.message))
           )
         )
       )
@@ -94,7 +94,7 @@ export class AgencyEffect {
       this.actions$.pipe(
         ofType(agencyActions.agencySignupSuccess),
         tap((response) => {
-          localStorage.setItem('agencytoken', response.token);
+          console.log();
           this.router.navigate(['/agency/home']);
         })
       ),

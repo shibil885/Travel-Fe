@@ -4,7 +4,6 @@ import { IUser } from '../../models/user.model';
 
 export interface UserState {
   user: IUser | null;
-  token: string;
   error: string;
   loading: boolean;
   renderOtp: boolean;
@@ -12,7 +11,6 @@ export interface UserState {
 
 export const initialUserState: UserState = {
   user: null,
-  token: '',
   error: '',
   renderOtp: false,
   loading: false,
@@ -20,10 +18,9 @@ export const initialUserState: UserState = {
 
 export const UserReducer = createReducer(
   initialUserState,
-  on(userActions.userLoginSuccess, (state, { token, user }) => {
+  on(userActions.userLoginSuccess, (state, {  user }) => {
     return {
       ...state,
-      token: token,
       user: user,
       loading: false,
     };
@@ -48,10 +45,9 @@ export const UserReducer = createReducer(
       user: user,
     };
   }),
-  on(userActions.userSignupSuccess, (state, { user, token }) => {
+  on(userActions.userSignupSuccess, (state, { user }) => {
     return {
       ...state,
-      token: token,
       user: user,
     };
   }),

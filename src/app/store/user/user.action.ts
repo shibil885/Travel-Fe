@@ -7,7 +7,7 @@ export const userLogin = createAction(
 );
 export const userLoginSuccess = createAction(
   '[Login Component] userLoginSuccess',
-  props<{ token: string; user: IUser }>()
+  props<{ user: IUser }>()
 );
 export const userLoginError = createAction(
   '[Login Component] userLoginError',
@@ -30,7 +30,7 @@ export const userSignup = createAction(
 
 export const userSignupSuccess = createAction(
   '[Signup Component] userSignupSuccess',
-  props<{ user: IUser; token: string }>()
+  props<{ user: IUser;  }>()
 );
 
 export const userSignupError = createAction(
@@ -39,7 +39,7 @@ export const userSignupError = createAction(
 );
 
 export const submitOtp = createAction(
-  '[Otp Component] submitOtp',
+  '[Otp Component] User submitOtp',
   props<{ otp: string; email: string | null | undefined }>()
 );
 export const submitOtpError = createAction(

@@ -18,14 +18,7 @@ export class TableComponent {
 @Output() changeStatusEvent = new EventEmitter()
  sortable!: boolean 
 
-  sort(columnKey: string) {
-    if (!this.sortable) return;
-    this.data.sort((a, b) => {
-      if (a[columnKey] < b[columnKey]) return -1;
-      if (a[columnKey] > b[columnKey]) return 1;
-      return 0;
-    });
-  }
+
   changeStatus(user: any) {
     this.changeStatusEvent.emit(user)
   }

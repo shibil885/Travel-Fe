@@ -8,11 +8,16 @@ import { provideStore } from '@ngrx/store';
 import { AppState } from './store/app.store';
 import { provideEffects } from '@ngrx/effects';
 import { UserEffect } from './store/user/user.effect';
-import { provideHttpClient, withFetch } from '@angular/common/http';
+import {
+  provideHttpClient,
+  withFetch,
+  withInterceptors,
+} from '@angular/common/http';
 import { adminRouter } from './routes/admin.router';
 import { AdminEffects } from './store/admin/admin.effect';
 import { agencyRouter } from './routes/agency.router';
 import { AgencyEffect } from './store/agency/agency.effects';
+import { authInterceptorFn } from './interceptors/auth.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -21,11 +26,11 @@ export const appConfig: ApplicationConfig = {
     provideRouter(agencyRouter),
     provideClientHydration(),
     provideAnimationsAsync(),
-    provideHttpClient(withFetch()),
+    provideHttpClient(withFetch(), withInterceptors([authInterceptorFn])),
     provideStore(),
     provideStore(AppState),
     provideEffects(UserEffect),
     provideEffects(AdminEffects),
-    provideEffects(AgencyEffect)
-]
+    provideEffects(AgencyEffect),
+  ],
 };

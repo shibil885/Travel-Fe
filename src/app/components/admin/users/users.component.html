@@ -4,7 +4,6 @@
     </div>
     <div class="flex">
         <app-side-bar class="lg:w-64 sm:w-16"></app-side-bar>
-        <!-- <mat-icon class="hidden text-red-500 w-16">lists</mat-icon> -->
         <div class="flex-grow p-6 mx-5 mt-16 bg-white shadow-sm rounded-md">
             <div class="flex justify-between">
                 <p class="hidden sm:block text-2xl font-medium">Users</p>
@@ -12,18 +11,11 @@
                     <input
                         class="px-0 lg:px-6 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#7C3543] transition duration-200"
                         type="text" placeholder="search">
-                    <button class="hidden lg:flex items-center bg-[#7C3543] px-6 py-2 rounded-md text-white hover:bg-[#6B2F3C] transition duration-200 shadow-md">
-                        <mat-icon class="mr-2">add</mat-icon>
-                        Add
-                    </button>
-                    <button
-                        class="lg:hidden bg-[#7C3543] pl-2 pt-2 rounded-md text-white hover:bg-[#6B2F3C] transition duration-200 shadow-md">
-                        <mat-icon class="mr-2">add</mat-icon>
-                </button>
                 </div>
             </div>
             <hr class="mt-8">
-            <app-table  [columns]="columns" [data]="users" (changeStatusEvent)="changeStatus(users)"></app-table>
+            <app-list-table [columns]="columns" [data]="users"
+                (changeStatusEvent)="changeStatus($event)"></app-list-table>
         </div>
     </div>
 </main>

@@ -34,6 +34,7 @@ export class LoginComponent {
   }
   onSubmitting() {
     const formValue = this.reactiveForm.value;
+    console.log(this.reactiveForm);
     if (this.reactiveForm.invalid) {
       this.invalidForm = true;
       return;

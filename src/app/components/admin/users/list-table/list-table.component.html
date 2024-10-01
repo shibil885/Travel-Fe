@@ -1,0 +1,51 @@
+<div class="overflow-x-auto">
+    <table class="min-w-full table-auto">
+      <thead>
+        <tr class="block sm:table-row">
+          <th *ngFor="let column of columns"
+            class="text-left bg-gray-200 text-gray-700 uppercase tracking-wider cursor-pointer hidden sm:table-cell">
+            {{ column.title }}
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of data" class="block sm:table-row">
+          <td *ngFor="let column of columns" class="block sm:table-cell px-4 py-2">
+            <ng-container *ngIf="column.key === 'profile.phone' || column.key === 'profile.address'; else otherContent">
+              <ng-container *ngIf="column.key === 'profile.phone'">
+                {{item['profile']?.['phone'] || 'N/A'}}
+              </ng-container>
+              <ng-container *ngIf="column.key === 'profile.address'">
+                {{item['profile']?.['address'] || 'N/A'}}
+              </ng-container>
+            </ng-container>
+            <ng-template #otherContent>
+              <ng-container *ngIf="column.key === 'is_Verified'">
+                <span [ngClass]="item['is_Verified'] ? 'text-green-500' : 'text-red-500'">
+                  {{item['is_Verified'] ? 'Verified' : 'Not Verified'}}
+                </span>
+              </ng-container>       
+              <ng-container *ngIf="column.key === 'is_Active'">
+                <div class="flex items-center">
+                  <span [ngClass]="item['is_Active'] ? 'text-green-600 font-semibold' : 'text-red-600 font-semibold'">
+                    {{item['is_Active'] ? 'Active' : 'Inactive'}}
+                  </span>
+                  <button 
+                    class="ml-4 px-4 py-2 rounded-lg shadow-lg transition-transform duration-200 transform hover:scale-105 focus:outline-none"
+                    [ngClass]="item['is_Active'] ? 'bg-red-500 text-white hover:bg-red-600 ml-8' : 'bg-green-500 text-white hover:bg-green-600'"
+                    (click)="changeStatus(item)">
+                    <span *ngIf="item['is_Active']">Block</span>
+                    <span *ngIf="!item['is_Active']">Unblock</span>
+                  </button>
+                </div>
+              </ng-container>
+              <ng-container *ngIf="column.key !== 'is_Verified' && column.key !== 'is_Active'">
+                {{item[column.key] || 'N/A'}}
+              </ng-container>
+            </ng-template>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  

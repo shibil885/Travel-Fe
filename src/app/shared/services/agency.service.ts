@@ -1,22 +1,31 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
-import { catchError, map, Observable, throwError } from 'rxjs';
+import { catchError, map, Observable, tap, throwError } from 'rxjs';
 import { IAgency } from '../../models/agency.model';
-import { IUser } from '../../models/user.model';
+import { AgencyAuthService } from '../../auth/services/agency/agency-auth.service';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AgencyService {
   private api = 'http://localhost:3000';
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(
+    private http: HttpClient,
+    private authService: AgencyAuthService,
+    private router: Router,
+
+  ) {}
 
   findEmail(email: string) {
     return this.http
-      .post<{ isExisting: boolean }>(`${this.api}/agency/isExistingMail`, {
-        email,
-      })
+      .post<{ isExisting: boolean }>(
+        `${this.api}/agency/isExistingMail`,
+        {
+          email,
+        },
+        { withCredentials: true }
+      )
       .pipe(
         map((data) => data),
         catchError((error) => {
@@ -29,9 +38,13 @@ export class AgencyService {
   }
   findName(name: string) {
     return this.http
-      .post<{ isExisting: boolean }>(`${this.api}/agency/isExistingName`, {
-        name,
-      })
+      .post<{ isExisting: boolean }>(
+        `${this.api}/agency/isExistingName`,
+        {
+          name,
+        },
+        { withCredentials: true }
+      )
       .pipe(
         map((data) => data),
         catchError((error) => {
@@ -44,9 +57,13 @@ export class AgencyService {
   }
   isConfirmed(email: string | undefined) {
     return this.http
-      .post<{ isConfirmed: boolean }>(`${this.api}/agency/isConfirmed`, {
-        email
-      })
+      .post<{ isConfirmed: boolean }>(
+        `${this.api}/agency/isConfirmed`,
+        {
+          email,
+        },
+        { withCredentials: true }
+      )
       .pipe(
         map((data) => {
           console.log(data);
@@ -63,26 +80,33 @@ export class AgencyService {
   registerAgency(formData: FormData): Observable<any> {
     return this.http.post<{ agency: IAgency }>(
       `${this.api}/agency/signup`,
-      formData
+      formData,
+      { withCredentials: true }
     );
   }
-  verifyOtp(formData: { otp: string; email: string | null | undefined}): Observable<any> {
-    console.log('verify otp from agency');
-    return this.http.post<{ token: string, agency: IAgency }>(
-      `${this.api}/otp/agency`,
-      formData
-    );
+  verifyOtp(formData: {
+    otp: string;
+    email: string | null | undefined;
+  }): Observable<any> {
+    return this.http
+      .post<{
+        agency: IAgency;
+        message: string;
+        success: boolean;
+        token: string;
+      }>(`${this.api}/otp/agency`, formData, { withCredentials: true})
+      .pipe(
+        map((response) => {
+          console.log('reeeeeeeeeeeeeeeeeeeee', response);
+          this.authService.setAccessToken(response.token);
+          this.router.navigate(['/agency/home'])
+        })
+      );
   }
-  resendOtp(formData: { email: string | null | undefined}): Observable<any> {
+  resendOtp(formData: { email: string | null | undefined }): Observable<any> {
     return this.http.post<{ agency: IAgency }>(
       `${this.api}/otp/resend`,
-      formData
-    );
-  }
-  login(formData: { email: string; password: string }): Observable<any> {
-    return this.http.post<{ access_token: string, agency: IAgency }>(
-      `${this.api}/auth/agency`,
-      formData
+      formData , { withCredentials: true }
     );
   }
 }

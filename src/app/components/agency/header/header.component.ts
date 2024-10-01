@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { AgencyAuthService } from '../../../auth/services/agency/agency-auth.service';
 
 @Component({
   selector: 'app-header',
@@ -8,5 +9,9 @@ import { Component } from '@angular/core';
   styleUrl: './header.component.css'
 })
 export class HeaderComponent {
+  constructor(private authService: AgencyAuthService) { }
 
+  logout(){
+    this.authService.clearAccessToken();
+  }
 }

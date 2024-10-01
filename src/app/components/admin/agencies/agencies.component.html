@@ -12,19 +12,10 @@
                     <input
                         class="px-0 lg:px-6 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#7C3543] transition duration-200"
                         type="text" placeholder="search">
-                    <button class="hidden lg:flex items-center bg-[#7C3543] px-6 py-2 rounded-md text-white hover:bg-[#6B2F3C] transition duration-200 shadow-md">
-                        <mat-icon class="mr-2">add</mat-icon>
-                        Add
-                    </button>
-                    <button
-                        class="lg:hidden bg-[#7C3543] pl-2 pt-2 rounded-md text-white hover:bg-[#6B2F3C] transition duration-200 shadow-md">
-                        <mat-icon class="mr-2">add</mat-icon>
-                </button>
                 </div>
             </div>
             <hr class="mt-8">
-            <app-table></app-table>
-            <app-table [data]="agencies" [columns]="columns"></app-table>
+            <app-list-table [data]="agencies" [columns]="columns" (changeStatusEvent)="changeStatus($event)" (confirmationEvent)="confirmation($event)"></app-list-table>
         </div>
     </div>
 </main>
