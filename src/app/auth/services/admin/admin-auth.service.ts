@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { BehaviorSubject, map, Observable, tap } from 'rxjs';
 import Cookies from 'universal-cookie';
 import { IAdmin } from '../../../models/admin.interface';
 
@@ -11,21 +10,16 @@ import { IAdmin } from '../../../models/admin.interface';
 export class AdminAuthService {
   private readonly api = 'http://localhost:3000';
   private accessTokenSubject = new BehaviorSubject<string | null>(null);
-  private cookies: Cookies;
+  private cookie = new Cookies();
 
   constructor(private http: HttpClient) {
-    this.cookies = new Cookies(); 
-    const token = this.cookies.get('admin_accessToken');
-    console.log('Retrieved Token:', token); 
+    const token = this.cookie.get('accessToken');
     if (token) {
       this.setAccessToken(token);
-    } else {
-      console.log('Token not found in cookies admin');
     }
   }
 
-  // Admin login functionality
-  login(adminData: any): Observable<{
+  login(adminDat: any): Observable<{
     message: string;
     admin: IAdmin;
     success: boolean;
@@ -37,22 +31,21 @@ export class AdminAuthService {
         admin: IAdmin;
         success: boolean;
         token: string;
-      }>(`${this.api}/auth/admin`, adminData, { withCredentials: true })
+      }>(`${this.api}/auth/admin`, adminDat, { withCredentials: true })
       .pipe(
-        tap((response) => {
+        map((response) => {
           const accessToken = response.token;
-          console.log('Admin Access Token:', accessToken);
           if (accessToken) {
             this.setAccessToken(accessToken);
           }
+          return response;
         })
       );
   }
 
-  // Set access token and store in cookies
-  setAccessToken(token: string): void {
+  setAccessToken(token: string) {
     this.accessTokenSubject.next(token);
-    this.cookies.set('admin_accessToken', token, {
+    this.cookie.set('accessToken', token, {
       path: '/',
       secure: true,
       sameSite: 'strict',
@@ -65,36 +58,30 @@ export class AdminAuthService {
 
   clearAccessToken(): void {
     this.accessTokenSubject.next(null);
-    this.cookies.remove('admin_accessToken', { path: '/' });
+    this.cookie.remove('accessToken', { path: '/' });
   }
 
   refreshToken(): Observable<string> {
     return this.http
       .post<{ accessToken: string }>(
-        `${this.api}/auth/adminRefresh`,
+        `${this.api}/auth/refresh`,
         {},
         { withCredentials: true }
       )
       .pipe(
-        tap((response) => {
-          const newAccessToken = response.accessToken;
+        map((response) => response.accessToken),
+        tap((newAccessToken: string) => {
           this.setAccessToken(newAccessToken);
-        }),
-        map((response) => response.accessToken)
+        })
       );
   }
 
-  // Validate the provided token
   validateToken(token: string): Observable<boolean> {
-    console.log('Validating Admin Token:', token);
     return this.http
-      .post<{ valid: boolean }>(`${this.api}/auth/validate-token-admin`, {
-        token,
-      }, { withCredentials: true})
+      .post<{ valid: boolean }>(`${this.api}/auth/validate-token`, { token })
       .pipe(map((response) => response.valid));
   }
 
-  // Check if admin is authenticated
   isAuthenticated(): boolean {
     return !!this.getAccessToken();
   }

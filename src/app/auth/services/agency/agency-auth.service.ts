@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, map, Observable, tap } from 'rxjs';
 import Cookies from 'universal-cookie';
 import { IAgency } from '../../../models/agency.model';
-import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -11,19 +10,16 @@ import { Router } from '@angular/router';
 export class AgencyAuthService {
   private readonly api = 'http://localhost:3000';
   private accessTokenSubject = new BehaviorSubject<string | null>(null);
-  private cookie: Cookies;
-  constructor(private http: HttpClient, private router: Router) {
-    this.cookie = new Cookies();
-    const token = this.cookie.get('agency_accessToken');
-    console.log('Retrieved Token:', token);
+  private cookie = new Cookies();
+
+  constructor(private http: HttpClient) {
+    const token = this.cookie.get('accessToken');
     if (token) {
       this.setAccessToken(token);
-    } else {
-      console.log('Token not found in cookies agency');
     }
   }
 
-  login(agencyData: any): Observable<{
+  login(userData: any): Observable<{
     message: string;
     agency: IAgency;
     success: boolean;
@@ -35,11 +31,10 @@ export class AgencyAuthService {
         agency: IAgency;
         success: boolean;
         access_token: string;
-      }>(`${this.api}/auth/agency`, agencyData, { withCredentials: true })
+      }>(`${this.api}/auth/agency`, userData, { withCredentials: true })
       .pipe(
         map((response) => {
           const accessToken = response.access_token;
-          console.log('agencies acccc', accessToken);
           if (accessToken) {
             this.setAccessToken(accessToken);
           }
@@ -48,9 +43,9 @@ export class AgencyAuthService {
       );
   }
 
-  setAccessToken(token: string): void {
+  setAccessToken(token: string) {
     this.accessTokenSubject.next(token);
-    this.cookie.set('agency_accessToken', token, {
+    this.cookie.set('accessToken', token, {
       path: '/',
       secure: true,
       sameSite: 'strict',
@@ -63,18 +58,13 @@ export class AgencyAuthService {
 
   clearAccessToken(): void {
     this.accessTokenSubject.next(null);
-    this.cookie.remove('agency_accessToken', { path: '/' });
-    this.http
-      .patch(`${this.api}/agency/logout`, {}, { withCredentials: true })
-      .subscribe(() => {
-        this.router.navigate(['/agency/login']);
-      });
+    this.cookie.remove('accessToken', { path: '/' });
   }
 
   refreshToken(): Observable<string> {
     return this.http
       .post<{ accessToken: string }>(
-        `${this.api}/auth/agencyRefresh`,
+        `${this.api}/auth/refresh`,
         {},
         { withCredentials: true }
       )
@@ -87,15 +77,8 @@ export class AgencyAuthService {
   }
 
   validateToken(token: string): Observable<boolean> {
-    console.log('invoking', token);
     return this.http
-      .post<{ valid: boolean }>(
-        `${this.api}/auth/validate-token-agency`,
-        {
-          token,
-        },
-        { withCredentials: true }
-      )
+      .post<{ valid: boolean }>(`${this.api}/auth/validate-token`, { token })
       .pipe(map((response) => response.valid));
   }
 
@@ -103,3 +86,4 @@ export class AgencyAuthService {
     return !!this.getAccessToken();
   }
 }
+ 

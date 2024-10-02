@@ -6,7 +6,6 @@ import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { Store } from '@ngrx/store';
 import { selectAgency } from '../../../store/agency/agency.selector';
-import { IAgency } from '../../../models/agency.model';
 
 @Component({
   selector: 'app-home',
@@ -16,12 +15,10 @@ import { IAgency } from '../../../models/agency.model';
   styleUrl: './home.component.css',
 })
 export class HomeComponent {  
-  email!: string | undefined ;
   isConfirmed!: boolean;
   constructor(private agencyService: AgencyService, private store: Store) {}
   ngOnInit(): void {
-    this.store.select(selectAgency).subscribe((data) => this.email = data?.contact.email)
-    this.agencyService.isConfirmed(this.email).subscribe((status) => {
+    this.agencyService.isConfirmed().subscribe((status) => {
       console.log(status);
       this.isConfirmed = status;
     });

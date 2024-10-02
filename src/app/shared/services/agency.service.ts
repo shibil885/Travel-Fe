@@ -13,8 +13,7 @@ export class AgencyService {
   constructor(
     private http: HttpClient,
     private authService: AgencyAuthService,
-    private router: Router,
-
+    private router: Router
   ) {}
 
   findEmail(email: string) {
@@ -55,15 +54,11 @@ export class AgencyService {
         })
       );
   }
-  isConfirmed(email: string | undefined) {
+  isConfirmed() {
     return this.http
-      .post<{ isConfirmed: boolean }>(
-        `${this.api}/agency/isConfirmed`,
-        {
-          email,
-        },
-        { withCredentials: true }
-      )
+      .get<{ isConfirmed: boolean }>(`${this.api}/agency/isConfirmed`, {
+        withCredentials: true,
+      })
       .pipe(
         map((data) => {
           console.log(data);
@@ -94,19 +89,20 @@ export class AgencyService {
         message: string;
         success: boolean;
         token: string;
-      }>(`${this.api}/otp/agency`, formData, { withCredentials: true})
+      }>(`${this.api}/otp/agency`, formData, { withCredentials: true })
       .pipe(
         map((response) => {
           console.log('reeeeeeeeeeeeeeeeeeeee', response);
           this.authService.setAccessToken(response.token);
-          this.router.navigate(['/agency/home'])
+          this.router.navigate(['/agency/home']);
         })
       );
   }
   resendOtp(formData: { email: string | null | undefined }): Observable<any> {
     return this.http.post<{ agency: IAgency }>(
       `${this.api}/otp/resend`,
-      formData , { withCredentials: true }
+      formData,
+      { withCredentials: true }
     );
   }
 }

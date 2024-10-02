@@ -17,7 +17,7 @@ import { adminRouter } from './routes/admin.router';
 import { AdminEffects } from './store/admin/admin.effect';
 import { agencyRouter } from './routes/agency.router';
 import { AgencyEffect } from './store/agency/agency.effects';
-import { authInterceptorFn } from './interceptors/auth.interceptor';
+// import { errorHandlerInterceptorFn } from './interceptors/error.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -26,7 +26,10 @@ export const appConfig: ApplicationConfig = {
     provideRouter(agencyRouter),
     provideClientHydration(),
     provideAnimationsAsync(),
-    provideHttpClient(withFetch(), withInterceptors([authInterceptorFn])),
+    provideHttpClient(
+      withFetch(),
+      // withInterceptors([errorHandlerInterceptorFn])
+    ),
     provideStore(),
     provideStore(AppState),
     provideEffects(UserEffect),

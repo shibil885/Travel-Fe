@@ -10,7 +10,6 @@ import { AdminAuthService } from "../../auth/services/admin/admin-auth.service";
 @Injectable()
 export class AdminEffects {
     constructor(
-        private adminService: AdminService,
         private authService: AdminAuthService,
         private action$: Actions,
         private router: Router
@@ -30,7 +29,7 @@ export class AdminEffects {
     adminLoginSuccess$ = createEffect(() => this.action$.pipe(
         ofType(adminActions.adminLoginsuccess),
         tap((action) => {
-            console.log('mm',action.token);
+            console.log('mm',action);
             this.router.navigate(['/admin']);
         })
     ),{dispatch:false})
