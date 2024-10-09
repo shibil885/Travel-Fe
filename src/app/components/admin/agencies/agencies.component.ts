@@ -12,6 +12,7 @@ import { FilterComponent } from '../../../shared/components/filter/filter.compon
 import { CommonModule } from '@angular/common';
 import { FilterData } from '../../../interfaces/filterData.interface';
 import { SearchComponent } from '../../../shared/components/search/search.component';
+import { PaginationComponent } from '../../../shared/components/pagination/pagination.component';
 
 @Component({
   selector: 'app-agencies',
@@ -23,6 +24,7 @@ import { SearchComponent } from '../../../shared/components/search/search.compon
     DialogComponent,
     ReusableTableComponent,
     SearchComponent,
+    PaginationComponent,
     CommonModule,
     MatIconModule,
     RouterModule,
