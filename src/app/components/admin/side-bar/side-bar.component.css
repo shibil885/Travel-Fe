@@ -1,0 +1,21 @@
+:host {
+    display: block;
+  }
+  @media (max-width: 768px) {
+    :host {
+      position: fixed;
+      z-index: 40;
+      left: 0;
+      top: 0;
+    }
+  }
+  ::-webkit-scrollbar {
+    width: 4px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: #8697C4;
+    border-radius: 2px;
+  }

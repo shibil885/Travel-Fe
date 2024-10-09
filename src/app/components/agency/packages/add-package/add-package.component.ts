@@ -16,13 +16,14 @@ import {
   endWithSpace,
   invalidChar,
   letterOrNumber,
-} from '../../../validatores/name.validator';
-import { descriptionValidator } from '../../../validatores/description.validator';
-import { invalidPlace } from '../../../validatores/place.validatores';
-import { countryValidator } from '../../../validatores/country.validator';
-import { numberOfPeopleValidator } from '../../../validatores/phone.validator';
-import { PackageService } from '../../../shared/services/package.service';
+} from '../../../../validatores/name.validator';
+import { descriptionValidator } from '../../../../validatores/description.validator';
+import { invalidPlace } from '../../../../validatores/place.validatores';
+import { countryValidator } from '../../../../validatores/country.validator';
+import { numberOfPeopleValidator } from '../../../../validatores/phone.validator';
+import { PackageService } from '../../../../shared/services/package.service';
 import { Router } from '@angular/router';
+import { CategoryService } from '../../../../shared/services/categories.service';
 
 @Component({
   selector: 'app-add-package',
@@ -45,10 +46,18 @@ export class AddPackageComponent {
   invalidNotIncluded!: boolean;
   noOfDays: number = 0;
   invalidForm!: boolean;
-
-  constructor(private packageService: PackageService, private router: Router) {}
+  categories:any = [];
+  constructor(
+    private packageService: PackageService,
+    private router: Router,
+    private categoryService: CategoryService
+  ) {}
 
   ngOnInit(): void {
+    this.categoryService.getCategories().subscribe((res) => {
+      this.categories = res.categories
+      console.log(this.categories);
+    })
     this.packageForm = new FormGroup({
       name: new FormControl('', [
         Validators.required,
@@ -80,7 +89,7 @@ export class AddPackageComponent {
       included: new FormArray([new FormControl('', Validators.required)]),
       notIncluded: new FormArray([new FormControl('', Validators.required)]),
       days: new FormControl('', [Validators.required, numberOfPeopleValidator]),
-      tourPlans: new FormArray([]),
+      TourPlans: new FormArray([]),
     });
 
     this.packageForm.get('days')?.valueChanges.subscribe((day) => {
@@ -96,8 +105,8 @@ export class AddPackageComponent {
     return this.packageForm.get('notIncluded') as FormArray;
   }
 
-  get tourPlans() {
-    return this.packageForm.get('tourPlans') as FormArray;
+  get TourPlans() {
+    return this.packageForm.get('TourPlans') as FormArray;
   }
 
   addIncludes() {
@@ -129,12 +138,12 @@ export class AddPackageComponent {
   }
 
   updateTourPlaneFields(days: number) {
-    while (this.tourPlans.length !== 0) {
-      this.tourPlans.removeAt(0);
+    while (this.TourPlans.length !== 0) {
+      this.TourPlans.removeAt(0);
     }
 
     for (let i = 0; i < days; i++) {
-      this.tourPlans.push(
+      this.TourPlans.push(
         new FormGroup({
           day: new FormControl(i + 1),
           description: new FormControl('', [Validators.required]),
@@ -146,8 +155,6 @@ export class AddPackageComponent {
   onSubmit() {
     if (this.packageForm.invalid) {
       this.invalidForm = true;
-
-      // Check if included or notIncluded arrays are empty
       this.invalidIncluded = this.included.length === 0;
       this.invalidNotIncluded = this.notIncluded.length === 0;
       return;
@@ -157,8 +164,8 @@ export class AddPackageComponent {
     console.log('Form Data:', this.packageForm.value);
 
     this.packageService.addPackages(this.packageForm.value).subscribe(
-      (response) => {
-        console.log('Package added successfully', response);
+      () => {
+        console.log('Package added successfully');
 
         this.router.navigate(['/agency/packages']);
       },

@@ -6,59 +6,55 @@ import { AdminService } from '../../../shared/services/admin-service.service';
 import { DialogComponent } from '../../../shared/components/dialog/dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ListTableComponent } from './list-table/list-table.component';
-
+import { FilterComponent } from '../../../shared/components/filter/filter.component';
+import { FilterData } from '../../../interfaces/filterData.interface';
+import { CommonModule } from '@angular/common';
+import { ReusableTableComponent } from '../../../shared/components/table/table.component';
+import { SearchComponent } from '../../../shared/components/search/search.component';
 @Component({
   selector: 'app-users',
   standalone: true,
   imports: [
     HeaderComponent,
     SideBarComponent,
-    ListTableComponent,
+    FilterComponent,
+    ReusableTableComponent,
     DialogComponent,
+    SearchComponent,
     MatIconModule,
+    CommonModule,
   ],
   templateUrl: './users.component.html',
   styleUrl: './users.component.css',
 })
 export class UsersComponent {
-  columns = [
-    { title: 'Email', key: 'email' },
-    { title: 'Phone', key: 'profile.phone' },
-    { title: 'Address', key: 'profile.address' },
-    { title: 'Verified', key: 'is_Verified' },
-    { title: 'Status', key: 'is_Active' },
+  showFilters!: boolean;
+  userHeaders = [
+    { label: 'Name', key: 'username' },
+    { label: 'Email', key: 'email' },
+    { label: 'Verified', key: 'isVerified' },
+    { label: 'Active', key: 'isActive' },
   ];
 
-  users: any[] = [];
+  users: any = [];
   constructor(
     private adminService: AdminService,
     private dialog: MatDialog,
     private snackBar: MatSnackBar
   ) {}
+
   ngOnInit(): void {
+    this.fetchUsers();
+  }
+
+  fetchUsers() {
     this.adminService.getAllUsers().subscribe((data) => {
       this.users = data.users;
     });
   }
-  changeStatus(user: any) {
-    const dialogRef = this.dialog.open(DialogComponent, {
-      width: '400px',
-      data: { status: user.is_Active ? 'block' : 'unblock' },
-    });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        const action = user.is_Active ? 'block' : 'unblock';
-        this.adminService.changeUserStatus(user._id, action).subscribe(() => {
-          this.showToast(`User successfully ${action}ed`, 'success');
-          this.refreshUsers();
-        });
-      }
-    });
-  }
   showToast(message: string, type: 'success' | 'error') {
-    this.snackBar.open(message, '👋', {
+    this.snackBar.open(message, '😒', {
       duration: 3000,
       panelClass: type === 'success' ? 'snack-success' : 'snack-error',
       horizontalPosition: 'right',
@@ -66,9 +62,31 @@ export class UsersComponent {
     });
   }
 
-  refreshUsers() {
-    this.adminService.getAllUsers().subscribe((data) => {
-      this.users = data.users;
+  showSortAndFilter() {
+    const dialogRef = this.dialog.open(FilterComponent, {
+      height: 'auto',
+      panelClass: 'custom-dialog-container',
     });
+
+    dialogRef.componentInstance.filterDataEvent.subscribe(
+      (filterData: FilterData) => {
+        this.onFilter(filterData);
+      }
+    );
+  }
+
+  onFilter(filterData: FilterData) {
+    this.adminService.getFilteredData(filterData,'user').subscribe((response) => {
+      this.users = response;
+    });
+  }
+  onSearch(searchText: string) {
+    if (searchText.length == 0) {
+    this.fetchUsers();
+    return
+    }
+    this.adminService.searchUsers(searchText, 'user').subscribe((res) => {
+      this.users  = res
+    })
   }
 }

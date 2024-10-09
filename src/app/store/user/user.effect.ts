@@ -18,25 +18,24 @@ export class UserEffect {
   userLogin$ = createEffect(() =>
     this.actions$.pipe(
       ofType(userActions.userLogin),
-      switchMap((data) =>
-        this.authService.login(data).pipe(
-          map((data) => {
+      switchMap((action) =>
+        this.authService.login(action).pipe(
+          map((response) => {
             return userActions.userLoginSuccess({
-              user: data.user,
+              user: response.user,
             });
           }),
           catchError((error) => {
-            console.log(error);
+            console.error('Error during user login effect: ', error);
             if (error.status === 406) {
+              console.log('errrrroorrrrrr', error);
               return of(
                 userActions.otpRender({
-                  user: error.user,
+                  user: error.error.user,
                 })
               );
             }
-            return of(
-              userActions.userLoginError({ error: error.message })
-            );
+            return of(userActions.userLoginError({ error: error.message }));
           })
         )
       )
@@ -115,6 +114,25 @@ export class UserEffect {
             return of(
               userActions.resendOtpError({ error: error.error.message })
             );
+          })
+        )
+      )
+    )
+  );
+  logout$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(userActions.logout),
+      tap(() => {}),
+      switchMap(() =>
+        this.authService.logout().pipe(
+          tap(() => {
+            this.router.navigate(['/login']).then(() => {
+              console.log('Navigated to /login');
+            });
+          }),
+          catchError((error) => {
+            console.error('Logout error: ', error);
+            return of();
           })
         )
       )

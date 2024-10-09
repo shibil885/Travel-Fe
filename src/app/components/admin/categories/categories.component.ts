@@ -1,43 +1,74 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
+import { CategoryService } from '../../../shared/services/categories.service';  // Adjust the path
 import { HeaderComponent } from '../header/header.component';
 import { SideBarComponent } from '../side-bar/side-bar.component';
-import { MatIconModule } from "@angular/material/icon";
-import { TableComponent } from '../../../shared/components/table/table.component';
-import { RouterModule } from '@angular/router';
+import { SearchComponent } from '../../../shared/components/search/search.component';
 import { CommonModule } from '@angular/common';
-import { CategoryFormComponent } from "../../../shared/components/category-form/category-form.component";
-import { MatDialog } from '@angular/material/dialog';
-import { AdminService } from '../../../shared/services/admin-service.service';
+
 @Component({
   selector: 'app-categories',
-  standalone: true,
-  imports: [HeaderComponent, SideBarComponent, TableComponent, CategoriesComponent, CategoryFormComponent, MatIconModule, RouterModule, CommonModule, ],
+  standalone:true,
+  imports: [HeaderComponent,SideBarComponent, SearchComponent, ReactiveFormsModule, CommonModule],
   templateUrl: './categories.component.html',
-  styleUrl: './categories.component.css'
+  styleUrls: ['./categories.component.css']
 })
-export class CategoriesComponent {
-title:string = 'Add Category'
-openCategoryForm!: boolean;
-data:any = []
-columns = [
-  { key: 'name', title: 'Name' },
-  { key: 'description', title: 'Description' },
-];
+export class CategoriesComponent implements OnInit {
+  categories: any = [];
+  showAddForm = false;
+  editMode = false;
+  currentCategoryId: string | null = null;
 
-  constructor(private dialog: MatDialog, private adminService: AdminService) {}
+  categoryForm = new FormGroup({
+    name: new FormControl('', [Validators.required]),
+    description: new FormControl('', [Validators.required]),
+  });
 
-  ngOnInit(): void {
-    this.adminService.getAllCategories().subscribe((data) => {
-      this.data = data.categories
-    })
+  constructor(private categoryService: CategoryService) {}
+
+  ngOnInit() {
+    this.getCategories();
   }
-  addCategory() {
-    this.title = 'Add Category'
-    console.log(this.title);
-    const dialogRef = this.dialog.open(CategoryFormComponent, {
-      width: '500px',
-      disableClose:false,
+
+  toggleAddForm() {
+    this.showAddForm = !this.showAddForm;
+    this.editMode = false;
+    this.currentCategoryId = null;
+    this.categoryForm.reset();
+  }
+
+  getCategories() {
+    this.categoryService.getCategories().subscribe((data) => {
+      this.categories = data.categories;
     });
-    dialogRef.afterClosed().subscribe();
+  }
+
+  onSubmit() {
+    if (this.categoryForm.valid) {
+      if (this.editMode) {
+        this.categoryService
+          .updateCategory(this.currentCategoryId, this.categoryForm.value)
+          .subscribe(() => {
+            this.getCategories();
+            this.toggleAddForm();
+          });
+      } else {
+        // Add new category
+        this.categoryService.addCategory(this.categoryForm.value).subscribe(() => {
+          this.getCategories();
+          this.toggleAddForm();
+        });
+      }
+    }
+  }
+
+  onEdit(category: any) {
+    this.showAddForm = true;
+    this.editMode = true;
+    this.currentCategoryId = category._id;
+    this.categoryForm.patchValue({
+      name: category.name,
+      description: category.description,
+    });
   }
 }

@@ -1,25 +1,40 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { MatIconModule } from '@angular/material/icon';
-
+import { Component, Input } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { ShowDetailsComponent } from '../show-details/show-details.component';
+import { IAgency } from '../../../models/agency.model';
+import { IUser } from '../../../models/user.model';
 
 @Component({
-  selector: 'app-table',
+  selector: 'app-reusable-table',
   standalone: true,
-  imports: [CommonModule,MatIconModule],
   templateUrl: './table.component.html',
-  styleUrl: './table.component.css'
+  styleUrl: './table.component.css',
+  imports: [ ShowDetailsComponent,CommonModule, FormsModule,]
 })
-export class TableComponent {
+export class ReusableTableComponent {
+  @Input() data: any[] = []; 
+  @Input() headers: { label: string, key: string }[] = [];  
+  filteredData = [...this.data];
+  constructor(private dialog: MatDialog) {}
 
-
-@Input() data: any[] = [];
-@Input() columns: { key: string , title: string }[] = [];
-@Output() changeStatusEvent = new EventEmitter()
- sortable!: boolean 
-
-
-  changeStatus(user: any) {
-    this.changeStatusEvent.emit(user)
+  filter(event: Event) {
+    const filter = (event.target as HTMLSelectElement).value;
+    this.filteredData = filter
+      ? this.data.filter((item) => item.role === filter)
+      : [...this.data];
+  }
+  showSinglePersonDetails(user: IAgency | IUser) {    
+    this.dialog.open(ShowDetailsComponent, {
+      width: '400px',
+      data: user,
+      panelClass: 'custom-dialog-container',
+      hasBackdrop: true,
+      disableClose:false,
+        position: { 
+          right: '20px', 
+        }
+    });
   }
 }

@@ -39,8 +39,8 @@
                             <select id="category"
                                 class="form-input w-full p-3 rounded-md bg-gray-100 text-gray-900 focus:ring focus:ring-gray-50"
                                 formControlName="category">
-                                <option value="f">Option 1</option>
-                                <option value="d">Option 2</option>
+                                <option *ngFor="let category of categories" [value]="category._id">{{ category.name }}
+                                </option>
                             </select>
                         </div>
                     </div>
@@ -176,8 +176,8 @@
 
                     <div class="mt-6">
                         <h3 class="text-lg font-semibold text-gray-700">Tour Plans</h3>
-                        <div formArrayName="tourPlans">
-                            <div *ngFor="let day of tourPlans.controls; let i = index" [formGroupName]="i" class="mb-4">
+                        <div formArrayName="TourPlans">
+                            <div *ngFor="let day of TourPlans.controls; let i = index" [formGroupName]="i" class="mb-4">
                                 <label class="block">Day {{ i + 1 }} Plan</label>
                                 <textarea formControlName="description" rows="3"
                                     class="form-textarea mt-1 block w-full p-2 rounded-md bg-gray-100 text-gray-900 focus:ring focus:ring-gray-50"></textarea>

@@ -1,13 +1,17 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { HeaderComponent } from '../header/header.component';
 import { SideBarComponent } from '../side-bar/side-bar.component';
 import { MatIconModule } from '@angular/material/icon';
 import { AdminService } from '../../../shared/services/admin-service.service';
 import { RouterModule } from '@angular/router';
-import { ListTableComponent } from './list-table/list-table.component';
 import { DialogComponent } from '../../../shared/components/dialog/dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ReusableTableComponent } from '../../../shared/components/table/table.component';
+import { FilterComponent } from '../../../shared/components/filter/filter.component';
+import { CommonModule } from '@angular/common';
+import { FilterData } from '../../../interfaces/filterData.interface';
+import { SearchComponent } from '../../../shared/components/search/search.component';
 
 @Component({
   selector: 'app-agencies',
@@ -15,24 +19,27 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   imports: [
     HeaderComponent,
     SideBarComponent,
-    ListTableComponent,
+    FilterComponent,
+    DialogComponent,
+    ReusableTableComponent,
+    SearchComponent,
+    CommonModule,
     MatIconModule,
     RouterModule,
-    DialogComponent,
   ],
   templateUrl: './agencies.component.html',
-  styleUrl: './agencies.component.css',
+  styleUrls: ['./agencies.component.css'],
 })
-export class AgenciesComponent {
+export class AgenciesComponent implements OnInit {
   agencies: any = [];
-  columns = [
-    { title: 'Name', key: 'name' },
-    { title: 'Email', key: 'contact.email' },
-    { title: 'Phone', key: 'contact.phone' },
-    { title: 'Verified', key: 'isVerified' },
-    { title: 'Status', key: 'isActive' },
-    { title: 'Confirmed', key: 'isConfirmed' },
+  agencyHeaders = [
+    { label: 'Agency Name', key: 'name' },
+    { label: 'Email', key: 'email' },
+    { label: 'Verified', key: 'isVerified' },
+    { label: 'Active', key: 'isActive' },
+    { label: 'Confirmed', key: 'isConfirmed' },
   ];
+
   constructor(
     private adminService: AdminService,
     private dialog: MatDialog,
@@ -40,39 +47,12 @@ export class AgenciesComponent {
   ) {}
 
   ngOnInit(): void {
-    this.adminService.getAllAgencies().subscribe((data) => {
-      this.agencies = data.agencies;
-    });
+    this.fetchAgencies();
   }
 
-  changeStatus(agency: any) {
-    const dialogRef = this.dialog.open(DialogComponent, {
-      width: '400px',
-      data: { status: agency.isActive ? 'block' : 'unblock' },
-    });
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        const action = agency.isActive ? 'block' : 'unblock';
-        this.adminService.changeAgencyStatus(agency._id, action).subscribe(() => {
-          this.showToast(`Agency successfully ${action}ed`, 'success');
-          this.refreshUsers();
-        }); 
-      }
-    });
-  }
-  confirmation(agency: any) {
-    const dialogRef = this.dialog.open(DialogComponent, {
-      width: '400px',
-      data: { status: agency.isConfirmed ? 'Declin' : 'Confirm' },
-    });
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        const action = agency.isConfirmed ? 'declin' : 'confirm';
-        this.adminService.confirmation(agency._id, action).subscribe(() => {
-          this.showToast(`Agency successfully ${action}ed`, 'success');
-          this.refreshUsers();
-        }); 
-      }
+  fetchAgencies() {
+    this.adminService.getAllAgencies().subscribe((data) => {
+      this.agencies = data.agencies;
     });
   }
 
@@ -85,9 +65,32 @@ export class AgenciesComponent {
     });
   }
 
-  refreshUsers() {
-    this.adminService.getAllAgencies().subscribe((data) => {
-      this.agencies = data.agencies;
+  showSortAndFilter() {
+    const dialogRef = this.dialog.open(FilterComponent, {
+      height: 'auto',
+      data: true,
+      panelClass: 'custom-dialog-container',
+      disableClose: false,
     });
+
+    dialogRef.componentInstance.filterDataEvent.subscribe((filterData: FilterData) => {
+      this.onFilter(filterData); 
+    });
+  }
+
+  onFilter(filterData: FilterData) {
+    this.adminService.getFilteredData(filterData,'agency').subscribe((response) => {
+      this.agencies = response;
+    });
+  }
+  onSearch(searchText: string) {
+    if (searchText.length == 0) {
+    this.fetchAgencies();
+    return
+    }
+    this.adminService.searchUsers(searchText, 'agency').subscribe((res) => {
+      console.log('res:',res);
+      this.agencies  = res
+    })
   }
 }

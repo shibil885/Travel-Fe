@@ -1,7 +1,8 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
+import { FilterData } from '../../interfaces/filterData.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -10,6 +11,7 @@ export class AdminService {
   private api = 'http://localhost:3000';
 
   constructor(private http: HttpClient) {}
+  
   getAllUsers(): Observable<{
     message: string;
     success: boolean;
@@ -118,4 +120,24 @@ export class AdminService {
         })
       );
   }
+  getFilteredData(filters: FilterData, user: string): Observable<any> {
+    let params = new HttpParams();
+
+    if (filters.isActive !== undefined)
+      params = params.append('isActive', filters.isActive.toString());
+    if (filters.isVerified !== undefined)
+      params = params.append('isVerified', filters.isVerified.toString());
+    if (filters.isConfirmed !== undefined)
+      params = params.append('isConfirmed', filters.isConfirmed.toString());
+    return this.http.post(`${this.api}/admin/filter`, { user }, { params });
+  }
+  searchUsers(searchText: string, user: string) {
+    let params = new HttpParams().set('searchText', searchText)
+    return this.http.post(
+      `${this.api}/admin/searchUsers`,
+      { user },  
+      { params } 
+    );
+  }
+  
 }

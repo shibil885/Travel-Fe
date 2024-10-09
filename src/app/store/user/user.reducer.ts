@@ -76,5 +76,11 @@ export const UserReducer = createReducer(
       error: error,
       renderOtp: true,
     };
+  }),
+  on(userActions.logoutSuccess,(state) => {
+    return {
+      ...state,
+      user: null,
+    }
   })
 );

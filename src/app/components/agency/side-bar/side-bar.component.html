@@ -1,91 +1,41 @@
-<aside>
-    <!-- Sidebar for large screens -->
-    <div class="hidden lg:block fixed top-[65.5px] left-0 w-64 h-screen bg-white shadow-xl">
-        <div class="mt-8">
-            <h1 class="text-center text-xl font-bold text-[#431707]">Agency Dashboard</h1>
-        </div>
-        <hr class="mt-5 border border-[#C76C74]">
-        <div class="mt-5 space-y-2">
-            <a
-                class="flex items-center justify-start px-5 py-4 space-x-4 text-[#C76C74] hover:bg-[#F2D9DA] hover:text-[#431707] rounded-md transition-all duration-300 ease-in-out cursor-pointer">
-                <mat-icon class="text-xl">dashboard</mat-icon>
-                <p class="text-base font-medium">Dashboard</p>
-            </a>
-            <a routerLink="/agency/packages"
-                class="flex items-center justify-start px-5 py-4 space-x-4 text-[#C76C74] hover:bg-[#F2D9DA] hover:text-[#431707] rounded-md transition-all duration-300 ease-in-out cursor-pointer">
-                <mat-icon class="text-xl">luggage</mat-icon>
-                <p class="text-base font-medium">Packages</p>
-            </a>
-            <a
-                class="flex items-center justify-start px-5 py-4 space-x-4 text-[#C76C74] hover:bg-[#F2D9DA] hover:text-[#431707] rounded-md transition-all duration-300 ease-in-out cursor-pointer">
-                <mat-icon class="text-xl">library_books</mat-icon>
-                <p class="text-base font-medium">Booking</p>
-            </a>
-            <a
-                [routerLink]="[ 'categories']"
-                class="flex items-center justify-start px-5 py-4 space-x-4 text-[#C76C74] hover:bg-[#F2D9DA] hover:text-[#431707] rounded-md transition-all duration-300 ease-in-out cursor-pointer">
-                <mat-icon class="text-xl">category</mat-icon>
-                <p class="text-base font-medium">Categories</p>
-            </a>
-            <a
-                class="flex items-center justify-start px-5 py-4 space-x-4 text-[#C76C74] hover:bg-[#F2D9DA] hover:text-[#431707] rounded-md transition-all duration-300 ease-in-out cursor-pointer">
-                <mat-icon class="text-xl">notifications</mat-icon>
-                <p class="text-base font-medium">Notifications</p>
-            </a>
-            <a
-                class="flex items-center justify-start px-5 py-4 space-x-4 text-[#C76C74] hover:bg-[#F2D9DA] hover:text-[#431707] rounded-md transition-all duration-300 ease-in-out cursor-pointer">
-                <mat-icon class="text-xl">shopping_cart</mat-icon>
-                <p class="text-base font-medium">Coupon</p>
-            </a>
-        </div>
-        <hr class="mt-5 border border-[#C76C74]">
-        <a
-            class="flex items-center justify-start px-5 py-4 space-x-4 text-red-500 hover:bg-[#F2D9DA] hover:text-[#431707] rounded-md transition-all duration-300 ease-in-out cursor-pointer">
-            <mat-icon class="text-xl">logout</mat-icon>
-            <p class="text-base font-medium">Logout</p>
-        </a>
-    </div>
+<aside [ngClass]="{'w-64': !isCollapsed, 'w-20': isCollapsed}" 
+    class="bg-[#244855] text-[#FBE9D0] transition-all duration-300 ease-in-out shadow-lg flex flex-col h-screen">
 
-    <!-- Sidebar for small screens -->
-    <div class=" hidden md:block lg:hidden fixed top-[65.5px] left-0 w-16 h-screen bg-white shadow-xl">
-        <div class="mt-8">
-            <h1 class="text-center text-xs font-bold text-[#431707]">Admin</h1>
-        </div>
-        <hr class="mt-5 border border-[#C76C74]">
-        <div class="mt-5 space-y-2">
-            <a
-                class="flex justify-center px-3 py-4 text-[#C76C74] hover:bg-[#F2D9DA] hover:text-[#431707] rounded-md transition-all duration-300 ease-in-out cursor-pointer">
-                <mat-icon class="text-xl">dashboard</mat-icon>
-            </a>
-            <a
-                class="flex justify-center px-3 py-4 text-[#C76C74] hover:bg-[#F2D9DA] hover:text-[#431707] rounded-md transition-all duration-300 ease-in-out cursor-pointer">
-                <mat-icon class="text-xl">groups</mat-icon>
-            </a>
-            <a
-                class="flex justify-center px-3 py-4 text-[#C76C74] hover:bg-[#F2D9DA] hover:text-[#431707] rounded-md transition-all duration-300 ease-in-out cursor-pointer">
-                <mat-icon class="text-xl">badge</mat-icon>
-            </a>
-            <a
-                class="flex justify-center px-3 py-4 text-[#C76C74] hover:bg-[#F2D9DA] hover:text-[#431707] rounded-md transition-all duration-300 ease-in-out cursor-pointer">
-                <mat-icon class="text-xl">library_books</mat-icon>
-            </a>
-            <a
-                class="flex justify-center px-3 py-4 text-[#C76C74] hover:bg-[#F2D9DA] hover:text-[#431707] rounded-md transition-all duration-300 ease-in-out cursor-pointer">
-                <mat-icon class="text-xl">category</mat-icon>
-            </a>
-            <a
-                class="flex justify-center px-3 py-4 text-[#C76C74] hover:bg-[#F2D9DA] hover:text-[#431707] rounded-md transition-all duration-300 ease-in-out cursor-pointer">
-                <mat-icon class="text-xl">notifications</mat-icon>
-            </a>
-            <a
-                class="flex justify-center px-3 py-4 text-[#C76C74] hover:bg-[#F2D9DA] hover:text-[#431707] rounded-md transition-all duration-300 ease-in-out cursor-pointer">
-                <mat-icon class="text-xl">shopping_cart</mat-icon>
-            </a>
-        </div>
-        <hr class="mt-5 border border-[#C76C74]">
-        <a
-            class="flex justify-center px-3 py-4 text-red-500 hover:bg-[#F2D9DA] hover:text-[#431707] rounded-md transition-all duration-300 ease-in-out cursor-pointer">
-            <mat-icon class="text-xl">logout</mat-icon>
-        </a>
+    <div class="flex items-center justify-between p-4 bg-[#E64833] text-[#FBE9D0]">
+        <h1 [ngClass]="{'hidden': isCollapsed}" class="text-2xl font-bold">Admin</h1>
+        <button (click)="toggleSidebar()" 
+            class="focus:outline-none hover:bg-[#90AEAD] rounded-full p-2 transition-colors duration-200">
+            <svg xmlns="http://www.w3.org/2000/svg" [ngClass]="{'rotate-180': !isCollapsed}" 
+                class="h-6 w-6 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+            </svg>
+        </button>
     </div>
+    <nav class="flex-1 overflow-y-auto py-4">
+        <ul class="space-y-2 px-3">
+            <li *ngFor="let item of menuItems" class="hover:bg-[#90AEAD] transition-colors duration-200 rounded-lg">
+                <a [routerLink]="item.route" routerLinkActive="bg-[#874F41] text-[#FBE9D0]" 
+                    class="flex items-center space-x-3 rounded-md p-2">
+                    <span class="relative">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" 
+                            stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" [attr.d]="item.icon" />
+                        </svg>
+                    </span>
+                    <span [ngClass]="{'hidden': isCollapsed}" class="text-sm">{{ item.label }}</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <div class="p-4">
+        <hr class="border border-white mb-4">
+        <button class="flex items-center w-full p-2 rounded-lg text-sm text-red-600 hover:bg-[#90AEAD]" (click)="logout()">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" 
+                stroke="currentColor" class="h-6 w-6 mr-2">
+                <path stroke-linecap="round" stroke-linejoin="round" 
+                    d="M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15m-3 0-3-3m0 0 3-3m-3 3H15" />
+            </svg>
+            <span [ngClass]="{'hidden': isCollapsed}">Logout</span>
+        </button>
+    </div>    
 </aside>

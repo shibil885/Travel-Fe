@@ -1,0 +1,47 @@
+<div class="modal-container fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+    <div class="modal-content bg-gradient-to-r from-[#f7f7f7] to-[#e9e9e9] rounded-lg p-8 w-[80vw] lg:w-[40vw] text-gray-900 shadow-xl transform transition-all duration-500 ease-in-out scale-100 hover:scale-102">
+      <div class="flex justify-between items-center mb-6">
+        <h2 class="text-xl font-semibold tracking-wide text-gray-800">Filter Users</h2>
+        <button class="text-gray-600 hover:text-gray-900 transition duration-300" (click)="closeModal()">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+      <form [formGroup]="searchForm" class="space-y-5">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="flex flex-col">
+            <label for="isActive" class="text-gray-700 font-medium mb-2">Active:</label>
+            <select class="rounded-md p-2 border border-gray-300 bg-gray-50 text-gray-800 text-sm focus:ring-2 focus:ring-gray-600 transition duration-300"
+              formControlName="isActive">
+              <option value="true">True</option>
+              <option value="false">False</option>
+            </select>
+          </div>
+          <div class="flex flex-col">
+            <label for="isVerified" class="text-gray-700 font-medium mb-2">Verified:</label>
+            <select class="rounded-md p-2 border border-gray-300 bg-gray-50 text-gray-800 text-sm focus:ring-2 focus:ring-gray-600 transition duration-300"
+              formControlName="isVerified">
+              <option value="true">True</option>
+              <option value="false">False</option>
+            </select>
+          </div>
+          <div class="flex flex-col" *ngIf="isAgency">
+            <label for="isConfirmed" class="text-gray-700 font-medium mb-2">Confirmed:</label>
+            <select class="rounded-md p-2 border border-gray-300 bg-gray-50 text-gray-800 text-sm focus:ring-2 focus:ring-gray-600 transition duration-300"
+              formControlName="isConfirmed">
+              <option value="true">Confirmed</option>
+              <option value="false">Declined</option>
+            </select>
+          </div>
+        </div>
+        <div class="flex justify-end">
+            <button class="bg-gray-200 hover:bg-gray-100 text-red-500 mr-1 py-2 px-3 rounded-md shadow-lg focus:outline-none focus:ring-4 focus:ring-gray-100 transform transition-all duration-300" (click)="resetForm()">Reset</button>
+          <button class="bg-gray-900 hover:bg-gray-800 text-white py-2 px-3 rounded-md shadow-lg focus:outline-none focus:ring-4 focus:ring-gray-700 transform transition-all duration-300" (click)="onSubmit()">
+            Apply 
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+  

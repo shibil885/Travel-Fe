@@ -92,7 +92,6 @@ export class AgencyService {
       }>(`${this.api}/otp/agency`, formData, { withCredentials: true })
       .pipe(
         map((response) => {
-          console.log('reeeeeeeeeeeeeeeeeeeee', response);
           this.authService.setAccessToken(response.token);
           this.router.navigate(['/agency/home']);
         })

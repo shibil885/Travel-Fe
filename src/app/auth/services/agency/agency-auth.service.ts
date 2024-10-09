@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, map, Observable, tap } from 'rxjs';
+import { BehaviorSubject, catchError, map, Observable, tap, throwError } from 'rxjs';
 import Cookies from 'universal-cookie';
 import { IAgency } from '../../../models/agency.model';
 
@@ -55,6 +55,19 @@ export class AgencyAuthService {
   getAccessToken(): string | null {
     return this.accessTokenSubject.getValue();
   }
+  logout(): Observable<any> {
+    return this.http
+      .patch(`${this.api}/agency/logout`, {}, { withCredentials: true })
+      .pipe(
+        tap(() => {
+          this.clearAccessToken();
+        }),
+        catchError((error) => {
+          console.error('error', error);
+          return throwError(() => error);
+        })
+      );
+  } 
 
   clearAccessToken(): void {
     this.accessTokenSubject.next(null);
@@ -78,7 +91,7 @@ export class AgencyAuthService {
 
   validateToken(token: string): Observable<boolean> {
     return this.http
-      .post<{ valid: boolean }>(`${this.api}/auth/validate-token`, { token })
+      .post<{ valid: boolean }>(`${this.api}/auth/validate-token`, { token }, {withCredentials: true})
       .pipe(map((response) => response.valid));
   }
 

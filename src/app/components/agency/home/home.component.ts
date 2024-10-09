@@ -6,11 +6,12 @@ import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { Store } from '@ngrx/store';
 import { selectAgency } from '../../../store/agency/agency.selector';
+import { SearchComponent } from '../../../shared/components/search/search.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [SideBarComponent, HeaderComponent, CommonModule, MatIconModule],
+  imports: [SideBarComponent, HeaderComponent, SearchComponent, CommonModule, MatIconModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
 })
@@ -19,8 +20,11 @@ export class HomeComponent {
   constructor(private agencyService: AgencyService, private store: Store) {}
   ngOnInit(): void {
     this.agencyService.isConfirmed().subscribe((status) => {
-      console.log(status);
       this.isConfirmed = status;
     });
   }
+  onSearch(searchText: string) {
+    console.log(searchText  );
+  }
+
 }

@@ -23,5 +23,5 @@ export const selectRenderOtpAgency = createSelector(
 );
 export const selectEmail = createSelector(
   selecAgencyState,
-  (state: AgencyState) => state.agency?.contact?.email
+  (state: AgencyState) => state?.agency?.email
 );

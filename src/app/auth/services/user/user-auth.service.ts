@@ -1,6 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, map, Observable, tap } from 'rxjs';
+import {
+  BehaviorSubject,
+  catchError,
+  map,
+  Observable,
+  tap,
+  throwError,
+} from 'rxjs';
 import { IUser } from '../../../models/user.model';
 import Cookies from 'universal-cookie';
 
@@ -25,13 +32,14 @@ export class UserAuthService {
     success: boolean;
     access_token: string;
   }> {
+    console.log(userData);
     return this.http
       .post<{
         message: string;
         user: IUser;
         success: boolean;
         access_token: string;
-      }>(`${this.api}/auth/user`, userData, { withCredentials: true })
+      }>(`${this.api}/auth/user`, userData, { withCredentials: true})
       .pipe(
         map((response) => {
           const accessToken = response.access_token;
@@ -39,6 +47,10 @@ export class UserAuthService {
             this.setAccessToken(accessToken);
           }
           return response;
+        }),
+        catchError((error) => {
+          console.log('Login error: ', error);
+          return throwError(() => error);
         })
       );
   }
@@ -54,6 +66,19 @@ export class UserAuthService {
 
   getAccessToken(): string | null {
     return this.accessTokenSubject.getValue();
+  }
+  logout(): Observable<any> {
+    return this.http
+      .patch(`${this.api}/user/logout`, {}, { withCredentials: true })
+      .pipe(
+        tap((response) => {
+          this.clearAccessToken();
+        }),
+        catchError((error) => {
+          console.error('UserAuthService: logout API error', error);
+          return throwError(() => error);
+        })
+      );
   }
 
   clearAccessToken(): void {
@@ -78,7 +103,11 @@ export class UserAuthService {
 
   validateToken(token: string): Observable<boolean> {
     return this.http
-      .post<{ valid: boolean }>(`${this.api}/auth/validate-token`, { token })
+      .post<{ valid: boolean }>(
+        `${this.api}/auth/validate-token`,
+        { token },
+        { withCredentials: true }
+      )
       .pipe(map((response) => response.valid));
   }
 
@@ -86,4 +115,3 @@ export class UserAuthService {
     return !!this.getAccessToken();
   }
 }
- 

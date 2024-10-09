@@ -5,9 +5,13 @@ import { HomeComponent } from '../components/user/home/home.component';
 import { SignupComponent } from '../components/user/signup/signup.component';
 import { userGuard } from '../auth/guards/user/user-guard.guard';
 import { userLoggedGuard } from '../auth/guards/user/logged-user.guard';
+import { PackagesComponent } from '../components/user/packages/packages.component';
 
 export const userRouter: Routes = [
-  { path: '', component: LandingComponent, canActivate: [userLoggedGuard] },
+  { 
+    path: '', component: LandingComponent,
+     canActivate: [userLoggedGuard] 
+    },
   {
     path: 'login',
     component: LoginComponent,
@@ -21,6 +25,11 @@ export const userRouter: Routes = [
   {
     path: 'home',
     component: HomeComponent,
+    canActivate: [userGuard],
+  },
+  {
+    path: 'packages',
+    component: PackagesComponent,
     canActivate: [userGuard],
   },
 ];

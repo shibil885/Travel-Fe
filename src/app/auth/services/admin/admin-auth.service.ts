@@ -1,6 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, map, Observable, tap } from 'rxjs';
+import {
+  BehaviorSubject,
+  catchError,
+  map,
+  Observable,
+  tap,
+  throwError,
+} from 'rxjs';
 import Cookies from 'universal-cookie';
 import { IAdmin } from '../../../models/admin.interface';
 
@@ -43,6 +50,20 @@ export class AdminAuthService {
       );
   }
 
+  logout(): Observable<any> {
+    return this.http
+      .patch(`${this.api}/admin/logout`, {}, { withCredentials: true })
+      .pipe(
+        tap(() => {
+          this.clearAccessToken();
+        }),
+        catchError((error) => {
+          console.error('error', error);
+          return throwError(() => error);
+        })
+      );
+  }
+
   setAccessToken(token: string) {
     this.accessTokenSubject.next(token);
     this.cookie.set('accessToken', token, {
@@ -78,7 +99,11 @@ export class AdminAuthService {
 
   validateToken(token: string): Observable<boolean> {
     return this.http
-      .post<{ valid: boolean }>(`${this.api}/auth/validate-token`, { token })
+      .post<{ valid: boolean }>(
+        `${this.api}/auth/validate-token`,
+        { token },
+        { withCredentials: true }
+      )
       .pipe(map((response) => response.valid));
   }
 

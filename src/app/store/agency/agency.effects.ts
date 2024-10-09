@@ -117,4 +117,25 @@ export class AgencyEffect {
       )
     )
   );
+  logout$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(agencyActions.logout),
+        tap(() => {
+        }),
+        switchMap(() =>
+          this.agencyAuth.logout().pipe(
+            tap(() => {
+              this.router.navigate(['/agency/login']).then(() => {
+              });
+            }),
+            catchError((error) => {
+              console.error('Logout error: ', error);
+              return of();
+            })
+          )
+        )
+      ),
+    { dispatch: false }
+  ); 
 }

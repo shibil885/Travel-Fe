@@ -66,7 +66,7 @@ export class SignupComponent {
         ]),
         confirmPassword: new FormControl(null, [Validators.required]),
         phone: new FormControl('', [Validators.required, invalidPhone]),
-        address: new FormControl('', [Validators.required, notValidAddress]),
+        // address: new FormControl('', [Validators.required, notValidAddress]),
         // profilePicture: new FormControl(''),
         // preferences: new FormControl(''),
       },

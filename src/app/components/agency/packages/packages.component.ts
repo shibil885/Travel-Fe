@@ -2,11 +2,12 @@ import { Component } from '@angular/core';
 import { SideBarComponent } from '../side-bar/side-bar.component';
 import { HeaderComponent } from '../header/header.component';
 import { MatIconModule } from '@angular/material/icon';
-import { title } from 'node:process';
-import { TableComponent } from '../../../shared/components/table/table.component';
 import { CommonModule } from '@angular/common';
-import { AddPackageComponent } from "../add-package/add-package.component";
 import { AgencyService } from '../../../shared/services/agency.service';
+import { SearchComponent } from '../../../shared/components/search/search.component';
+import { PackageService } from '../../../shared/services/package.service';
+import { AddPackageComponent } from './add-package/add-package.component';
+import { SinglePackageComponent } from './single-package/single-package.component';
 
 @Component({
   selector: 'app-packages',
@@ -14,33 +15,46 @@ import { AgencyService } from '../../../shared/services/agency.service';
   imports: [
     SideBarComponent,
     HeaderComponent,
-    TableComponent,
+    AddPackageComponent,
+    SearchComponent,
+    SinglePackageComponent,
     MatIconModule,
     CommonModule,
-    AddPackageComponent
-],
+  ],
   templateUrl: './packages.component.html',
   styleUrl: './packages.component.css',
 })
 export class PackagesComponent {
-  renderTable!: boolean;
+  renderTableRelatedDatas!: boolean;
   renderAddForm!: boolean;
   renderEditForm!: boolean;
-  column = [
-    { key: 'name', title: 'Name' },
-    { key: 'category_id', title: 'category' },
-    { key: 'price', title: 'price' },
-    { key: 'is_block', title: 'status' },
-  ];
-  data = [];
-
-  constructor(private agencyService: AgencyService) {}
-
+  renderSinglePackage!: boolean;
+  singlePackage!: any;
+  packages!: any;
+  constructor(private packageService: PackageService) {}
   ngOnInit(): void {
-   this.renderTable = true;
+    this.renderTableRelatedDatas = true;
+    console.log('get called');
+    this.packageService.getPackages().subscribe((res: any) => {
+      console.log(res.packages);
+      this.packages = res.packages
+    }); 
   }
+
   addPackage() {
-    this.renderTable = false;
+    this.renderTableRelatedDatas = false;
     this.renderAddForm = true;
   }
+
+  viewPackageDetails(packag: any) {
+    this.renderTableRelatedDatas = false;
+    this.renderSinglePackage = true;
+    this.singlePackage = packag;
+  }
+
+  onSearch(searchText: string) {
+    console.log(searchText);
+  }
+
+  showSortAndFilter() {}  
 }

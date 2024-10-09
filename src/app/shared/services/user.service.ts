@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { catchError, map, Observable, tap, throwError } from 'rxjs';
 import { IUser } from '../../models/user.model';
 import { UserAuthService } from '../../auth/services/user/user-auth.service';
+import { Package } from '../../interfaces/package.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -54,6 +55,15 @@ export class UserService {
     return this.http.post<{ user: IUser; success: boolean; message: string }>(
       `${this.api}/otp/resend`,
       formData
+    );
+  }
+  getPackages() {
+    console.log('ddddddddddddd')
+    return this.http.get<{ success: boolean; message: string; packages: Package[] }>(
+      `${this.api}/user/getPackages`,
+      {
+        withCredentials: true,
+      }
     );
   }
 }

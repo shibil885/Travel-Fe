@@ -1,0 +1,11 @@
+:host {
+    display: block;
+    padding: 1rem;
+  }
+  .mat-dialog-container {
+    background: linear-gradient(to right, #3D52A0, #8697C4);
+    border-radius: 12px; 
+    padding: 16px;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
+  }
+  

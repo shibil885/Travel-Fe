@@ -1,0 +1,27 @@
+:host {
+    display: block;
+  }
+  .text-shadow {
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+  }
+  .text-shadow-lg {
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  }
+  :host {
+    display: block;
+  }
+  .overflow-x-auto {
+    scrollbar-width: thin;
+    scrollbar-color: #90AEAD #FBE9D0;
+  }
+  .overflow-x-auto::-webkit-scrollbar {
+    height: 8px;
+  }
+  .overflow-x-auto::-webkit-scrollbar-track {
+    background: #FBE9D0;
+  }
+  .overflow-x-auto::-webkit-scrollbar-thumb {
+    background-color: #90AEAD;
+    border-radius: 20px;
+    border: 2px solid #FBE9D0;
+  }

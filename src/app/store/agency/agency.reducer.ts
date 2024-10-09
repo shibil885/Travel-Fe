@@ -76,5 +76,11 @@ export const AgencyReducer = createReducer(
       error: error,
       renderOtp: true,
     };
+  }),
+  on(agencyActions.logoutSuccess,(state) => {
+    return {
+      ...state,
+      agency: null,
+    }
   })
 );

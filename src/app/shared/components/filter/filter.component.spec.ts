@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ListTableComponent } from './list-table.component';
+import { FilterComponent } from './filter.component';
 
-describe('ListTableComponent', () => {
-  let component: ListTableComponent;
-  let fixture: ComponentFixture<ListTableComponent>;
+describe('SearchAndFilterComponent', () => {
+  let component: FilterComponent;
+  let fixture: ComponentFixture<FilterComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ListTableComponent]
+      imports: [FilterComponent]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(ListTableComponent);
+    fixture = TestBed.createComponent(FilterComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

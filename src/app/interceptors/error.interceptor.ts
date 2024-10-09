@@ -1,31 +1,24 @@
-// import { HttpInterceptorFn } from '@angular/common/http';
-// import { inject } from '@angular/core';
-// import { Router } from '@angular/router';
-// import { catchError } from 'rxjs/operators';
-// import { throwError } from 'rxjs';
-// import { ToastrService } from 'ngx-toastr';
+// src/app/interceptors/error-interceptor.ts
+import { HttpInterceptorFn } from '@angular/common/http';
+import { inject } from '@angular/core';
+import { ToastService } from '../shared/services/toaster.service';
+import { catchError } from 'rxjs/operators';
+import { throwError } from 'rxjs';
 
-// export const errorHandlerInterceptorFn: HttpInterceptorFn = (req, next) => {
-//   const router = inject(Router);
-//   const toastr  = inject(ToastrService)
-//   return next(req).pipe(
-//     catchError((error) => {
-//       if (error.status === 403) {
-//         toastr.error('Access Denied')
-//         console.error('Access Denied');
-//       } else if (error.status === 404) {
-//         // Handle not found errors
-//         router.navigate(['/not-found']);
-//       } else if (error.status === 500) {
-//         // Handle server errors
-//         console.error('Internal Server Error');
-//       } else {
-//         // General error handling
-//         console.error('An error occurred:', error.message);
-//       }
+export const errorInterceptorFn: HttpInterceptorFn = (req, next) => {
+  const toastService = inject(ToastService);
 
-//       // Re-throw the error so it can be handled further down the chain if needed
-//       return throwError(() => error);
-//     })
-//   );
-// };
+  return next(req).pipe(
+    catchError((error) => {
+      if (error.status === 0) {
+        toastService.showToast('Network error occurred. Please try again.', 'error');
+      }  else if (error.status === 500) {
+        toastService.showToast('Server error occurred. Please try later.', 'error');
+      } else {
+        toastService.showToast(`Error: ${error.error.message}`, 'error');
+      }
+
+      return throwError(() => 'error eee');
+    })
+  );
+};

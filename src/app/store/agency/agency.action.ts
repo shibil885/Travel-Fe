@@ -59,3 +59,5 @@ export const resendOtpError = createAction(
   '[Otp Component] resendOtpError',
   props<{ error: string }>()
 );
+export const logout = createAction('[Agency Logout]')
+export const logoutSuccess = createAction('[Agency Logout] success')

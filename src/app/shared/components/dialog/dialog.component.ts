@@ -9,7 +9,7 @@ import { MatDialogRef } from '@angular/material/dialog';
   styleUrl: './dialog.component.css'
 })
 export class DialogComponent {
-  status: string = 'block'; // Dynamic status ('block' or 'unblock')
+  status: string = 'block'; 
 
   constructor(public dialogRef: MatDialogRef<DialogComponent>) {}
 
