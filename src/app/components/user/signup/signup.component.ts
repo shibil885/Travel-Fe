@@ -21,7 +21,10 @@ import { OtpComponent } from '../otp/otp.component';
 import { Existing } from '../../../validatores/existing.validator';
 import { AgencyService } from '../../../shared/services/agency.service';
 import { Store } from '@ngrx/store';
-import { selectEmail, selectRenderOtpUser, } from '../../../store/user/user.selector';
+import {
+  selectEmail,
+  selectRenderOtpUser,
+} from '../../../store/user/user.selector';
 import * as userActions from '../../../store/user/user.action';
 @Component({
   selector: 'app-signup',
@@ -66,9 +69,6 @@ export class SignupComponent {
         ]),
         confirmPassword: new FormControl(null, [Validators.required]),
         phone: new FormControl('', [Validators.required, invalidPhone]),
-        // address: new FormControl('', [Validators.required, notValidAddress]),
-        // profilePicture: new FormControl(''),
-        // preferences: new FormControl(''),
       },
       { validators: confirmPasswordValidator('password', 'confirmPassword') }
     );

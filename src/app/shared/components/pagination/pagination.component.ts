@@ -19,39 +19,40 @@ export class PaginationComponent {
     }
   }
 
-  visiblePages(): (number | string)[] 
+  visiblePages()
+: (number | string)[] 
   {
-    const delta = 2;
-    const range: (number | string)[] = [];
-    const rangeWithDots: (number | string)[] = [];
-    let l: number;
+    // const delta = 2;
+    // const range: (number | string)[] = [];
+    // const rangeWithDots: (number | string)[] = [];
+    // let l: number;
 
-    range.push(1);
+    // range.push(1);
 
-    if (this.totalPages <= 1) {
-      return range;
-    }
+    // if (this.totalPages <= 1) {
+    //   return range;
+    // }
 
-    for (let i = this.currentPage - delta; i <= this.currentPage + delta; i++) {
-      if (i < this.totalPages && i > 1) {
-        range.push(i);
-      }
-    }
-    range.push(this.totalPages);
+    // for (let i = this.currentPage - delta; i <= this.currentPage + delta; i++) {
+    //   if (i < this.totalPages && i > 1) {
+    //     range.push(i);
+    //   }
+    // }
+    // range.push(this.totalPages);
 
-    for (let i of range) {
-      if (l) {
-        if (i - l === 2) {
-          rangeWithDots.push(l + 1);
-        } else if (i - l !== 1) {
-          rangeWithDots.push('...');
-        }
-      }
-      rangeWithDots.push(i);
-      l = i;
-    }
+    // for (let i of range) {
+    //   if (l) {
+    //     if (i - l === 2) {
+    //       rangeWithDots.push(l + 1);
+    //     } else if (i - l !== 1) {
+    //       rangeWithDots.push('...');
+    //     }
+    //   }
+    //   rangeWithDots.push(i);
+    //   l = i;
+    // }
 
-    return rangeWithDots;
+    // return rangeWithDots;
      return [1];
   }
 }

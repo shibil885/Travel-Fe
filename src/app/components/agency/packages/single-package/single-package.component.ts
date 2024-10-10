@@ -36,7 +36,8 @@ export class SinglePackageComponent {
   constructor(private packageService: PackageService) {}
 
   ngOnInit() {
-    this.currentImage = this.package.images[0];
+    console.log('ppppppp',this.package);
+    // this.currentImage = this.package.images
     this.startImageRotation();
     this.editedPackage = JSON.parse(JSON.stringify(this.package));
   }

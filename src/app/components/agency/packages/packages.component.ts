@@ -3,7 +3,6 @@ import { SideBarComponent } from '../side-bar/side-bar.component';
 import { HeaderComponent } from '../header/header.component';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
-import { AgencyService } from '../../../shared/services/agency.service';
 import { SearchComponent } from '../../../shared/components/search/search.component';
 import { PackageService } from '../../../shared/services/package.service';
 import { AddPackageComponent } from './add-package/add-package.component';
@@ -33,7 +32,8 @@ export class PackagesComponent {
   packages!: any;
   constructor(private packageService: PackageService) {}
   ngOnInit(): void {
-    this.renderTableRelatedDatas = true;
+    // this.renderTableRelatedDatas = true;
+    this.renderAddForm = true
     console.log('get called');
     this.packageService.getPackages().subscribe((res: any) => {
       console.log(res.packages);
