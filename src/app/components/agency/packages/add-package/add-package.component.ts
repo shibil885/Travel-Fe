@@ -1,4 +1,11 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   FormGroup,
@@ -14,6 +21,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
 import { PackageService } from '../../../../shared/services/package.service';
 import { ICategory } from '../../../../interfaces/category.interface';
+import { ToastService } from '../../../../shared/services/toaster.service';
 @Component({
   selector: 'app-add-package',
   standalone: true,
@@ -40,11 +48,16 @@ import { ICategory } from '../../../../interfaces/category.interface';
 export class AddPackageComponent {
   packageForm: FormGroup;
   categories!: ICategory[];
-  selectedFiles: File[] = []; 
+  selectedFiles: File[] = [];
   selectedImages: string[] = [];
   @ViewChild('imageError') imageError!: ElementRef;
+  @Output() addFormCloseEvent = new EventEmitter();
   private formData = new FormData();
-  constructor(private packageService: PackageService) {
+
+  constructor(
+    private packageService: PackageService,
+    private toasterService: ToastService
+  ) {
     this.packageForm = new FormGroup({
       packageInfo: new FormGroup({
         name: new FormControl('', [
@@ -85,14 +98,12 @@ export class AddPackageComponent {
         notIncluded: new FormArray([new FormControl('', Validators.required)]),
       }),
       tourPlans: new FormArray([]),
-      // image: new FormArray([new FormControl('', Validators.required)]),
     });
   }
 
   ngOnInit(): void {
     this.packageService.getCategories().subscribe((res) => {
       this.categories = res.categories;
-      console.log('categories =>', this.categories);
     });
     this.packageForm.get('travelInfo.days')?.valueChanges.subscribe((days) => {
       this.updateTourPlans(Number(days));
@@ -110,9 +121,6 @@ export class AddPackageComponent {
   get tourPlans(): FormArray {
     return this.packageForm.get('tourPlans') as FormArray;
   }
-  // get image(): FormArray {
-  //   return this.packageForm.get('image') as FormArray;
-  // }
   addIncludedItem(): void {
     if (this.included.length < 10) {
       this.included.push(new FormControl('', Validators.required));
@@ -211,18 +219,27 @@ export class AddPackageComponent {
     }
   }
   deleteImage(index: number) {
+    this.selectedFiles.splice(index, 1);
     return this.selectedImages.splice(index, 1);
   }
   replaceImage(event: Event, index: number) {
     const file = (event.target as HTMLInputElement).files?.[0];
     if (file) {
+      const validImageTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+      if (!validImageTypes.includes(file.type)) {
+        this.imageError.nativeElement.innerText =
+          'Selected file is not image';
+        return;
+      }
       const reader = new FileReader();
       reader.onload = (e: any) => {
+        this.selectedFiles[index] = file;
         this.selectedImages[index] = e.target.result;
       };
       reader.readAsDataURL(file);
     }
   }
+
   onSubmit(): void {
     console.log('Form :', this.packageForm.value);
     if (this.selectedImages.length < 1) {
@@ -231,29 +248,28 @@ export class AddPackageComponent {
     }
     if (this.packageForm.valid) {
       const formValues = this.packageForm.value;
-      this.formData.append('packageInfo', JSON.stringify(formValues.packageInfo));
+      this.formData.append(
+        'packageInfo',
+        JSON.stringify(formValues.packageInfo)
+      );
       this.formData.append('travelInfo', JSON.stringify(formValues.travelInfo));
-      this.formData.append('packageFeatures', JSON.stringify(formValues.packageFeatures));
+      this.formData.append(
+        'packageFeatures',
+        JSON.stringify(formValues.packageFeatures)
+      );
       this.formData.append('tourPlans', JSON.stringify(formValues.tourPlans));
       this.selectedFiles.forEach((file: File) => {
         this.formData.append('images', file);
       });
-      this.packageService.addPackages(this.formData).subscribe(() =>{
-        console.log('created');
-      })
+      this.packageService.addPackages(this.formData).subscribe((res) => {
+        if (res.success) {
+          this.toasterService.showToast(res.message, 'success');
+          this.onCloseForm();
+        }
+      });
     }
-    // else {
-    //   // this.markFormGroupTouched(this.packageForm);
-    // }
   }
-
-  // markFormGroupTouched(formGroup: FormGroup | FormArray) {
-  //   Object.values(formGroup.controls).forEach((control) => {
-  //     if (control instanceof FormGroup || control instanceof FormArray) {
-  //       this.markFormGroupTouched(control);
-  //     } else {
-  //       control.markAsTouched();
-  //     }
-  //   });
-  // }
+  onCloseForm() {
+    this.addFormCloseEvent.emit();
+  }
 }

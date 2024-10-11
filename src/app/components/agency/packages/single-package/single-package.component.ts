@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import {
   trigger,
   transition,
@@ -11,10 +11,11 @@ import { FormsModule } from '@angular/forms';
 import { Package } from '../../../../interfaces/package.interface';
 import { PackageService } from '../../../../shared/services/package.service';
 import { ToastService } from '../../../../shared/services/toaster.service';
+import { MatIconModule } from '@angular/material/icon';
 @Component({
   selector: 'app-single-package',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, MatIconModule],
   templateUrl: './single-package.component.html',
   styleUrl: './single-package.component.css',
   animations: [
@@ -27,6 +28,7 @@ import { ToastService } from '../../../../shared/services/toaster.service';
 })
 export class SinglePackageComponent {
   @Input() package!: Package;
+  @Output() closePageEvent = new EventEmitter();
   editedPackage!: Package;
   isEditing = false;
   currentImageIndex = 0;
@@ -130,5 +132,8 @@ export class SinglePackageComponent {
         newDaysCount
       );
     }
+  }
+  onCloseForm() {
+    this.closePageEvent.emit()
   }
 }

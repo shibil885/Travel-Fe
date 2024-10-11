@@ -7,7 +7,7 @@ import { SearchComponent } from '../../../shared/components/search/search.compon
 import { PackageService } from '../../../shared/services/package.service';
 import { AddPackageComponent } from './add-package/add-package.component';
 import { SinglePackageComponent } from './single-package/single-package.component';
-
+import { trigger, transition, style, animate } from '@angular/animations';
 @Component({
   selector: 'app-packages',
   standalone: true,
@@ -22,23 +22,30 @@ import { SinglePackageComponent } from './single-package/single-package.componen
   ],
   templateUrl: './packages.component.html',
   styleUrl: './packages.component.css',
+  animations: [
+    trigger('fadeInOut', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate('300ms', style({ opacity: 1 })),
+      ]),
+      transition(':leave', [animate('300ms', style({ opacity: 0 }))]),
+    ]),
+  ],
 })
 export class PackagesComponent {
   renderTableRelatedDatas!: boolean;
   renderAddForm!: boolean;
-  renderEditForm!: boolean;
   renderSinglePackage!: boolean;
   singlePackage!: any;
   packages!: any;
   constructor(private packageService: PackageService) {}
   ngOnInit(): void {
+    this.renderTableDatas();
+  }
+  ngOnDestroy(): void {
     this.renderTableRelatedDatas = true;
-    // this.renderAddForm = true
-    console.log('get called');
-    this.packageService.getPackages().subscribe((res: any) => {
-      console.log(res.packages);
-      this.packages = res.packages
-    }); 
+    this.renderAddForm = false;
+    this.renderSinglePackage = false;
   }
 
   addPackage() {
@@ -46,8 +53,16 @@ export class PackagesComponent {
     this.renderAddForm = true;
   }
 
+  renderTableDatas() {
+    this.renderTableRelatedDatas = true;
+    this.packageService.getPackages().subscribe((res: any) => {
+      this.packages = res.packages;
+    });
+  }
+
   viewPackageDetails(packag: any) {
     this.renderTableRelatedDatas = false;
+    this.renderAddForm = false;
     this.renderSinglePackage = true;
     this.singlePackage = packag;
   }
@@ -56,5 +71,11 @@ export class PackagesComponent {
     console.log(searchText);
   }
 
-  showSortAndFilter() {}  
+  showSortAndFilter() {}
+
+  onAddFormClosedOrCompleted() {
+    this.renderAddForm = false;
+    this.renderSinglePackage = false;
+    this.renderTableDatas();
+  }
 }

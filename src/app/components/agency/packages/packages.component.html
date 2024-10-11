@@ -37,7 +37,7 @@
                             <td class="px-4 py-2 border">{{ package.name }}</td>
                             <td class="px-4 py-2 border">{{ package.category.name }}</td>
                             <td class="px-4 py-2 border">{{ package.country }}</td>
-                            <td class="px-4 py-2 border">{{ 2000 | currency }}</td>
+                            <td class="px-4 py-2 border">{{ 2000 | currency:'INR' }}</td>
                             <td class="px-4 py-2 border">
                                 <span
                                     class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ package.isActive ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
@@ -45,15 +45,20 @@
                                 </span>
                             </td>
                             <td class="px-4 py-2 border">
-                                <button class="text-blue-600 hover:text-blue-900"
-                                    (click)="viewPackageDetails(package)">View</button>
+                                <button class="text-green-600 text-sm hover:text-green-900"
+                                    (click)="viewPackageDetails(package)">
+                                    <mat-icon>open_in_new</mat-icon>
+
+                                </button>
                             </td>
                         </tr>
                     </tbody>
                 </table>
             </div>
-            <app-add-package *ngIf="renderAddForm"></app-add-package>
-            <app-single-package *ngIf="renderSinglePackage" [package]="singlePackage"></app-single-package>
+            <app-add-package *ngIf="renderAddForm" (addFormCloseEvent)="onAddFormClosedOrCompleted()"
+                @fadeInOut></app-add-package>
+            <app-single-package *ngIf="renderSinglePackage" [package]="singlePackage"
+                (closePageEvent)="onAddFormClosedOrCompleted()" @fadeInOut></app-single-package>
         </main>
     </div>
 </div>

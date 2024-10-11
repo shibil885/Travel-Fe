@@ -1,9 +1,13 @@
-<div class="luxury-form-container">
+<div class="h-64 bg-[#E64833] absolute top-0 left-0 right-0">
+    <mat-icon class="text-white ml-3 mt-3 text-xl cursor-pointer rounded-full hover:bg-red-400 "
+        (click)="onCloseForm()">arrow_back
+    </mat-icon>
+</div>
+<div class="luxury-form-container relative">
     <div class="form-header">
         <h1>Create Your Travel Package</h1>
         <p>Design an unforgettable journey for your discerning clients</p>
     </div>
-
     <form [formGroup]="packageForm" (ngSubmit)="onSubmit()">
         <mat-stepper linear #stepper class="luxury-stepper">
             <mat-step [stepControl]="packageForm.get('packageInfo')!" errorMessage="Please fill in all required fields">
@@ -19,7 +23,7 @@
                                     required</span>
                                 <span *ngIf="packageForm.get('packageInfo.name')?.errors?.['minlength']">Package name
                                     must be at least 3 characters long</span>
-                            </div>  
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="category" class="block font-semibold text-gray-800 mt-1">Experience
@@ -155,7 +159,8 @@
                             <div formArrayName="included">
                                 <div *ngFor="let item of included?.controls; let i = index" class="included-item">
                                     <div class="input-group">
-                                        <input [formControlName]="i">
+                                        <input [formControlName]="i" class="bg-[#f8f9f8] p-2 rounded-md"
+                                            placeholder="Enter here">
                                         <button mat-mini-fab class="remove-button" (click)="removeIncludedItem(i)"
                                             *ngIf="included.length > 1">
                                             <i class="fas fa-times"></i>
@@ -179,8 +184,9 @@
                             <div formArrayName="notIncluded">
                                 <div *ngFor="let item of notIncluded.controls; let i = index" class="not-included-item">
                                     <div class="input-group">
-                                        <input [formControlName]="i">
-                                        <button type="button" class="remove-button" (click)="removeNotIncludedItem(i)"
+                                        <input [formControlName]="i" class="bg-[#f8f9f8] p-2 rounded-md"
+                                            placeholder="Enter here">
+                                        <button mat-mini-fab class="remove-button" (click)="removeNotIncludedItem(i)"
                                             *ngIf="notIncluded.length > 1">
                                             <i class="fas fa-times"></i>
                                         </button>

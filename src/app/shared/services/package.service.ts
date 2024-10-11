@@ -12,13 +12,12 @@ export class PackageService {
   constructor(private http: HttpClient) {}
 
   addPackages(packageData: FormData) {
-    console.log('api called');
-    return this.http.post(`${this.api}/package/add`, packageData, {
+    return this.http.post<{success: boolean, message: string}>(`${this.api}/package/add`, packageData, {
       withCredentials: true,
     });
   }
+
   getCategories() { 
-    console.log('api called');
     return this.http.get<{ success: boolean; message: string; categories: ICategory[]}>(
       `${this.api}/category/categories`,
       {
