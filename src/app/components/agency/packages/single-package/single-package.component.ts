@@ -10,6 +10,7 @@ import {
 import { FormsModule } from '@angular/forms';
 import { Package } from '../../../../interfaces/package.interface';
 import { PackageService } from '../../../../shared/services/package.service';
+import { ToastService } from '../../../../shared/services/toaster.service';
 @Component({
   selector: 'app-single-package',
   standalone: true,
@@ -33,11 +34,14 @@ export class SinglePackageComponent {
   isChangingImage = false;
   expandedPlan: number | null = null;
 
-  constructor(private packageService: PackageService) {}
+  constructor(
+    private packageService: PackageService,
+    private toastService: ToastService
+  ) {}
 
   ngOnInit() {
-    console.log('ppppppp',this.package);
-    // this.currentImage = this.package.images
+    this.currentImage = this.package.images[0];
+    console.log(this.currentImage);
     this.startImageRotation();
     this.editedPackage = JSON.parse(JSON.stringify(this.package));
   }
@@ -73,19 +77,23 @@ export class SinglePackageComponent {
   saveChanges() {
     this.package = JSON.parse(JSON.stringify(this.editedPackage));
     this.isEditing = false;
-    this.packageService.onSaveChanges(this.package).subscribe(() => {
-      console.log('Package updated:', this.package);
-    })
+    this.packageService
+      .onSaveChanges(this.editedPackage, this.package._id)
+      .subscribe((res) => {
+        if (res.success) {
+          this.toastService.showToast(res.message, 'success');
+        }
+      });
   }
 
   toggleStatus(packageId: string | undefined) {
     if (this.package.isActive) {
       this.packageService.onChangeStatus(packageId, false)?.subscribe();
-      return
+      return;
     }
     this.package.isActive = !this.package.isActive;
     this.packageService.onChangeStatus(packageId, true)?.subscribe();
-    return
+    return;
   }
 
   addIncluded() {
@@ -105,15 +113,19 @@ export class SinglePackageComponent {
   }
 
   updateTourPlans() {
-    const currentPlansCount = this.editedPackage.TourPlans.length;
+    const currentPlansCount = this.editedPackage.tourPlans.length;
     const newDaysCount = Number(this.editedPackage.days);
 
     if (newDaysCount > currentPlansCount) {
       for (let i = currentPlansCount + 1; i <= newDaysCount; i++) {
-        this.editedPackage.TourPlans.push({ day: i, description: '' });
+        this.editedPackage.tourPlans.push({
+          day: i,
+          title: '',
+          description: '',
+        });
       }
     } else if (newDaysCount < currentPlansCount) {
-      this.editedPackage.TourPlans = this.editedPackage.TourPlans.slice(
+      this.editedPackage.tourPlans = this.editedPackage.tourPlans.slice(
         0,
         newDaysCount
       );

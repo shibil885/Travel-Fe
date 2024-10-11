@@ -11,6 +11,9 @@ import { MatStepperModule } from '@angular/material/stepper';
 import { MatButtonModule } from '@angular/material/button';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { MatIconModule } from '@angular/material/icon';
+import { MatSelectModule } from '@angular/material/select';
+import { PackageService } from '../../../../shared/services/package.service';
+import { ICategory } from '../../../../interfaces/category.interface';
 @Component({
   selector: 'app-add-package',
   standalone: true,
@@ -20,6 +23,7 @@ import { MatIconModule } from '@angular/material/icon';
     MatStepperModule,
     MatButtonModule,
     MatIconModule,
+    MatSelectModule,
   ],
   templateUrl: './add-package.component.html',
   styleUrls: ['./add-package.component.css'],
@@ -33,18 +37,14 @@ import { MatIconModule } from '@angular/material/icon';
     ]),
   ],
 })
-export class AddPackageComponent implements OnInit {
+export class AddPackageComponent {
   packageForm: FormGroup;
-  categories = [
-    { id: '1', name: 'Beach Paradise' },
-    { id: '2', name: 'Mountain Retreat' },
-    { id: '3', name: 'Urban Exploration' },
-    { id: '4', name: 'Cultural Immersion' },
-    { id: '5', name: 'Adventure Expedition' },
-  ];
+  categories!: ICategory[];
+  selectedFiles: File[] = []; 
   selectedImages: string[] = [];
   @ViewChild('imageError') imageError!: ElementRef;
-  constructor() {
+  private formData = new FormData();
+  constructor(private packageService: PackageService) {
     this.packageForm = new FormGroup({
       packageInfo: new FormGroup({
         name: new FormControl('', [
@@ -85,11 +85,15 @@ export class AddPackageComponent implements OnInit {
         notIncluded: new FormArray([new FormControl('', Validators.required)]),
       }),
       tourPlans: new FormArray([]),
-      image: new FormArray([new FormControl('', Validators.required)]),
+      // image: new FormArray([new FormControl('', Validators.required)]),
     });
   }
 
   ngOnInit(): void {
+    this.packageService.getCategories().subscribe((res) => {
+      this.categories = res.categories;
+      console.log('categories =>', this.categories);
+    });
     this.packageForm.get('travelInfo.days')?.valueChanges.subscribe((days) => {
       this.updateTourPlans(Number(days));
     });
@@ -106,9 +110,9 @@ export class AddPackageComponent implements OnInit {
   get tourPlans(): FormArray {
     return this.packageForm.get('tourPlans') as FormArray;
   }
-  get image(): FormArray {
-    return this.packageForm.get('image') as FormArray;
-  }
+  // get image(): FormArray {
+  //   return this.packageForm.get('image') as FormArray;
+  // }
   addIncludedItem(): void {
     if (this.included.length < 10) {
       this.included.push(new FormControl('', Validators.required));
@@ -159,45 +163,49 @@ export class AddPackageComponent implements OnInit {
   }
 
   onFileChange(event: Event): void {
-    const file = (event.target as HTMLInputElement).files;
+    const files = (event.target as HTMLInputElement).files;
     this.imageError.nativeElement.innerText = '';
     let imageCount = 0;
-    if (file && file?.length > 6) {
+
+    if (files && files.length > 6) {
       const acceptableTypes = ['image/jpeg', 'image/png', 'image/jpg'];
-      for (let i = 0; i < file.length; i++) {
-        if (acceptableTypes.includes(file[i].type)) {
-          if (imageCount == 6) {
+      for (let i = 0; i < files.length; i++) {
+        if (acceptableTypes.includes(files[i].type)) {
+          if (imageCount === 6) {
             this.imageError.nativeElement.innerText =
               'You cannot upload more than 6 images!';
             return;
           }
           imageCount++;
           const reader = new FileReader();
+          this.selectedFiles.push(files[i]);
           reader.onload = (e: any) => {
             this.selectedImages = [...this.selectedImages, e.target.result];
           };
-          reader.readAsDataURL(file[i]);
+          reader.readAsDataURL(files[i]);
         }
       }
       this.imageError.nativeElement.innerText = `${
-        file.length - imageCount
+        files.length - imageCount
       } of the selected files are not images`;
       return;
-    } else if (file?.length !== 0 && file !== null) {
+    } else if (files?.length !== 0 && files !== null) {
       const acceptableTypes = ['image/jpeg', 'image/png', 'image/jpg'];
-      for (let i = 0; i < file.length; i++) {
-        if (acceptableTypes.includes(file[i].type)) {
+      for (let i = 0; i < files.length; i++) {
+        if (acceptableTypes.includes(files[i].type)) {
           imageCount++;
           const reader = new FileReader();
+          this.selectedFiles.push(files[i]);
+
           reader.onload = (e: any) => {
             this.selectedImages = [...this.selectedImages, e.target.result];
           };
-          reader.readAsDataURL(file[i]);
+          reader.readAsDataURL(files[i]);
         }
       }
-      if (file.length !== imageCount) {
+      if (files.length !== imageCount) {
         this.imageError.nativeElement.innerText = `${
-          file.length - imageCount
+          files.length - imageCount
         } of the selected files are not images`;
       }
     }
@@ -215,16 +223,24 @@ export class AddPackageComponent implements OnInit {
       reader.readAsDataURL(file);
     }
   }
-
   onSubmit(): void {
-    console.log('called');
     console.log('Form :', this.packageForm.value);
     if (this.selectedImages.length < 1) {
       this.imageError.nativeElement.innerText = 'Image is required';
       return;
     }
     if (this.packageForm.valid) {
-      console.log('Form Submitted Successfully:', this.packageForm.value);
+      const formValues = this.packageForm.value;
+      this.formData.append('packageInfo', JSON.stringify(formValues.packageInfo));
+      this.formData.append('travelInfo', JSON.stringify(formValues.travelInfo));
+      this.formData.append('packageFeatures', JSON.stringify(formValues.packageFeatures));
+      this.formData.append('tourPlans', JSON.stringify(formValues.tourPlans));
+      this.selectedFiles.forEach((file: File) => {
+        this.formData.append('images', file);
+      });
+      this.packageService.addPackages(this.formData).subscribe(() =>{
+        console.log('created');
+      })
     }
     // else {
     //   // this.markFormGroupTouched(this.packageForm);

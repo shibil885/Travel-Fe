@@ -1,5 +1,6 @@
 interface TourPlan {
     day: number;
+    title: string
     description: string;
   }
   
@@ -16,7 +17,7 @@ interface TourPlan {
     included: string[];
     notIncluded: string[];
     days: string;
-    TourPlans: TourPlan[];
+    tourPlans: TourPlan[];
     images: string[];
     isActive: boolean;
   }

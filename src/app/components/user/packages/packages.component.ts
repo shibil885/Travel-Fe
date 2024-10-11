@@ -32,6 +32,7 @@ export class PackagesComponent  {
   constructor( private userPackages: UserService ) {}
   ngOnInit() {
     this.userPackages.getPackages().subscribe((res) => {
+      console.log(res);
         this.packages = res.packages
     })
     // this.filteredPackages = this.packages;

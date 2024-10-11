@@ -19,19 +19,31 @@
                                     required</span>
                                 <span *ngIf="packageForm.get('packageInfo.name')?.errors?.['minlength']">Package name
                                     must be at least 3 characters long</span>
-                            </div>
+                            </div>  
                         </div>
                         <div class="form-group">
-                            <label for="category">Experience Category</label>
-                            <select id="category" formControlName="category">
-                                <option value="">None</option>
-                                <option *ngFor="let category of categories" [value]="category.id">{{category.name}}
-                                </option>
-                            </select>
-                            <div class="error-message"
-                                *ngIf="packageForm.get('packageInfo.category')?.touched && packageForm.get('packageInfo.category')?.invalid">
-                                <span *ngIf="packageForm.get('packageInfo.category')?.errors?.['required']">Please
-                                    select a category</span>
+                            <label for="category" class="block font-semibold text-gray-800 mt-1">Experience
+                                Category</label>
+                            <div class="relative">
+                                <select id="category" formControlName="category"
+                                    class="block appearance-none w-full bg-gray-100 border border-gray-300 hover:border-gray-400 text-gray-700 py-4 px-4 pr-8 rounded-lg leading-tight focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-300 ease-in-out">
+                                    <option value="" disabled selected>Select a category</option>
+                                    <option *ngFor="let category of categories" [value]="category._id">{{category.name}}
+                                    </option>
+                                </select>
+                                <div
+                                    class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                                    <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 20 20">
+                                        <path
+                                            d="M5.05 7.05L10 12l4.95-4.95a.5.5 0 10-.707-.707L10 10.586 5.757 6.343a.5.5 0 10-.707.707z" />
+                                    </svg>
+                                </div>
+                                <div class="text-red-500 text-sm mt-1"
+                                    *ngIf="packageForm.get('packageInfo.category')?.touched && packageForm.get('packageInfo.category')?.invalid">
+                                    <span *ngIf="packageForm.get('packageInfo.category')?.errors?.['required']">Please
+                                        select a category</span>
+                                </div>
                             </div>
                         </div>
                     </div>

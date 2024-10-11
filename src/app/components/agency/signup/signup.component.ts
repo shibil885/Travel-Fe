@@ -121,7 +121,6 @@ export class SignupComponent {
 
     const formValue = this.reactiveForm.value;
     this.formData.append('agencyName', formValue.agencyName);
-    console.log('filename:', formValue.agencyName);
     this.formData.append('password', formValue.password);
     this.formData.append('email', formValue.email);
     this.formData.append('phone', formValue.phone);

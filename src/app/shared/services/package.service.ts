@@ -1,24 +1,35 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Package } from '../../interfaces/package.interface';
+import { ICategory } from '../../interfaces/category.interface';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PackageService {
-  private api = 'http://localhost:3000/package';
+  private api = 'http://localhost:3000';
 
   constructor(private http: HttpClient) {}
 
-  addPackages(packageData: any) {
-    return this.http.post(`${this.api}/add/`, packageData, {
+  addPackages(packageData: FormData) {
+    console.log('api called');
+    return this.http.post(`${this.api}/package/add`, packageData, {
       withCredentials: true,
     });
   }
-
+  getCategories() { 
+    console.log('api called');
+    return this.http.get<{ success: boolean; message: string; categories: ICategory[]}>(
+      `${this.api}/category/categories`,
+      {
+        withCredentials: true,
+      }
+    );
+  }
+  
   getPackages() { 
     return this.http.get<{ success: boolean; message: string; packages: any }>(
-      `${this.api}/getAllPackages`,
+      `${this.api}/package/getAllPackages`,
       {
         withCredentials: true,
       }
@@ -28,13 +39,13 @@ export class PackageService {
   onChangeStatus(packageId: string | undefined, action: boolean) {
     if (!packageId) return;
     return this.http.patch(
-      `${this.api}/changeStatus/${packageId}`,
+      `${this.api}/package/changeStatus/${packageId}`,
       { action },
       { withCredentials: true }
     );
   }
-  onSaveChanges(chagedData: Package) {
-    return this.http.post(`${this.api}/saveChanges`, chagedData, {
+  onSaveChanges(chagedData: Package, packagId: string | undefined) {
+    return this.http.put<{message: string, success: boolean}>(`${this.api}/package/saveChanges/${packagId}`, chagedData, {
       withCredentials: true,
     });
   }

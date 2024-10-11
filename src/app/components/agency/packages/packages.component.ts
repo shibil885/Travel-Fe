@@ -32,8 +32,8 @@ export class PackagesComponent {
   packages!: any;
   constructor(private packageService: PackageService) {}
   ngOnInit(): void {
-    // this.renderTableRelatedDatas = true;
-    this.renderAddForm = true
+    this.renderTableRelatedDatas = true;
+    // this.renderAddForm = true
     console.log('get called');
     this.packageService.getPackages().subscribe((res: any) => {
       console.log(res.packages);

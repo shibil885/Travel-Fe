@@ -15,7 +15,7 @@ export const errorInterceptorFn: HttpInterceptorFn = (req, next) => {
       }  else if (error.status === 500) {
         toastService.showToast('Server error occurred. Please try later.', 'error');
       } else {
-        toastService.showToast(`Error: ${error.error.message}`, 'error');
+        toastService.showToast(`${error.error.message}`, 'error');
       }
 
       return throwError(() => 'error eee');

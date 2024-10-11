@@ -245,251 +245,240 @@
 
 
 <div class="min-h-screen py-8 px-4 sm:px-6 lg:px-8">
-    <div class="max-w-5xl mx-auto bg-white rounded-3xl shadow-2xl overflow-hidden">
-        <div class="relative h-96 sm:h-[28rem]">
-            <img [src]="currentImage" alt="{{ package.name }}"
-                class="w-full h-full object-cover transition-opacity duration-500 ease-in-out"
-                [class.opacity-100]="!isChangingImage" [class.opacity-0]="isChangingImage">
-            <div class="absolute inset-0 bg-gradient-to-t from-[#244855] via-transparent to-transparent"></div>
-            <div class="absolute bottom-0 left-0 right-0 p-8 text-white">
-                <h1 class="text-4xl sm:text-5xl font-bold mb-2 text-shadow-lg">{{ package.name }}</h1>
-                <p class="text-xl mb-4 text-shadow">{{ package.description }}</p>
-                <div class="flex flex-wrap gap-2">
-                    <span class="bg-[#E64833] text-white text-sm font-semibold px-3 py-1 rounded-full">{{
-                        package.category.name }}</span>
-                    <span class="bg-[#90AEAD] text-[#244855] text-sm font-semibold px-3 py-1 rounded-full">{{
-                        package.country }}</span>
-                </div>
-            </div>
-            <div class="absolute top-4 right-4 flex space-x-2">
-                <button *ngFor="let image of package.images; let i = index" (click)="changeImage(i)"
-                    class="w-3 h-3 rounded-full transition-all duration-300 ease-in-out"
-                    [ngClass]="{'bg-white': currentImageIndex === i, 'bg-white/50': currentImageIndex !== i}">
-                </button>
-            </div>
+  <div class="max-w-5xl mx-auto bg-white rounded-3xl shadow-2xl overflow-hidden">
+    <div class="relative h-96 sm:h-[28rem]">
+      <img [src]="currentImage" alt="{{ package.name }}"
+        class="w-full h-full object-cover transition-opacity duration-500 ease-in-out"
+        [class.opacity-100]="!isChangingImage" [class.opacity-0]="isChangingImage">
+      <div class="absolute inset-0 bg-gradient-to-t from-[#244855] via-transparent to-transparent"></div>
+      <div class="absolute bottom-0 left-0 right-0 p-8 text-white">
+        <h1 class="text-4xl sm:text-5xl font-bold mb-2 text-shadow-lg">{{ package.name }}</h1>
+        <p class="text-xl mb-4 text-shadow">{{ package.description }}</p>
+        <div class="flex flex-wrap gap-2">
+          <span class="bg-[#E64833] text-white text-sm font-semibold px-3 py-1 rounded-full">{{
+            package.category.name }}</span>
+          <span class="bg-[#90AEAD] text-[#244855] text-sm font-semibold px-3 py-1 rounded-full">{{
+            package.country }}</span>
         </div>
-
-        <div class="p-8">
-            <div class="flex flex-wrap justify-between items-center mb-8">
-                <div class="text-4xl font-bold text-[#E64833]">{{ package.price }}</div>
-                <div class="flex space-x-4">
-                    <button (click)="toggleEditMode()"
-                        class="bg-[#90AEAD] text-white px-6 py-2 rounded-full text-lg font-semibold hover:bg-[#874F41] transition duration-300 focus:outline-none focus:ring-2 focus:ring-[#E64833] focus:ring-opacity-50">
-                        {{ isEditing ? 'Cancel Edit' : 'Edit Package' }}
-                    </button>
-                    <!-- <button *ngIf="!isEditing" class="bg-[#244855] text-white px-8 py-3 rounded-full text-lg font-semibold hover:bg-[#874F41] transition duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-[#E64833] focus:ring-opacity-50">
-                Book Now
-              </button> -->
-                </div>
-            </div>
-
-            <div *ngIf="!isEditing" class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-                <div class="bg-[#90AEAD] p-6 rounded-xl shadow-md text-white">
-                    <h2 class="text-2xl font-semibold mb-4">Trip Details</h2>
-                    <ul class="space-y-3">
-                        <li class="flex items-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3 text-[#FBE9D0]" fill="none"
-                                viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                            </svg>
-                            <span><strong>Departure:</strong> {{ package.departure }}</span>
-                        </li>
-                        <li class="flex items-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3 text-[#FBE9D0]" fill="none"
-                                viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                            </svg>
-                            <span><strong>Destination:</strong> {{ package.finalDestination }}</span>
-                        </li>
-                        <li class="flex items-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3 text-[#FBE9D0]" fill="none"
-                                viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                            <span><strong>Duration:</strong> {{ package.days }} days</span>
-                        </li>
-                        <li class="flex items-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3 text-[#FBE9D0]" fill="none"
-                                viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                            </svg>
-                            <span><strong>Group Size:</strong> {{ package.people }}</span>
-                        </li>
-                    </ul>
-                </div>
-                <div>
-                    <h2 class="text-2xl font-semibold mb-4 text-[#244855]">What's Included</h2>
-                    <ul class="space-y-2">
-                        <li *ngFor="let item of package.included" class="flex items-center text-[#874F41]">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-[#E64833]"
-                                viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd"
-                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                    clip-rule="evenodd" />
-                            </svg>
-                            {{ item }}
-                        </li>
-                    </ul>
-                </div>
-            </div>
-
-            <div *ngIf="isEditing" class="mb-12">
-                <h2 class="text-2xl font-semibold mb-6 text-[#244855]">Edit Package Details</h2>
-                <form (ngSubmit)="saveChanges()" class="space-y-6">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label for="name" class="block text-sm font-medium text-[#874F41]">Package Name</label>
-                            <input type="text" id="name" name="name" [(ngModel)]="editedPackage.name"
-                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#E64833] focus:ring focus:ring-[#E64833] focus:ring-opacity-50">
-                        </div>
-                        <div>
-                            <label for="category" class="block text-sm font-medium text-[#874F41]">Category</label>
-                            <input type="text" id="category" name="category" [(ngModel)]="editedPackage.category.name"
-                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#E64833] focus:ring focus:ring-[#E64833] focus:ring-opacity-50">
-                        </div>
-                        <div>
-                            <label for="country" class="block text-sm font-medium text-[#874F41]">Country</label>
-                            <input type="text" id="country" name="country" [(ngModel)]="editedPackage.country"
-                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#E64833] focus:ring focus:ring-[#E64833] focus:ring-opacity-50">
-                        </div>
-                        <div>
-                            <label for="price" class="block text-sm font-medium text-[#874F41]">Price</label>
-                            <input type="text" id="price" name="price" [(ngModel)]="editedPackage.price"
-                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#E64833] focus:ring focus:ring-[#E64833] focus:ring-opacity-50">
-                        </div>
-                        <div>
-                            <label for="departure" class="block text-sm font-medium text-[#874F41]">Departure</label>
-                            <input type="text" id="departure" name="departure" [(ngModel)]="editedPackage.departure"
-                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#E64833] focus:ring focus:ring-[#E64833] focus:ring-opacity-50">
-                        </div>
-                        <div>
-                            <label for="finalDestination" class="block text-sm font-medium text-[#874F41]">Final
-                                Destination</label>
-                            <input type="text" id="finalDestination" name="finalDestination"
-                                [(ngModel)]="editedPackage.finalDestination"
-                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#E64833] focus:ring focus:ring-[#E64833] focus:ring-opacity-50">
-                        </div>
-                        <div>
-                            <label for="days" class="block text-sm font-medium text-[#874F41]">Duration (days)</label>
-                            <input type="number" id="days" name="days" [(ngModel)]="editedPackage.days"
-                                (ngModelChange)="updateTourPlans()"
-                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#E64833] focus:ring focus:ring-[#E64833] focus:ring-opacity-50">
-                        </div>
-                        <div>
-                            <label for="people" class="block text-sm font-medium text-[#874F41]">Group Size</label>
-                            <input type="text" id="people" name="people" [(ngModel)]="editedPackage.people"
-                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#E64833] focus:ring focus:ring-[#E64833] focus:ring-opacity-50">
-                        </div>
-                    </div>
-                    <div>
-                        <label for="description" class="block text-sm font-medium text-[#874F41]">Description</label>
-                        <textarea id="description" name="description" rows="3" [(ngModel)]="editedPackage.description"
-                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#E64833] focus:ring focus:ring-[#E64833] focus:ring-opacity-50"></textarea>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-[#874F41]">Included Items</label>
-                        <div *ngFor="let item of editedPackage.included; let i = index" class="flex items-center mt-2">
-                            <input type="text" [(ngModel)]="editedPackage.included[i]" [name]="'included' + i"
-                                class="flex-grow rounded-md border-gray-300 shadow-sm focus:border-[#E64833] focus:ring focus:ring-[#E64833] focus:ring-opacity-50">
-                            <button type="button" (click)="removeIncluded(i)"
-                                class="ml-2  text-[#E64833] hover:text-[#874F41]">Remove</button>
-                        </div>
-                        <button type="button" (click)="addIncluded()"
-                            class="mt-2 text-[#244855] hover:text-[#874F41]">Add Item</button>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-[#874F41]">Not Included Items</label>
-                        <div *ngFor="let item of editedPackage.notIncluded; let i = index"
-                            class="flex items-center mt-2">
-                            <input type="text" [(ngModel)]="editedPackage.notIncluded[i]" [name]="'notIncluded' + i"
-                                class="flex-grow rounded-md border-gray-300 shadow-sm focus:border-[#E64833] focus:ring focus:ring-[#E64833] focus:ring-opacity-50">
-                            <button type="button" (click)="removeNotIncluded(i)"
-                                class="ml-2 text-[#E64833] hover:text-[#874F41]">Remove</button>
-                        </div>
-                        <button type="button" (click)="addNotIncluded()"
-                            class="mt-2 text-[#244855] hover:text-[#874F41]">Add Item</button>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-[#874F41] mb-2">Tour Plans</label>
-                        <div *ngFor="let plan of editedPackage.TourPlans; let i = index" class="mb-4">
-                            <label [for]="'tourPlan' + i" class="block text-sm font-medium text-[#874F41]">Day {{
-                                plan.day }} Plan</label>
-                            <textarea [id]="'tourPlan' + i" [name]="'tourPlan' + i" rows="3"
-                                [(ngModel)]="plan.description"
-                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#E64833] focus:ring focus:ring-[#E64833] focus:ring-opacity-50"></textarea>
-                        </div>
-                    </div>
-                    <div class="flex justify-end space-x-4">
-                        <button type="button" (click)="toggleEditMode()"
-                            class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50">
-                            Cancel
-                        </button>
-                        <button type="submit"
-                            class="px-4 py-2 bg-[#E64833] text-white rounded-md hover:bg-[#874F41] focus:outline-none focus:ring-2 focus:ring-[#E64833] focus:ring-opacity-50">
-                            Save Changes
-                        </button>
-                    </div>
-                </form>
-            </div>
-
-            <div *ngIf="!isEditing" class="mb-12">
-                <h2 class="text-2xl font-semibold mb-4 text-[#244855]">Not Included</h2>
-                <ul class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                    <li *ngFor="let item of package.notIncluded" class="flex items-center text-[#874F41]">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-[#E64833]" viewBox="0 0 20 20"
-                            fill="currentColor">
-                            <path fill-rule="evenodd"
-                                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                                clip-rule="evenodd" />
-                        </svg>
-                        {{ item }}
-                    </li>
-                </ul>
-            </div>
-
-            <div *ngIf="!isEditing" class="mb-12">
-                <h2 class="text-2xl font-semibold mb-6 text-[#244855]">Tour Plan</h2>
-                <div class="space-y-6">
-                    <div *ngFor="let plan of package.TourPlans; let i = index"
-                        class="bg-[#FBE9D0] p-6 rounded-xl shadow-md cursor-pointer" (click)="togglePlan(i)"
-                        [@expandCollapse]="expandedPlan === i ? 'expanded' : 'collapsed'">
-                        <div class="flex justify-between items-center">
-                            <h3 class="text-lg font-semibold text-[#E64833]">Day {{ plan.day }}</h3>
-                            <svg xmlns="http://www.w3.org/2000/svg"
-                                class="h-6 w-6 text-[#244855] transition-transform duration-300"
-                                [ngClass]="{'rotate-180': expandedPlan === i}" fill="none" viewBox="0 0 24 24"
-                                stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M19 9l-7 7-7-7" />
-                            </svg>
-                        </div>
-                        <p class="text-[#874F41] mt-2" [class.hidden]="expandedPlan !== i">{{ plan.description }}</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="bg-[#244855] px-8 py-6">
-            <div class="flex flex-col sm:flex-row items-center justify-between">
-                <div class="flex items-center mb-4 sm:mb-0">
-                    <span class="text-[#FBE9D0] text-lg mr-4">Status:</span>
-                    <button (click)="toggleStatus(package._id)"
-                        [ngClass]="{'bg-green-500': package.isActive, 'bg-red-500': !package.isActive}"
-                        class="px-4 py-2 rounded-full text-white font-semibold focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-[#244855] focus:ring-white">
-                        {{ package.isActive ? 'Active' : 'Inactive' }}
-                    </button>
-                </div>
-                <!-- <button *ngIf="!isEditing"
-                    class="bg-[#E64833] text-white px-8 py-3 rounded-full text-lg font-semibold hover:bg-[#874F41] transition duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-[#FBE9D0] focus:ring-opacity-50">
-                    Reserve Your Spot
-                </button> -->
-            </div>
-        </div>
+      </div>
+      <div class="absolute top-4 right-4 flex space-x-2">
+        <button *ngFor="let image of package.images; let i = index" (click)="changeImage(i)"
+          class="w-3 h-3 rounded-full transition-all duration-300 ease-in-out"
+          [ngClass]="{'bg-white': currentImageIndex === i, 'bg-white/50': currentImageIndex !== i}">
+        </button>
+      </div>
     </div>
+
+    <div class="p-8">
+      <div class="flex flex-wrap justify-between items-center mb-8">
+        <div class="text-4xl font-bold text-[#E64833]">{{ package.price | currency:'INR' }}</div>
+        <div class="flex space-x-4">
+          <button (click)="toggleEditMode()"
+            class="bg-[#90AEAD] text-white px-6 py-2 rounded-full text-lg font-semibold hover:bg-[#874F41] transition duration-300 focus:outline-none focus:ring-2 focus:ring-[#E64833] focus:ring-opacity-50">
+            {{ isEditing ? 'Cancel Edit' : 'Edit Package' }}
+          </button>
+        </div>
+      </div>
+
+      <div *ngIf="!isEditing" class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+        <div class="bg-[#90AEAD] p-6 rounded-xl shadow-md text-white">
+          <h2 class="text-2xl font-semibold mb-4">Trip Details</h2>
+          <ul class="space-y-3">
+            <li class="flex items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3 text-[#FBE9D0]" fill="none"
+                viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+              <span><strong>Departure:</strong> {{ package.departure }}</span>
+            </li>
+            <li class="flex items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3 text-[#FBE9D0]" fill="none"
+                viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+              <span><strong>Destination:</strong> {{ package.finalDestination }}</span>
+            </li>
+            <li class="flex items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3 text-[#FBE9D0]" fill="none"
+                viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <span><strong>Duration:</strong> {{ package.days }} days</span>
+            </li>
+            <li class="flex items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3 text-[#FBE9D0]" fill="none"
+                viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+              </svg>
+              <span><strong>Group Size:</strong> {{ package.people }}</span>
+            </li>
+          </ul>
+        </div>
+        <div>
+          <h2 class="text-2xl font-semibold mb-4 text-[#244855]">What's Included</h2>
+          <ul class="space-y-2">
+            <li *ngFor="let item of package.included" class="flex items-center text-[#874F41]">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-[#E64833]" viewBox="0 0 20 20"
+                fill="currentColor">
+                <path fill-rule="evenodd"
+                  d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                  clip-rule="evenodd" />
+              </svg>
+              {{ item }}
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div *ngIf="isEditing" class="mb-12">
+        <h2 class="text-2xl font-semibold mb-6 text-[#244855]">Edit Package Details</h2>
+        <form (ngSubmit)="saveChanges()" class="space-y-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label for="name" class="block text-sm font-medium text-[#874F41]">Package Name</label>
+              <input type="text" id="name" name="name" [(ngModel)]="editedPackage.name"
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#E64833] focus:ring focus:ring-[#E64833] focus:ring-opacity-50">
+            </div>
+            <div>
+              <label for="category" class="block text-sm font-medium text-[#874F41]">Category</label>
+              <input type="text" id="category" name="category" [(ngModel)]="editedPackage.category.name"
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#E64833] focus:ring focus:ring-[#E64833] focus:ring-opacity-50">
+            </div>
+            <div>
+              <label for="country" class="block text-sm font-medium text-[#874F41]">Country</label>
+              <input type="text" id="country" name="country" [(ngModel)]="editedPackage.country"
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#E64833] focus:ring focus:ring-[#E64833] focus:ring-opacity-50">
+            </div>
+            <div>
+              <label for="price" class="block text-sm font-medium text-[#874F41]">Price</label>
+              <input type="text" id="price" name="price" [(ngModel)]="editedPackage.price"
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#E64833] focus:ring focus:ring-[#E64833] focus:ring-opacity-50">
+            </div>
+            <div>
+              <label for="departure" class="block text-sm font-medium text-[#874F41]">Departure</label>
+              <input type="text" id="departure" name="departure" [(ngModel)]="editedPackage.departure"
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#E64833] focus:ring focus:ring-[#E64833] focus:ring-opacity-50">
+            </div>
+            <div>
+              <label for="finalDestination" class="block text-sm font-medium text-[#874F41]">Final
+                Destination</label>
+              <input type="text" id="finalDestination" name="finalDestination"
+                [(ngModel)]="editedPackage.finalDestination"
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#E64833] focus:ring focus:ring-[#E64833] focus:ring-opacity-50">
+            </div>
+            <div>
+              <label for="days" class="block text-sm font-medium text-[#874F41]">Duration (days)</label>
+              <input type="number" id="days" name="days" [(ngModel)]="editedPackage.days"
+                (ngModelChange)="updateTourPlans()"
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#E64833] focus:ring focus:ring-[#E64833] focus:ring-opacity-50">
+            </div>
+            <div>
+              <label for="people" class="block text-sm font-medium text-[#874F41]">Group Size</label>
+              <input type="text" id="people" name="people" [(ngModel)]="editedPackage.people"
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#E64833] focus:ring focus:ring-[#E64833] focus:ring-opacity-50">
+            </div>
+          </div>
+          <div>
+            <label for="description" class="block text-sm font-medium text-[#874F41]">Description</label>
+            <textarea id="description" name="description" rows="3" [(ngModel)]="editedPackage.description"
+              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#E64833] focus:ring focus:ring-[#E64833] focus:ring-opacity-50"></textarea>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-[#874F41]">Included Items</label>
+            <div *ngFor="let item of editedPackage.included; let i = index" class="flex items-center mt-2">
+              <input type="text" [(ngModel)]="editedPackage.included[i]" [name]="'included' + i"
+                class="flex-grow rounded-md border-gray-300 shadow-sm focus:border-[#E64833] focus:ring focus:ring-[#E64833] focus:ring-opacity-50">
+              <button type="button" (click)="removeIncluded(i)"
+                class="ml-2  text-[#E64833] hover:text-[#874F41]">Remove</button>
+            </div>
+            <button type="button" (click)="addIncluded()" class="mt-2 text-[#244855] hover:text-[#874F41]">Add
+              Item</button>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-[#874F41]">Not Included Items</label>
+            <div *ngFor="let item of editedPackage.notIncluded; let i = index" class="flex items-center mt-2">
+              <input type="text" [(ngModel)]="editedPackage.notIncluded[i]" [name]="'notIncluded' + i"
+                class="flex-grow rounded-md border-gray-300 shadow-sm focus:border-[#E64833] focus:ring focus:ring-[#E64833] focus:ring-opacity-50">
+              <button type="button" (click)="removeNotIncluded(i)"
+                class="ml-2 text-[#E64833] hover:text-[#874F41]">Remove</button>
+            </div>
+            <button type="button" (click)="addNotIncluded()" class="mt-2 text-[#244855] hover:text-[#874F41]">Add
+              Item</button>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-[#874F41] mb-2">Tour Plans</label>
+            <div *ngFor="let plan of editedPackage.tourPlans; let i = index" class="mb-4">
+              <label [for]="'tourPlan' + i" class="block text-sm font-medium text-[#874F41]">Day {{
+                plan.day }} Plan</label>
+                <input [value]="plan.title" [(ngModel)]="plan.title">
+              <textarea [id]="'tourPlan' + i" [name]="'tourPlan' + i" rows="3" [(ngModel)]="plan.description"
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#E64833] focus:ring focus:ring-[#E64833] focus:ring-opacity-50"></textarea>
+            </div>
+          </div>
+          <div class="flex justify-end space-x-4">
+            <button type="button" (click)="toggleEditMode()"
+              class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50">
+              Cancel
+            </button>
+            <button type="submit"
+              class="px-4 py-2 bg-[#E64833] text-white rounded-md hover:bg-[#874F41] focus:outline-none focus:ring-2 focus:ring-[#E64833] focus:ring-opacity-50">
+              Save Changes
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <div *ngIf="!isEditing" class="mb-12">
+        <h2 class="text-2xl font-semibold mb-4 text-[#244855]">Not Included</h2>
+        <ul class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+          <li *ngFor="let item of package.notIncluded" class="flex items-center text-[#874F41]">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-[#E64833]" viewBox="0 0 20 20"
+              fill="currentColor">
+              <path fill-rule="evenodd"
+                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                clip-rule="evenodd" />
+            </svg>
+            {{ item }}
+          </li>
+        </ul>
+      </div>
+
+      <div *ngIf="!isEditing" class="mb-12">
+        <h2 class="text-2xl font-semibold mb-6 text-[#244855]">Tour Plan</h2>
+        <div class="space-y-6">
+          <div *ngFor="let plan of package.tourPlans; let i = index"
+            class="bg-[#FBE9D0] p-6 rounded-xl shadow-md cursor-pointer" (click)="togglePlan(i)"
+            [@expandCollapse]="expandedPlan === i ? 'expanded' : 'collapsed'">
+            <div class="flex justify-between items-center">
+              <h3 class="text-lg font-semibold text-[#E64833]">Day {{ plan.day }} - {{plan.title}}</h3>
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[#244855] transition-transform duration-300"
+                [ngClass]="{'rotate-180': expandedPlan === i}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </div>
+            <p class="text-[#874F41] mt-2" [class.hidden]="expandedPlan !== i">{{ plan.description }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-[#244855] px-8 py-6">
+      <div class="flex flex-col sm:flex-row items-center justify-between">
+        <div class="flex items-center mb-4 sm:mb-0">
+          <span class="text-[#FBE9D0] text-lg mr-4">Status:</span>
+          <button (click)="toggleStatus(package._id)"
+            [ngClass]="{'bg-green-500': package.isActive, 'bg-red-500': !package.isActive}"
+            class="px-4 py-2 rounded-full text-white font-semibold focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-[#244855] focus:ring-white">
+            {{ package.isActive ? 'Active' : 'Inactive' }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
