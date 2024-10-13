@@ -34,6 +34,10 @@ import { PaginationComponent } from '../../../shared/components/pagination/pagin
 })
 export class AgenciesComponent implements OnInit {
   agencies: any = [];
+  totalAgencies: number = 0;
+  totalPages: number = 0;
+  currentPage: number = 1; 
+  limit: number = 5;
   agencyHeaders = [
     { label: 'Agency Name', key: 'name' },
     { label: 'Email', key: 'email' },
@@ -49,13 +53,21 @@ export class AgenciesComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.fetchAgencies();
+    this.fetchAgencies(this.currentPage);
   }
 
-  fetchAgencies() {
-    this.adminService.getAllAgencies().subscribe((data) => {
-      this.agencies = data.agencies;
+  fetchAgencies(page: number) {
+    this.adminService.getAllAgencies(page, this.limit).subscribe((response) => {
+      this.agencies = response.agencies;
+      this.totalAgencies = response.totalAgencies;
+      this.totalPages = response.totalPages;
+      this.currentPage = response.currentPage;
     });
+  }
+
+  onPageChange(page: number) {
+    this.currentPage = page;
+    this.fetchAgencies(this.currentPage);
   }
 
   showToast(message: string, type: 'success' | 'error') {
@@ -75,24 +87,28 @@ export class AgenciesComponent implements OnInit {
       disableClose: false,
     });
 
-    dialogRef.componentInstance.filterDataEvent.subscribe((filterData: FilterData) => {
-      this.onFilter(filterData); 
-    });
+    dialogRef.componentInstance.filterDataEvent.subscribe(
+      (filterData: FilterData) => {
+        this.onFilter(filterData);
+      }
+    );
   }
 
   onFilter(filterData: FilterData) {
-    this.adminService.getFilteredData(filterData,'agency').subscribe((response) => {
-      this.agencies = response;
-    });
+    this.adminService
+      .getFilteredData(filterData, 'agency')
+      .subscribe((response) => {
+        this.agencies = response;
+      });
   }
   onSearch(searchText: string) {
-    if (searchText.length == 0) {
-    this.fetchAgencies();
-    return
-    }
-    this.adminService.searchUsers(searchText, 'agency').subscribe((res) => {
-      console.log('res:',res);
-      this.agencies  = res
-    })
+    // if (searchText.length == 0) {
+    //   this.fetchAgencies();
+    //   return;
+    // }
+    // this.adminService.searchUsers(searchText, 'agency').subscribe((res) => {
+    //   console.log('res:', res);
+    //   this.agencies = res;
+    // });
   }
 }

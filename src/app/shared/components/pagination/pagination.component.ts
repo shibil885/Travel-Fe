@@ -4,55 +4,54 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 @Component({
   selector: 'app-pagination',
   standalone: true,
-  imports: [CommonModule],
+  imports:[CommonModule],
   templateUrl: './pagination.component.html',
-  styleUrl: './pagination.component.css'
+  styleUrls: ['./pagination.component.css'],
 })
 export class PaginationComponent {
-  @Input() currentPage: number = 1;
-  @Input() totalPages: number = 1;
-  @Output() pageChange = new EventEmitter<number>();
+  @Input() totalPages: number = 0; 
+  @Input() currentPage: number = 1; 
+  @Output() pageChange: EventEmitter<number> = new EventEmitter<number>(); 
 
-  onPageChange(page: number | string ): void {
-    if (Number(page) >= 1 && Number(page) <= this.totalPages) {
-      this.pageChange.emit(Number(page));
+  get pageNumbers(): number[] {
+    const pages = [];
+    const maxVisiblePages = 5;
+
+    const startPage = Math.max(2, this.currentPage - 2);
+    const endPage = Math.min(this.totalPages - 1, this.currentPage + 2);
+
+    if (startPage > 2) {
+      pages.push(1);
+      if (startPage > 3) pages.push(-1);
+    }
+
+    for (let i = startPage; i <= endPage; i++) {
+      pages.push(i);
+    }
+
+    if (endPage < this.totalPages - 1) {
+      if (endPage < this.totalPages - 2) pages.push(-1); 
+      pages.push(this.totalPages);
+    }
+
+    return pages;
+  }
+
+  previousPage() {
+    if (this.currentPage > 1) {
+      this.pageChange.emit(Number(this.currentPage) - 1);
     }
   }
 
-  visiblePages()
-: (number | string)[] 
-  {
-    // const delta = 2;
-    // const range: (number | string)[] = [];
-    // const rangeWithDots: (number | string)[] = [];
-    // let l: number;
+  nextPage() {
+    if (this.currentPage < this.totalPages) {
+      this.pageChange.emit(Number(this.currentPage) + 1);
+    }
+  }
 
-    // range.push(1);
-
-    // if (this.totalPages <= 1) {
-    //   return range;
-    // }
-
-    // for (let i = this.currentPage - delta; i <= this.currentPage + delta; i++) {
-    //   if (i < this.totalPages && i > 1) {
-    //     range.push(i);
-    //   }
-    // }
-    // range.push(this.totalPages);
-
-    // for (let i of range) {
-    //   if (l) {
-    //     if (i - l === 2) {
-    //       rangeWithDots.push(l + 1);
-    //     } else if (i - l !== 1) {
-    //       rangeWithDots.push('...');
-    //     }
-    //   }
-    //   rangeWithDots.push(i);
-    //   l = i;
-    // }
-
-    // return rangeWithDots;
-     return [1];
+  goToPage(page: number) {
+    if (page > 0 && page <= this.totalPages && page !== this.currentPage) {
+      this.pageChange.emit(page);
+    }
   }
 }

@@ -14,7 +14,7 @@
           <ng-container *ngIf="['isVerified', 'isActive', 'isConfirmed'].includes(column.key); else otherContents">
             <ng-container *ngIf="column.key === 'isVerified'">
               <span [ngClass]="cell['isVerified'] ? 'text-green-500': 'text-red-500'" class="text-center">
-                {{ cell['isVerified'] ? 'Verified': 'Not Verified'}}
+                {{ cell['isVerified'] ? 'Verified': 'Not Verified' }}
               </span>
             </ng-container>            
             <ng-container *ngIf="column.key === 'isActive'">

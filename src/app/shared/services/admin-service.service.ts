@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { catchError, map, tap } from 'rxjs/operators';
 import { FilterData } from '../../interfaces/filterData.interface';
 
 @Injectable({
@@ -11,7 +11,7 @@ export class AdminService {
   private api = 'http://localhost:3000';
 
   constructor(private http: HttpClient) {}
-  
+
   getAllUsers(): Observable<{
     message: string;
     success: boolean;
@@ -30,19 +30,24 @@ export class AdminService {
         })
       );
   }
-
-  getAllAgencies(): Observable<{
-    message: string;
-    success: boolean;
-    agencies: any[];
-  }> {
-    return this.http
-      .get<{ message: string; success: boolean; agencies: any[] }>(
-        `${this.api}/admin/agencies`,
-        { withCredentials: true }
-      )
-      .pipe(map((data) => data));
+  
+  getAllAgencies(page: number = 1, limit: number = 5): Observable<any> {
+    const params = new HttpParams()
+      .set('page', page.toString())
+      .set('limit', limit.toString());
+  
+    return this.http.get(`${this.api}/admin/agencies`, { params, withCredentials: true }).pipe(
+      tap((res) => console.log('Response from getAllAgencies:', res)), // Enhanced logging
+      map((response: any) => ({
+        agencies: response.agencies,
+        totalAgencies: response.total,
+        totalPages: response.totalPages,
+        currentPage: response.currentPage,
+      }))
+    );
   }
+  
+  
 
   getAllCategories(): Observable<{
     message: string;
@@ -132,12 +137,11 @@ export class AdminService {
     return this.http.post(`${this.api}/admin/filter`, { user }, { params });
   }
   searchUsers(searchText: string, user: string) {
-    let params = new HttpParams().set('searchText', searchText)
+    let params = new HttpParams().set('searchText', searchText);
     return this.http.post(
       `${this.api}/admin/searchUsers`,
-      { user },  
-      { params } 
+      { user },
+      { params }
     );
   }
-  
 }
