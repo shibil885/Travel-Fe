@@ -18,7 +18,8 @@
             <app-search (searchUsersEvent)="onSearch($event)"></app-search>
             <app-reusable-table [headers]="agencyHeaders" [data]="agencies"></app-reusable-table>
             <app-pagination
-            [totalPages]="totalPages"
+            [totalItems]="totalAgencies"
+            [itemsPerPage]="limit"
             [currentPage]="currentPage"
             (pageChange)="onPageChange($event)"
           ></app-pagination>

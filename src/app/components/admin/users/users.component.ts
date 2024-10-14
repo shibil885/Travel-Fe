@@ -11,6 +11,7 @@ import { FilterData } from '../../../interfaces/filterData.interface';
 import { CommonModule } from '@angular/common';
 import { ReusableTableComponent } from '../../../shared/components/table/table.component';
 import { SearchComponent } from '../../../shared/components/search/search.component';
+import { PaginationComponent } from '../../../shared/components/pagination/pagination.component';
 @Component({
   selector: 'app-users',
   standalone: true,
@@ -23,11 +24,18 @@ import { SearchComponent } from '../../../shared/components/search/search.compon
     SearchComponent,
     MatIconModule,
     CommonModule,
+    PaginationComponent,
   ],
   templateUrl: './users.component.html',
   styleUrl: './users.component.css',
 })
 export class UsersComponent {
+  users: any = [];
+  totalUsers: number = 0;
+  totalPages: number = 0;
+  currentPage: number = 1;
+  limit: number = 5;
+
   showFilters!: boolean;
   userHeaders = [
     { label: 'Name', key: 'username' },
@@ -36,7 +44,6 @@ export class UsersComponent {
     { label: 'Active', key: 'isActive' },
   ];
 
-  users: any = [];
   constructor(
     private adminService: AdminService,
     private dialog: MatDialog,
@@ -44,13 +51,23 @@ export class UsersComponent {
   ) {}
 
   ngOnInit(): void {
-    this.fetchUsers();
+    this.fetchUsers(this.currentPage);
   }
 
-  fetchUsers() {
-    this.adminService.getAllUsers().subscribe((data) => {
-      this.users = data.users;
-    });
+  fetchUsers(page: number) {
+    this.adminService
+      .getAllUsers(page, this.limit)
+      .subscribe((response) => {
+        this.users = response.users;
+        this.totalUsers = response.totalUsers;
+        this.totalPages = response.totalPages;
+        this.currentPage = response.currentPage;
+      });
+  }
+
+  onPageChange(page: number) {
+    this.currentPage = page;
+    this.fetchUsers(this.currentPage);
   }
 
   showToast(message: string, type: 'success' | 'error') {
@@ -76,17 +93,19 @@ export class UsersComponent {
   }
 
   onFilter(filterData: FilterData) {
-    this.adminService.getFilteredData(filterData,'user').subscribe((response) => {
-      this.users = response;
-    });
+    this.adminService
+      .getFilteredData(filterData, 'user')
+      .subscribe((response) => {
+        this.users = response;
+      });
   }
   onSearch(searchText: string) {
     if (searchText.length == 0) {
-    this.fetchUsers();
-    return
+      this.fetchUsers(this.currentPage);
+      return;
     }
     this.adminService.searchUsers(searchText, 'user').subscribe((res) => {
-      this.users  = res
-    })
+      this.users = res;
+    });
   }
 }

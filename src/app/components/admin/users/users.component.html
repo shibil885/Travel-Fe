@@ -13,6 +13,12 @@
             </div>
             <app-search (searchUsersEvent)="onSearch($event)"></app-search>
             <app-reusable-table [headers]="userHeaders" [data]="users"></app-reusable-table>
+            <app-pagination
+            [totalItems]="totalUsers"
+            [itemsPerPage]="limit"
+            [currentPage]="currentPage"
+            (pageChange)="onPageChange($event)"
+          ></app-pagination>
         </main>
     </div>
 </div>

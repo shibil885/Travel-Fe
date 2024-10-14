@@ -12,42 +12,38 @@ export class AdminService {
 
   constructor(private http: HttpClient) {}
 
-  getAllUsers(): Observable<{
-    message: string;
-    success: boolean;
-    users: any[];
-  }> {
-    return this.http
-      .get<{ message: string; success: boolean; users: any[] }>(
-        `${this.api}/admin/users`,
-        { withCredentials: true }
-      )
-      .pipe(
-        map((data) => data),
-        catchError((error) => {
-          console.log('Error fetching users:', error);
-          return throwError(() => new Error('Error fetching users'));
-        })
-      );
-  }
-  
-  getAllAgencies(page: number = 1, limit: number = 5): Observable<any> {
+  getAllAgencies(page: number = 1, limit: number): Observable<any> {
     const params = new HttpParams()
       .set('page', page.toString())
       .set('limit', limit.toString());
-  
-    return this.http.get(`${this.api}/admin/agencies`, { params, withCredentials: true }).pipe(
-      tap((res) => console.log('Response from getAllAgencies:', res)), // Enhanced logging
-      map((response: any) => ({
-        agencies: response.agencies,
-        totalAgencies: response.total,
-        totalPages: response.totalPages,
-        currentPage: response.currentPage,
-      }))
-    );
+
+    return this.http
+      .get(`${this.api}/admin/agencies`, { params, withCredentials: true })
+      .pipe(
+        map((response: any) => ({
+          agencies: response.agencies,
+          totalAgencies: response.totalAgencies,
+          totalPages: response.totalPages,
+          currentPage: response.currentPage,
+        }))
+      );
   }
-  
-  
+  getAllUsers(page: number = 1, limit: number): Observable<any> {
+    const params = new HttpParams()
+      .set('page', page.toString())
+      .set('limit', limit.toString());
+
+    return this.http
+      .get(`${this.api}/admin/users`, { params, withCredentials: true })
+      .pipe(
+        map((response: any) => ({
+          users: response.users,
+          totalUsers: response.totalUsers,
+          totalPages: response.totalPages,
+          currentPage: response.currentPage,
+        }))
+      );
+  }
 
   getAllCategories(): Observable<{
     message: string;

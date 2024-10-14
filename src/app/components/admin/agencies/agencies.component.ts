@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal, computed } from '@angular/core';
 import { HeaderComponent } from '../header/header.component';
 import { SideBarComponent } from '../side-bar/side-bar.component';
 import { MatIconModule } from '@angular/material/icon';
@@ -33,11 +33,12 @@ import { PaginationComponent } from '../../../shared/components/pagination/pagin
   styleUrls: ['./agencies.component.css'],
 })
 export class AgenciesComponent implements OnInit {
-  agencies: any = [];
+  agencies = [];
   totalAgencies: number = 0;
   totalPages: number = 0;
-  currentPage: number = 1; 
-  limit: number = 5;
+  currentPage: number = 1;
+  limit:number = 5;
+  
   agencyHeaders = [
     { label: 'Agency Name', key: 'name' },
     { label: 'Email', key: 'email' },
@@ -45,6 +46,7 @@ export class AgenciesComponent implements OnInit {
     { label: 'Active', key: 'isActive' },
     { label: 'Confirmed', key: 'isConfirmed' },
   ];
+
 
   constructor(
     private adminService: AdminService,
@@ -66,8 +68,9 @@ export class AgenciesComponent implements OnInit {
   }
 
   onPageChange(page: number) {
-    this.currentPage = page;
-    this.fetchAgencies(this.currentPage);
+    this.currentPage =  page;
+    console.log('page from parent', page);
+    this.fetchAgencies(page);
   }
 
   showToast(message: string, type: 'success' | 'error') {
@@ -98,17 +101,17 @@ export class AgenciesComponent implements OnInit {
     this.adminService
       .getFilteredData(filterData, 'agency')
       .subscribe((response) => {
-        this.agencies = response;
+        this.agencies =  response;
       });
   }
+
   onSearch(searchText: string) {
-    // if (searchText.length == 0) {
-    //   this.fetchAgencies();
-    //   return;
-    // }
-    // this.adminService.searchUsers(searchText, 'agency').subscribe((res) => {
-    //   console.log('res:', res);
-    //   this.agencies = res;
-    // });
+    if (searchText.length === 0) {
+      this.fetchAgencies(this.currentPage);
+      return;
+    }
+    this.adminService.searchUsers(searchText, 'agency').subscribe((res) => {
+      // this.agencies = res;
+    });
   }
 }

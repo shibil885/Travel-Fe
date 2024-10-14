@@ -1,57 +1,64 @@
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-pagination',
   standalone: true,
-  imports:[CommonModule],
-  templateUrl: './pagination.component.html',
-  styleUrls: ['./pagination.component.css'],
+  imports: [CommonModule],
+  templateUrl: './pagination.component.html' ,
+  styleUrls: ['./pagination.component.css']
 })
 export class PaginationComponent {
-  @Input() totalPages: number = 0; 
-  @Input() currentPage: number = 1; 
-  @Output() pageChange: EventEmitter<number> = new EventEmitter<number>(); 
+  @Input() totalItems = 0;
+  @Input() itemsPerPage = 2;
+  @Input() currentPage: number = 1;
+  @Output() pageChange = new EventEmitter<number>();
 
-  get pageNumbers(): number[] {
-    const pages = [];
-    const maxVisiblePages = 5;
-
-    const startPage = Math.max(2, this.currentPage - 2);
-    const endPage = Math.min(this.totalPages - 1, this.currentPage + 2);
-
-    if (startPage > 2) {
-      pages.push(1);
-      if (startPage > 3) pages.push(-1);
-    }
-
-    for (let i = startPage; i <= endPage; i++) {
-      pages.push(i);
-    }
-
-    if (endPage < this.totalPages - 1) {
-      if (endPage < this.totalPages - 2) pages.push(-1); 
-      pages.push(this.totalPages);
-    }
-
-    return pages;
+  get totalPages(): number {
+    return Math.ceil(this.totalItems / this.itemsPerPage);
   }
 
-  previousPage() {
-    if (this.currentPage > 1) {
-      this.pageChange.emit(Number(this.currentPage) - 1);
+  get visiblePages(): (number | string)[] {
+    const totalPages = this.totalPages;
+    const current = this.currentPage;
+    const delta = 2;
+    const range: number[] = [];
+    const rangeWithDots: (number | string)[] = [];
+
+    for (
+      let i = Math.max(2, current - delta);
+      i <= Math.min(totalPages - 1, current + delta);
+      i++
+    ) {
+      range.push(i);
     }
+
+    if (range[0] > 2) {
+      rangeWithDots.push(1, '...');
+    } else {
+      rangeWithDots.push(1);
+    }
+
+    rangeWithDots.push(...range);
+
+    if (range[range.length - 1] < totalPages - 1) {
+      rangeWithDots.push('...', totalPages);
+    } else if (range[range.length - 1] !== totalPages) {
+      rangeWithDots.push(totalPages);
+    }
+
+    return rangeWithDots;
   }
 
-  nextPage() {
-    if (this.currentPage < this.totalPages) {
+  onPageChange(page: number | string | null = null): void {
+    if (!page) {
       this.pageChange.emit(Number(this.currentPage) + 1);
+      return;
     }
-  }
-
-  goToPage(page: number) {
-    if (page > 0 && page <= this.totalPages && page !== this.currentPage) {
-      this.pageChange.emit(page);
+    const pageToShow = Number(page);
+    if (pageToShow <= this.totalPages && pageToShow !== this.currentPage) {
+      this.currentPage = pageToShow;
+      this.pageChange.emit(pageToShow);
     }
   }
 }
