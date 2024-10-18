@@ -132,6 +132,7 @@ export class AdminService {
       params = params.append('isConfirmed', filters.isConfirmed.toString());
     return this.http.post(`${this.api}/admin/filter`, { user }, { params });
   }
+
   searchUsers(searchText: string, user: string) {
     let params = new HttpParams().set('searchText', searchText);
     return this.http.post(

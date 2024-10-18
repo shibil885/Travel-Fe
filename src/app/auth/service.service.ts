@@ -8,13 +8,12 @@ import {
   tap,
   throwError,
 } from 'rxjs';
-import { IUser } from '../../../models/user.model';
 import Cookies from 'universal-cookie';
 
 @Injectable({
   providedIn: 'root',
 })
-export class UserAuthService {
+export class AuthService {
   private readonly api = 'http://localhost:3000';
   private accessTokenSubject = new BehaviorSubject<string | null>(null);
   private cookie = new Cookies();
@@ -26,20 +25,21 @@ export class UserAuthService {
     }
   }
 
-  login(userData: any): Observable<{
-    message: string;
-    user: IUser;
-    success: boolean;
-    access_token: string;
-  }> {
-    console.log(userData);
+  login(loginData: any, role: 'admin' | 'agency' | 'user') {
+    console.log('------------------------>', role);
+    const endpoints: { [key in 'admin' | 'agency' | 'user']: string } = {
+      admin: `${this.api}/auth/admin`,
+      agency: `${this.api}/auth/agency`,
+      user: `${this.api}/auth/user`,
+    };
+    const loginUrl = endpoints[role];
     return this.http
       .post<{
         message: string;
-        user: IUser;
         success: boolean;
         access_token: string;
-      }>(`${this.api}/auth/user`, userData, { withCredentials: true})
+        [key: string]: any;
+      }>(loginUrl, loginData, { withCredentials: true })
       .pipe(
         map((response) => {
           const accessToken = response.access_token;
@@ -55,6 +55,46 @@ export class UserAuthService {
       );
   }
 
+  logout(role: string) {
+    if (role === 'admin') {
+      return this.http
+        .patch(`${this.api}/admin/logout`, {}, { withCredentials: true })
+        .pipe(
+          tap(() => {
+            this.clearAccessToken();
+          }),
+          catchError((error) => {
+            console.error('error', error);
+            return throwError(() => error);
+          })
+        );
+    } else if (role === 'agency') {
+      return this.http
+        .patch(`${this.api}/agency/logout`, {}, { withCredentials: true })
+        .pipe(
+          tap(() => {
+            this.clearAccessToken();
+          }),
+          catchError((error) => {
+            console.error('error', error);
+            return throwError(() => error);
+          })
+        );
+    } else {
+      return this.http
+        .patch(`${this.api}/user/logout`, {}, { withCredentials: true })
+        .pipe(
+          tap(() => {
+            this.clearAccessToken();
+          }),
+          catchError((error) => {
+            console.error('UserAuthService: logout API error', error);
+            return throwError(() => error);
+          })
+        );
+    }
+  }
+
   setAccessToken(token: string) {
     this.accessTokenSubject.next(token);
     this.cookie.set('accessToken', token, {
@@ -66,19 +106,6 @@ export class UserAuthService {
 
   getAccessToken(): string | null {
     return this.accessTokenSubject.getValue();
-  }
-  logout(): Observable<any> {
-    return this.http
-      .patch(`${this.api}/user/logout`, {}, { withCredentials: true })
-      .pipe(
-        tap((response) => {
-          this.clearAccessToken();
-        }),
-        catchError((error) => {
-          console.error('UserAuthService: logout API error', error);
-          return throwError(() => error);
-        })
-      );
   }
 
   clearAccessToken(): void {
@@ -101,14 +128,14 @@ export class UserAuthService {
       );
   }
 
-  validateToken(token: string): Observable<boolean> {
+  validateToken(): Observable<{ valid: boolean; role: string }> {
     return this.http
-      .post<{ valid: boolean }>(
+      .post<{ valid: boolean; role: string }>(
         `${this.api}/auth/validate-token`,
-        { token },
+        {},
         { withCredentials: true }
       )
-      .pipe(map((response) => response.valid));
+      .pipe(map((res) => res));
   }
 
   isAuthenticated(): boolean {

@@ -4,14 +4,14 @@ import * as userActions from '../user/user.action';
 import { catchError, map, of, switchMap, tap } from 'rxjs';
 import { Router } from '@angular/router';
 import { UserService } from '../../shared/services/user.service';
-import { UserAuthService } from '../../auth/services/user/user-auth.service';
+import { AuthService } from '../../auth/service.service';
 
 @Injectable()
 export class UserEffect {
   constructor(
     private actions$: Actions,
     private userService: UserService,
-    private authService: UserAuthService,
+    private authService: AuthService,
     private router: Router
   ) {}
 
@@ -19,10 +19,11 @@ export class UserEffect {
     this.actions$.pipe(
       ofType(userActions.userLogin),
       switchMap((action) =>
-        this.authService.login(action).pipe(
+        this.authService.login(action, 'user').pipe(
           map((response) => {
+            console.log('login success hits');
             return userActions.userLoginSuccess({
-              user: response.user,
+              user: response['user'],
             });
           }),
           catchError((error) => {
@@ -47,6 +48,7 @@ export class UserEffect {
       this.actions$.pipe(
         ofType(userActions.userLoginSuccess),
         tap(() => {
+          console.log('entered to home');
           this.router.navigate(['/home']);
         })
       ),
@@ -119,23 +121,39 @@ export class UserEffect {
       )
     )
   );
-  logout$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(userActions.logout),
-      tap(() => {}),
-      switchMap(() =>
-        this.authService.logout().pipe(
-          tap(() => {
-            this.router.navigate(['/login']).then(() => {
-              console.log('Navigated to /login');
-            });
-          }),
-          catchError((error) => {
-            console.error('Logout error: ', error);
-            return of();
-          })
+  // logout$ = createEffect(() =>
+  //   this.actions$.pipe(
+  //     ofType(userActions.logout),
+  //     switchMap(() =>
+  //       this.authService.logout('user').pipe(
+  //         tap(() => {
+  //           this.router.navigate(['/login']).then(() => {
+  //           });
+  //         }),
+  //         catchError((error) => {
+  //           console.error('Logout error: ', error);
+  //           return of();
+  //         })
+  //       )
+  //     )
+  //   )
+  // );
+  logout$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(userActions.logout),
+        switchMap(() =>
+          this.authService.logout('user').pipe(
+            tap(() => {
+              this.router.navigate(['/login']);
+            }),
+            catchError((error) => {
+              console.error('Logout error: ', error);
+              return of();
+            })
+          )
         )
-      )
-    )
+      ),
+    { dispatch: false }
   );
 }

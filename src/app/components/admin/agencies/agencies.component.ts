@@ -33,12 +33,12 @@ import { PaginationComponent } from '../../../shared/components/pagination/pagin
   styleUrls: ['./agencies.component.css'],
 })
 export class AgenciesComponent implements OnInit {
-  agencies = [];
+  agencies: any = [];
   totalAgencies: number = 0;
   totalPages: number = 0;
   currentPage: number = 1;
-  limit:number = 5;
-  
+  limit: number = 5;
+
   agencyHeaders = [
     { label: 'Agency Name', key: 'name' },
     { label: 'Email', key: 'email' },
@@ -46,7 +46,6 @@ export class AgenciesComponent implements OnInit {
     { label: 'Active', key: 'isActive' },
     { label: 'Confirmed', key: 'isConfirmed' },
   ];
-
 
   constructor(
     private adminService: AdminService,
@@ -68,7 +67,7 @@ export class AgenciesComponent implements OnInit {
   }
 
   onPageChange(page: number) {
-    this.currentPage =  page;
+    this.currentPage = page;
     console.log('page from parent', page);
     this.fetchAgencies(page);
   }
@@ -101,7 +100,7 @@ export class AgenciesComponent implements OnInit {
     this.adminService
       .getFilteredData(filterData, 'agency')
       .subscribe((response) => {
-        this.agencies =  response;
+        this.agencies = response;
       });
   }
 
@@ -111,7 +110,7 @@ export class AgenciesComponent implements OnInit {
       return;
     }
     this.adminService.searchUsers(searchText, 'agency').subscribe((res) => {
-      // this.agencies = res;
+      this.agencies = res;
     });
   }
 }

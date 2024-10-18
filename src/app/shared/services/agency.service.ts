@@ -2,8 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, map, Observable, tap, throwError } from 'rxjs';
 import { IAgency } from '../../models/agency.model';
-import { AgencyAuthService } from '../../auth/services/agency/agency-auth.service';
 import { Router } from '@angular/router';
+import { AuthService } from '../../auth/service.service';
 
 @Injectable({
   providedIn: 'root',
@@ -12,7 +12,7 @@ export class AgencyService {
   private api = 'http://localhost:3000';
   constructor(
     private http: HttpClient,
-    private authService: AgencyAuthService,
+    private authService: AuthService,
     private router: Router
   ) {}
 

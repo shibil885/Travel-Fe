@@ -1,9 +1,42 @@
+// import { Routes } from '@angular/router';
+// import { SignupComponent } from '../components/agency/signup/signup.component';
+// import { LoginComponent } from '../components/agency/login/login.component';
+// import { PackagesComponent } from '../components/agency/packages/packages.component';
+// import { agencyGuard } from '../auth/guards/agency/agency-guard.guard';
+// import { agencyLoggedGuard } from '../auth/guards/agency/logged-agency.guard';
+
+// export const agencyRouter: Routes = [
+//   { path: 'agency', redirectTo: 'agency/home', pathMatch: 'full' },
+//   {
+//     path: 'agency/home',
+//     loadComponent: () =>
+//       import('../components/agency/home/home.component').then(
+//         (m) => m.HomeComponent
+//       ),
+//     canActivate: [agencyGuard],
+//   },
+//   {
+//     path: 'agency/signup',
+//     component: SignupComponent,
+//     canActivate: [agencyLoggedGuard],
+//   },
+//   {
+//     path: 'agency/login',
+//     component: LoginComponent,
+//     canActivate: [agencyLoggedGuard],
+//   },
+//   {
+//     path: 'agency/packages',
+//     component: PackagesComponent,
+//     canActivate: [agencyGuard],
+//   },
+// ];
 import { Routes } from '@angular/router';
 import { SignupComponent } from '../components/agency/signup/signup.component';
 import { LoginComponent } from '../components/agency/login/login.component';
 import { PackagesComponent } from '../components/agency/packages/packages.component';
-import { agencyGuard } from '../auth/guards/agency/agency-guard.guard';
-import { agencyLoggedGuard } from '../auth/guards/agency/logged-agency.guard';
+import { authGuard } from '../auth/guards/auth.guard';
+import { preventGuard } from '../auth/guards/logged.guard';
 
 export const agencyRouter: Routes = [
   { path: 'agency', redirectTo: 'agency/home', pathMatch: 'full' },
@@ -13,21 +46,25 @@ export const agencyRouter: Routes = [
       import('../components/agency/home/home.component').then(
         (m) => m.HomeComponent
       ),
-    canActivate: [agencyGuard],
+    canActivate: [authGuard],
+    data: { role: 'agency' },
   },
   {
     path: 'agency/signup',
     component: SignupComponent,
-    canActivate: [agencyLoggedGuard],
+    canActivate: [preventGuard],
+    data: { role: 'agency' },
   },
   {
     path: 'agency/login',
     component: LoginComponent,
-    canActivate: [agencyLoggedGuard],
+    canActivate: [preventGuard],
+    data: { role: 'agency' },
   },
   {
     path: 'agency/packages',
     component: PackagesComponent,
-    canActivate: [agencyGuard],
+    canActivate: [authGuard],
+    data: { role: 'agency' },
   },
 ];

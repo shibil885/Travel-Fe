@@ -4,7 +4,7 @@ import * as agencyActions from './agency.action';
 import { catchError, map, of, switchMap, tap } from 'rxjs';
 import { Router } from '@angular/router';
 import { AgencyService } from '../../shared/services/agency.service';
-import { AgencyAuthService } from '../../auth/services/agency/agency-auth.service';
+import { AuthService } from '../../auth/service.service';
 
 @Injectable()
 export class AgencyEffect {
@@ -12,17 +12,17 @@ export class AgencyEffect {
     private actions$: Actions,
     private agencyService: AgencyService,
     private router: Router,
-    private agencyAuth: AgencyAuthService,
+    private authService: AuthService,
   ) {}
 
   agencyLogin$ = createEffect(() =>
     this.actions$.pipe(
       ofType(agencyActions.agencyLogin),
       switchMap((data) =>
-        this.agencyAuth.login(data).pipe(
+        this.authService.login(data,'agency').pipe(
           map((data) => {
             return agencyActions.agencyLoginSuccess({
-              agency: data.agency,
+              agency: data['agency'],
             });
           }),
           catchError((error) => {
@@ -124,7 +124,7 @@ export class AgencyEffect {
         tap(() => {
         }),
         switchMap(() =>
-          this.agencyAuth.logout().pipe(
+          this.authService.logout('agency').pipe(
             tap(() => {
               this.router.navigate(['/agency/login']).then(() => {
               });

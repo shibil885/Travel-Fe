@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { AgencyAuthService } from '../../../auth/services/agency/agency-auth.service';
 import { CommonModule } from '@angular/common';
+import { AuthService } from '../../../auth/service.service';
 
 @Component({
   selector: 'app-header',
@@ -15,7 +15,7 @@ export class HeaderComponent {
   toggleMobileMenu() {
     this.isMobileMenuOpen = !this.isMobileMenuOpen;
   }
-  constructor(private authService: AgencyAuthService) { }
+  constructor(private authService: AuthService) { }
 
   logout(){
     this.authService.clearAccessToken();
