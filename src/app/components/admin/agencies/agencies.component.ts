@@ -60,7 +60,6 @@ export class AgenciesComponent implements OnInit {
   fetchAgencies(page: number) {
     this.adminService.getAllAgencies(page, this.limit).subscribe((response) => {
       this.agencies = response.agencies;
-      this.totalAgencies = response.totalAgencies;
       this.totalPages = response.totalPages;
       this.currentPage = response.currentPage;
     });

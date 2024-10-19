@@ -8,7 +8,7 @@ import {
   state,
 } from '@angular/animations';
 import { FormsModule } from '@angular/forms';
-import { Package } from '../../../../interfaces/package.interface';
+import { IPackage } from '../../../../interfaces/package.interface';
 import { PackageService } from '../../../../shared/services/package.service';
 import { ToastService } from '../../../../shared/services/toaster.service';
 import { MatIconModule } from '@angular/material/icon';
@@ -27,9 +27,9 @@ import { MatIconModule } from '@angular/material/icon';
   ],
 })
 export class SinglePackageComponent {
-  @Input() package!: Package;
+  @Input() package!: IPackage;
   @Output() closePageEvent = new EventEmitter();
-  editedPackage!: Package;
+  editedPackage!: IPackage;
   isEditing = false;
   currentImageIndex = 0;
   currentImage = '';

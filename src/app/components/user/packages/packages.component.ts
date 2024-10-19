@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { HeaderComponent } from '../header/header.component';
 import { trigger, transition, style, animate, query, stagger } from '@angular/animations';
-import { Package } from '../../../interfaces/package.interface';
+import { IPackage } from '../../../interfaces/package.interface';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
@@ -26,8 +26,8 @@ import { UserService } from '../../../shared/services/user.service';
   ],
 })
 export class PackagesComponent  {
-  packages: Package[] = [];
-  filteredPackages: Package[] = [];
+  packages: IPackage[] = [];
+  filteredPackages: IPackage[] = [];
   searchTerm: string = '';
   constructor( private userPackages: UserService ) {}
   ngOnInit() {

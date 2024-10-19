@@ -1,6 +1,6 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Package } from '../../interfaces/package.interface';
+import { IPackage } from '../../interfaces/package.interface';
 import { ICategory } from '../../interfaces/category.interface';
 
 @Injectable({
@@ -12,27 +12,37 @@ export class PackageService {
   constructor(private http: HttpClient) {}
 
   addPackages(packageData: FormData) {
-    return this.http.post<{success: boolean, message: string}>(`${this.api}/package/add`, packageData, {
+    return this.http.post<{ success: boolean; message: string }>(
+      `${this.api}/package/add`,
+      packageData,
+      {
+        withCredentials: true,
+      }
+    );
+  }
+
+  getCategories() {
+    return this.http.get<{
+      success: boolean;
+      message: string;
+      categories: ICategory[];
+    }>(`${this.api}/category/categories`, {
       withCredentials: true,
     });
   }
 
-  getCategories() { 
-    return this.http.get<{ success: boolean; message: string; categories: ICategory[]}>(
-      `${this.api}/category/categories`,
-      {
-        withCredentials: true,
-      }
-    );
-  }
-  
-  getPackages() { 
-    return this.http.get<{ success: boolean; message: string; packages: any }>(
-      `${this.api}/package/getAllPackages`,
-      {
-        withCredentials: true,
-      }
-    );
+  getPackages(page: number, limit: number) {
+    const params = new HttpParams().set('page', page).set('limit', limit);
+    return this.http.get<{
+      success: boolean;
+      message: string;
+      totalPages: number,
+      currentPage: number;
+      packages: IPackage[];
+    }>(`${this.api}/package/getAllPackages`, {
+      params,
+      withCredentials: true,
+    });
   }
 
   onChangeStatus(packageId: string | undefined, action: boolean) {
@@ -43,9 +53,13 @@ export class PackageService {
       { withCredentials: true }
     );
   }
-  onSaveChanges(chagedData: Package, packagId: string | undefined) {
-    return this.http.put<{message: string, success: boolean}>(`${this.api}/package/saveChanges/${packagId}`, chagedData, {
-      withCredentials: true,
-    });
+  onSaveChanges(chagedData: IPackage, packagId: string | undefined) {
+    return this.http.put<{ message: string; success: boolean }>(
+      `${this.api}/package/saveChanges/${packagId}`,
+      chagedData,
+      {
+        withCredentials: true,
+      }
+    );
   }
 }

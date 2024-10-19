@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, map, Observable, tap, throwError } from 'rxjs';
 import { IUser } from '../../models/user.model';
-import { Package } from '../../interfaces/package.interface';
+import { IPackage } from '../../interfaces/package.interface';
 import { AuthService } from '../../auth/service/service.service';
 
 @Injectable({
@@ -66,7 +66,7 @@ export class UserService {
     return this.http.get<{
       success: boolean;
       message: string;
-      packages: Package[];
+      packages: IPackage[];
     }>(`${this.api}/user/getPackages`, {
       withCredentials: true,
     });

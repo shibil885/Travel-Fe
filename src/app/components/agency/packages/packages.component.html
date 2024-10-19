@@ -19,7 +19,6 @@
             </div>
 
             <app-search (searchUsersEvent)="onSearch($event)" *ngIf="renderTableRelatedDatas"></app-search>
-
             <div class="overflow-x-auto" *ngIf="renderTableRelatedDatas">
                 <table class="min-w-full bg-white border border-gray-300">
                     <thead class="bg-[#244855] text-white">
@@ -32,7 +31,7 @@
                             <th class="px-4 py-2 border">Actions</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody *ngIf="packages.length">
                         <tr *ngFor="let package of packages" class="text-[#244855] text-center">
                             <td class="px-4 py-2 border">{{ package.name }}</td>
                             <td class="px-4 py-2 border">{{ package.category.name }}</td>
@@ -48,12 +47,21 @@
                                 <button class="text-green-600 text-sm hover:text-green-900"
                                     (click)="viewPackageDetails(package)">
                                     <mat-icon>open_in_new</mat-icon>
-
                                 </button>
                             </td>
                         </tr>
                     </tbody>
                 </table>
+                <p class="text-center text-gray-600 mt-8 mb-8 items-center" *ngIf="!packages.length"><b>No packages
+                        found for this
+                        agency</b>
+                </p>
+                <app-pagination
+                 [currentPage]="currentPage" 
+                 [itemsPerPage]="limit" 
+                 [totalItems]="totalPages"
+                 (pageChange)="onPageChange($event)">
+                </app-pagination>
             </div>
             <app-add-package *ngIf="renderAddForm" (addFormCloseEvent)="onAddFormClosedOrCompleted()"
                 @fadeInOut></app-add-package>

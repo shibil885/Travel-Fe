@@ -29,14 +29,13 @@ export const errorInterceptorFn: HttpInterceptorFn = (req, next) => {
         );
       } else if (error.status === 404) {
         toastService.showToast(
-          'Resource not found. Please try again.',
-          'error'
+          error.error.message,
+          error.error.info ? 'info' : 'error'
         );
       } else {
-        console.log('============>', error);
         toastService.showToast(
           `${error.error.message || 'An error occurred.'}`,
-          error.error.warning ? 'warning' : 'error'
+          error.error.warning ? 'warning' : error.error.info ? 'info' : 'error'
         );
       }
       return throwError(() => error);

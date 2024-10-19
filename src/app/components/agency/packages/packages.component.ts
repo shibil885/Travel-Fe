@@ -8,6 +8,8 @@ import { PackageService } from '../../../shared/services/package.service';
 import { AddPackageComponent } from './add-package/add-package.component';
 import { SinglePackageComponent } from './single-package/single-package.component';
 import { trigger, transition, style, animate } from '@angular/animations';
+import { IPackage } from '../../../interfaces/package.interface';
+import { PaginationComponent } from '../../../shared/components/pagination/pagination.component';
 @Component({
   selector: 'app-packages',
   standalone: true,
@@ -17,6 +19,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
     AddPackageComponent,
     SearchComponent,
     SinglePackageComponent,
+    PaginationComponent,
     MatIconModule,
     CommonModule,
   ],
@@ -37,11 +40,16 @@ export class PackagesComponent {
   renderAddForm!: boolean;
   renderSinglePackage!: boolean;
   singlePackage!: any;
-  packages!: any;
+  packages: IPackage[] = [];
+  limit: number = 5;
+  totalPages!: number;
+  currentPage: number = 1;
   constructor(private packageService: PackageService) {}
+
   ngOnInit(): void {
-    this.renderTableDatas();
+    this.renderTableData();
   }
+
   ngOnDestroy(): void {
     this.renderTableRelatedDatas = true;
     this.renderAddForm = false;
@@ -53,11 +61,20 @@ export class PackagesComponent {
     this.renderAddForm = true;
   }
 
-  renderTableDatas() {
+  renderTableData() {
     this.renderTableRelatedDatas = true;
-    this.packageService.getPackages().subscribe((res: any) => {
-      this.packages = res.packages;
-    });
+    this.packageService
+      .getPackages(this.currentPage, this.limit)
+      .subscribe((res) => {
+        this.packages = res.packages;
+        this.currentPage = res.currentPage;
+        this.totalPages = res.totalPages;
+      });
+  }
+
+  onPageChange(page: number) {
+    this.currentPage = page;
+    this.renderTableData()
   }
 
   viewPackageDetails(packag: any) {
@@ -76,6 +93,6 @@ export class PackagesComponent {
   onAddFormClosedOrCompleted() {
     this.renderAddForm = false;
     this.renderSinglePackage = false;
-    this.renderTableDatas();
+    this.renderTableData();
   }
 }

@@ -4,7 +4,7 @@ interface TourPlan {
     description: string;
   }
   
-  export interface Package {
+  export interface IPackage {
     _id?: string;
     name: string;
     category: any;

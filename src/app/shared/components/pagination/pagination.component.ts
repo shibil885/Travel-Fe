@@ -10,7 +10,7 @@ import { CommonModule } from '@angular/common';
 })
 export class PaginationComponent {
   @Input() totalItems = 0;
-  @Input() itemsPerPage = 2;
+  @Input() itemsPerPage = 5;
   @Input() currentPage: number = 1;
   @Output() pageChange = new EventEmitter<number>();
 
