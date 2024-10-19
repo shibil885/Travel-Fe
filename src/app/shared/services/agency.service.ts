@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { catchError, map, Observable, tap, throwError } from 'rxjs';
 import { IAgency } from '../../models/agency.model';
 import { Router } from '@angular/router';
-import { AuthService } from '../../auth/service.service';
+import { AuthService } from '../../auth/service/service.service';
 
 @Injectable({
   providedIn: 'root',

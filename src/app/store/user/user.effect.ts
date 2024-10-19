@@ -4,7 +4,7 @@ import * as userActions from '../user/user.action';
 import { catchError, map, of, switchMap, tap } from 'rxjs';
 import { Router } from '@angular/router';
 import { UserService } from '../../shared/services/user.service';
-import { AuthService } from '../../auth/service.service';
+import { AuthService } from '../../auth/service/service.service';
 
 @Injectable()
 export class UserEffect {

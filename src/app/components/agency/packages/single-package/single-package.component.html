@@ -1,5 +1,5 @@
   <!-- <div class="h-64 bg-[#E64833] absolute top-0 left-0 right-0"> -->
-    <mat-icon class="text-black ml-3 mt-3 text-xl cursor-pointer rounded-full hover:bg-gray-200 "
+    <mat-icon class="text-black fixed text-xl cursor-pointer rounded-full hover:bg-gray-200 "
         (click)="onCloseForm()">arrow_back
     </mat-icon>
 <!-- </div> -->
@@ -233,11 +233,12 @@
           <span class="text-[#FBE9D0] text-lg mr-4">Status:</span>
           <button (click)="toggleStatus(package._id)"
             [ngClass]="{'bg-green-500': package.isActive, 'bg-red-500': !package.isActive}"
-            class="px-4 py-2 rounded-full text-white font-semibold focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-[#244855] focus:ring-white">
+            class="px-4 py-2 rounded-full text-white font-semibold">
             {{ package.isActive ? 'Active' : 'Inactive' }}
           </button>
         </div>
       </div>
     </div>
+    
   </div>
 </div>

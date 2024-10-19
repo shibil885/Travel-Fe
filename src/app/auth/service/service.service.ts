@@ -26,7 +26,6 @@ export class AuthService {
   }
 
   login(loginData: any, role: 'admin' | 'agency' | 'user') {
-    console.log('------------------------>', role);
     const endpoints: { [key in 'admin' | 'agency' | 'user']: string } = {
       admin: `${this.api}/auth/admin`,
       agency: `${this.api}/auth/agency`,

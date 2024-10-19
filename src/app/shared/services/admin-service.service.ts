@@ -130,7 +130,7 @@ export class AdminService {
       params = params.append('isVerified', filters.isVerified.toString());
     if (filters.isConfirmed !== undefined)
       params = params.append('isConfirmed', filters.isConfirmed.toString());
-    return this.http.post(`${this.api}/admin/filter`, { user }, { params });
+    return this.http.post(`${this.api}/admin/filter`, { user }, { params, withCredentials: true });
   }
 
   searchUsers(searchText: string, user: string) {
@@ -138,7 +138,7 @@ export class AdminService {
     return this.http.post(
       `${this.api}/admin/searchUsers`,
       { user },
-      { params }
+      { params, withCredentials: true }
     );
   }
 }

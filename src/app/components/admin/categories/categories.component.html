@@ -13,7 +13,6 @@
           </button>
         </div>
         <app-search></app-search>
-        <!-- Add/Edit Category Form -->
         <div *ngIf="showAddForm" class="p-5 bg-white shadow-md rounded-lg">
           <form [formGroup]="categoryForm" (ngSubmit)="onSubmit()" class="space-y-4">
             <div class="mb-4">

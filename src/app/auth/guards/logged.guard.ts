@@ -2,7 +2,7 @@ import { inject } from '@angular/core';
 import { Router, CanActivateFn } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { catchError, switchMap, map } from 'rxjs/operators';
-import { AuthService } from '../service.service';
+import { AuthService } from '../service/service.service';
 
 export const preventGuard: CanActivateFn = (route): Observable<boolean> => {
   const authService = inject(AuthService);
@@ -10,7 +10,6 @@ export const preventGuard: CanActivateFn = (route): Observable<boolean> => {
   const role = route.data['role'];
 
   const accessToken = authService.getAccessToken();
-
   if (accessToken) {
     return authService.validateToken().pipe(
       switchMap((res) => {
@@ -37,20 +36,29 @@ export const preventGuard: CanActivateFn = (route): Observable<boolean> => {
                     return true;
                   }
                 }),
-                catchError(() => {
+                catchError((error) => {
+                  if (error.status === 0) {
+                    console.error('Server is unreachable, breaking the loop');
+                  }
                   handleUnauthenticated(router, role);
                   return of(true);
                 })
               );
             }),
-            catchError(() => {
+            catchError((error) => {
+              if (error.status === 0) {
+                console.error('Server is unreachable, breaking the loop');
+              }
               handleUnauthenticated(router, role);
               return of(true);
             })
           );
         }
       }),
-      catchError(() => {
+      catchError((error) => {
+        if (error.status === 0) {
+          console.error('Server is unreachable, breaking the loop');
+        }
         handleUnauthenticated(router, role);
         return of(true);
       })
@@ -58,6 +66,7 @@ export const preventGuard: CanActivateFn = (route): Observable<boolean> => {
   }
   return of(true);
 };
+
 function handleUnauthenticated(router: Router, role: string) {
   if (role === 'user') {
     router.navigate([`/login`]);
@@ -77,7 +86,6 @@ function handleUnauthorized(router: Router, role: string) {
     case 'agency':
       router.navigate([`${role}/home`]);
       break;
-
     default:
       router.navigate([`${role}/home`]);
       break;

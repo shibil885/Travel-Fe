@@ -4,7 +4,7 @@ import * as agencyActions from './agency.action';
 import { catchError, map, of, switchMap, tap } from 'rxjs';
 import { Router } from '@angular/router';
 import { AgencyService } from '../../shared/services/agency.service';
-import { AuthService } from '../../auth/service.service';
+import { AuthService } from '../../auth/service/service.service';
 
 @Injectable()
 export class AgencyEffect {
@@ -77,7 +77,6 @@ export class AgencyEffect {
       switchMap((data) =>
         this.agencyService.verifyOtp({ otp: data.otp, email: data.email }).pipe(
           map((response) => {
-            console.log('from verify otp');
             return agencyActions.agencySignupSuccess({
               agency: response.agency,
             });

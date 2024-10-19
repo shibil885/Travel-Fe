@@ -68,7 +68,6 @@ export class AgenciesComponent implements OnInit {
 
   onPageChange(page: number) {
     this.currentPage = page;
-    console.log('page from parent', page);
     this.fetchAgencies(page);
   }
 

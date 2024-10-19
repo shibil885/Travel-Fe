@@ -1,94 +1,8 @@
-// import { inject } from '@angular/core';
-// import { Router, CanActivateFn, ActivatedRouteSnapshot } from '@angular/router';
-// import { Observable, of } from 'rxjs';
-// import { map, switchMap, catchError } from 'rxjs/operators';
-// import { AuthService } from '../service.service';
-
-// export const authGuard: CanActivateFn = (
-//   route: ActivatedRouteSnapshot
-// ): Observable<boolean> => {
-//   const authService = inject(AuthService);
-//   const injectedRouter = inject(Router);
-//   const accessToken = authService.getAccessToken();
-//   const requestedRole = route.data['role'];
-//   console.log('Requested user role:', requestedRole);
-
-//   if (accessToken) {
-//     return authService.validateToken().pipe(
-//       switchMap((res) => {
-//         console.log('user in token', res);
-//         if (res.role === requestedRole) {
-//           if (res.valid) {
-//             return of(true);
-//           } else {
-//             return authService.refreshToken().pipe(
-//               switchMap((newAccessToken: string) => {
-//                 authService.setAccessToken(newAccessToken);
-//                 return authService.validateToken().pipe(
-//                   map((refreshRes) => {
-//                     if (refreshRes.valid && refreshRes.role === requestedRole) {
-//                       return true;
-//                     } else {
-//                       handleUnauthenticated(injectedRouter, requestedRole);
-//                       return false;
-//                     }
-//                   }),
-//                   catchError((error) => {
-//                     console.error(
-//                       'Error during token validation after refresh:',
-//                       error
-//                     );
-//                     handleUnauthenticated(injectedRouter, requestedRole);
-//                     return of(false);
-//                   })
-//                 );
-//               }),
-//               catchError((error) => {
-//                 console.error('Error during token refresh:', error);
-//                 handleUnauthenticated(injectedRouter, requestedRole);
-//                 return of(false);
-//               })
-//             );
-//           }
-//         } else {
-//           return of(false);
-//         }
-//       }),
-//       catchError((error) => {
-//         console.error('Error during token validation:', error);
-//         handleUnauthenticated(injectedRouter, requestedRole);
-//         return of(false);
-//       })
-//     );
-//   }
-
-//   handleUnauthenticated(injectedRouter, requestedRole);
-//   return of(false);
-// };
-
-// function handleUnauthenticated(router: Router, role: string): void {
-//   //   switch (role) {
-//   //     case 'user':
-//   //       router.navigate(['/login']);
-//   //       break;
-//   //     case 'admin':
-//   //       router.navigate(['/admin/login']);
-
-//   //       break;
-//   //     case 'agency':
-//   //       router.navigate(['/agency/login']);
-//   //       break;
-//   //     default:
-//   //       router.navigate(['/agency/login']);
-//   //       break;
-//   //   }
-//   router.navigate(['/login']);
-// }
 import { inject } from '@angular/core';
 import { Router, CanActivateFn, ActivatedRouteSnapshot } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { switchMap, catchError } from 'rxjs/operators';
-import { AuthService } from '../service.service';
+import { AuthService } from '../service/service.service';
 
 export const authGuard: CanActivateFn = (
   route: ActivatedRouteSnapshot
@@ -114,6 +28,9 @@ export const authGuard: CanActivateFn = (
             }),
             catchError((error) => {
               console.error('Error during token refresh:', error);
+              if (error.status === 0) {
+                console.error('Server is unreachable, breaking the loop');
+              }
               handleUnauthenticated(injectedRouter, requestedRole);
               return of(false);
             })
@@ -125,11 +42,15 @@ export const authGuard: CanActivateFn = (
       }),
       catchError((error) => {
         console.error('Error during token validation:', error);
+        if (error.status === 0) {
+          console.error('Server is unreachable, breaking the loop');
+        }
         handleUnauthenticated(injectedRouter, requestedRole);
         return of(false);
       })
     );
   }
+
   handleUnauthenticated(injectedRouter, requestedRole);
   return of(false);
 };

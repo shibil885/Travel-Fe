@@ -11,13 +11,17 @@ export class CategoryService {
   constructor(private http: HttpClient) {}
 
   getCategories(): Observable<any> {
-    return this.http.get(`${this.api}/categories`);
+    return this.http.get(`${this.api}/categories`, { withCredentials: true });
   }
 
   addCategory(category: any): Observable<any> {
-    return this.http.post(`${this.api}/add`, category);
+    return this.http.post(`${this.api}/add`, category, {
+      withCredentials: true,
+    });
   }
   updateCategory(id: string | null, category: any) {
-    return this.http.put(`${this.api}/edit/${id}`, category);
+    return this.http.put(`${this.api}/edit/${id}`, category, {
+      withCredentials: true,
+    });
   }
 }

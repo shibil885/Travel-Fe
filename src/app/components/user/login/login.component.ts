@@ -22,19 +22,28 @@ import { OtpComponent } from '../otp/otp.component';
 export class LoginComponent {
   reactiveForm!: FormGroup;
   invalidForm!: boolean;
-  renderOtp$ = this.store.select(selectRenderOtpUser);
-  renderLogin!: boolean;
-  constructor(private store: Store) {}
+  renderLogin: boolean = true;
+  renderOtp: boolean = false;
+  constructor(private store: Store) {
+    this.store.select(selectRenderOtpUser).subscribe((res) => {
+      this.renderOtp = res;
+      this.renderLogin = false;
+    });
+  }
   ngOnInit(): void {
     this.reactiveForm = new FormGroup({
       email: new FormControl(null, [Validators.required, Validators.email]),
       password: new FormControl(null, [Validators.required]),
     });
     this.renderLogin = true;
+    this.renderOtp = false
+  }
+  ngOnDestroy(): void {
+    this.renderLogin = true;
+    this.renderOtp = false
   }
   onSubmitting() {
     const formValue = this.reactiveForm.value;
-    console.log(this.reactiveForm);
     if (this.reactiveForm.invalid) {
       this.invalidForm = true;
       return;
@@ -48,6 +57,5 @@ export class LoginComponent {
         password: formValue.password,
       })
     );
-    this.renderLogin = false;
   }
 }

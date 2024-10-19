@@ -90,6 +90,7 @@ export class SinglePackageComponent {
 
   toggleStatus(packageId: string | undefined) {
     if (this.package.isActive) {
+      this.package.isActive = !this.package.isActive;
       this.packageService.onChangeStatus(packageId, false)?.subscribe();
       return;
     }

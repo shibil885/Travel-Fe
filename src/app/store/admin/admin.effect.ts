@@ -4,7 +4,7 @@ import * as adminActions from '../admin/admin.action';
 import { catchError, map, of, switchMap, tap } from 'rxjs';
 
 import { Router } from '@angular/router';
-import { AuthService } from '../../auth/service.service';
+import { AuthService } from '../../auth/service/service.service';
 
 @Injectable()
 export class AdminEffects {

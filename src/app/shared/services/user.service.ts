@@ -2,15 +2,15 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, map, Observable, tap, throwError } from 'rxjs';
 import { IUser } from '../../models/user.model';
-import { UserAuthService } from '../../auth/services/user/user-auth.service';
 import { Package } from '../../interfaces/package.interface';
+import { AuthService } from '../../auth/service/service.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
   api = 'http://localhost:3000';
-  constructor(private http: HttpClient, private authService: UserAuthService) {}
+  constructor(private http: HttpClient, private authService: AuthService) {}
 
   findEmail(email: string) {
     return this.http
@@ -31,39 +31,44 @@ export class UserService {
     console.log('formdata', formData);
     return this.http.post<{ user: IUser; message: string; success: boolean }>(
       `${this.api}/user/signup`,
-      formData
+      formData,
+      { withCredentials: true }
     );
   }
   verifyOtpUser(formData: {
     otp: string;
     email: string | null | undefined;
   }): Observable<any> {
-    return this.http.post<{
-      message: string;
-      success: boolean;
-      user: IUser;
-      token: string;
-    }>(`${this.api}/otp/user`, formData).pipe(
-      map((response) => {
-        this.authService.setAccessToken(response.token);
-        return response;
-      }),
-    );
+    return this.http
+      .post<{
+        message: string;
+        success: boolean;
+        user: IUser;
+        token: string;
+      }>(`${this.api}/otp/user`, formData, { withCredentials: true })
+      .pipe(
+        map((response) => {
+          this.authService.setAccessToken(response.token);
+          return response;
+        })
+      );
   }
-  
-  resendOtp(formData: { email: string | null| undefined }): Observable<any> {
+
+  resendOtp(formData: { email: string | null | undefined }): Observable<any> {
     return this.http.post<{ user: IUser; success: boolean; message: string }>(
       `${this.api}/otp/resend`,
-      formData
+      formData,
+      { withCredentials: true }
     );
   }
   getPackages() {
-    console.log('ddddddddddddd')
-    return this.http.get<{ success: boolean; message: string; packages: Package[] }>(
-      `${this.api}/user/getPackages`,
-      {
-        withCredentials: true,
-      }
-    );
+    console.log('ddddddddddddd');
+    return this.http.get<{
+      success: boolean;
+      message: string;
+      packages: Package[];
+    }>(`${this.api}/user/getPackages`, {
+      withCredentials: true,
+    });
   }
 }

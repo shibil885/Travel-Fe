@@ -9,23 +9,28 @@
         <div>
           <label for="email" class="block text-sm font-medium text-gray-800">Email address</label>
           <input id="email" name="email" type="email"
-            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-gray-500 focus:border-gray-500 sm:text-sm" formControlName="email">
-            <small class="text-red-500" *ngIf="reactiveForm.get('email')?.errors?.['required'] && reactiveForm.get('email')?.touched">
-              *Email is required
-            </small>
-            <small class="text-red-500" *ngIf="reactiveForm.get('email')?.errors?.['email'] && reactiveForm.get('email')?.touched">
-              *Invalid email
-            </small>
+            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-gray-500 focus:border-gray-500 sm:text-sm"
+            formControlName="email">
+          <small class="text-red-500"
+            *ngIf="reactiveForm.get('email')?.errors?.['required'] && reactiveForm.get('email')?.touched">
+            *Email is required
+          </small>
+          <small class="text-red-500"
+            *ngIf="reactiveForm.get('email')?.errors?.['email'] && reactiveForm.get('email')?.touched">
+            *Invalid email
+          </small>
         </div>
         <div>
           <label for="password" class="block text-sm font-medium text-gray-800">Password</label>
           <input id="password" name="password" type="password"
-            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-gray-500 focus:border-gray-500 sm:text-sm" formControlName="password">
-            <small class="text-red-500" *ngIf="reactiveForm.get('password')?.errors?.['required'] && reactiveForm.get('password')?.touched">
-              *Password is required
-            </small>
+            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-gray-500 focus:border-gray-500 sm:text-sm"
+            formControlName="password">
+          <small class="text-red-500"
+            *ngIf="reactiveForm.get('password')?.errors?.['required'] && reactiveForm.get('password')?.touched">
+            *Password is required
+          </small>
         </div>
-        <div class="flex items-center justify-between">  
+        <div class="flex items-center justify-between">
           <div class="text-sm">
             <a href="#" class="font-medium text-gray-600 hover:text-gray-500"> Forgot your password? </a>
           </div>
@@ -39,10 +44,11 @@
       </div>
       <div class="mt-4 text-center">
         <p class="text-sm text-gray-600">
-          Don't have an account? <a href="#" class="font-medium text-gray-600 hover:text-gray-500" [routerLink]="[ '/signup' ]"> Sign up </a>
+          Don't have an account? <a href="#" class="font-medium text-gray-600 hover:text-gray-500"
+            [routerLink]="[ '/signup' ]"> Sign up </a>
         </p>
       </div>
     </form>
   </div>
-  <app-otp *ngIf="renderOtp$ | async"></app-otp>
+  <app-otp *ngIf="renderOtp"></app-otp>
 </div>
