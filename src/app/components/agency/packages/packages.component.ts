@@ -42,7 +42,7 @@ export class PackagesComponent {
   singlePackage!: any;
   packages: IPackage[] = [];
   limit: number = 5;
-  totalPages!: number;
+  totalItems!: number;
   currentPage: number = 1;
   constructor(private packageService: PackageService) {}
 
@@ -66,9 +66,10 @@ export class PackagesComponent {
     this.packageService
       .getPackages(this.currentPage, this.limit)
       .subscribe((res) => {
+        console.log(res);
         this.packages = res.packages;
         this.currentPage = res.currentPage;
-        this.totalPages = res.totalPages;
+        this.totalItems = res.totalItems;
       });
   }
 
@@ -85,7 +86,13 @@ export class PackagesComponent {
   }
 
   onSearch(searchText: string) {
-    console.log(searchText);
+    if( searchText.length === 0 ){
+      this.renderTableData();
+      return
+    }
+    this.packageService.onSearchPackages(searchText).subscribe((res) =>{
+      this.packages = res.packages;
+    })
   }
 
   showSortAndFilter() {}

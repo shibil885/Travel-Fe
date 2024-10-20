@@ -18,15 +18,7 @@ export class AdminService {
       .set('limit', limit.toString());
 
     return this.http
-      .get(`${this.api}/admin/agencies`, { params, withCredentials: true })
-      .pipe(
-        map((response: any) => ({
-          agencies: response.agencies,
-          totalAgencies: response.totalAgencies,
-          totalPages: response.totalPages,
-          currentPage: response.currentPage,
-        }))
-      );
+      .get(`${this.api}/admin/agencies`, { params, withCredentials: true });
   }
   getAllUsers(page: number = 1, limit: number): Observable<any> {
     const params = new HttpParams()

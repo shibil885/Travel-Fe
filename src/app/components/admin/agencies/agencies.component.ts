@@ -35,7 +35,6 @@ import { PaginationComponent } from '../../../shared/components/pagination/pagin
 export class AgenciesComponent implements OnInit {
   agencies: any = [];
   totalAgencies: number = 0;
-  totalPages: number = 0;
   currentPage: number = 1;
   limit: number = 5;
 
@@ -59,9 +58,10 @@ export class AgenciesComponent implements OnInit {
 
   fetchAgencies(page: number) {
     this.adminService.getAllAgencies(page, this.limit).subscribe((response) => {
+      console.log(response);
       this.agencies = response.agencies;
-      this.totalPages = response.totalPages;
       this.currentPage = response.currentPage;
+      this.totalAgencies = response.totalAgencies;
     });
   }
 

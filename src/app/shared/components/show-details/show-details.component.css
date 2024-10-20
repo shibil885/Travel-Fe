@@ -5,12 +5,12 @@
   }
   
   .badge-success {
-    background-color: #34d399; /* Green color */
+    background-color: #34d399;
     color: white;
   }
   
   .badge-danger {
-    background-color: #ef4444; /* Red color */
+    background-color: #ef4444; 
     color: white;
   }
   

@@ -9,9 +9,10 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./pagination.component.css']
 })
 export class PaginationComponent {
-  @Input() totalItems = 0;
+  @Input() totalItems!: number;
   @Input() itemsPerPage = 5;
   @Input() currentPage: number = 1;
+  @Input() typeOfUser!: string;
   @Output() pageChange = new EventEmitter<number>();
 
   get totalPages(): number {

@@ -17,18 +17,26 @@ export class ShowDetailsComponent {
     private adminService: AdminService
   ) {
     this.isUser = !!data.username;
+    console.log('dataaaa', data);
   }
   toggleActive(id: string, isActiveValue: boolean) {
     const action = isActiveValue ? 'block' : 'unblock';
-    this.adminService.changeUserStatus(id, action).subscribe(() =>{
+    if (this.isUser) {
+      this.adminService.changeUserStatus(id, action).subscribe(() => {
+        this.data.isActive = !this.data.isActive;
+        return;
+      });
+    }
+    this.adminService.changeAgencyStatus(id, action).subscribe(() => {
       this.data.isActive = !this.data.isActive;
-    })
+      return;
+    });
   }
   toggleConfirmed(id: string, isConfirmedValue: boolean) {
     const action = isConfirmedValue ? 'declin' : 'confirm';
     this.adminService.confirmation(id, action).subscribe(() => {
       this.data.isConfirmed = !this.data.isConfirmed;
-    })
+    });
   }
   closeComponent() {
     this.dialogRef.close();

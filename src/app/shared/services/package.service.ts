@@ -36,7 +36,7 @@ export class PackageService {
     return this.http.get<{
       success: boolean;
       message: string;
-      totalPages: number,
+      totalItems: number;
       currentPage: number;
       packages: IPackage[];
     }>(`${this.api}/package/getAllPackages`, {
@@ -61,5 +61,12 @@ export class PackageService {
         withCredentials: true,
       }
     );
+  }
+  onSearchPackages(searchText: string) {
+    const params = new HttpParams().set('searchText', searchText);
+    return this.http.get<{success: boolean, packages: IPackage[]}>(`${this.api}/package/searchPackage`, {
+      params,
+      withCredentials: true,
+    });
   }
 }

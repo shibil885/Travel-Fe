@@ -36,7 +36,7 @@
                             <td class="px-4 py-2 border">{{ package.name }}</td>
                             <td class="px-4 py-2 border">{{ package.category.name }}</td>
                             <td class="px-4 py-2 border">{{ package.country }}</td>
-                            <td class="px-4 py-2 border">{{ 2000 | currency:'INR' }}</td>
+                            <td class="px-4 py-2 border">{{ package.price | currency:'INR' }}</td>
                             <td class="px-4 py-2 border">
                                 <span
                                     class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ package.isActive ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
@@ -56,11 +56,8 @@
                         found for this
                         agency</b>
                 </p>
-                <app-pagination
-                 [currentPage]="currentPage" 
-                 [itemsPerPage]="limit" 
-                 [totalItems]="totalPages"
-                 (pageChange)="onPageChange($event)">
+                <app-pagination [currentPage]="currentPage" [itemsPerPage]="limit" [totalItems]="totalItems"
+                    [typeOfUser]="'agency'" (pageChange)="onPageChange($event)">
                 </app-pagination>
             </div>
             <app-add-package *ngIf="renderAddForm" (addFormCloseEvent)="onAddFormClosedOrCompleted()"
