@@ -33,7 +33,7 @@
       </button>
       <small class="my-3 text-red-500 text-center" *ngIf="invalidForm ">Fill all inputes</small>
       <p class="mt-6 text-center text-sm text-gray-400">
-        Don't have an account? <a href="/register" class="text-teal-500 hover:text-teal-400">Register here</a>
+        Don't have an account? <a  [routerLink]="[ '/agency/signup' ]" class="text-teal-500 hover:text-teal-400">Register here</a>
       </p>
     </form>
   </div>

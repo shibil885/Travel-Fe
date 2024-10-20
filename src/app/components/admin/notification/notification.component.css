@@ -1,0 +1,20 @@
+.notification-card {
+    transition: all 0.3s ease;
+  }
+  
+  .notification-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .priority-1 {
+    border-left: 4px solid #EF4444;
+  }
+  
+  .priority-2 {
+    border-left: 4px solid #F59E0B;
+  }
+  
+  .priority-3 {
+    border-left: 4px solid #10B981;
+  }

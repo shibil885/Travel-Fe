@@ -14,10 +14,11 @@ import {
   selectRenderOtpAgency,
 } from '../../../store/agency/agency.selector';
 import * as agencyActions from '../../../store/agency/agency.action';
+import { RouterModule } from '@angular/router';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [OtpComponent, ReactiveFormsModule, CommonModule],
+  imports: [OtpComponent, ReactiveFormsModule, CommonModule, RouterModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
 })

@@ -1,8 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component, HostListener, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { logout } from '../../../store/admin/admin.action';
+import { NotificationService } from '../../../shared/services/notification.service';
 
 @Component({
   selector: 'app-side-bar',
@@ -14,8 +15,13 @@ import { logout } from '../../../store/admin/admin.action';
 export class SideBarComponent {
   @Input() isCollapsed = false;
   isMobileView = false;
+  notificationCount: number = 0;
 
-  constructor(private store: Store) {}
+  constructor(
+    private store: Store,
+    private notificationService: NotificationService
+  ) {}
+
   menuItems = [
     {
       label: 'Dashboard',
@@ -39,10 +45,16 @@ export class SideBarComponent {
     },
   ];
 
+  ngOnInit(): void {
+    this.notificationService.getAllUnreadNotifications().subscribe((res) => {
+      this.notificationCount = res.length;
+    });
+  }
   toggleSidebar() {
     this.isCollapsed = !this.isCollapsed;
   }
+
   logout() {
-    this.store.dispatch(logout())
+    this.store.dispatch(logout());
   }
 }

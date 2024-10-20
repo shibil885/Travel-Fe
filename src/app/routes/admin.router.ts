@@ -93,4 +93,13 @@ export const adminRouter: Routes = [
     canActivate: [authGuard],
     data: { role: 'admin' },
   },
+  {
+    path: 'admin/notification',
+    loadComponent: () =>
+      import('../components/admin/notification/notification.component').then(
+        (m) => m.NotificationComponent
+      ),
+    canActivate: [authGuard],
+    data: { role: 'admin' },
+  },
 ];
