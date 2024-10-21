@@ -1,99 +1,81 @@
-<div class="flex h-screen bg-[#F1F1F2]">
+<main class="flex h-screen bg-[#F1F1F2]">
+  <aside>
     <app-side-bar></app-side-bar>
-    <div class="flex-1 flex flex-col overflow-hidden">
+  </aside>
+  <div class="flex-1 flex flex-col overflow-hidden">
+    <header>
       <app-header></app-header>
-      <main class="flex-1 overflow-y-auto bg-[#F1F1F2] p-6 sm:p-4 relative">
-        <div class="flex justify-between items-center mx-auto p-5">
-          <h2 class="text-2xl font-semibold">Categories</h2>
-          <button
-            class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300"
-            (click)="toggleAddForm()"
-          >
-            {{ showAddForm ? 'Cancel' : 'Add Category' }}
-          </button>
-        </div>
-        <app-search></app-search>
-        <div *ngIf="showAddForm" class="p-5 bg-white shadow-md rounded-lg">
-          <form [formGroup]="categoryForm" (ngSubmit)="onSubmit()" class="space-y-4">
-            <div class="mb-4">
-              <label class="block text-gray-700 text-sm font-semibold mb-2" for="name">
-                Name
-              </label>
-              <input
-                type="text"
-                id="name"
-                formControlName="name"
-                class="shadow appearance-none border border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                placeholder="Enter category name"
-              />
-            </div>
-            <div class="mb-4">
-              <label class="block text-gray-700 text-sm font-semibold mb-2" for="description">
-                Description
-              </label>
-              <input
-                type="text"
-                id="description"
-                formControlName="description"
-                class="shadow appearance-none border border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                placeholder="Enter category description"
-              />
-            </div>
-            <button
-              type="submit"
-              class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition duration-300"
-              [disabled]="categoryForm.invalid"
-            >
-              {{ editMode ? 'Update Category' : 'Add Category' }}
-            </button>
-          </form>
-        </div>
-  
-        <!-- Category Table -->
-        <div *ngIf="!showAddForm" class="p-5 bg-white shadow-md rounded-lg mt-4">
-          <div class="overflow-x-auto">
-            <table class="min-w-full divide-y divide-gray-200">
-              <thead class="bg-gray-100">
-                <tr>
-                  <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                    Name
-                  </th>
-                  <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                    Description
-                  </th>
-                  <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                    Status
-                  </th>
-                  <th class="px-6 py-3 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                    Actions
-                  </th>
-                </tr>
-              </thead>
-              <tbody class="bg-white divide-y divide-gray-200">
-                <tr *ngFor="let category of categories">
-                  <td class="px-6 py-4 whitespace-nowrap">{{ category.name }}</td>
-                  <td class="px-6 py-4 whitespace-nowrap">{{ category.description }}</td>
-                  <td class="px-6 py-4 whitespace-nowrap">
-                    <span
-                      class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ category.isActive ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}"
-                    >
-                      {{ category.isActive ? 'Active' : 'Inactive' }}
-                    </span>
-                  </td>
-                  <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                    <button
-                      class="text-indigo-600 hover:text-indigo-900 mr-4"
-                      (click)="onEdit(category)"
-                    >
-                      Edit
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+    </header>
+    <section class="flex-1 overflow-y-auto bg-[#F1F1F2] sm:p-4 relative">
+      <div class="flex justify-between items-center mx-auto mt-auto mb-4">
+        <h2 class="text-2xl font-semibold text-[#3D52A0]">Categories</h2>
+        <button class="bg-[#3D52A0] hover:bg-[#7091E6] text-white font-bold py-2 px-4 rounded transition duration-300"
+          (click)="toggleAddForm()">
+          {{ showAddForm ? 'Cancel' : 'Add' }}
+        </button>
+      </div>
+      <app-search></app-search>
+      <div *ngIf="showAddForm" class="p-6 bg-[#EDE8F5] shadow-lg rounded-lg mt-6">
+        <form [formGroup]="categoryForm" (ngSubmit)="onSubmit()" class="space-y-6">
+          <div>
+            <label class="block text-[#3D52A0] text-sm font-semibold mb-2" for="name">Name</label>
+            <input type="text" id="name" formControlName="name"
+              class="shadow-sm appearance-none border border-[#8697C4] rounded-lg w-full py-2 px-4 text-[#3D52A0] leading-tight focus:outline-none focus:ring-2 focus:ring-[#7091E6] focus:border-transparent"
+              placeholder="Enter category name" />
           </div>
-        </div>
-      </main>
-    </div>
+          <div>
+            <label class="block text-[#3D52A0] text-sm font-semibold mb-2" for="description">Description</label>
+            <input type="text" id="description" formControlName="description"
+              class="shadow-sm appearance-none border border-[#8697C4] rounded-lg w-full py-2 px-4 text-[#3D52A0] leading-tight focus:outline-none focus:ring-2 focus:ring-[#7091E6] focus:border-transparent"
+              placeholder="Enter category description" />
+          </div>
+          <button type="submit"
+            class="bg-[#3D52A0] hover:bg-[#7091E6] text-white font-bold py-2 px-4 rounded-lg transition duration-300"
+            [disabled]="categoryForm.invalid">
+            {{ editMode ? 'Update Category' : 'Add Category' }}
+          </button>
+        </form>
+      </div>
+      <div *ngIf="!showAddForm" class="relative overflow-x-auto shadow-md sm:rounded-lg mt-6">
+        <table class="w-full text-sm text-left rtl:text-right text-gray-700 bg-[#EDE8F5]">
+          <thead class="text-xs uppercase bg-[#8697C4] text-gray-700">
+            <tr>
+              <th scope="col" class="px-6 py-3" *ngFor="let head of headers">
+                {{ head.label }}
+              </th>
+              <th>View</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let cell of categories" class="bg-[#EDE8F5] border-b border-gray-300 hover:bg-gray-100">
+              <td class="px-6 py-4" *ngFor="let column of headers">
+                <ng-container *ngIf="column.key === 'isActive'; else otherContents">
+                  <span [ngClass]="cell['isActive'] ? 'bg-red-500 hover:bg-red-600' : 'bg-green-500 hover:bg-green-600'"
+                    class="text-white px-4 py-1 rounded-xl text-center cursor-pointer shadow-sm hover:shadow-lg"
+                    (click)="changeStatus(cell._id, cell.isActive)">
+                    {{ cell['isActive'] ? 'Set Inactive' : 'Set Active' }}
+                  </span>
+                </ng-container>
+                <ng-template #otherContents>
+                  <ng-container *ngIf="column.key === 'description'; else normalContent">
+                    {{ cell[column.key] | truncate:50 }}
+                  </ng-container>
+                  <ng-template #normalContent>
+                    {{ cell[column.key] }}
+                  </ng-template>
+                </ng-template>
+              </td>
+              <td class="text-green-500 cursor-pointer">
+                <i class="fa-solid fa-pen-to-square" (click)="onEdit(cell)"></i>
+              </td>
+            </tr>
+          </tbody>
+
+        </table>
+      </div>
+      <app-pagination [totalItems]="totalCategories" [itemsPerPage]="limit" [currentPage]="currentPage"
+        [typeOfUser]="'admin'" (pageChange)="onPageChange($event)">
+      </app-pagination>
+    </section>
   </div>
-  
+</main>

@@ -1,30 +1,57 @@
-import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
-import { CategoryService } from '../../../shared/services/categories.service';  // Adjust the path
+import { Component } from '@angular/core';
+import {
+  FormGroup,
+  FormControl,
+  Validators,
+  ReactiveFormsModule,
+} from '@angular/forms';
+import { CategoryService } from '../../../shared/services/categories.service';
 import { HeaderComponent } from '../header/header.component';
 import { SideBarComponent } from '../side-bar/side-bar.component';
 import { SearchComponent } from '../../../shared/components/search/search.component';
 import { CommonModule } from '@angular/common';
+import { PaginationComponent } from '../../../shared/components/pagination/pagination.component';
+import { TruncatePipe } from '../../../shared/pipes/truncate.pipe';
+import { ToastService } from '../../../shared/services/toaster.service';
 
 @Component({
   selector: 'app-categories',
-  standalone:true,
-  imports: [HeaderComponent,SideBarComponent, SearchComponent, ReactiveFormsModule, CommonModule],
+  standalone: true,
+  imports: [
+    HeaderComponent,
+    SideBarComponent,
+    SearchComponent,
+    PaginationComponent,
+    TruncatePipe,
+    ReactiveFormsModule,
+    CommonModule,
+  ],
   templateUrl: './categories.component.html',
-  styleUrls: ['./categories.component.css']
+  styleUrls: ['./categories.component.css'],
 })
-export class CategoriesComponent implements OnInit {
+export class CategoriesComponent {
   categories: any = [];
+  totalCategories!: number;
+  limit: number = 5;
+  currentPage: number = 1;
   showAddForm = false;
   editMode = false;
   currentCategoryId: string | null = null;
+  headers = [
+    { label: 'Name', key: 'name' },
+    { label: 'Description', key: 'description' },
+    { label: 'Status', key: 'isActive' },
+  ];
 
   categoryForm = new FormGroup({
     name: new FormControl('', [Validators.required]),
     description: new FormControl('', [Validators.required]),
   });
 
-  constructor(private categoryService: CategoryService) {}
+  constructor(
+    private categoryService: CategoryService,
+    private tosterService: ToastService
+  ) {}
 
   ngOnInit() {
     this.getCategories();
@@ -38,9 +65,13 @@ export class CategoriesComponent implements OnInit {
   }
 
   getCategories() {
-    this.categoryService.getCategories().subscribe((data) => {
-      this.categories = data.categories;
-    });
+    this.categoryService
+      .getCategories(this.currentPage, this.limit)
+      .subscribe((data) => {
+        this.categories = data.categories;
+        this.totalCategories = data.totalCategories;
+        this.currentPage = data.currentPage;
+      });
   }
 
   onSubmit() {
@@ -53,11 +84,12 @@ export class CategoriesComponent implements OnInit {
             this.toggleAddForm();
           });
       } else {
-        // Add new category
-        this.categoryService.addCategory(this.categoryForm.value).subscribe(() => {
-          this.getCategories();
-          this.toggleAddForm();
-        });
+        this.categoryService
+          .addCategory(this.categoryForm.value)
+          .subscribe(() => {
+            this.getCategories();
+            this.toggleAddForm();
+          });
       }
     }
   }
@@ -69,6 +101,27 @@ export class CategoriesComponent implements OnInit {
     this.categoryForm.patchValue({
       name: category.name,
       description: category.description,
+    });
+  }
+  onSearch(searchText: Event) {
+    console.log(searchText);
+  }
+  onPageChange(page: number) {
+    this.currentPage = page;
+    this.getCategories();
+  }
+  changeStatus(id: string, status: boolean) {
+    this.categoryService.changeStatus(id, !status).subscribe((res) => {
+      if (res.success) {
+        console.log(res);
+        if (res.warning) {
+          this.tosterService.showToast(res.message, 'warning');
+          this.getCategories();
+          return;
+        }
+        this.tosterService.showToast(res.message, 'success');
+        this.getCategories();
+      }
     });
   }
 }

@@ -90,7 +90,7 @@ export class NotificationComponent implements OnInit {
         catchError((error) => {
           console.error('Error deleting notification:', error);
           this.errorMessage = 'Failed to delete notification.';
-          return of(null);  
+          return of(null);
         })
       )
       .subscribe(() => {
