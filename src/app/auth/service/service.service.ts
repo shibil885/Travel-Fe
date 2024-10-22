@@ -136,7 +136,6 @@ export class AuthService {
       )
       .pipe(map((res) => res));
   }
-
   isAuthenticated(): boolean {
     return !!this.getAccessToken();
   }

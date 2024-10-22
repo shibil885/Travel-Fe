@@ -24,7 +24,9 @@ export const errorInterceptorFn: HttpInterceptorFn = (req, next) => {
         toastService.showToast(error.error.message, 'error');
       } else if (error.status === 403) {
         toastService.showToast(
-          'Forbidden. You do not have access to this resource.',
+          error.error.message
+            ? error.error.message
+            : 'Forbidden. You do not have access to this resource.',
           'error'
         );
       } else if (error.status === 404) {

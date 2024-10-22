@@ -11,13 +11,9 @@ export const authGuard: CanActivateFn = (
   const injectedRouter = inject(Router);
   const accessToken = authService.getAccessToken();
   const requestedRole = route.data['role'];
-
-  console.log('Requested user role:', requestedRole);
-
   if (accessToken) {
     return authService.validateToken().pipe(
       switchMap((res) => {
-        console.log('User in token', res);
         if (res.role === requestedRole && res.valid) {
           return of(true);
         } else if (!res.valid) {
@@ -28,9 +24,7 @@ export const authGuard: CanActivateFn = (
             }),
             catchError((error) => {
               console.error('Error during token refresh:', error);
-              if (error.status === 0) {
-                console.error('Server is unreachable, breaking the loop');
-              }
+              authService.clearAccessToken();
               handleUnauthenticated(injectedRouter, requestedRole);
               return of(false);
             })
@@ -42,9 +36,6 @@ export const authGuard: CanActivateFn = (
       }),
       catchError((error) => {
         console.error('Error during token validation:', error);
-        if (error.status === 0) {
-          console.error('Server is unreachable, breaking the loop');
-        }
         handleUnauthenticated(injectedRouter, requestedRole);
         return of(false);
       })
@@ -67,7 +58,7 @@ function handleUnauthorizedAccess(router: Router, role: string): void {
   switch (role) {
     case 'admin':
       router.navigate(['/admin']);
-      break;
+      break;  
     case 'user':
       router.navigate(['/home']);
       break;

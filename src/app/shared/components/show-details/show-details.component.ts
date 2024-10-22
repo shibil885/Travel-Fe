@@ -17,20 +17,19 @@ export class ShowDetailsComponent {
     private adminService: AdminService
   ) {
     this.isUser = !!data.username;
-    console.log('dataaaa', data);
   }
   toggleActive(id: string, isActiveValue: boolean) {
     const action = isActiveValue ? 'block' : 'unblock';
     if (this.isUser) {
       this.adminService.changeUserStatus(id, action).subscribe(() => {
         this.data.isActive = !this.data.isActive;
-        return;
       });
+      return;
     }
     this.adminService.changeAgencyStatus(id, action).subscribe(() => {
       this.data.isActive = !this.data.isActive;
-      return;
     });
+    return;
   }
   toggleConfirmed(id: string, isConfirmedValue: boolean) {
     const action = isConfirmedValue ? 'declin' : 'confirm';
