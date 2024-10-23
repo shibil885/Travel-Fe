@@ -14,7 +14,9 @@ export const preventGuard: CanActivateFn = (route): Observable<boolean> => {
     return authService.validateToken().pipe(
       switchMap((res) => {
         if (res.valid && res.role === role) {
-          router.navigate([`/${role}/home`]);
+          role === 'user'
+            ? router.navigate(['/home'])
+            : router.navigate([`/${role}/home`]);
           return of(false);
         } else if (res.valid && res.role !== role) {
           handleUnauthorized(router, role);
@@ -84,9 +86,6 @@ function handleUnauthorized(router: Router, role: string) {
       router.navigate([`${role}/home`]);
       break;
     case 'agency':
-      router.navigate([`${role}/home`]);
-      break;
-    default:
       router.navigate([`${role}/home`]);
       break;
   }

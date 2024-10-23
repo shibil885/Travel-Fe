@@ -1,9 +1,10 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, map, Observable, tap, throwError } from 'rxjs';
 import { IUser } from '../../models/user.model';
 import { IPackage } from '../../interfaces/package.interface';
 import { AuthService } from '../../auth/service/service.service';
+import { HtmlParser } from '@angular/compiler';
 
 @Injectable({
   providedIn: 'root',
@@ -61,14 +62,16 @@ export class UserService {
       { withCredentials: true }
     );
   }
-  getPackages() {
-    console.log('ddddddddddddd');
+  getPackages(page: number, limit: number) {
+    const params = new HttpParams()
+      .set('limit', limit)
+      .set('currentPage', page);
     return this.http.get<{
       success: boolean;
       message: string;
       packages: IPackage[];
-    }>(`${this.api}/user/getPackages`, {
-      withCredentials: true,
-    });
+      packagesCount: number;
+      currentPage: number;
+    }>(`${this.api}/user/getPackages`, { params, withCredentials: true });
   }
 }
