@@ -15,6 +15,7 @@ export const userRouter: Routes = [
     canActivate: [preventGuard],
     data: { role: 'user' },
   },
+  { path: 'user/home', redirectTo: 'home', pathMatch: 'full' },
   {
     path: 'login',
     component: LoginComponent,

@@ -76,7 +76,7 @@ export class UserService {
   }
   getSinglePackage(id: string) {
     return this.http.get<{ success: boolean; package: IPackage }>(
-      `${this.api}/user/getPackage/${id}`,
+      `${this.api}/user/package/${id}`,
       {
         withCredentials: true,
       }

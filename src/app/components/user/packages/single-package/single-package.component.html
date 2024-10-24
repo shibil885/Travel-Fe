@@ -1,1 +1,98 @@
-<h1 class="text-indigo-500"> '[[<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>]]' </h1>
+<app-header class="bg-[#F1F1F2]"></app-header>
+
+<main class="bg-[#F1F1F2] min-h-screen">
+    <div class="relative">
+        <div class="min-h-[16rem] md:h-64 bg-[#FFF1DA]"></div>
+        <section class="bg-white mx-4 md:mx-52 rounded-t-md relative top-[-4rem] left-0 right-0 shadow-lg">
+            <header class="flex items-center justify-around bg-[#F1F1F2]">
+                <div class="text-center py-4 px-4 md:px-8 hover:bg-white transition-colors duration-300 cursor-pointer uppercase font-bold flex-1"
+                    [ngClass]="info ? 'bg-white' : ''" (click)="onInfo()">
+                    Info
+                </div>
+                <div class="text-center py-4 px-4 md:px-8 hover:bg-white transition-colors duration-300 cursor-pointer uppercase font-bold flex-1"
+                    [ngClass]="plane ? 'bg-white' : ''" (click)="onPlane()">
+                    Plane
+                </div>
+                <div class="text-center py-4 px-4 md:px-8 hover:bg-white transition-colors duration-300 cursor-pointer uppercase font-bold flex-1"
+                    [ngClass]="gallery ? 'bg-white' : ''" (click)="onGallery()">
+                    Gallery
+                </div>
+            </header>
+            <div class="p-6 md:p-8">
+                <article *ngIf="info">
+                    <div class="package-container">
+                        <div class="package-header mb-6">
+                            <h1 class="text-2xl font-bold text-[#2c3e50]">{{singlePackage.name}} <span
+                                    class="price text-[#e74c3c]">{{singlePackage.price | currency:'INR'}}</span></h1>
+                            <div class="rating mt-2">
+                                <span class="stars text-[#f1c40f]">★★★★★</span>
+                                <span class="agency ml-4 text-[#27ae60]">{{singlePackage.agencyId.name}}</span>
+                            </div>
+                        </div>
+                        <div class="package-description mb-6">
+                            <h2 class="text-lg font-bold text-[#DF6951]">Description</h2>
+                            <p class="text-gray-600 leading-relaxed">{{singlePackage.description}}</p>
+                        </div>
+                        <div class="package-content grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                            <div class="package-details">
+                                <div class="detail-item mb-4">
+                                    <h2 class="font-bold text-[#DF6951]">Destination</h2>
+                                    <p class="text-gray-600 leading-relaxed">{{singlePackage.finalDestination}},
+                                        {{singlePackage.country}}</p>
+                                </div>
+                                <div class="detail-item mb-4">
+                                    <h2 class="font-bold text-[#DF6951]">Departure</h2>
+                                    <p class="text-gray-600 leading-relaxed">{{singlePackage.departure}}</p>
+                                </div>
+                                <!-- <div class="detail-item mb-4">
+                                    <h2 class="font-bold text-[#DF6951]">Departure Time</h2>
+                                    <p class="text-gray-600 leading-relaxed">Approximately 7:30 AM</p>
+                                </div> -->
+                                <!-- <div class="detail-item mb-4">
+                                    <h2 class="font-bold text-[#DF6951]">Return Time</h2>
+                                    <p class="text-gray-600 leading-relaxed">Approximately 07:30 PM</p>
+                                </div> -->
+                                <div class="detail-item mb-4">
+                                    <h2 class="font-bold text-[#DF6951]">Not Included</h2>
+                                    <ul class="list-disc list-inside text-gray-600 leading-relaxed">
+                                        <li *ngFor="let item of singlePackage.notIncluded">{{item}}</li>
+                                    </ul>
+                                </div>
+                                <div class="detail-item mb-4">
+                                    <h2 class="font-bold text-[#DF6951]">Included</h2>
+                                    <ul class="list-disc list-inside text-gray-600 leading-relaxed">
+                                        <li *ngFor="let item of singlePackage.included">{{item}}</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="booking-section">
+                                <div class="booking-card p-6 bg-gray-100 rounded-md shadow-md">
+                                    <h2 class="font-bold text-lg mb-4">Book This Package</h2>
+                                    <!-- <button
+                                        class="w-full py-2 bg-[#e74c3c] text-white rounded-md hover:bg-red-600 transition duration-300">Check
+                                        Availability</button> -->
+                                    <button
+                                        class="w-full py-2 mt-4 bg-[#e67e22] text-white rounded-md hover:bg-orange-600 transition duration-300">Book
+                                        Now</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+                <article *ngIf="plane">
+                    <div class="text-center py-12">
+                        <h2 class="text-xl font-bold text-gray-700">Plane Information Coming Soon</h2>
+                    </div>
+                </article>
+                <article *ngIf="gallery">
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <img src="assets/images/dp.png" alt="Gallery Image 1" class="rounded-md shadow-md">
+                        <img src="assets/images/dp.png" alt="Gallery Image 2" class="rounded-md shadow-md">
+                        <img src="assets/images/dp.png" alt="Gallery Image 3" class="rounded-md shadow-md">
+                        <img src="assets/images/dp.png" alt="Gallery Image 4" class="rounded-md shadow-md">
+                    </div>
+                </article>
+            </div>
+        </section>
+    </div>
+</main>

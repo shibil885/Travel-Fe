@@ -8,6 +8,9 @@ import { UserService } from '../../../shared/services/user.service';
 import { SearchComponent } from '../../../shared/components/search/search.component';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { PaginationComponent } from '../../../shared/components/pagination/pagination.component';
+import { Store } from '@ngrx/store';
+import { showSinglePackage } from '../../../store/user/user.action';
+import { ToastService } from '../../../shared/services/toaster.service';
 @Component({
   selector: 'app-packages',
   standalone: true,
@@ -42,7 +45,12 @@ export class PackagesComponent {
   numberOfDays: number = 30;
   numberOfPerson!: number;
 
-  constructor(private userPackages: UserService, private router: Router) {}
+  constructor(
+    private userPackages: UserService,
+    private router: Router,
+    private store: Store,
+    private toastService: ToastService
+  ) {}
 
   ngOnInit() {
     this.fetchAllPackages();
@@ -67,7 +75,11 @@ export class PackagesComponent {
   sortPackages(criteria: 'price' | 'rating') {}
 
   showSinglePackage(id: string | undefined) {
-    console.log('dddd', id);
-    this.router.navigate([`/package/${id}`]);
+    if (id) {
+      this.store.dispatch(showSinglePackage({ id: id }));
+      return;
+    }
+    this.toastService.showToast('somthing wrong', 'error');
+    return;
   }
 }

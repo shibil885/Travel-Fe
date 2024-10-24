@@ -1,0 +1,92 @@
+.package-container {
+    font-family: Arial, sans-serif;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .package-header h1 {
+    font-size: 24px;
+    margin-bottom: 5px;
+  }
+  
+  .price {
+    color: #e74c3c; /* Vibrant red */
+  }
+  
+  .rating {
+    margin-bottom: 20px;
+  }
+  
+  .stars {
+    color: #f1c40f; /* Gold color for stars */
+  }
+  
+  .agency {
+    color: #27ae60;
+    margin-left: 10px;
+  }
+  
+  .package-content {
+    display: flex;
+    gap: 20px;
+  }
+  
+  .package-details {
+    flex: 2;
+  }
+  
+  .detail-item {
+    margin-bottom: 15px;
+  }
+  
+  .detail-item h2 {
+    font-size: 16px;
+    margin-bottom: 5px;
+  }
+  
+  .booking-section {
+    flex: 1;
+  }
+  
+  .booking-card {
+    background-color: #f9f9f9; 
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .booking-card h2 {
+    font-size: 18px;
+    margin-bottom: 15px;
+    color: #2c3e50; /* Dark blue */
+  }
+  
+  button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    color: white;
+  }
+  
+  .check-availability {
+    background-color: #e74c3c; /* Vibrant red */
+  }
+  
+  .book-now {
+    background-color: #e67e22; /* Orange */
+  }
+  
+  .travel-illustration {
+    margin-top: 20px;
+    text-align: center;
+  }
+  
+  .travel-illustration img {
+    max-width: 100%;
+    height: auto;
+  }
+  
