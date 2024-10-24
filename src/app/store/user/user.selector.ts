@@ -25,3 +25,11 @@ export const selectEmail = createSelector(
   selectUserState,
   (state: UserState) => state.user?.email
 );
+export const selectSucess = createSelector(
+  selectUserState,
+  (state: UserState) => state.success
+);
+export const selectPackage = createSelector(
+  selectUserState,
+  (state: UserState) => state.package
+);

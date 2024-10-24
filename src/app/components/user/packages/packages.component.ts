@@ -3,7 +3,7 @@ import { HeaderComponent } from '../header/header.component';
 import { IPackage } from '../../../interfaces/package.interface';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { UserService } from '../../../shared/services/user.service';
 import { SearchComponent } from '../../../shared/components/search/search.component';
 import { trigger, transition, style, animate } from '@angular/animations';
@@ -42,7 +42,7 @@ export class PackagesComponent {
   numberOfDays: number = 30;
   numberOfPerson!: number;
 
-  constructor(private userPackages: UserService) {}
+  constructor(private userPackages: UserService, private router: Router) {}
 
   ngOnInit() {
     this.fetchAllPackages();
@@ -65,4 +65,9 @@ export class PackagesComponent {
   filterPackages() {}
 
   sortPackages(criteria: 'price' | 'rating') {}
+
+  showSinglePackage(id: string | undefined) {
+    console.log('dddd', id);
+    this.router.navigate([`/package/${id}`]);
+  }
 }

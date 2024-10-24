@@ -5,6 +5,7 @@ import { catchError, map, of, switchMap, tap } from 'rxjs';
 import { Router } from '@angular/router';
 import { UserService } from '../../shared/services/user.service';
 import { AuthService } from '../../auth/service/service.service';
+import { error } from 'console';
 
 @Injectable()
 export class UserEffect {
@@ -21,7 +22,6 @@ export class UserEffect {
       switchMap((action) =>
         this.authService.login(action, 'user').pipe(
           map((response) => {
-            console.log('login success hits');
             return userActions.userLoginSuccess({
               user: response['user'],
             });
@@ -29,7 +29,6 @@ export class UserEffect {
           catchError((error) => {
             console.error('Error during user login effect: ', error);
             if (error.status === 406) {
-              console.log('errrrroorrrrrr', error);
               return of(
                 userActions.otpRender({
                   user: error.error.user,
@@ -99,7 +98,6 @@ export class UserEffect {
         ofType(userActions.userSignupSuccess),
         tap(() => {
           this.router.navigate(['/home']);
-          console.log('invoked');
         })
       ),
     { dispatch: false }
@@ -121,23 +119,6 @@ export class UserEffect {
       )
     )
   );
-  // logout$ = createEffect(() =>
-  //   this.actions$.pipe(
-  //     ofType(userActions.logout),
-  //     switchMap(() =>
-  //       this.authService.logout('user').pipe(
-  //         tap(() => {
-  //           this.router.navigate(['/login']).then(() => {
-  //           });
-  //         }),
-  //         catchError((error) => {
-  //           console.error('Logout error: ', error);
-  //           return of();
-  //         })
-  //       )
-  //     )
-  //   )
-  // );
   logout$ = createEffect(
     () =>
       this.actions$.pipe(
@@ -149,10 +130,38 @@ export class UserEffect {
             }),
             catchError((error) => {
               console.error('Logout error: ', error);
-              return of();
+              return of(true);
             })
           )
         )
+      ),
+    { dispatch: false }
+  );
+  showSinglePaackage$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(userActions.showSinglePackage),
+      switchMap((data) =>
+        this.userService.getSinglePackage(data.id).pipe(
+          map((response) =>
+            userActions.showSinglePackageSuccess({
+              success: response.success,
+              singlePackage: response.package,
+            })
+          )
+        )
+      ),
+      catchError((error) =>
+        of(userActions.showSinglePackageError({ error: error }))
+      )
+    )
+  );
+  showSinglePackageSuccess$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(userActions.showSinglePackageSuccess),
+        tap(() => {
+          this.router.navigate(['/package']);
+        })
       ),
     { dispatch: false }
   );

@@ -1,10 +1,13 @@
 import { createReducer, on } from '@ngrx/store';
 import * as userActions from './user.action';
 import { IUser } from '../../models/user.model';
+import { IPackage } from '../../interfaces/package.interface';
 
 export interface UserState {
   user: IUser | null;
   error: string;
+  success: boolean;
+  package: IPackage | null;
   loading: boolean;
   renderOtp: boolean;
 }
@@ -14,11 +17,13 @@ export const initialUserState: UserState = {
   error: '',
   renderOtp: false,
   loading: false,
+  success: false,
+  package: null,
 };
 
 export const UserReducer = createReducer(
   initialUserState,
-  on(userActions.userLoginSuccess, (state, {  user }) => {
+  on(userActions.userLoginSuccess, (state, { user }) => {
     return {
       ...state,
       user: user,
@@ -31,14 +36,14 @@ export const UserReducer = createReducer(
       error: error.error,
     };
   }),
-  on(userActions.otpRender, (state, error ) => {
+  on(userActions.otpRender, (state, error) => {
     return {
       ...state,
       renderOtp: true,
       user: error.user,
     };
   }),
-  on(userActions.otpRenderFromSignup, (state, {user} ) => {
+  on(userActions.otpRenderFromSignup, (state, { user }) => {
     return {
       ...state,
       renderOtp: true,
@@ -77,10 +82,26 @@ export const UserReducer = createReducer(
       renderOtp: true,
     };
   }),
-  on(userActions.logoutSuccess,(state) => {
+  on(userActions.logoutSuccess, (state) => {
     return {
       ...state,
       user: null,
+    };
+  }),
+  on(
+    userActions.showSinglePackageSuccess,
+    (state, { success, singlePackage }) => {
+      return {
+        ...state,
+        success,
+        package: singlePackage,
+      };
     }
+  ),
+  on(userActions.showSinglePackageError, (state, { error }) => {
+    return {
+      ...state,
+      error,
+    };
   })
 );

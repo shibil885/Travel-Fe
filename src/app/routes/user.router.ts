@@ -6,6 +6,7 @@ import { SignupComponent } from '../components/user/signup/signup.component';
 import { PackagesComponent } from '../components/user/packages/packages.component';
 import { authGuard } from '../auth/guards/auth.guard';
 import { preventGuard } from '../auth/guards/logged.guard';
+import { SinglePackageComponent } from '../components/user/packages/single-package/single-package.component';
 
 export const userRouter: Routes = [
   {
@@ -35,6 +36,12 @@ export const userRouter: Routes = [
   {
     path: 'packages',
     component: PackagesComponent,
+    canActivate: [authGuard],
+    data: { role: 'user' },
+  },
+  {
+    path: 'package',
+    component: SinglePackageComponent,
     canActivate: [authGuard],
     data: { role: 'user' },
   },

@@ -1,5 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { IUser } from '../../models/user.model';
+import { IPackage } from '../../interfaces/package.interface';
 
 export const userLogin = createAction(
   '[Login Component] userLogin',
@@ -30,7 +31,7 @@ export const userSignup = createAction(
 
 export const userSignupSuccess = createAction(
   '[Signup Component] userSignupSuccess',
-  props<{ user: IUser;  }>()
+  props<{ user: IUser }>()
 );
 
 export const userSignupError = createAction(
@@ -49,7 +50,7 @@ export const submitOtpError = createAction(
 
 export const resendOtp = createAction(
   '[Otp Component] resendOtp',
-  props<{ email: string | null | undefined}>()
+  props<{ email: string | null | undefined }>()
 );
 export const resendOtpSuccess = createAction(
   '[Otp Component] resendOtpSuccess',
@@ -60,5 +61,18 @@ export const resendOtpError = createAction(
   props<{ error: string }>()
 );
 
-export const logout = createAction('[Logout] User')
-export const logoutSuccess = createAction('[Logout Success] User')
+export const logout = createAction('[Logout] User');
+export const logoutSuccess = createAction('[Logout Success] User');
+
+export const showSinglePackage = createAction(
+  '[showPackage] showSinglePackageComponent',
+  props<{ id: string }>()
+);
+export const showSinglePackageSuccess = createAction(
+  '[showPackageSuccess] showSinglePackageComponent',
+  props<{ success: boolean; singlePackage: IPackage }>()
+);
+export const showSinglePackageError = createAction(
+  '[showPackageError] showSinglePackageComponent',
+  props<{ error: string }>()
+);

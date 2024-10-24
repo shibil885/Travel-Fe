@@ -74,4 +74,12 @@ export class UserService {
       currentPage: number;
     }>(`${this.api}/user/getPackages`, { params, withCredentials: true });
   }
+  getSinglePackage(id: string) {
+    return this.http.get<{ success: boolean; package: IPackage }>(
+      `${this.api}/user/getPackage/${id}`,
+      {
+        withCredentials: true,
+      }
+    );
+  }
 }
