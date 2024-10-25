@@ -102,4 +102,13 @@ export const adminRouter: Routes = [
     canActivate: [authGuard],
     data: { role: 'admin' },
   },
+  {
+    path: 'admin/coupon',
+    loadComponent: () =>
+      import('../components/admin/coupon/coupon.component').then(
+        (m) => m.CouponComponent
+      ),
+    canActivate: [authGuard],
+    data: { role: 'admin' },
+  },
 ];
