@@ -1,95 +1,244 @@
-<app-header class="bg-[#F1F1F2]"></app-header>
+<!-- <app-header class="bg-[#F1F1F2]"></app-header>
 
 <main class="bg-[#F1F1F2] min-h-screen">
     <div class="relative">
-        <div class="min-h-[16rem] md:h-64 bg-[#FFF1DA]"></div>
-        <section class="bg-white mx-4 md:mx-52 rounded-t-md relative top-[-4rem] left-0 right-0 shadow-lg">
-            <header class="flex items-center justify-around bg-[#F1F1F2]">
-                <div class="text-center py-4 px-4 md:px-8 hover:bg-white transition-colors duration-300 cursor-pointer uppercase font-bold flex-1"
+        <div class="min-h-[16rem] md:h-64 bg-gradient-to-r from-[#FFF1DA] to-[#dfa9f5]"></div>
+        <section class="bg-white mx-4 md:mx-20 lg:mx-52 relative top-[-4rem] left-0 right-0 shadow-lg rounded-t-lg">
+            <header class="flex flex-col rounded-t-lg sm:flex-row  items-center justify-around bg-[#F1F1F2]">
+                <div class="rounded-tl-lg hover:rounded-tl-lg text-center py-4 px-4 sm:px-8 hover:bg-white transition-colors duration-300 cursor-pointer uppercase font-bold flex-1"
                     [ngClass]="info ? 'bg-white' : ''" (click)="onInfo()">
                     Info
                 </div>
-                <div class="text-center py-4 px-4 md:px-8 hover:bg-white transition-colors duration-300 cursor-pointer uppercase font-bold flex-1"
+                <div class="text-center py-4 px-4 sm:px-8 hover:bg-white transition-colors duration-300 cursor-pointer uppercase font-bold flex-1"
                     [ngClass]="plane ? 'bg-white' : ''" (click)="onPlane()">
                     Plane
                 </div>
-                <div class="text-center py-4 px-4 md:px-8 hover:bg-white transition-colors duration-300 cursor-pointer uppercase font-bold flex-1"
+                <div class="rounded-tr-lg hover:rounded-tr-lg text-center py-4 px-4 sm:px-8 hover:bg-white transition-colors duration-300 cursor-pointer uppercase font-bold flex-1"
                     [ngClass]="gallery ? 'bg-white' : ''" (click)="onGallery()">
                     Gallery
                 </div>
             </header>
-            <div class="p-6 md:p-8">
+            <div class="p-4 sm:p-6 md:p-8">
                 <article *ngIf="info">
                     <div class="package-container">
-                        <div class="package-header mb-6">
-                            <h1 class="text-2xl font-bold text-[#2c3e50]">{{singlePackage.name}} <span
-                                    class="price text-[#e74c3c]">{{singlePackage.price | currency:'INR'}}</span></h1>
+                        <div class="package-header mb-4 sm:mb-6">
+                            <h1 class="text-xl sm:text-2xl font-bold text-[#2c3e50]">{{singlePackage.name}}
+                                <span class="price text-[#e74c3c]">{{singlePackage.price | currency:'INR'}}</span>
+                            </h1>
                             <div class="rating mt-2">
                                 <span class="stars text-[#f1c40f]">★★★★★</span>
                                 <span class="agency ml-4 text-[#27ae60]">{{singlePackage.agencyId.name}}</span>
                             </div>
                         </div>
-                        <div class="package-description mb-6">
+                        <div class="package-description mb-4 sm:mb-6">
                             <h2 class="text-lg font-bold text-[#DF6951]">Description</h2>
                             <p class="text-gray-600 leading-relaxed">{{singlePackage.description}}</p>
                         </div>
-                        <div class="package-content grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                        <div class="package-content grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 mt-4 sm:mt-6">
                             <div class="package-details">
                                 <div class="detail-item mb-4">
                                     <h2 class="font-bold text-[#DF6951]">Destination</h2>
-                                    <p class="text-gray-600 leading-relaxed">{{singlePackage.finalDestination}},
+                                    <p class="text-gray-600">{{singlePackage.finalDestination}},
                                         {{singlePackage.country}}</p>
                                 </div>
                                 <div class="detail-item mb-4">
                                     <h2 class="font-bold text-[#DF6951]">Departure</h2>
-                                    <p class="text-gray-600 leading-relaxed">{{singlePackage.departure}}</p>
+                                    <p class="text-gray-600">{{singlePackage.departure}}</p>
                                 </div>
-                                <!-- <div class="detail-item mb-4">
-                                    <h2 class="font-bold text-[#DF6951]">Departure Time</h2>
-                                    <p class="text-gray-600 leading-relaxed">Approximately 7:30 AM</p>
-                                </div> -->
-                                <!-- <div class="detail-item mb-4">
-                                    <h2 class="font-bold text-[#DF6951]">Return Time</h2>
-                                    <p class="text-gray-600 leading-relaxed">Approximately 07:30 PM</p>
-                                </div> -->
                                 <div class="detail-item mb-4">
                                     <h2 class="font-bold text-[#DF6951]">Not Included</h2>
-                                    <ul class="list-disc list-inside text-gray-600 leading-relaxed">
+                                    <ul class="list-disc list-inside text-gray-600">
                                         <li *ngFor="let item of singlePackage.notIncluded">{{item}}</li>
                                     </ul>
                                 </div>
                                 <div class="detail-item mb-4">
                                     <h2 class="font-bold text-[#DF6951]">Included</h2>
-                                    <ul class="list-disc list-inside text-gray-600 leading-relaxed">
+                                    <ul class="list-disc list-inside text-gray-600">
                                         <li *ngFor="let item of singlePackage.included">{{item}}</li>
                                     </ul>
                                 </div>
                             </div>
                             <div class="booking-section">
-                                <div class="booking-card p-6 bg-gray-100 rounded-md shadow-md">
+                                <div class="booking-card p-4 sm:p-6 bg-gray-100 rounded-md shadow-md">
                                     <h2 class="font-bold text-lg mb-4">Book This Package</h2>
-                                    <!-- <button
-                                        class="w-full py-2 bg-[#e74c3c] text-white rounded-md hover:bg-red-600 transition duration-300">Check
-                                        Availability</button> -->
                                     <button
-                                        class="w-full py-2 mt-4 bg-[#e67e22] text-white rounded-md hover:bg-orange-600 transition duration-300">Book
+                                        class="w-full py-2 bg-[#e67e22] text-white rounded-md hover:bg-orange-600 transition duration-300">Book
                                         Now</button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </article>
+
                 <article *ngIf="plane">
-                    <div class="text-center py-12">
-                        <h2 class="text-xl font-bold text-gray-700">Plane Information Coming Soon</h2>
+                    <div class="max-w-6xl mx-auto mt-8 sm:mt-10 px-2 sm:px-4">
+                        <h2 class="text-2xl sm:text-3xl font-bold text-[#2c3e50] mb-8 sm:mb-10 text-center">Tour Plan
+                        </h2>
+                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
+                            <div class="lg:col-span-2">
+                                <div *ngFor="let plan of singlePackage.tourPlans; let i = index"
+                                    class="flex flex-col sm:flex-row items-start sm:items-center mb-6">
+                                    <div class="flex flex-col items-center sm:mr-6 mb-4 sm:mb-0">
+                                        <div
+                                            class="flex items-center justify-center bg-[#e67e22] text-white font-bold rounded-full w-10 h-10 sm:w-12 sm:h-12">
+                                            {{ i + 1 | number: '2.0-0' }}
+                                        </div>
+                                        <div *ngIf="i < singlePackage.tourPlans.length - 1"
+                                            class="hidden sm:flex flex-col items-center mt-2">
+                                            <div class="h-10 w-1 bg-[#e67e22]"></div>
+                                        </div>
+                                    </div>
+                                    <div class="flex-grow p-4 bg-gray-50 shadow-lg rounded-lg w-full sm:w-auto">
+                                        <h3 class="text-lg sm:text-xl font-semibold mb-2 text-[#2c3e50] truncate">Day {{
+                                            plan.day }}: {{ plan.title }}</h3>
+                                        <p class="text-gray-700 line-clamp-3 sm:line-clamp-none">{{ plan.description }}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="booking-section">
+                                <div class="booking-card p-4 sm:p-6 bg-gray-50 rounded-md shadow-xl text-center">
+                                    <h2 class="font-bold text-2xl text-[#e74c3c] mb-4">Book This Package</h2>
+                                    <button
+                                        class="w-full py-3 bg-[#e67e22] text-white text-lg font-semibold rounded-md hover:bg-orange-600 transition duration-300">Book
+                                        Now</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </article>
+
                 <article *ngIf="gallery">
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                        <img src="assets/images/dp.png" alt="Gallery Image 1" class="rounded-md shadow-md">
-                        <img src="assets/images/dp.png" alt="Gallery Image 2" class="rounded-md shadow-md">
-                        <img src="assets/images/dp.png" alt="Gallery Image 3" class="rounded-md shadow-md">
-                        <img src="assets/images/dp.png" alt="Gallery Image 4" class="rounded-md shadow-md">
+                    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                        <div class="relative group" *ngFor="let image of singlePackage.images; let i = index">
+                            <img [src]="image" alt="Gallery Image {{ i + 1 }}"
+                                class="rounded-md shadow-md w-full h-full object-cover transition-transform duration-300 ease-in-out group-hover:scale-105">
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </section>
+    </div>
+</main> -->
+<main class="bg-gray-100 min-h-screen">
+    <app-header></app-header>
+    <div class="relative">
+        <div class="min-h-[16rem] md:h-64 bg-gradient-to-r from-orange-100 to-purple-200"></div>
+        <section class="bg-white mx-4 md:mx-20 lg:mx-52 relative top-[-4rem] left-0 right-0 shadow-xl rounded-t-lg">
+            <header class="flex flex-col rounded-t-lg sm:flex-row items-center justify-around bg-gray-100">
+                <div class="rounded-tl-lg hover:rounded-tl-lg text-center py-4 px-4 sm:px-8 hover:bg-white transition-colors duration-300 cursor-pointer uppercase font-bold flex-1"
+                    id="infoTab" [ngClass]="info ? 'bg-white':''" (click)="onInfo()">
+                    Info
+                </div>
+                <div class="text-center py-4 px-4 sm:px-8 hover:bg-white transition-colors duration-300 cursor-pointer uppercase font-bold flex-1"
+                    id="planeTab" [ngClass]="plane ? 'bg-white' : ''" (click)="onPlane()">
+                    Plane
+                </div>
+                <div class="rounded-tr-lg hover:rounded-tr-lg text-center py-4 px-4 sm:px-8 hover:bg-white transition-colors duration-300 cursor-pointer uppercase font-bold flex-1"
+                    id="galleryTab" [ngClass]="gallery ? 'bg-white' : ''" (click)="onGallery()">
+                    Gallery
+                </div>
+            </header>
+            <div class="p-4 sm:p-6 md:p-8">
+                <article id="infoContent" *ngIf="info">
+                    <div class="package-container">
+                        <div class="package-header mb-4 sm:mb-6">
+                            <h1 class="text-2xl sm:text-3xl font-bold text-gray-800">
+                                {{singlePackage.name}}
+                                <span class="text-orange-500 ml-2">{{singlePackage.price}}</span>
+                            </h1>
+                            <div class="rating mt-2 flex items-center">
+                                <span class="stars text-yellow-400">★★★★★</span>
+                                <span
+                                    class="agency ml-4 text-green-600 font-semibold">{{singlePackage.agencyId.name}}</span>
+                            </div>
+                        </div>
+                        <div class="package-description mb-6">
+                            <h2 class="text-xl font-bold text-orange-600 mb-2">Description</h2>
+                            <p class="text-gray-700 leading-relaxed">{{singlePackage.description}}</p>
+                        </div>
+                        <div class="package-content grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                            <div class="package-details space-y-6">
+                                <div class="detail-item">
+                                    <h2 class="font-bold text-orange-600 mb-2">Destination</h2>
+                                    <p class="text-gray-700">{{singlePackage.finalDestination}},
+                                        {{singlePackage.country}}</p>
+                                </div>
+                                <div class="detail-item">
+                                    <h2 class="font-bold text-orange-600 mb-2">Departure</h2>
+                                    <p class="text-gray-700">{{singlePackage.departure}}</p>
+                                </div>
+                                <div class="detail-item">
+                                    <h2 class="font-bold text-orange-600 mb-2">Not Included</h2>
+                                    <ul class="list-disc list-inside text-gray-700">
+                                        <li *ngFor="let item of singlePackage.notIncluded">{{item}}</li>
+                                    </ul>
+                                </div>
+                                <div class="detail-item">
+                                    <h2 class="font-bold text-orange-600 mb-2">Included</h2>
+                                    <ul class="list-disc list-inside text-gray-700">
+                                        <li *ngFor="let item of singlePackage.included">{{item}}</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="booking-section">
+                                <div class="booking-card p-6 bg-gray-50 rounded-lg shadow-lg">
+                                    <h2 class="font-bold text-2xl mb-4 text-gray-800">Book This Package</h2>
+                                    <button
+                                        class="w-full py-3 bg-orange-500 text-white rounded-md hover:bg-orange-600 transition duration-300 text-lg font-semibold">
+                                        Book Now
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <article id="planeContent" *ngIf="plane">
+                    <div class="max-w-6xl mx-auto mt-8 sm:mt-10 px-2 sm:px-4">
+                        <h2 class="text-3xl font-bold text-gray-800 mb-10 text-center">Tour Plan</h2>
+                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                            <div class="lg:col-span-2">
+                                <div class="flex mb-8" *ngFor="let day of singlePackage.tourPlans; let i = index">
+                                    <div class="flex flex-col items-center mr-6">
+                                        <div
+                                            class="flex items-center justify-center bg-orange-500 text-white font-bold rounded-lg w-12 h-12 text-lg">
+                                            {{i + 1}}
+                                        </div>
+                                        <div class="h-full w-0.5 bg-orange-300 my-2"></div>
+                                    </div>
+                                    <div
+                                        class="flex-grow p-6 bg-white shadow-lg rounded-lg hover:shadow-xl transition-shadow duration-300">
+                                        <h3 class="text-xl font-semibold mb-2 text-gray-800">Day {{day.day}}:
+                                            {{day.title}}</h3>
+                                        <p class="text-gray-700">{{day.description}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="booking-section">
+                                <div class="booking-card p-6 bg-white rounded-lg shadow-xl text-center sticky top-4">
+                                    <h2 class="font-bold text-2xl text-orange-600 mb-4">Book This Package</h2>
+                                    <button
+                                        class="w-full py-3 bg-orange-500 text-white text-lg font-semibold rounded-md hover:bg-orange-600 transition duration-300">
+                                        Book Now
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <article id="galleryContent" *ngIf="gallery">
+                    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                        <div class="relative group" *ngFor="let image of singlePackage.images; let i = index">
+                            <img [src]="image" alt="{{singlePackage.name}} image {{i + 1}}"
+                                class="rounded-lg shadow-md w-full h-48 object-cover transition-transform duration-300 ease-in-out group-hover:scale-105">
+                            <div
+                                class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-opacity duration-300 rounded-lg flex items-center justify-center">
+                                <span
+                                    class="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300">View</span>
+                            </div>
+                        </div>
                     </div>
                 </article>
             </div>
