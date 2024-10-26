@@ -1,0 +1,124 @@
+:root {
+  --primary-gradient: linear-gradient(135deg, #3d52a0, #7091e6);
+  --input-bg: #f7f9fc;
+  --text-color: #333;
+  --label-color: #7a7a7a;
+  --field-radius: 8px;
+  --shadow: rgba(0, 0, 0, 0.1) 0px 4px 8px;
+}
+
+* {
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+.coupon-form-container {
+  max-width: 400px;
+  width: 100%;
+  padding: 25px;
+  /* border-radius: 10px; */
+  box-shadow: var(--shadow);
+}
+
+.coupon-form-container h2 {
+  font-size: 1.8em;
+  color: #3d52a0;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.form-field {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.form-field input,
+.form-field select {
+  width: 100%;
+  padding: 10px 15px;
+  font-size: 1rem;
+  border: 2px solid #e0e0e0;
+  border-radius: var(--field-radius);
+  background: var(--input-bg);
+  color: var(--text-color);
+  transition: border-color 0.3s;
+}
+
+.form-field input:focus,
+.form-field select:focus {
+  border-color: #3d52a0;
+  outline: none;
+}
+
+.form-field label {
+  position: absolute;
+  top: 50%;
+  left: 15px;
+  transform: translateY(-50%);
+  color: var(--label-color);
+  font-size: 0.9rem;
+  pointer-events: none;
+  transition: 0.3s ease;
+}
+
+.form-field input:focus + label,
+.form-field input:not(:placeholder-shown) + label,
+.form-field select:focus + label,
+.form-field select:not(:placeholder-shown) + label {
+  top: -6px;
+  background: #f1f1f2;
+  padding: 0 5px;
+  font-size: 0.75rem;
+  color: #3d52a0;
+}
+
+.form-toggle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.form-toggle input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+}
+
+.form-toggle label {
+  font-size: 1rem;
+  color: var(--text-color);
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 12px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #ffffff;
+  border: none;
+  background: linear-gradient(135deg, #7091e6, #3d52a0);
+  cursor: pointer;
+}
+
+@media (max-width: 500px) {
+  .coupon-form-container {
+    padding: 20px;
+  }
+
+  .coupon-form-container h2 {
+    font-size: 1.6em;
+  }
+}
+@media (min-width: 768px) {
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+}
+input.ng-invalid.ng-touched {
+  border: 1px solid red;
+}
+/* form > .ng-touched.ng-invalid input {
+    border: 1px solid red;
+} */

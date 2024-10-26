@@ -3,7 +3,6 @@
 :host {
   display: block;
   font-family: 'Roboto', sans-serif;
-  /* background: linear-gradient(135deg, #FBE9D0 0%, #E6D0B5 100%); */
   min-height: 100vh;
   padding: 40px 20px;
 }
@@ -230,7 +229,7 @@ button[type="button"]:hover:not(:disabled) {
   transform: scale(1.05);
 }
 
-/* Custom styles for mat-stepper */
+
 ::ng-deep .mat-step-header {
   background-color: transparent !important;
 }

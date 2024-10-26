@@ -17,7 +17,7 @@ export class CouponService {
       couponData,
       {
         withCredentials: true,
-      }
+      } 
     );
   }
 

@@ -1,39 +1,183 @@
 <main class="flex h-screen bg-[#F1F1F2]">
-  <aside>
+  <aside class="hidden sm:block">
     <app-side-bar></app-side-bar>
   </aside>
   <div class="flex-1 flex flex-col overflow-hidden">
     <header>
       <app-header></app-header>
     </header>
-    <section class="flex-1 overflow-y-auto bg-[#F1F1F2] sm:p-4 relative">
-      <div class="flex justify-between items-center mx-auto mt-auto mb-4">
-        <h2 class="text-2xl font-semibold text-[#3D52A0]">Categories</h2>
-        <button class="bg-[#3D52A0] hover:bg-[#7091E6] text-white font-bold py-2 px-4 rounded transition duration-300">
-          {{ false ? 'Cancel' : 'Add' }}
+    <section class="flex-1 overflow-y-auto bg-[#F1F1F2] p-4 sm:p-6 relative">
+      <div class="flex flex-col sm:flex-row justify-between items-center mb-4">
+        <h2 class="text-2xl font-semibold text-[#3D52A0] mb-2 sm:mb-0">Coupons</h2>
+        <button class="text-white font-bold py-2 px-4 rounded transition duration-300" (click)="onRenderCouponAddForm()"
+          [ngClass]="renderCouponAddForm ? 'bg-red-500 hover:bg-red-600' : 'bg-[#3D52A0] hover:bg-[#7091E6]'">
+          {{ renderCouponAddForm ? 'Cancel' : 'Add' }}
         </button>
       </div>
-      <app-search></app-search>
-      <div class="relative overflow-x-auto shadow-md sm:rounded-lg mt-6">
-        <table class="w-full text-sm text-left rtl:text-right text-gray-700 bg-[#EDE8F5]">
-          <thead class="text-xs uppercase bg-[#8697C4] text-gray-700">
-            <tr>
-              <th scope="col" class="px-6 py-3" *ngFor="let head of headers">
-                {{ head.label }}
-              </th>
-              <th>View</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>2000</td>
-              <td>2000</td>
-              <td>2000</td>
-              <td>2000</td>
-            </tr>
-          </tbody>
+      <app-search *ngIf="renderCouponList"></app-search>
+      <div class="relative overflow-x-auto sm:rounded-lg mt-6">
+        <article *ngIf="renderCouponList">
+          <table class="w-full text-sm text-left rtl:text-right text-gray-700 bg-[#EDE8F5]">
+            <thead class="text-xs uppercase bg-[#8697C4] text-gray-700">
+              <tr>
+                <th scope="col" class="px-6 py-3" *ngFor="let head of headers">
+                  {{ head.label }}
+                </th>
+                <th>View</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>2000</td>
+                <td>2000</td>
+                <td>2000</td>
+                <td>2000</td>
+              </tr>
+            </tbody>
+          </table>
+        </article>
 
-        </table>
+        <article *ngIf="renderCouponAddForm" class="mt-6">
+          <div class="mx-auto">
+            <form class="grid grid-cols-1 lg:grid-cols-2 gap-6" [formGroup]="couponForm" (ngSubmit)="onSubmit()">
+              <div class="form-field relative">
+                <input type="text" id="code"
+                  class="w-full border-2 p-3 rounded-md focus:outline-none focus:border-[#3D52A0]"
+                  formControlName="code" />
+                <label for="code" class="absolute top-1/2 left-4 transform -translate-y-1/2 text-gray-500">Coupon
+                  Code</label>
+                <div *ngIf="couponForm.get('code')?.touched && couponForm.get('code')?.invalid">
+                  <small class="text-red-500 text-sm block"
+                    *ngIf="couponForm.get('code')?.errors?.['required'] && couponForm.get('code')?.invalid">Code is required*</small>
+                  <small class="text-red-500 text-sm block"
+                  *ngIf="couponForm.get('code')?.errors?.['minlength'] && couponForm.get('code')?.invalid">Code must have 4 letters*</small>
+                  <small class="text-red-500 text-sm block"
+                  *ngIf="couponForm.get('code')?.errors?.['required'] && couponForm.get('code')?.invalid">Code is required*</small>
+                </div>
+              </div>
+
+              <div class="form-field relative">
+                <select id="discount_type"
+                  class="w-full border-2 p-3 rounded-md focus:outline-none focus:border-[#3D52A0]"
+                  formControlName="discount_type">
+                  <option value="" disabled selected>Select Discount Type</option>
+                  <option value="percentage">Percentage</option>
+                  <option value="fixed">Fixed</option>
+                </select>
+                <label for="discount_type"
+                  class="absolute top-1/2 left-4 transform -translate-y-1/2 text-gray-500">Discount Type</label>
+                  <div *ngIf="couponForm.get('dicount_type')?.touched && couponForm.get('dicount_type')?.invalid">
+                    <small class="text-red-500 text-sm block"
+                      *ngIf="couponForm.get('dicount_type')?.errors?.['required'] && couponForm.get('dicount_type')?.invalid">Discount type is required*</small>
+                    <!-- <small class="text-red-500 text-sm block"
+                    *ngIf="couponForm.get('dicount_type')?.errors?.['required'] && couponForm.get('dicount_type')?.invalid">Code is required*</small>
+                    <small class="text-red-500 text-sm block"
+                    *ngIf="couponForm.get('dicount_type')?.errors?.['required'] && couponForm.get('dicount_type')?.invalid">Code is required*</small> -->
+                  </div>
+              </div>
+
+              <div class="form-field relative col-span-1 lg:col-span-2">
+                <input type="text" id="description"
+                  class="w-full border-2 p-3 rounded-md focus:outline-none focus:border-[#3D52A0]"
+                  formControlName="description" />
+                <label for="description"
+                  class="absolute top-1/2 left-4 transform -translate-y-1/2 text-gray-500">Description</label>
+                  <div *ngIf="couponForm.get('description')?.touched && couponForm.get('description')?.invalid">
+                    <small class="text-red-500 text-sm block"
+                      *ngIf="couponForm.get('description')?.errors?.['required'] && couponForm.get('description')?.invalid">Description  is required*</small>
+                    <small class="text-red-500 text-sm block"
+                    *ngIf="couponForm.get('description')?.errors?.['minlength'] && couponForm.get('description')?.invalid">Description must have 10 letters*</small>
+                    <small class="text-red-500 text-sm block"
+                    *ngIf="couponForm.get('description')?.errors?.['invalidDescription'] && couponForm.get('description')?.invalid">Must in proper way*</small>
+                  </div>
+              </div>
+
+              <div class="form-field relative">
+                <input type="date" id="expiry_date"
+                  class="w-full border-2 p-3 rounded-md focus:outline-none focus:border-[#3D52A0]"
+                  formControlName="expiry_date" />
+                <label for="expiry_date" class="absolute top-1/2 left-4 transform -translate-y-1/2 text-gray-500">Expiry
+                  Date</label>  
+                  <div *ngIf="couponForm.get('expiry_date')?.touched && couponForm.get('expiry_date')?.invalid">
+                    <small class="text-red-500 text-sm block"
+                      *ngIf="couponForm.get('expiry_date')?.errors?.['required'] && couponForm.get('expiry_date')?.invalid">Code is required*</small>
+                    <small class="text-red-500 text-sm block"
+                    *ngIf="couponForm.get('expiry_date')?.errors?.['required'] && couponForm.get('expiry_date')?.invalid">Code is required*</small>
+                    <small class="text-red-500 text-sm block"
+                    *ngIf="couponForm.get('expiry_date')?.errors?.['required'] && couponForm.get('expiry_date')?.invalid">Code is required*</small>
+                  </div>
+              </div>
+
+              <div class="form-field relative">
+                <input type="number" id="minAmt"
+                  class="w-full border-2 p-3 rounded-md focus:outline-none focus:border-[#3D52A0]"
+                  formControlName="minAmt" />
+                <label for="minAmt" class="absolute top-1/2 left-4 transform -translate-y-1/2 text-gray-500">Minimum
+                  Amount</label>
+                  <div *ngIf="couponForm.get('monAmt')?.touched && couponForm.get('monAmt')?.invalid">
+                    <small class="text-red-500 text-sm block"
+                      *ngIf="couponForm.get('monAmt')?.errors?.['required'] && couponForm.get('monAmt')?.invalid">Code is required*</small>
+                    <small class="text-red-500 text-sm block"
+                    *ngIf="couponForm.get('monAmt')?.errors?.['required'] && couponForm.get('monAmt')?.invalid">Code is required*</small>
+                    <small class="text-red-500 text-sm block"
+                    *ngIf="couponForm.get('monAmt')?.errors?.['required'] && couponForm.get('monAmt')?.invalid">Code is required*</small>
+                  </div>
+              </div>
+
+              <div class="form-field relative"*ngIf="couponForm.get('discount_type')?.value == 'percentage'">
+                <input type="number" id="maxAmt"
+                  class="w-full border-2 p-3 rounded-md focus:outline-none focus:border-[#3D52A0]"
+                  formControlName="maxAmt" />
+                <label for="maxAmt" class="absolute top-1/2 left-4 transform -translate-y-1/2 text-gray-500">Maximum
+                  Discount</label>
+                  <div *ngIf="couponForm.get('maxAmt')?.touched && couponForm.get('code')?.invalid">
+                    <small class="text-red-500 text-sm block"
+                      *ngIf="couponForm.get('maxAmt')?.errors?.['required'] && couponForm.get('maxAmt')?.invalid">Code is required*</small>
+                    <small class="text-red-500 text-sm block"
+                    *ngIf="couponForm.get('maxAmt')?.errors?.['required'] && couponForm.get('maxAmt')?.invalid">Code is required*</small>
+                    <small class="text-red-500 text-sm block"
+                    *ngIf="couponForm.get('maxAmt')?.errors?.['required'] && couponForm.get('maxAmt')?.invalid">Code is required*</small>
+                  </div>
+              </div>
+
+              <div class="form-field relative" *ngIf="couponForm.get('discount_type')?.value == 'percentage'">
+                <input type="number" id="discount_value"
+                  class="w-full border-2 p-3 rounded-md focus:outline-none focus:border-[#3D52A0]"
+                  formControlName="percentage" />
+                <label for="discount_value"
+                  class="absolute top-1/2 left-4 transform -translate-y-1/2 text-gray-500">Percentage</label>
+                  <div *ngIf="couponForm.get('percentage')?.touched && couponForm.get('percentage')?.invalid">
+                    <small class="text-red-500 text-sm block"
+                      *ngIf="couponForm.get('percentage')?.errors?.['required'] && couponForm.get('percentage')?.invalid">Code is required*</small>
+                    <small class="text-red-500 text-sm block"
+                    *ngIf="couponForm.get('percentage')?.errors?.['required'] && couponForm.get('percentage')?.invalid">Code is required*</small>
+                    <small class="text-red-500 text-sm block"
+                    *ngIf="couponForm.get('percentage')?.errors?.['required'] && couponForm.get('percentage')?.invalid">Code is required*</small>
+                  </div>
+              </div>
+
+              <div class="form-field relative" *ngIf="couponForm.get('discount_type')?.value == 'fixed'">
+                <input type="number" id="discount_value"
+                  class="w-full border-2 p-3 rounded-md focus:outline-none focus:border-[#3D52A0]"
+                  formControlName="discount_value" />
+                <label for="discount_value"
+                  class="absolute top-1/2 left-4 transform -translate-y-1/2 text-gray-500">Discount Value</label>
+                  <div *ngIf="couponForm.get('discount_value')?.touched && couponForm.get('discount_value')?.invalid">
+                    <small class="text-red-500 text-sm block"
+                      *ngIf="couponForm.get('discount_value')?.errors?.['required'] && couponForm.get('discount_value')?.invalid">Code is required*</small>
+                    <small class="text-red-500 text-sm block"
+                    *ngIf="couponForm.get('discount_value')?.errors?.['required'] && couponForm.get('discount_value')?.invalid">Code is required*</small>
+                    <small class="text-red-500 text-sm block"
+                    *ngIf="couponForm.get('discount_value')?.errors?.['required'] && couponForm.get('discount_value')?.invalid">Code is required*</small>
+                  </div>
+              </div>
+
+              <button type="submit" class="submit-btn col-span-1 lg:col-span-2 text-white font-bold py-3">
+                Create Coupon
+              </button>
+            </form>
+          </div>
+        </article>
       </div>
       <app-pagination [totalItems]="totalCoupons" [itemsPerPage]="limit" [currentPage]="currentPage"
         [typeOfUser]="'admin'" (pageChange)="onPageChange($event)">

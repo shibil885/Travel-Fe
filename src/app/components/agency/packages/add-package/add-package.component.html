@@ -15,7 +15,7 @@
                 <div class="step-content" formGroupName="packageInfo">
                     <div class="form-grid">
                         <div class="form-group">
-                            <label for="name">Package Name</label>
+                            <label for="name">Package Name</label>  
                             <input id="name" type="text" formControlName="name">
                             <div class="error-message"
                                 *ngIf="packageForm.get('packageInfo.name')?.touched && packageForm.get('packageInfo.name')?.invalid">
