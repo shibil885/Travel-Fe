@@ -1,7 +1,7 @@
 <form class="grid grid-cols-1 lg:grid-cols-2 gap-6" [formGroup]="couponForm" (ngSubmit)="onSubmit()">
     <div class="form-field relative">
         <input type="text" id="code" class="w-full border-2 p-3 rounded-md focus:outline-none focus:border-[#3D52A0]"
-            formControlName="code"/>
+            formControlName="code" />
         <label for="code" class="absolute top-1/2 left-4 transform -translate-y-1/2 text-gray-500">Coupon
             Code</label>
         <div *ngIf="couponForm.get('code')?.touched && couponForm.get('code')?.invalid">
@@ -12,8 +12,8 @@
                 *ngIf="couponForm.get('code')?.errors?.['minlength'] && couponForm.get('code')?.invalid">Code must
                 have 4 letters*</small>
             <small class="text-red-500 text-sm block"
-                *ngIf="couponForm.get('code')?.errors?.['required'] && couponForm.get('code')?.invalid">Code is
-                required*</small>
+                *ngIf="couponForm.get('code')?.errors?.['invalidCoupon'] && couponForm.get('code')?.invalid">Please
+                enter a valid coupon code*</small>
         </div>
     </div>
 
@@ -30,10 +30,6 @@
             <small class="text-red-500 text-sm block"
                 *ngIf="couponForm.get('dicount_type')?.errors?.['required'] && couponForm.get('dicount_type')?.invalid">Discount
                 type is required*</small>
-            <!-- <small class="text-red-500 text-sm block"
-          *ngIf="couponForm.get('dicount_type')?.errors?.['required'] && couponForm.get('dicount_type')?.invalid">Code is required*</small>
-          <small class="text-red-500 text-sm block"
-          *ngIf="couponForm.get('dicount_type')?.errors?.['required'] && couponForm.get('dicount_type')?.invalid">Code is required*</small> -->
         </div>
     </div>
 
@@ -48,48 +44,44 @@
                 *ngIf="couponForm.get('description')?.errors?.['required'] && couponForm.get('description')?.invalid">Description
                 is required*</small>
             <small class="text-red-500 text-sm block"
-                *ngIf="couponForm.get('description')?.errors?.['minlength'] && couponForm.get('description')?.invalid">Description
-                must have 10 letters*</small>
-            <small class="text-red-500 text-sm block"
-                *ngIf="couponForm.get('description')?.errors?.['invalidDescription'] && couponForm.get('description')?.invalid">Must
-                in proper way*</small>
+                *ngIf="couponForm.get('description')?.errors?.['invalidDescription'] && couponForm.get('description')?.invalid">Description
+                must be 20-500 characters long and may only include letters, numbers, spaces, and common punctuation (.
+                , ' ! ? -)*</small>
         </div>
     </div>
 
     <div class="form-field relative">
-        <input type="date" id="expiry_date"
+        <input type="date" name="expiry_date" id="expiry_date"
             class="w-full border-2 p-3 rounded-md focus:outline-none focus:border-[#3D52A0]"
             formControlName="expiry_date" />
-        <label for="expiry_date" class="absolute top-1/2 left-4 transform -translate-y-1/2 text-gray-500">Expiry
-            Date</label>
+        <label for="expiry_date" class="absolute top-1/2 left-4 transform -translate-y-1/2 text-gray-500">
+            Expiry Date
+        </label>
+
         <div *ngIf="couponForm.get('expiry_date')?.touched && couponForm.get('expiry_date')?.invalid">
-            <small class="text-red-500 text-sm block"
-                *ngIf="couponForm.get('expiry_date')?.errors?.['required'] && couponForm.get('expiry_date')?.invalid">Code
-                is required*</small>
-            <small class="text-red-500 text-sm block"
-                *ngIf="couponForm.get('expiry_date')?.errors?.['required'] && couponForm.get('expiry_date')?.invalid">Code
-                is required*</small>
-            <small class="text-red-500 text-sm block"
-                *ngIf="couponForm.get('expiry_date')?.errors?.['required'] && couponForm.get('expiry_date')?.invalid">Code
-                is required*</small>
+            <small class="text-red-500 text-sm block" *ngIf="couponForm.get('expiry_date')?.errors?.['required']">
+                Expiry Date is required*
+            </small>
+            <small class="text-red-500 text-sm block" *ngIf="couponForm.get('expiry_date')?.errors?.['invalidDate']">
+                Expiry Date must be a future date*
+            </small>
         </div>
     </div>
+
 
     <div class="form-field relative">
         <input type="number" id="minAmt"
             class="w-full border-2 p-3 rounded-md focus:outline-none focus:border-[#3D52A0]" formControlName="minAmt" />
         <label for="minAmt" class="absolute top-1/2 left-4 transform -translate-y-1/2 text-gray-500">Minimum
             Amount</label>
-        <div *ngIf="couponForm.get('monAmt')?.touched && couponForm.get('monAmt')?.invalid">
+        <div *ngIf="couponForm.get('minAmt')?.touched && couponForm.get('minAmt')?.invalid">
             <small class="text-red-500 text-sm block"
-                *ngIf="couponForm.get('monAmt')?.errors?.['required'] && couponForm.get('monAmt')?.invalid">Code is
+                *ngIf="couponForm.get('minAmt')?.errors?.['required'] && couponForm.get('minAmt')?.invalid">Min amount is
                 required*</small>
             <small class="text-red-500 text-sm block"
-                *ngIf="couponForm.get('monAmt')?.errors?.['required'] && couponForm.get('monAmt')?.invalid">Code is
-                required*</small>
-            <small class="text-red-500 text-sm block"
-                *ngIf="couponForm.get('monAmt')?.errors?.['required'] && couponForm.get('monAmt')?.invalid">Code is
-                required*</small>
+                *ngIf="couponForm.get('minAmt')?.errors?.['invalidPrice'] && couponForm.get('minAmt')?.invalid"> Min
+                amount
+                must be a positive number*</small>
         </div>
     </div>
 
@@ -100,14 +92,12 @@
             Discount</label>
         <div *ngIf="couponForm.get('maxAmt')?.touched && couponForm.get('code')?.invalid">
             <small class="text-red-500 text-sm block"
-                *ngIf="couponForm.get('maxAmt')?.errors?.['required'] && couponForm.get('maxAmt')?.invalid">Code is
-                required*</small>
+                *ngIf="couponForm.get('maxAmt')?.errors?.['required'] && couponForm.get('maxAmt')?.invalid">Max discount
+                is required*
+            </small>
             <small class="text-red-500 text-sm block"
-                *ngIf="couponForm.get('maxAmt')?.errors?.['required'] && couponForm.get('maxAmt')?.invalid">Code is
-                required*</small>
-            <small class="text-red-500 text-sm block"
-                *ngIf="couponForm.get('maxAmt')?.errors?.['required'] && couponForm.get('maxAmt')?.invalid">Code is
-                required*</small>
+                *ngIf="couponForm.get('maxAmt')?.errors?.['invalidPrice'] && couponForm.get('maxAmt')?.invalid">Max
+                discount must be a positive number*</small>
         </div>
     </div>
 
@@ -119,14 +109,15 @@
             class="absolute top-1/2 left-4 transform -translate-y-1/2 text-gray-500">Percentage</label>
         <div *ngIf="couponForm.get('percentage')?.touched && couponForm.get('percentage')?.invalid">
             <small class="text-red-500 text-sm block"
-                *ngIf="couponForm.get('percentage')?.errors?.['required'] && couponForm.get('percentage')?.invalid">Code
+                *ngIf="couponForm.get('percentage')?.errors?.['required'] && couponForm.get('percentage')?.invalid">Percentage
                 is required*</small>
             <small class="text-red-500 text-sm block"
-                *ngIf="couponForm.get('percentage')?.errors?.['required'] && couponForm.get('percentage')?.invalid">Code
-                is required*</small>
+                *ngIf="couponForm.get('percentage')?.errors?.['min'] && couponForm.get('percentage')?.invalid">Percentage
+                must be between 1 and 100*
+            </small>
             <small class="text-red-500 text-sm block"
-                *ngIf="couponForm.get('percentage')?.errors?.['required'] && couponForm.get('percentage')?.invalid">Code
-                is required*</small>
+                *ngIf="couponForm.get('percentage')?.errors?.['max'] && couponForm.get('percentage')?.invalid">Percentage
+                must be between 1 and 100*</small>
         </div>
     </div>
 
@@ -148,8 +139,17 @@
                 is required*</small>
         </div>
     </div>
-
-    <button type="submit" class="submit-btn col-span-1 lg:col-span-2 text-white font-bold py-3">
+    <div *ngIf="isNotValidForm" class="text-red-500 text-sm">
+        Please fill all required fields correctly.
+    </div>
+    
+    <button
+        type="submit"
+        class="submit-btn col-span-1 lg:col-span-2"
+        [ngStyle]="{'background': isNotValidForm ? 'linear-gradient(135deg, #ff4d4d, #ff1a1a)' : 'linear-gradient(135deg, #7091e6, #3d52a0)'}"
+        (click)="onSubmit()"
+    >
         Create Coupon
     </button>
+    
 </form>

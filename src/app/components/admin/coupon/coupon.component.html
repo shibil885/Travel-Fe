@@ -61,7 +61,7 @@
 
         <article *ngIf="renderCouponAddForm" class="mt-6">
           <div class="mx-auto">
-            <app-coupon-form [selectedCoupon]="selectedCoupon"></app-coupon-form>
+            <app-coupon-form [selectedCoupon]="selectedCoupon" (closeFormAfterAdditionOrEdit)="onRenderCouponList()"></app-coupon-form>
           </div>
         </article>
 

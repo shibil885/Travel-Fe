@@ -91,24 +91,12 @@ export class CouponComponent {
   constructor(
     private fb: FormBuilder,
     private couponService: CouponService,
-    private toastSrvice: ToastService
   ) {}
 
   ngOnInit(): void {
-    // this.couponForm = this.fb.group({
-    //   code: ['', [Validators.required, Validators.minLength(4)]],
-    //   description: [
-    //     '',
-    //     [Validators.required, Validators.minLength(10), descriptionValidator],
-    //   ],
-    //   discount_type: ['', Validators.required],
-    //   discount_value: [null, Validators.required],
-    //   percentage: ['', Validators.required],
-    //   minAmt: [null, Validators.required],
-    //   maxAmt: [null],
-    //   expiry_date: [null, Validators.required],
-    // });
-
+    this.fetchAllCoupons();
+  }
+  fetchAllCoupons() {
     this.couponService.getAllCoupons().subscribe((res) => {
       this.coupons = res.coupons;
     });
@@ -116,6 +104,7 @@ export class CouponComponent {
   onPageChange(page: number) {}
 
   onRenderCouponList() {
+    this.fetchAllCoupons();
     this.renderCouponList = !this.renderCouponList;
     this.renderCouponAddForm = false;
     this.renderCouponEditForm = false;
