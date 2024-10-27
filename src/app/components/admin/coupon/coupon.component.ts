@@ -88,16 +88,14 @@ export class CouponComponent {
     { label: 'Status', key: 'isActive' },
     { label: 'Discount', key: 'discount_value' },
   ];
-  constructor(
-    private fb: FormBuilder,
-    private couponService: CouponService,
-  ) {}
+  constructor(private fb: FormBuilder, private couponService: CouponService) {}
 
   ngOnInit(): void {
     this.fetchAllCoupons();
   }
   fetchAllCoupons() {
     this.couponService.getAllCoupons().subscribe((res) => {
+      console.log(res);
       this.coupons = res.coupons;
     });
   }

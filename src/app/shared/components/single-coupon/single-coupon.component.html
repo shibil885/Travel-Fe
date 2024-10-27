@@ -34,14 +34,14 @@
                             </div>
                             <div>
                                 <p class="text-sm font-medium text-gray-500">Minimum Amount</p>
-                                <p class="mt-1 text-lg font-semibold text-gray-900">{{ selectedCoupon.minAmt | currency
+                                <p class="mt-1 text-lg font-semibold text-gray-900">{{ selectedCoupon.minAmt | currency:'INR'
                                     }}</p>
                             </div>
                             <div>
                                 <p class="text-sm font-medium text-gray-500">Maximum Amount</p>
                                 <p class="mt-1 text-lg font-semibold text-gray-900">
                                     {{ selectedCoupon.discount_type === 'percentage' ? (selectedCoupon.maxAmt |
-                                    currency) : '-' }}
+                                    currency:'INR') : '-' }}
                                 </p>
                             </div>
                             <div>
@@ -61,7 +61,7 @@
                             </div>
                             <div>
                                 <p class="text-sm font-medium text-gray-500">Status</p>
-                                <p class="mt-1 text-lg font-semibold"
+                                <p class="mt-1 text-base font-semibold uppercase"
                                     [ngClass]="{'text-green-600': selectedCoupon.isActive, 'text-red-600': !selectedCoupon.isActive}">
                                     {{ selectedCoupon.isActive ? 'Active' : 'Inactive' }}
                                 </p>

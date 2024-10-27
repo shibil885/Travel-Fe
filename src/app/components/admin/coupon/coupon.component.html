@@ -32,7 +32,7 @@
             </thead>
             <tbody>
               <tr *ngFor="let coupon of coupons" class="bg-[#EDE8F5] hover:bg-[#d6d2e5]">
-                <td class="px-6 py-2 text-center border-b border-gray-300">{{ coupon.code }}</td>
+                <td class="px-6 py-2 text-center border-b border-gray-300 uppercase">{{ coupon.code }}</td>
                 <td class="px-6 py-2 text-center border-b border-gray-300">{{ coupon.description }}</td>
                 <td class="px-6 py-2 text-center border-b border-gray-300">{{ coupon.discount_type }}</td>
                 <td class="px-6 py-2 text-center border-b border-gray-300">{{ coupon.expiry_date | date: 'shortDate' }}

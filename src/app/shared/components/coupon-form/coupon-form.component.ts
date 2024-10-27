@@ -113,6 +113,8 @@ export class CouponFormComponent implements OnInit {
             this.toastService.showToast(res.message, 'success');
           }
         });
+      this.closeFormAfterAdditionOrEdit.emit();
+      return;
     } else {
       this.couponService
         .createCoupon(this.couponForm.value)
@@ -121,7 +123,8 @@ export class CouponFormComponent implements OnInit {
             this.toastService.showToast(res.message, 'success');
           }
         });
+      this.closeFormAfterAdditionOrEdit.emit();
+      return;
     }
-    this.closeFormAfterAdditionOrEdit.emit();
   }
 }

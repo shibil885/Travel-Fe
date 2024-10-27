@@ -49,13 +49,12 @@ export class SingleCouponComponent {
 
   getDiscountValue(): string {
     if (this.selectedCoupon.discount_type === 'percentage') {
-      return `${this.selectedCoupon.percentage}%`;
+      return `${this.selectedCoupon.percentage}₹`;
     } else {
-      return `$${this.selectedCoupon.discount_value.toFixed(2)}`;
+      return `₹${this.selectedCoupon.discount_value.toFixed(2)}`;
     }
   }
   onChangeStatus(id: string | undefined, status: boolean | undefined) {
-    console.log('status ===>', status);
     this.couponService.changeStatus(id, status).subscribe((res) => {
       if (res.success) {
         this.toastService.showToast(res.message, 'success');
