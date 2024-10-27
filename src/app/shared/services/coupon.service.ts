@@ -21,8 +21,8 @@ export class CouponService {
     );
   }
 
-  editCoupon(id: string, editCouponData: ICoupon) {
-    return this.http.put(`${this.api}/editCoupon/${id}`, editCouponData, {
+  editCoupon(id: string | undefined, editCouponData: ICoupon) {
+    return this.http.put<{success: boolean; message: string}>(`${this.api}/editCoupon/${id}`, editCouponData, {
       withCredentials: true,
     });
   }

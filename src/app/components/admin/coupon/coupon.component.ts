@@ -23,6 +23,7 @@ import { CouponService } from '../../../shared/services/coupon.service';
 import { ToastService } from '../../../shared/services/toaster.service';
 import { descriptionValidator } from '../../../validatores/description.validator';
 import { SingleCouponComponent } from '../../../shared/components/single-coupon/single-coupon.component';
+import { CouponFormComponent } from '../../../shared/components/coupon-form/coupon-form.component';
 
 @Component({
   selector: 'app-coupon',
@@ -32,6 +33,7 @@ import { SingleCouponComponent } from '../../../shared/components/single-coupon/
     SideBarComponent,
     SearchComponent,
     PaginationComponent,
+    CouponFormComponent,
     SingleCouponComponent,
     CommonModule,
     ReactiveFormsModule,
@@ -50,9 +52,7 @@ import { SingleCouponComponent } from '../../../shared/components/single-coupon/
         style({ opacity: 0 }),
         animate('300ms', style({ opacity: 1 })),
       ]),
-      transition(':leave', [
-        animate('300ms', style({ opacity: 0 })),
-      ]),
+      transition(':leave', [animate('300ms', style({ opacity: 0 }))]),
     ]),
     trigger('zoomInOut', [
       transition(':enter', [
@@ -74,11 +74,10 @@ export class CouponComponent {
   limit!: number;
   currentPage!: number;
   couponForm!: FormGroup;
-
+  isEditMode: boolean = false;
   isModalOpen = false;
-  selectedCoupon!: ICoupon;
-
-
+  selectedCoupon: ICoupon | null = null;
+  selectedCouponForShow!: ICoupon;
   headers = [
     { label: 'Coupon Code', key: 'code' },
     { label: 'Description', key: 'description' },
@@ -96,23 +95,23 @@ export class CouponComponent {
   ) {}
 
   ngOnInit(): void {
-    this.couponForm = this.fb.group({
-      code: ['', [Validators.required, Validators.minLength(4)]],
-      description: [
-        '',
-        [Validators.required, Validators.minLength(10), descriptionValidator],
-      ],
-      discount_type: ['', Validators.required],
-      discount_value: [null, Validators.required],
-      percentage: ['', Validators.required],
-      minAmt: [null, Validators.required],
-      maxAmt: [null],
-      expiry_date: [null, Validators.required],
-    });
+    // this.couponForm = this.fb.group({
+    //   code: ['', [Validators.required, Validators.minLength(4)]],
+    //   description: [
+    //     '',
+    //     [Validators.required, Validators.minLength(10), descriptionValidator],
+    //   ],
+    //   discount_type: ['', Validators.required],
+    //   discount_value: [null, Validators.required],
+    //   percentage: ['', Validators.required],
+    //   minAmt: [null, Validators.required],
+    //   maxAmt: [null],
+    //   expiry_date: [null, Validators.required],
+    // });
 
     this.couponService.getAllCoupons().subscribe((res) => {
       this.coupons = res.coupons;
-    })
+    });
   }
   onPageChange(page: number) {}
 
@@ -122,26 +121,21 @@ export class CouponComponent {
     this.renderCouponEditForm = false;
   }
   onRenderCouponAddForm() {
+    this.selectedCoupon = null;
     this.renderCouponAddForm = !this.renderCouponAddForm;
     this.renderCouponList = !this.renderCouponList;
     this.renderCouponEditForm = false;
   }
-  onRenderCouponEditForm() {
-    this.renderCouponEditForm = !this.renderCouponEditForm;
+
+  onRenderCouponEditForm(coupon: ICoupon) {
+    this.selectedCoupon = coupon;
+    this.renderCouponAddForm = true;
     this.renderCouponList = false;
-    this.renderCouponAddForm = false;
+    this.renderCouponEditForm = false;
   }
 
-  onSubmit() {
-    this.couponService.createCoupon(this.couponForm.value).subscribe((res) => {
-      if (res.success) {
-        this.toastSrvice.showToast(res.message, 'success');
-        return;
-      }
-    });
-  }
-  openModal(coupon: any) {
-    this.selectedCoupon = coupon;
+  openModal(coupon: ICoupon) {
+    this.selectedCouponForShow = coupon;
     this.isModalOpen = true;
   }
 

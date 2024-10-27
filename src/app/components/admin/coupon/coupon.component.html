@@ -44,266 +44,35 @@
                 </td>
                 <td class="px-6 py-2 text-center border-b border-gray-300">
                   <small
-                    class="px-2 py-1 text-white font-semibold rounded-md cursor-pointer bg-gradient-to-r from-indigo-500 via-indigo-600 to-indigo-700">
+                    class="px-2 py-1 text-white font-semibold rounded-md cursor-pointer bg-gradient-to-r from-indigo-500 via-indigo-600 to-indigo-700"
+                    (click)="onRenderCouponEditForm(coupon)">
                     Edit
                   </small>
                 </td>
                 <td class="px-6 py-2 text-center cursor-pointer text-green-500 border-b border-gray-300">
-                  <!-- <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3"
-                    stroke="currentColor" class="size-4 cursor-pointer" (click)="viewDetails(coupon)">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                      d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
-                  </svg> -->
                   <button (click)="openModal(coupon)"
                     class="rounded-lg px-2 py-1 hover:shadow-lg hover:bg-gray-100 hover:opacity-50 hover:text-black">view
-                    -></button>
+                  </button>
                 </td>
               </tr>
             </tbody>
           </table>
-
-
         </article>
 
         <article *ngIf="renderCouponAddForm" class="mt-6">
           <div class="mx-auto">
-            <form class="grid grid-cols-1 lg:grid-cols-2 gap-6" [formGroup]="couponForm" (ngSubmit)="onSubmit()">
-              <div class="form-field relative">
-                <input type="text" id="code"
-                  class="w-full border-2 p-3 rounded-md focus:outline-none focus:border-[#3D52A0]"
-                  formControlName="code" />
-                <label for="code" class="absolute top-1/2 left-4 transform -translate-y-1/2 text-gray-500">Coupon
-                  Code</label>
-                <div *ngIf="couponForm.get('code')?.touched && couponForm.get('code')?.invalid">
-                  <small class="text-red-500 text-sm block"
-                    *ngIf="couponForm.get('code')?.errors?.['required'] && couponForm.get('code')?.invalid">Code is
-                    required*</small>
-                  <small class="text-red-500 text-sm block"
-                    *ngIf="couponForm.get('code')?.errors?.['minlength'] && couponForm.get('code')?.invalid">Code must
-                    have 4 letters*</small>
-                  <small class="text-red-500 text-sm block"
-                    *ngIf="couponForm.get('code')?.errors?.['required'] && couponForm.get('code')?.invalid">Code is
-                    required*</small>
-                </div>
-              </div>
-
-              <div class="form-field relative">
-                <select id="discount_type"
-                  class="w-full border-2 p-3 rounded-md focus:outline-none focus:border-[#3D52A0]"
-                  formControlName="discount_type">
-                  <option value="" disabled selected>Select Discount Type</option>
-                  <option value="percentage">Percentage</option>
-                  <option value="fixed">Fixed</option>
-                </select>
-                <label for="discount_type"
-                  class="absolute top-1/2 left-4 transform -translate-y-1/2 text-gray-500">Discount Type</label>
-                <div *ngIf="couponForm.get('dicount_type')?.touched && couponForm.get('dicount_type')?.invalid">
-                  <small class="text-red-500 text-sm block"
-                    *ngIf="couponForm.get('dicount_type')?.errors?.['required'] && couponForm.get('dicount_type')?.invalid">Discount
-                    type is required*</small>
-                  <!-- <small class="text-red-500 text-sm block"
-                    *ngIf="couponForm.get('dicount_type')?.errors?.['required'] && couponForm.get('dicount_type')?.invalid">Code is required*</small>
-                    <small class="text-red-500 text-sm block"
-                    *ngIf="couponForm.get('dicount_type')?.errors?.['required'] && couponForm.get('dicount_type')?.invalid">Code is required*</small> -->
-                </div>
-              </div>
-
-              <div class="form-field relative col-span-1 lg:col-span-2">
-                <input type="text" id="description"
-                  class="w-full border-2 p-3 rounded-md focus:outline-none focus:border-[#3D52A0]"
-                  formControlName="description" />
-                <label for="description"
-                  class="absolute top-1/2 left-4 transform -translate-y-1/2 text-gray-500">Description</label>
-                <div *ngIf="couponForm.get('description')?.touched && couponForm.get('description')?.invalid">
-                  <small class="text-red-500 text-sm block"
-                    *ngIf="couponForm.get('description')?.errors?.['required'] && couponForm.get('description')?.invalid">Description
-                    is required*</small>
-                  <small class="text-red-500 text-sm block"
-                    *ngIf="couponForm.get('description')?.errors?.['minlength'] && couponForm.get('description')?.invalid">Description
-                    must have 10 letters*</small>
-                  <small class="text-red-500 text-sm block"
-                    *ngIf="couponForm.get('description')?.errors?.['invalidDescription'] && couponForm.get('description')?.invalid">Must
-                    in proper way*</small>
-                </div>
-              </div>
-
-              <div class="form-field relative">
-                <input type="date" id="expiry_date"
-                  class="w-full border-2 p-3 rounded-md focus:outline-none focus:border-[#3D52A0]"
-                  formControlName="expiry_date" />
-                <label for="expiry_date" class="absolute top-1/2 left-4 transform -translate-y-1/2 text-gray-500">Expiry
-                  Date</label>
-                <div *ngIf="couponForm.get('expiry_date')?.touched && couponForm.get('expiry_date')?.invalid">
-                  <small class="text-red-500 text-sm block"
-                    *ngIf="couponForm.get('expiry_date')?.errors?.['required'] && couponForm.get('expiry_date')?.invalid">Code
-                    is required*</small>
-                  <small class="text-red-500 text-sm block"
-                    *ngIf="couponForm.get('expiry_date')?.errors?.['required'] && couponForm.get('expiry_date')?.invalid">Code
-                    is required*</small>
-                  <small class="text-red-500 text-sm block"
-                    *ngIf="couponForm.get('expiry_date')?.errors?.['required'] && couponForm.get('expiry_date')?.invalid">Code
-                    is required*</small>
-                </div>
-              </div>
-
-              <div class="form-field relative">
-                <input type="number" id="minAmt"
-                  class="w-full border-2 p-3 rounded-md focus:outline-none focus:border-[#3D52A0]"
-                  formControlName="minAmt" />
-                <label for="minAmt" class="absolute top-1/2 left-4 transform -translate-y-1/2 text-gray-500">Minimum
-                  Amount</label>
-                <div *ngIf="couponForm.get('monAmt')?.touched && couponForm.get('monAmt')?.invalid">
-                  <small class="text-red-500 text-sm block"
-                    *ngIf="couponForm.get('monAmt')?.errors?.['required'] && couponForm.get('monAmt')?.invalid">Code is
-                    required*</small>
-                  <small class="text-red-500 text-sm block"
-                    *ngIf="couponForm.get('monAmt')?.errors?.['required'] && couponForm.get('monAmt')?.invalid">Code is
-                    required*</small>
-                  <small class="text-red-500 text-sm block"
-                    *ngIf="couponForm.get('monAmt')?.errors?.['required'] && couponForm.get('monAmt')?.invalid">Code is
-                    required*</small>
-                </div>
-              </div>
-
-              <div class="form-field relative" *ngIf="couponForm.get('discount_type')?.value == 'percentage'">
-                <input type="number" id="maxAmt"
-                  class="w-full border-2 p-3 rounded-md focus:outline-none focus:border-[#3D52A0]"
-                  formControlName="maxAmt" />
-                <label for="maxAmt" class="absolute top-1/2 left-4 transform -translate-y-1/2 text-gray-500">Maximum
-                  Discount</label>
-                <div *ngIf="couponForm.get('maxAmt')?.touched && couponForm.get('code')?.invalid">
-                  <small class="text-red-500 text-sm block"
-                    *ngIf="couponForm.get('maxAmt')?.errors?.['required'] && couponForm.get('maxAmt')?.invalid">Code is
-                    required*</small>
-                  <small class="text-red-500 text-sm block"
-                    *ngIf="couponForm.get('maxAmt')?.errors?.['required'] && couponForm.get('maxAmt')?.invalid">Code is
-                    required*</small>
-                  <small class="text-red-500 text-sm block"
-                    *ngIf="couponForm.get('maxAmt')?.errors?.['required'] && couponForm.get('maxAmt')?.invalid">Code is
-                    required*</small>
-                </div>
-              </div>
-
-              <div class="form-field relative" *ngIf="couponForm.get('discount_type')?.value == 'percentage'">
-                <input type="number" id="discount_value"
-                  class="w-full border-2 p-3 rounded-md focus:outline-none focus:border-[#3D52A0]"
-                  formControlName="percentage" />
-                <label for="discount_value"
-                  class="absolute top-1/2 left-4 transform -translate-y-1/2 text-gray-500">Percentage</label>
-                <div *ngIf="couponForm.get('percentage')?.touched && couponForm.get('percentage')?.invalid">
-                  <small class="text-red-500 text-sm block"
-                    *ngIf="couponForm.get('percentage')?.errors?.['required'] && couponForm.get('percentage')?.invalid">Code
-                    is required*</small>
-                  <small class="text-red-500 text-sm block"
-                    *ngIf="couponForm.get('percentage')?.errors?.['required'] && couponForm.get('percentage')?.invalid">Code
-                    is required*</small>
-                  <small class="text-red-500 text-sm block"
-                    *ngIf="couponForm.get('percentage')?.errors?.['required'] && couponForm.get('percentage')?.invalid">Code
-                    is required*</small>
-                </div>
-              </div>
-
-              <div class="form-field relative" *ngIf="couponForm.get('discount_type')?.value == 'fixed'">
-                <input type="number" id="discount_value"
-                  class="w-full border-2 p-3 rounded-md focus:outline-none focus:border-[#3D52A0]"
-                  formControlName="discount_value" />
-                <label for="discount_value"
-                  class="absolute top-1/2 left-4 transform -translate-y-1/2 text-gray-500">Discount Value</label>
-                <div *ngIf="couponForm.get('discount_value')?.touched && couponForm.get('discount_value')?.invalid">
-                  <small class="text-red-500 text-sm block"
-                    *ngIf="couponForm.get('discount_value')?.errors?.['required'] && couponForm.get('discount_value')?.invalid">Code
-                    is required*</small>
-                  <small class="text-red-500 text-sm block"
-                    *ngIf="couponForm.get('discount_value')?.errors?.['required'] && couponForm.get('discount_value')?.invalid">Code
-                    is required*</small>
-                  <small class="text-red-500 text-sm block"
-                    *ngIf="couponForm.get('discount_value')?.errors?.['required'] && couponForm.get('discount_value')?.invalid">Code
-                    is required*</small>
-                </div>
-              </div>
-
-              <button type="submit" class="submit-btn col-span-1 lg:col-span-2 text-white font-bold py-3">
-                Create Coupon
-              </button>
-            </form>
+            <app-coupon-form [selectedCoupon]="selectedCoupon"></app-coupon-form>
           </div>
         </article>
-        <app-single-coupon [selectedCoupon]="selectedCoupon" [isModalOpen]="isModalOpen"
-          (closeModalEvent)="closeModal()"></app-single-coupon>
+
+        <app-single-coupon [selectedCoupon]="selectedCouponForShow" [isModalOpen]="isModalOpen"
+          (closeModalEvent)="closeModal()">
+        </app-single-coupon>
       </div>
+
       <app-pagination [totalItems]="totalCoupons" [itemsPerPage]="limit" [currentPage]="currentPage"
         [typeOfUser]="'admin'" (pageChange)="onPageChange($event)">
       </app-pagination>
     </section>
   </div>
 </main>
-
-
-<!-- <div *ngIf="isModalOpen" class="fixed inset-0 flex items-center justify-center z-50" 
-     [ngClass]="{'opacity-0': !isModalOpen, 'opacity-100': isModalOpen}"
-     [@fadeInOut]>
-  <div class="absolute inset-0 bg-black bg-opacity-50 backdrop-blur-sm" (click)="closeModal()"></div>
-  <div class="bg-white dark:bg-gray-800 w-full max-w-md m-4 rounded-2xl shadow-2xl overflow-hidden transform transition-all"
-       [ngClass]="{'scale-90 opacity-0': !isModalOpen, 'scale-100 opacity-100': isModalOpen}"
-       [@zoomInOut]>
-    <div class="p-6">
-      <h2 class="text-2xl font-bold mb-4 text-gray-800 dark:text-white">Coupon Details</h2>
-      <div class="space-y-3">
-        <div class="flex justify-between items-center">
-          <span class="text-gray-600 dark:text-gray-400">Code:</span>
-          <span class="font-semibold text-gray-800 dark:text-white">{{ selectedCoupon.code }}</span>
-        </div>
-        <div class="flex justify-between items-center">
-          <span class="text-gray-600 dark:text-gray-400">Description:</span>
-          <span class="font-semibold text-gray-800 dark:text-white">{{ selectedCoupon.description }}</span>
-        </div>
-        <div class="flex justify-between items-center">
-          <span class="text-gray-600 dark:text-gray-400">Discount Type:</span>
-          <span class="font-semibold text-gray-800 dark:text-white capitalize">{{ selectedCoupon.discount_type }}</span>
-        </div>
-        <div class="flex justify-between items-center">
-          <span class="text-gray-600 dark:text-gray-400">Discount Value:</span>
-          <span class="font-semibold text-gray-800 dark:text-white">
-            <ng-container *ngIf="selectedCoupon.discount_type === 'percentage'">
-              {{ selectedCoupon.percentage }}%
-            </ng-container>
-            <ng-container *ngIf="selectedCoupon.discount_type === 'fixed'">
-              {{ selectedCoupon.discount_value | currency }}
-            </ng-container>
-          </span>
-        </div>
-        <div class="flex justify-between items-center">
-          <span class="text-gray-600 dark:text-gray-400">Min Amount:</span>
-          <span class="font-semibold text-gray-800 dark:text-white">{{ selectedCoupon.minAmt | currency }}</span>
-        </div>
-        <div class="flex justify-between items-center">
-          <span class="text-gray-600 dark:text-gray-400">Max Amount:</span>
-          <span class="font-semibold text-gray-800 dark:text-white">
-            <ng-container *ngIf="selectedCoupon.discount_type === 'percentage'">
-              {{ selectedCoupon.maxAmt | currency }}
-            </ng-container>
-            <ng-container *ngIf="selectedCoupon.discount_type === 'fixed'">
-              -
-            </ng-container>
-          </span>
-        </div>
-        <div class="flex justify-between items-center">
-          <span class="text-gray-600 dark:text-gray-400">Expiry Date:</span>
-          <span class="font-semibold text-gray-800 dark:text-white">{{ selectedCoupon.expiry_date | date: 'mediumDate' }}</span>
-        </div>
-        <div class="flex justify-between items-center">
-          <span class="text-gray-600 dark:text-gray-400">Status:</span>
-          <span class="font-semibold" [ngClass]="{'text-green-600': selectedCoupon.isActive, 'text-red-600': !selectedCoupon.isActive}">
-            {{ selectedCoupon.isActive ? 'Active' : 'Inactive' }}
-          </span>
-        </div>
-      </div>
-    </div>
-    <div class="bg-gray-100 dark:bg-gray-700 px-6 py-4 flex justify-end">
-      <button class="px-4 py-2 bg-gray-800 dark:bg-gray-600 text-white rounded-lg hover:bg-gray-700 dark:hover:bg-gray-500 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-700 dark:focus:ring-gray-500" 
-              (click)="closeModal()">
-        Close
-      </button>
-    </div>
-  </div>
-</div> -->
