@@ -1,12 +1,20 @@
+export enum DiscountType {
+  PERCENTAGE = 'percentage',
+  FIXED = 'fixed',
+}
+
 export interface ICoupon {
   _id?: string;
   code: string;
   description: string;
+  percentage: number;
   minAmt: number;
   maxAmt?: number;
   expiry_date: Date;
-  is_active?: boolean;
+  discount_type: DiscountType;
+  discount_value: number;
+  isActive?: boolean;
   used: string[];
-  created_at: Date;
-  updated_at: Date;
+  createdAt: Date;
+  updatedAt: Date;
 }

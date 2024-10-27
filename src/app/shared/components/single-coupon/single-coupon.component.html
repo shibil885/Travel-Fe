@@ -1,0 +1,89 @@
+<div *ngIf="isModalOpen" class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog"
+    aria-modal="true">
+    <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+        <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"
+            (click)="closeModal()"></div>
+
+        <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+
+        <div [@modalAnimation]
+            class="inline-block align-bottom bg-[#EDE8F5] rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+            <div class="bg-gradient-to-r from-[#3D52A0] to-[#7091E6] p-6 sm:p-8">
+                <div class="sm:flex sm:items-start">
+                    <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                        <h3 class="text-3xl leading-6 font-extrabold text-white mb-2" id="modal-title">
+                            {{ selectedCoupon.code }}
+                        </h3>
+                        <p class="text-xl text-[#ADBBDA]">{{ selectedCoupon.description }}</p>
+                    </div>
+                </div>
+                <div class="mt-6 bg-[#8697C4] bg-opacity-20 rounded-lg p-4 text-center">
+                    <span class="text-5xl font-bold text-white">{{ getDiscountValue() }}</span>
+                    <span class="text-2xl font-semibold text-[#ADBBDA] ml-2">{{ getDiscountLabel() }}</span>
+                </div>
+            </div>
+            <div class="bg-[#EDE8F5] px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                <div class="sm:flex sm:items-start">
+                    <div class="mt-3 text-center sm:mt-0 sm:text-left w-full">
+                        <div class="grid grid-cols-3 gap-4">
+                            <div>
+                                <p class="text-sm font-medium text-gray-500">Discount Type</p>
+                                <p class="mt-1 text-lg font-semibold text-gray-900">{{ selectedCoupon.discount_type|
+                                    json
+                                    }}</p>
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-500">Minimum Amount</p>
+                                <p class="mt-1 text-lg font-semibold text-gray-900">{{ selectedCoupon.minAmt | currency
+                                    }}</p>
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-500">Maximum Amount</p>
+                                <p class="mt-1 text-lg font-semibold text-gray-900">
+                                    {{ selectedCoupon.discount_type === 'percentage' ? (selectedCoupon.maxAmt |
+                                    currency) : '-' }}
+                                </p>
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-500">Created Date</p>
+                                <p class="mt-1 text-lg font-semibold text-gray-900">{{ selectedCoupon.createdAt |
+                                    date: 'mediumDate' }}</p>
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-500">Expiry Date</p>
+                                <p class="mt-1 text-lg font-semibold text-gray-900">{{ selectedCoupon.expiry_date |
+                                    date: 'mediumDate' }}</p>
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-500">Days left</p>
+                                <p class="mt-1 text-lg font-semibold text-gray-900">{{ selectedCoupon.createdAt |
+                                    daysLeft:selectedCoupon.expiry_date}}</p>
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium text-gray-500">Status</p>
+                                <p class="mt-1 text-lg font-semibold"
+                                    [ngClass]="{'text-green-600': selectedCoupon.isActive, 'text-red-600': !selectedCoupon.isActive}">
+                                    {{ selectedCoupon.isActive ? 'Active' : 'Inactive' }}
+                                </p>
+                            </div>
+                            <div>
+                                <p class="text-sm mb-1 font-medium text-gray-500">Action</p>
+                                <small class="text-sm font-semibold text-white py-1 px-2 rounded-md cursor-pointer shadow-md"
+                                    [ngClass]="{'bg-green-600': !selectedCoupon.isActive, 'bg-red-600': selectedCoupon.isActive}" (click)="onChangeStatus(selectedCoupon._id,selectedCoupon.isActive)">
+                                    {{ selectedCoupon.isActive ? 'Set Inactive' : 'Set Active' }}
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-[#ADBBDA] px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                <button type="button"
+                    class="w-full inline-flex justify-center rounded-full bg-gradient-to-r from-red-600 to-red-300 shadow-sm px-1  text-white  text-base font-medium  sm:ml-3 sm:w-auto sm:text-sm"
+                    (click)="closeModal()">
+                    X
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

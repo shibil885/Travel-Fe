@@ -17,7 +17,7 @@ export class CouponService {
       couponData,
       {
         withCredentials: true,
-      } 
+      }
     );
   }
 
@@ -27,16 +27,20 @@ export class CouponService {
     });
   }
 
-  changeStatus(id: string, status: boolean) {
-    return this.http.patch(
-      `${this.api}/changeStatus/:id`,
+  changeStatus(id: string | undefined, status: boolean | undefined) {
+    return this.http.patch<{ success: boolean; message: string }>(
+      `${this.api}/changeStatus/${id}`,
       { status },
       { withCredentials: true }
     );
   }
 
   getAllCoupons() {
-    return this.http.get(`${this.api}/getAllCoupons`, {
+    return this.http.get<{
+      success: boolean;
+      message: string;
+      coupons: ICoupon[];
+    }>(`${this.api}/getAllCoupons`, {
       withCredentials: true,
     });
   }
