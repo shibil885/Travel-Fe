@@ -13,18 +13,28 @@
                         <div class="relative">
                             <input type="date" id="travelDates" formControlName="travelDates"
                                 class="w-full rounded-md border border-gray-300 focus:ring-2 focus:ring-indigo-600 focus:border-indigo-600 py-2 px-3 appearance-none" />
-                            <!-- <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
-                                class="w-6 h-6 absolute right-2 top-2 cursor-pointer text-gray-500">
-                                <path
-                                    d="M12 11.993a.75.75 0 0 0-.75.75v.006c0 .414.336.75.75.75h.006a.75.75 0 0 0 .75-.75v-.006a.75.75 0 0 0-.75-.75H12ZM12 16.494a.75.75 0 0 0-.75.75v.005c0 .414.335.75.75.75h.005a.75.75 0 0 0 .75-.75v-.005a.75.75 0 0 0-.75-.75H12ZM8.999 17.244a.75.75 0 0 1 .75-.75h.006a.75.75 0 0 1 .75.75v.006a.75.75 0 0 1-.75.75h-.006a.75.75 0 0 1-.75-.75v-.006ZM7.499 16.494a.75.75 0 0 0-.75.75v.005c0 .414.336.75.75.75h.005a.75.75 0 0 0 .75-.75v-.005a.75.75 0 0 0-.75-.75H7.5ZM13.499 14.997a.75.75 0 0 1 .75-.75h.006a.75.75 0 0 1 .75.75v.005a.75.75 0 0 1-.75.75h-.006a.75.75 0 0 1-.75-.75v-.005ZM14.25 16.494a.75.75 0 0 0-.75.75v.006c0 .414.335.75.75.75h.005a.75.75 0 0 0 .75-.75v-.006a.75.75 0 0 0-.75-.75h-.005ZM15.75 14.995a.75.75 0 0 1 .75-.75h.005a.75.75 0 0 1 .75.75v.006a.75.75 0 0 1-.75.75H16.5a.75.75 0 0 1-.75-.75v-.006ZM13.498 12.743a.75.75 0 0 1 .75-.75h2.25a.75.75 0 1 1 0 1.5h-2.25a.75.75 0 0 1-.75-.75ZM6.748 14.993a.75.75 0 0 1 .75-.75h4.5a.75.75 0 0 1 0 1.5h-4.5a.75.75 0 0 1-.75-.75Z" />
-                            </svg> -->
                         </div>
                     </div>
                     <div>
                         <label for="person" class="block text-base font-medium text-gray-700 mb-2">Person(s)</label>
-                        <input type="number" id="person" formControlName="person" min="1" max="15"
+                        <input type="text" id="person" formControlName="person" min="1" max="15"
                             class="w-full rounded-md border border-gray-300 focus:ring-2 focus:ring-indigo-600 focus:border-indigo-600 py-2 px-3"
                             placeholder="Enter number of persons" />
+                        <div class="error-message text-red-700"
+                            *ngIf="bookingForm.get('person')?.touched && bookingForm.get('person')?.invalid">
+                            <span *ngIf="bookingForm.get('person')?.errors?.['required']">Number of
+                                people is required
+                            </span>
+                            <span *ngIf="bookingForm.get('person')?.errors?.['max']">Number of
+                                people must less than {{packageDetails.people}}
+                            </span>
+                            <span *ngIf="bookingForm.get('person')?.errors?.['min']">Number of
+                                people must a positive number
+                            </span>
+                            <span *ngIf="bookingForm.get('person')?.errors?.['pattern']">Please enter a
+                                valid number
+                            </span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -85,18 +95,12 @@
                                             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
                                     </div>
                                 </div>
-                                <div class="mt-2">
-                                    <label [for]="'travelerPassport' + i"
-                                        class="block text-sm font-medium text-gray-700 mb-1">Passport Number</label>
-                                    <input [id]="'travelerPassport' + i" type="text" formControlName="passportNumber"
-                                        placeholder="Passport Number"
-                                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
-                                </div>
                             </div>
                         </div>
-                        <button type="button" (click)="addTraveler()"
-                            class="mt-4 bg-indigo-500 text-white py-2 px-4 rounded-md hover:bg-indigo-600 transition duration-300">Add
-                            Traveler</button>
+                        <!-- <button type="button" (click)="addTraveler()"
+                            class="mt-4 bg-[#FF7D68] text-white py-2 font-semibold px-4 rounded-md hover:bg-[rgb(255,100,77)] transition duration-300">Add
+                            Traveler
+                        </button> -->
                     </div>
                 </div>
 
@@ -133,7 +137,8 @@
                                     </p>
                                 </div>
                                 <button type="button"
-                                    class="bg-[#FFF1DA] text-[#656262] py-2 px-4 text-sm rounded-md font-bold hover:bg-[#ffdca4] transition duration-300 transform hover:scale-105 shadow-xl hover:shadow-2xl" (click)="viewDetails()">View
+                                    class="bg-[#FFF1DA] text-[#656262] py-2 px-4 text-sm rounded-md font-bold hover:bg-[#ffdca4] transition duration-300 transform hover:scale-105 shadow-xl hover:shadow-2xl"
+                                    (click)="viewDetails()">View
                                     Details</button>
                             </div>
                         </div>
@@ -153,7 +158,6 @@
                         </p>
                     </div>
 
-                    <!-- Payment Summary Section -->
                     <div class="bg-white p-6 rounded-lg shadow-lg">
                         <h2 class="text-2xl font-semibold mb-4 text-[#656262]">Payment Summary</h2>
                         <div class="flex justify-between mb-2">

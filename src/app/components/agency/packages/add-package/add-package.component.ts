@@ -121,6 +121,7 @@ export class AddPackageComponent {
   get tourPlans(): FormArray {
     return this.packageForm.get('tourPlans') as FormArray;
   }
+  
   addIncludedItem(): void {
     if (this.included.length < 10) {
       this.included.push(new FormControl('', Validators.required));
