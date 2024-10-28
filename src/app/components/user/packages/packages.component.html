@@ -137,7 +137,7 @@
                             <p class="text-lg font-bold text-black">{{ pkg.price | currency:'INR' }}</p>
                             <div class="flex">
                                 <button
-                                    class="bg-[#FFF1DA]  text-[#656262] py-1 px-4 text-sm rounded-s-md font-bold hover:bg-[#ffdca4] transition duration-300 transform hover:scale-105 shadow-xl hover:shadow-2xl">
+                                    class="bg-[#FFF1DA]  text-[#656262] py-1 px-4 text-sm rounded-s-md font-bold hover:bg-[#ffdca4] transition duration-300 transform hover:scale-105 shadow-xl hover:shadow-2xl" (click)="bookPackage(pkg._id)">
                                     Book
                                 </button>
                                 <button

@@ -77,4 +77,3 @@ export class SinglePackageComponent {
     this.plane = false;
   }
 }
-  

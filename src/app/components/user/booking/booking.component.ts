@@ -11,6 +11,13 @@ import { CalendarModule } from 'primeng/calendar';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { HeaderComponent } from '../header/header.component';
+import { IPackage } from '../../../interfaces/package.interface';
+import { Store } from '@ngrx/store';
+import { selectPackage } from '../../../store/user/user.selector';
+import { ToastService } from '../../../shared/services/toaster.service';
+import { Router } from '@angular/router';
+import { TruncatePipe } from '../../../shared/pipes/truncate.pipe';
+import { showSinglePackage } from '../../../store/user/user.action';
 
 @Component({
   standalone: true,
@@ -18,31 +25,27 @@ import { HeaderComponent } from '../header/header.component';
     HeaderComponent,
     CommonModule,
     ReactiveFormsModule,
+    TruncatePipe,
     CalendarModule,
     DropdownModule,
     InputNumberModule,
   ],
   selector: 'app-deluxe-travel-booking',
   templateUrl: './booking.component.html',
-  styles: [
-    `
-      /* You can add any additional styles here */
-    `,
-  ],
+  styleUrls: ['./booking.component.css'],
 })
-export class BookingComponent implements OnInit {
+export class BookingComponent {
   bookingForm!: FormGroup;
+  packageDetails!: IPackage;
   couponMessage: string = '';
   couponValid: boolean = false;
-  destinations: any[] = [
-    { name: 'Himalaya, Asia' },
-    { name: 'Machu Picchu, Peru' },
-    { name: 'Santorini, Greece' },
-    { name: 'Bali, Indonesia' },
-    { name: 'Queenstown, New Zealand' },
-  ];
 
-  constructor(private fb: FormBuilder) {}
+  constructor(
+    private fb: FormBuilder,
+    private store: Store,
+    private toastService: ToastService,
+    private router: Router
+  ) {}
 
   ngOnInit() {
     this.bookingForm = this.fb.group({
@@ -66,13 +69,27 @@ export class BookingComponent implements OnInit {
       couponCode: [''],
     });
 
-    // Add two travelers by default (for adults)
-    this.addTraveler();
-    this.addTraveler();
+    this.store.select(selectPackage).subscribe((res) => {
+      if (res) {
+        window.scrollTo(0, 0);
+        this.packageDetails = res;
+        return;
+      }
+      this.toastService.showToast('Something went wrong', 'error');
+      return this.router.navigate(['packages']);
+    });
   }
 
   get travelers() {
     return this.bookingForm.get('travelers') as FormArray;
+  }
+  viewDetails() {
+    if (this.packageDetails._id) {
+      this.store.dispatch(showSinglePackage({ id: this.packageDetails._id }));
+      return;
+    }
+    this.toastService.showToast('Something went wrong', 'error');
+    return this.router.navigate(['packages']);
   }
 
   addTraveler() {

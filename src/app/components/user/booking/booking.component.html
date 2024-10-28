@@ -1,35 +1,38 @@
 <app-header></app-header>
 <div class="bg-gray-100 min-h-screen font-sans">
     <main class="container mx-auto px-4 py-8">
-        <h1 class="text-5xl font-bold mb-8 text-indigo-800 text-center">Embark on Your Dream Journey</h1>
+        <h1 class="text-5xl font-bold mb-8 text-[#656262] text-center">Embark on Your Dream Journey</h1>
 
         <form [formGroup]="bookingForm" (ngSubmit)="onSubmit()" class="space-y-8">
-            <div class="bg-white p-6 rounded-lg shadow-lg">
-                <h2 class="text-2xl font-semibold mb-4 text-indigo-700">Trip Details</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div class="bg-white p-8 rounded-lg shadow-lg transition-shadow duration-300 hover:shadow-xl">
+                <h2 class="text-3xl font-semibold mb-6 text-[#656262]">Trip Details</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     <div>
-                        <label for="travelDates" class="block text-sm font-medium text-gray-700 mb-1">Travel
+                        <label for="travelDates" class="block text-base font-medium text-gray-700 mb-2">Travel
                             Dates</label>
-                        <p-calendar formControlName="travelDates" selectionMode="range" [readonlyInput]="true"
-                            [style]="{ width: '100%' }" [inputStyle]="{ width: '100%' }"></p-calendar>
-                    </div>
-                    <!-- <div>
-                        <label for="adults" class="block text-sm font-medium text-gray-700 mb-1">Adults</label>
-                        <p-inputNumber formControlName="adults" [showButtons]="true" buttonLayout="horizontal"
-                            spinnerMode="horizontal" [min]="1" [max]="10" [style]="{ width: '100%' }"></p-inputNumber>
+                        <div class="relative">
+                            <input type="date" id="travelDates" formControlName="travelDates"
+                                class="w-full rounded-md border border-gray-300 focus:ring-2 focus:ring-indigo-600 focus:border-indigo-600 py-2 px-3 appearance-none" />
+                            <!-- <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                                class="w-6 h-6 absolute right-2 top-2 cursor-pointer text-gray-500">
+                                <path
+                                    d="M12 11.993a.75.75 0 0 0-.75.75v.006c0 .414.336.75.75.75h.006a.75.75 0 0 0 .75-.75v-.006a.75.75 0 0 0-.75-.75H12ZM12 16.494a.75.75 0 0 0-.75.75v.005c0 .414.335.75.75.75h.005a.75.75 0 0 0 .75-.75v-.005a.75.75 0 0 0-.75-.75H12ZM8.999 17.244a.75.75 0 0 1 .75-.75h.006a.75.75 0 0 1 .75.75v.006a.75.75 0 0 1-.75.75h-.006a.75.75 0 0 1-.75-.75v-.006ZM7.499 16.494a.75.75 0 0 0-.75.75v.005c0 .414.336.75.75.75h.005a.75.75 0 0 0 .75-.75v-.005a.75.75 0 0 0-.75-.75H7.5ZM13.499 14.997a.75.75 0 0 1 .75-.75h.006a.75.75 0 0 1 .75.75v.005a.75.75 0 0 1-.75.75h-.006a.75.75 0 0 1-.75-.75v-.005ZM14.25 16.494a.75.75 0 0 0-.75.75v.006c0 .414.335.75.75.75h.005a.75.75 0 0 0 .75-.75v-.006a.75.75 0 0 0-.75-.75h-.005ZM15.75 14.995a.75.75 0 0 1 .75-.75h.005a.75.75 0 0 1 .75.75v.006a.75.75 0 0 1-.75.75H16.5a.75.75 0 0 1-.75-.75v-.006ZM13.498 12.743a.75.75 0 0 1 .75-.75h2.25a.75.75 0 1 1 0 1.5h-2.25a.75.75 0 0 1-.75-.75ZM6.748 14.993a.75.75 0 0 1 .75-.75h4.5a.75.75 0 0 1 0 1.5h-4.5a.75.75 0 0 1-.75-.75Z" />
+                            </svg> -->
+                        </div>
                     </div>
                     <div>
-                        <label for="children" class="block text-sm font-medium text-gray-700 mb-1">Children</label>
-                        <p-inputNumber formControlName="children" [showButtons]="true" buttonLayout="horizontal"
-                            spinnerMode="horizontal" [min]="0" [max]="10" [style]="{ width: '100%' }"></p-inputNumber>
-                    </div> -->
+                        <label for="person" class="block text-base font-medium text-gray-700 mb-2">Person(s)</label>
+                        <input type="number" id="person" formControlName="person" min="1" max="15"
+                            class="w-full rounded-md border border-gray-300 focus:ring-2 focus:ring-indigo-600 focus:border-indigo-600 py-2 px-3"
+                            placeholder="Enter number of persons" />
+                    </div>
                 </div>
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 <div class="space-y-8">
                     <div class="bg-white p-6 rounded-lg shadow-lg">
-                        <h2 class="text-2xl font-semibold mb-4 text-indigo-700">Personal Information</h2>
+                        <h2 class="text-2xl font-semibold mb-4 text-[#656262]">Personal Information</h2>
                         <div class="grid grid-cols-2 gap-4">
                             <div>
                                 <label for="firstName" class="block text-sm font-medium text-gray-700 mb-1">First
@@ -53,21 +56,15 @@
                         </div>
                         <div class="mt-4">
                             <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
-                            <div class="flex">
-                                <select formControlName="phoneCode"
-                                    class="px-3 py-2 border border-gray-300 rounded-l-md bg-gray-50 focus:ring-indigo-500 focus:border-indigo-500">
-                                    <option value="+91">+91</option>
-                                    <option value="+1">+1</option>
-                                    <option value="+44">+44</option>
-                                </select>
+                            <div>
                                 <input type="tel" id="phone" formControlName="phone" placeholder="Your Phone Number"
-                                    class="flex-1 px-3 py-2 border border-gray-300 rounded-r-md focus:ring-indigo-500 focus:border-indigo-500">
+                                    class="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
                             </div>
                         </div>
                     </div>
 
                     <div class="bg-white p-6 rounded-lg shadow-lg">
-                        <h2 class="text-2xl font-semibold mb-4 text-indigo-700">Traveler Details</h2>
+                        <h2 class="text-2xl font-semibold mb-4 text-[#656262]">Traveler Details</h2>
                         <div formArrayName="travelers" class="space-y-4">
                             <div *ngFor="let traveler of travelers.controls; let i = index" [formGroupName]="i"
                                 class="p-4 border border-gray-200 rounded-md">
@@ -105,96 +102,49 @@
 
                 <div class="space-y-8">
                     <div class="bg-white p-6 rounded-lg shadow-lg">
-                        <h2 class="text-2xl font-semibold mb-4 text-indigo-700">Package Details</h2>
+                        <h2 class="text-2xl font-semibold mb-4 text-[#656262]">Package Details</h2>
                         <div class="relative">
-                            <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-OisQtFbKIdJim8WUrkZGm0aPqBFJWQ.png"
-                                alt="Himalaya" class="w-full h-48 object-cover rounded-lg">
+                            <img [src]="packageDetails.images[0]" alt="Himalaya"
+                                class="w-full h-48 object-cover rounded-lg">
                             <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
-                                <h3 class="text-3xl font-bold text-white">Himalayan Adventure</h3>
+                                <h3 class="text-3xl font-bold text-white">{{packageDetails.name}}</h3>
                             </div>
                         </div>
                         <div class="mt-4">
-                            <h3 class="text-xl font-semibold text-indigo-700">Himalaya, Asia</h3>
+                            <h3 class="text-xl font-semibold text-indigo-900">{{packageDetails.finalDestination}},
+                                {{packageDetails.country}}</h3>
                             <div class="flex items-center mt-2">
                                 <span class="text-yellow-400">★★★★☆</span>
                                 <span class="ml-1 text-sm text-gray-600">4.0 (1299 ratings)</span>
                             </div>
-                            <p class="mt-2 text-gray-600">Embark on an unforgettable journey through the majestic
-                                Himalayas. Experience breathtaking views, rich culture, and thrilling adventures.</p>
+                            <p class="mt-2 text-gray-600">{{packageDetails.description | truncate: 60}}</p>
                             <ul class="mt-4 space-y-2">
-                                <li class="flex items-center"><svg class="w-5 h-5 text-green-500 mr-2" fill="none"
-                                        stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <li class="flex items-center" *ngFor="let item of packageDetails.included">
+                                    <svg class="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M5 13l4 4L19 7"></path>
-                                    </svg> Guided trekking expeditions</li>
-                                <li class="flex items-center"><svg class="w-5 h-5 text-green-500 mr-2" fill="none"
-                                        stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 13l4 4L19 7"></path>
-                                    </svg> Luxury mountain accommodations</li>
-                                <li class="flex items-center"><svg class="w-5 h-5 text-green-500 mr-2" fill="none"
-                                        stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 13l4 4L19 7"></path>
-                                    </svg> Cultural experiences and local interactions</li>
-                                <li class="flex items-center"><svg class="w-5 h-5 text-green-500 mr-2" fill="none"
-                                        stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 13l4 4L19 7"></path>
-                                    </svg> All meals and equipment included</li>
+                                    </svg> {{item}}
+                                </li>
                             </ul>
                             <div class="mt-4 flex items-center justify-between">
                                 <div>
-                                    <p class="text-sm text-gray-600">Price per person</p>
-                                    <p class="text-3xl font-bold text-indigo-600">$9,999</p>
+                                    <p class="text-3xl font-bold text-black">{{packageDetails.price | currency:'INR'}}
+                                    </p>
                                 </div>
                                 <button type="button"
-                                    class="bg-indigo-500 text-white py-2 px-4 rounded-md hover:bg-indigo-600 transition duration-300">View
+                                    class="bg-[#FFF1DA] text-[#656262] py-2 px-4 text-sm rounded-md font-bold hover:bg-[#ffdca4] transition duration-300 transform hover:scale-105 shadow-xl hover:shadow-2xl" (click)="viewDetails()">View
                                     Details</button>
                             </div>
                         </div>
                     </div>
-
                     <div class="bg-white p-6 rounded-lg shadow-lg">
-                        <h2 class="text-2xl font-semibold mb-4 text-indigo-700">Payment Details</h2>
-                        <div class="space-y-4">
-                            <div>
-                                <label for="cardName" class="block text-sm font-medium text-gray-700 mb-1">Name on
-                                    Card</label>
-                                <input type="text" id="cardName" formControlName="cardName"
-                                    placeholder="Full name on the card"
-                                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
-                            </div>
-                            <div>
-                                <label for="cardNumber" class="block text-sm font-medium text-gray-700 mb-1">Card
-                                    Number</label>
-                                <input type="text" id="cardNumber" formControlName="cardNumber"
-                                    placeholder="1234 5678 9012 3456"
-                                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
-                            </div>
-                            <div class="grid grid-cols-2 gap-4">
-                                <div>
-                                    <label for="expiryDate" class="block text-sm font-medium text-gray-700 mb-1">Expiry
-                                        Date</label>
-                                    <input type="text" id="expiryDate" formControlName="expiryDate" placeholder="MM/YY"
-                                        class="w-full px-3 py-2 border border-gray-300 rounded-md  focus:ring-indigo-500 focus:border-indigo-500">
-                                </div>
-                                <div>
-                                    <label for="cvv" class="block text-sm font-medium text-gray-700 mb-1">CVV</label>
-                                    <input type="text" id="cvv" formControlName="cvv" placeholder="123"
-                                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="bg-white p-6 rounded-lg shadow-lg">
-                        <h2 class="text-2xl font-semibold mb-4 text-indigo-700">Apply Coupon</h2>
+                        <h2 class="text-2xl font-semibold mb-4 text-[#656262]">Apply Coupon</h2>
                         <div class="flex space-x-2">
                             <input type="text" formControlName="couponCode" placeholder="Enter coupon code"
                                 class="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
                             <button type="button" (click)="applyCoupon()"
-                                class="bg-indigo-500 text-white py-2 px-4 rounded-md hover:bg-indigo-600 transition duration-300">Apply</button>
+                                class="bg-[#FFF1DA] text-[#656262] py-2 px-4 rounded-md hover:bg-[#ffdca4] transition duration-300 font-bold">Apply</button>
                         </div>
                         <p *ngIf="couponMessage"
                             [ngClass]="{'text-green-600': couponValid, 'text-red-600': !couponValid}"
@@ -203,9 +153,36 @@
                         </p>
                     </div>
 
+                    <!-- Payment Summary Section -->
+                    <div class="bg-white p-6 rounded-lg shadow-lg">
+                        <h2 class="text-2xl font-semibold mb-4 text-[#656262]">Payment Summary</h2>
+                        <div class="flex justify-between mb-2">
+                            <span class="text-gray-700">Total Price:</span>
+                            <span class="text-gray-900">{{ packageDetails.price | currency:'INR' }}</span>
+                        </div>
+                        <div class="flex justify-between mb-2">
+                            <span class="text-gray-700">Discount:</span>
+                            <span class="text-gray-900">{{ packageDetails.price| currency:'INR' }}</span>
+                        </div>
+                        <!-- <div class="flex justify-between mb-2">
+                            <span class="text-gray-700">Tax:</span>
+                            <span class="text-gray-900">{{ packageDetails.price| currency:'INR' }}</span>
+                        </div> -->
+                        <div class="flex justify-between mb-2">
+                            <span class="text-gray-700">Service Fee 5%:</span>
+                            <span class="text-gray-900">{{ packageDetails.price| currency:'INR' }}</span>
+                        </div>
+                        <div class="flex justify-between mb-4">
+                            <span class="text-gray-700 font-bold">Final Price:</span>
+                            <span class="text-gray-900 font-bold">{{ packageDetails.price| currency:'INR' }}</span>
+                        </div>
+                    </div>
+
+
                     <button type="submit"
-                        class="w-full bg-indigo-600 text-white py-3 px-4 rounded-md hover:bg-indigo-700 transition duration-300 text-lg font-semibold">Book
-                        Your Adventure</button>
+                        class="w-full bg-[#FF7D68] text-white py-3 px-4 rounded-md hover:bg-[#ff674f] transition duration-300 text-lg font-semibold">Book
+                        Your Adventure
+                    </button>
                 </div>
             </div>
         </form>

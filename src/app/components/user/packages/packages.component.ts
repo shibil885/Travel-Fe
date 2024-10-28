@@ -9,7 +9,10 @@ import { SearchComponent } from '../../../shared/components/search/search.compon
 import { trigger, transition, style, animate } from '@angular/animations';
 import { PaginationComponent } from '../../../shared/components/pagination/pagination.component';
 import { Store } from '@ngrx/store';
-import { showSinglePackage } from '../../../store/user/user.action';
+import {
+  bookingPage,
+  showSinglePackage,
+} from '../../../store/user/user.action';
 import { ToastService } from '../../../shared/services/toaster.service';
 @Component({
   selector: 'app-packages',
@@ -47,7 +50,6 @@ export class PackagesComponent {
 
   constructor(
     private userPackages: UserService,
-    private router: Router,
     private store: Store,
     private toastService: ToastService
   ) {}
@@ -79,7 +81,15 @@ export class PackagesComponent {
       this.store.dispatch(showSinglePackage({ id: id }));
       return;
     }
-    this.toastService.showToast('somthing wrong', 'error');
+    this.toastService.showToast('somthing went wrong', 'error');
+    return;
+  }
+  bookPackage(id: string | undefined) {
+    if (id) {
+      this.store.dispatch(bookingPage({ id }));
+      return;
+    }
+    this.toastService.showToast('somthing went wrong', 'error');
     return;
   }
 }
