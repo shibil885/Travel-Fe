@@ -7,6 +7,7 @@ import { PackagesComponent } from '../components/user/packages/packages.componen
 import { authGuard } from '../auth/guards/auth.guard';
 import { preventGuard } from '../auth/guards/logged.guard';
 import { SinglePackageComponent } from '../components/user/packages/single-package/single-package.component';
+import { BookingComponent } from '../components/user/booking/booking.component';
 
 export const userRouter: Routes = [
   {
@@ -43,6 +44,12 @@ export const userRouter: Routes = [
   {
     path: 'package',
     component: SinglePackageComponent,
+    canActivate: [authGuard],
+    data: { role: 'user' },
+  },
+  {
+    path: 'booking',
+    component: BookingComponent,
     canActivate: [authGuard],
     data: { role: 'user' },
   },

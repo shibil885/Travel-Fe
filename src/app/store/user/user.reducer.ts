@@ -103,5 +103,19 @@ export const UserReducer = createReducer(
       ...state,
       error,
     };
+  }),
+  on(userActions.bookingPageSuccess, (state, { success, selectedPackage }) => {
+    return {
+      ...state,
+      success,
+      package: selectedPackage,
+    };
+  }),
+  on(userActions.bookingPageError, (state, { error }) => {
+    return {
+      ...state,
+      success: false,
+      error,
+    };
   })
 );

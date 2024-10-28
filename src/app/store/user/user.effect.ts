@@ -166,4 +166,32 @@ export class UserEffect {
       ),
     { dispatch: false }
   );
+  bookingPage$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(userActions.bookingPage),
+      switchMap((data) =>
+        this.userService.getSinglePackage(data.id).pipe(
+          map((response) =>
+            userActions.bookingPageSuccess({
+              success: response.success,
+              selectedPackage: response.package,
+            })
+          )
+        )
+      ),
+      catchError((error) =>
+        of(userActions.bookingPageError({ error: error }))
+      )
+    )
+  );
+  bookingPageSuccess$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(userActions.bookingPageSuccess),
+        tap(() => {
+          this.router.navigate(['/booking']);
+        })
+      ),
+    { dispatch: false }
+  );
 }

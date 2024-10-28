@@ -76,3 +76,17 @@ export const showSinglePackageError = createAction(
   '[showPackageError] showSinglePackageComponent',
   props<{ error: string }>()
 );
+
+
+export const bookingPage = createAction(
+  '[booke package] BookingComponent',
+  props<{ id: string }>()
+);
+export const bookingPageSuccess = createAction(
+  '[bookingPageSuccess] BookingComponent',
+  props<{ success: boolean; selectedPackage: IPackage }>()
+);
+export const bookingPageError = createAction(
+  '[bookingPageSuccess] BookingComponent',
+  props<{  error: string }>()
+);

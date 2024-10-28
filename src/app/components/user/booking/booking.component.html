@@ -1,0 +1,213 @@
+<app-header></app-header>
+<div class="bg-gray-100 min-h-screen font-sans">
+    <main class="container mx-auto px-4 py-8">
+        <h1 class="text-5xl font-bold mb-8 text-indigo-800 text-center">Embark on Your Dream Journey</h1>
+
+        <form [formGroup]="bookingForm" (ngSubmit)="onSubmit()" class="space-y-8">
+            <div class="bg-white p-6 rounded-lg shadow-lg">
+                <h2 class="text-2xl font-semibold mb-4 text-indigo-700">Trip Details</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div>
+                        <label for="travelDates" class="block text-sm font-medium text-gray-700 mb-1">Travel
+                            Dates</label>
+                        <p-calendar formControlName="travelDates" selectionMode="range" [readonlyInput]="true"
+                            [style]="{ width: '100%' }" [inputStyle]="{ width: '100%' }"></p-calendar>
+                    </div>
+                    <!-- <div>
+                        <label for="adults" class="block text-sm font-medium text-gray-700 mb-1">Adults</label>
+                        <p-inputNumber formControlName="adults" [showButtons]="true" buttonLayout="horizontal"
+                            spinnerMode="horizontal" [min]="1" [max]="10" [style]="{ width: '100%' }"></p-inputNumber>
+                    </div>
+                    <div>
+                        <label for="children" class="block text-sm font-medium text-gray-700 mb-1">Children</label>
+                        <p-inputNumber formControlName="children" [showButtons]="true" buttonLayout="horizontal"
+                            spinnerMode="horizontal" [min]="0" [max]="10" [style]="{ width: '100%' }"></p-inputNumber>
+                    </div> -->
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="space-y-8">
+                    <div class="bg-white p-6 rounded-lg shadow-lg">
+                        <h2 class="text-2xl font-semibold mb-4 text-indigo-700">Personal Information</h2>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label for="firstName" class="block text-sm font-medium text-gray-700 mb-1">First
+                                    Name</label>
+                                <input type="text" id="firstName" formControlName="firstName"
+                                    placeholder="Your First Name"
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                            </div>
+                            <div>
+                                <label for="lastName" class="block text-sm font-medium text-gray-700 mb-1">Last
+                                    Name</label>
+                                <input type="text" id="lastName" formControlName="lastName" placeholder="Your Last Name"
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email
+                                Address</label>
+                            <input type="email" id="email" formControlName="email" placeholder="your.email@example.com"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                        </div>
+                        <div class="mt-4">
+                            <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+                            <div class="flex">
+                                <select formControlName="phoneCode"
+                                    class="px-3 py-2 border border-gray-300 rounded-l-md bg-gray-50 focus:ring-indigo-500 focus:border-indigo-500">
+                                    <option value="+91">+91</option>
+                                    <option value="+1">+1</option>
+                                    <option value="+44">+44</option>
+                                </select>
+                                <input type="tel" id="phone" formControlName="phone" placeholder="Your Phone Number"
+                                    class="flex-1 px-3 py-2 border border-gray-300 rounded-r-md focus:ring-indigo-500 focus:border-indigo-500">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-lg shadow-lg">
+                        <h2 class="text-2xl font-semibold mb-4 text-indigo-700">Traveler Details</h2>
+                        <div formArrayName="travelers" class="space-y-4">
+                            <div *ngFor="let traveler of travelers.controls; let i = index" [formGroupName]="i"
+                                class="p-4 border border-gray-200 rounded-md">
+                                <h3 class="text-lg font-medium mb-2">Traveler {{i + 1}}</h3>
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <label [for]="'travelerName' + i"
+                                            class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                                        <input [id]="'travelerName' + i" type="text" formControlName="name"
+                                            placeholder="Traveler's Full Name"
+                                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                                    </div>
+                                    <div>
+                                        <label [for]="'travelerAge' + i"
+                                            class="block text-sm font-medium text-gray-700 mb-1">Age</label>
+                                        <input [id]="'travelerAge' + i" type="number" formControlName="age"
+                                            placeholder="Traveler's Age"
+                                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                                    </div>
+                                </div>
+                                <div class="mt-2">
+                                    <label [for]="'travelerPassport' + i"
+                                        class="block text-sm font-medium text-gray-700 mb-1">Passport Number</label>
+                                    <input [id]="'travelerPassport' + i" type="text" formControlName="passportNumber"
+                                        placeholder="Passport Number"
+                                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                                </div>
+                            </div>
+                        </div>
+                        <button type="button" (click)="addTraveler()"
+                            class="mt-4 bg-indigo-500 text-white py-2 px-4 rounded-md hover:bg-indigo-600 transition duration-300">Add
+                            Traveler</button>
+                    </div>
+                </div>
+
+                <div class="space-y-8">
+                    <div class="bg-white p-6 rounded-lg shadow-lg">
+                        <h2 class="text-2xl font-semibold mb-4 text-indigo-700">Package Details</h2>
+                        <div class="relative">
+                            <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-OisQtFbKIdJim8WUrkZGm0aPqBFJWQ.png"
+                                alt="Himalaya" class="w-full h-48 object-cover rounded-lg">
+                            <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+                                <h3 class="text-3xl font-bold text-white">Himalayan Adventure</h3>
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <h3 class="text-xl font-semibold text-indigo-700">Himalaya, Asia</h3>
+                            <div class="flex items-center mt-2">
+                                <span class="text-yellow-400">★★★★☆</span>
+                                <span class="ml-1 text-sm text-gray-600">4.0 (1299 ratings)</span>
+                            </div>
+                            <p class="mt-2 text-gray-600">Embark on an unforgettable journey through the majestic
+                                Himalayas. Experience breathtaking views, rich culture, and thrilling adventures.</p>
+                            <ul class="mt-4 space-y-2">
+                                <li class="flex items-center"><svg class="w-5 h-5 text-green-500 mr-2" fill="none"
+                                        stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M5 13l4 4L19 7"></path>
+                                    </svg> Guided trekking expeditions</li>
+                                <li class="flex items-center"><svg class="w-5 h-5 text-green-500 mr-2" fill="none"
+                                        stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M5 13l4 4L19 7"></path>
+                                    </svg> Luxury mountain accommodations</li>
+                                <li class="flex items-center"><svg class="w-5 h-5 text-green-500 mr-2" fill="none"
+                                        stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M5 13l4 4L19 7"></path>
+                                    </svg> Cultural experiences and local interactions</li>
+                                <li class="flex items-center"><svg class="w-5 h-5 text-green-500 mr-2" fill="none"
+                                        stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M5 13l4 4L19 7"></path>
+                                    </svg> All meals and equipment included</li>
+                            </ul>
+                            <div class="mt-4 flex items-center justify-between">
+                                <div>
+                                    <p class="text-sm text-gray-600">Price per person</p>
+                                    <p class="text-3xl font-bold text-indigo-600">$9,999</p>
+                                </div>
+                                <button type="button"
+                                    class="bg-indigo-500 text-white py-2 px-4 rounded-md hover:bg-indigo-600 transition duration-300">View
+                                    Details</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-lg shadow-lg">
+                        <h2 class="text-2xl font-semibold mb-4 text-indigo-700">Payment Details</h2>
+                        <div class="space-y-4">
+                            <div>
+                                <label for="cardName" class="block text-sm font-medium text-gray-700 mb-1">Name on
+                                    Card</label>
+                                <input type="text" id="cardName" formControlName="cardName"
+                                    placeholder="Full name on the card"
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                            </div>
+                            <div>
+                                <label for="cardNumber" class="block text-sm font-medium text-gray-700 mb-1">Card
+                                    Number</label>
+                                <input type="text" id="cardNumber" formControlName="cardNumber"
+                                    placeholder="1234 5678 9012 3456"
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                            </div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label for="expiryDate" class="block text-sm font-medium text-gray-700 mb-1">Expiry
+                                        Date</label>
+                                    <input type="text" id="expiryDate" formControlName="expiryDate" placeholder="MM/YY"
+                                        class="w-full px-3 py-2 border border-gray-300 rounded-md  focus:ring-indigo-500 focus:border-indigo-500">
+                                </div>
+                                <div>
+                                    <label for="cvv" class="block text-sm font-medium text-gray-700 mb-1">CVV</label>
+                                    <input type="text" id="cvv" formControlName="cvv" placeholder="123"
+                                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-lg shadow-lg">
+                        <h2 class="text-2xl font-semibold mb-4 text-indigo-700">Apply Coupon</h2>
+                        <div class="flex space-x-2">
+                            <input type="text" formControlName="couponCode" placeholder="Enter coupon code"
+                                class="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                            <button type="button" (click)="applyCoupon()"
+                                class="bg-indigo-500 text-white py-2 px-4 rounded-md hover:bg-indigo-600 transition duration-300">Apply</button>
+                        </div>
+                        <p *ngIf="couponMessage"
+                            [ngClass]="{'text-green-600': couponValid, 'text-red-600': !couponValid}"
+                            class="mt-2 text-sm">
+                            {{ couponMessage }}
+                        </p>
+                    </div>
+
+                    <button type="submit"
+                        class="w-full bg-indigo-600 text-white py-3 px-4 rounded-md hover:bg-indigo-700 transition duration-300 text-lg font-semibold">Book
+                        Your Adventure</button>
+                </div>
+            </div>
+        </form>
+    </main>
+</div>
