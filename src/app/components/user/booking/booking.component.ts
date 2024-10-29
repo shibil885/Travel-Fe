@@ -19,6 +19,8 @@ import { Router } from '@angular/router';
 import { TruncatePipe } from '../../../shared/pipes/truncate.pipe';
 import { showSinglePackage } from '../../../store/user/user.action';
 import { BookingService } from '../../../shared/services/booking.service';
+import { ICoupon } from '../../../interfaces/coupon.interface';
+import { CouponService } from '../../../shared/services/coupon.service';
 // import Razorpay from 'razorpay';
 
 @Component({
@@ -41,14 +43,7 @@ export class BookingComponent {
   packageDetails!: IPackage;
   couponMessage: string = '';
   couponValid: boolean = false;
-
-  // In your component.ts file
-  coupons: string[] = [
-    'COUPON10 - 10% Off',
-    'COUPON20 - 20% Off',
-    'COUPON30 - 30% Off',
-    'COUPON40 - 40% Off',
-  ];
+  coupons: ICoupon[] = [];
   showAllCoupons = false;
 
   constructor(
@@ -56,7 +51,8 @@ export class BookingComponent {
     private store: Store,
     private toastService: ToastService,
     private router: Router,
-    private bookingService: BookingService
+    private bookingService: BookingService,
+    private couponService: CouponService
   ) {}
 
   ngOnInit() {
@@ -69,6 +65,8 @@ export class BookingComponent {
       this.toastService.showToast('Something went wrong', 'error');
       return this.router.navigate(['packages']);
     });
+
+    this.fetchCoupon();
 
     this.bookingForm = this.fb.group({
       travelDates: ['', Validators.required],
@@ -104,6 +102,17 @@ export class BookingComponent {
     return this.bookingForm.get('person') as FormGroup;
   }
 
+  fetchCoupon() {
+    this.couponService
+      .getCouponsToUser(this.packageDetails._id)
+      .subscribe((res) => {
+        if (res.success) {
+          console.log(res.coupons);
+          this.coupons = res.coupons;
+        }
+      });
+  }
+
   updateTraveller(person = this.persons.value) {
     const currentPeoples = this.travelers.length;
     if (person > currentPeoples) {
@@ -137,15 +146,8 @@ export class BookingComponent {
     return this.router.navigate(['packages']);
   }
 
-  applyCoupon() {
-    // const couponCode = this.bookingForm.get('couponCode')?.value;
-    // if (couponCode === 'ADVENTURE25') {
-    //   this.couponMessage = 'Coupon applied successfully! 25% discount added.';
-    //   this.couponValid = true;
-    // } else {
-    //   this.couponMessage = 'Invalid coupon code. Please try again.';
-    //   this.couponValid = false;
-    // }
+  applyCoupon(id: string | undefined) {
+      
   }
 
   onSubmit() {

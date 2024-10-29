@@ -22,9 +22,13 @@ export class CouponService {
   }
 
   editCoupon(id: string | undefined, editCouponData: ICoupon) {
-    return this.http.put<{success: boolean; message: string}>(`${this.api}/editCoupon/${id}`, editCouponData, {
-      withCredentials: true,
-    });
+    return this.http.put<{ success: boolean; message: string }>(
+      `${this.api}/editCoupon/${id}`,
+      editCouponData,
+      {
+        withCredentials: true,
+      }
+    );
   }
 
   changeStatus(id: string | undefined, status: boolean | undefined) {
@@ -43,5 +47,13 @@ export class CouponService {
     }>(`${this.api}/getAllCoupons`, {
       withCredentials: true,
     });
+  }
+  getCouponsToUser(packageId: string | undefined) {
+    return this.http.get<{ success: boolean; coupons: ICoupon[] }>(
+      `${this.api}/getCouponsForUser/${packageId}`,
+      {
+        withCredentials: true,
+      }
+    );  
   }
 }
