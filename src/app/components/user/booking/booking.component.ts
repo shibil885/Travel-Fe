@@ -13,14 +13,23 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { HeaderComponent } from '../header/header.component';
 import { IPackage } from '../../../interfaces/package.interface';
 import { Store } from '@ngrx/store';
-import { selectPackage } from '../../../store/user/user.selector';
+import {
+  selectCoupons,
+  selectPackage,
+  selectPrice,
+} from '../../../store/user/user.selector';
 import { ToastService } from '../../../shared/services/toaster.service';
 import { Router } from '@angular/router';
 import { TruncatePipe } from '../../../shared/pipes/truncate.pipe';
-import { showSinglePackage } from '../../../store/user/user.action';
+import {
+  applyCoupon,
+  getAllCoupon,
+  showSinglePackage,
+} from '../../../store/user/user.action';
 import { BookingService } from '../../../shared/services/booking.service';
 import { ICoupon } from '../../../interfaces/coupon.interface';
 import { CouponService } from '../../../shared/services/coupon.service';
+import { Observable } from 'rxjs';
 // import Razorpay from 'razorpay';
 
 @Component({
@@ -45,14 +54,16 @@ export class BookingComponent {
   couponValid: boolean = false;
   coupons: ICoupon[] = [];
   showAllCoupons = false;
-
+  price$: Observable<number> = this.store.select(selectPrice);
+  discoundedPrice!: number;
+  discount!: number
+  selectedCouponId: string = '';
   constructor(
     private fb: FormBuilder,
     private store: Store,
     private toastService: ToastService,
     private router: Router,
-    private bookingService: BookingService,
-    private couponService: CouponService
+    private bookingService: BookingService
   ) {}
 
   ngOnInit() {
@@ -103,14 +114,12 @@ export class BookingComponent {
   }
 
   fetchCoupon() {
-    this.couponService
-      .getCouponsToUser(this.packageDetails._id)
-      .subscribe((res) => {
-        if (res.success) {
-          console.log(res.coupons);
-          this.coupons = res.coupons;
-        }
+    if (this.packageDetails._id) {
+      this.store.dispatch(getAllCoupon({ packageId: this.packageDetails._id }));
+      this.store.select(selectCoupons).subscribe((res) => {
+        return res ? (this.coupons = res) : false;
       });
+    }
   }
 
   updateTraveller(person = this.persons.value) {
@@ -146,20 +155,38 @@ export class BookingComponent {
     return this.router.navigate(['packages']);
   }
 
-  applyCoupon(id: string | undefined) {
-      
+  applyCoupon(id: string | undefined, price: string | undefined) {
+    if (id && price) {
+      const priceInNumber = Number(price);
+      this.store.dispatch(applyCoupon({ id: id, packagePrice: priceInNumber }));
+      this.price$.subscribe((result) => {
+        this.discoundedPrice = result;
+        this.discount = Number(this.packageDetails.price) -result
+        this.coupons = []
+        this.selectedCouponId = id;
+      });
+      return;
+    }
+    this.toastService.showToast('Cant find Coupon', 'error');
+    return;
+  }
+  cancelCoupon() {
+    this.fetchCoupon();
+    this.discoundedPrice = 0
+    this.discount = 0
+    this.selectedCouponId = ''
   }
 
   onSubmit() {
     // if (this.bookingForm.valid) {
     //   console.log('Booking submitted:', this.bookingForm.value);
     // }
-    this.bookingService.createPayment().subscribe((res: any) => {
+    this.bookingService.createPayment(this.packageDetails._id, this.selectedCouponId).subscribe((res: any) => {
       const options = {
-        key_id: 'rzp_test_ihsNz6lracNIu3', // Replace with your Razorpay Key ID
+        key_id: 'rzp_test_ihsNz6lracNIu3',
         amount: res.amount,
         currency: res.currency,
-        name: 'Your App Name',
+        name: 'Travel',
         description: 'Test Transaction',
         order_id: res.id,
         handler: (response: any) => {

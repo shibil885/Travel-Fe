@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { UserService } from '../../shared/services/user.service';
 import { AuthService } from '../../auth/service/service.service';
 import { error } from 'console';
+import { CouponService } from '../../shared/services/coupon.service';
 
 @Injectable()
 export class UserEffect {
@@ -13,7 +14,8 @@ export class UserEffect {
     private actions$: Actions,
     private userService: UserService,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private couponService: CouponService
   ) {}
 
   userLogin$ = createEffect(() =>
@@ -137,7 +139,7 @@ export class UserEffect {
       ),
     { dispatch: false }
   );
-  
+
   showSinglePaackage$ = createEffect(() =>
     this.actions$.pipe(
       ofType(userActions.showSinglePackage),
@@ -179,15 +181,39 @@ export class UserEffect {
           )
         )
       ),
-      catchError((error) =>
-        of(userActions.bookingPageError({ error: error }))
-      )
+      catchError((error) => of(userActions.bookingPageError({ error: error })))
     )
   );
   bookingPageSuccess$ = createEffect(
     () =>
       this.actions$.pipe(
         ofType(userActions.bookingPageSuccess),
+        tap(() => {
+          this.router.navigate(['/booking']);
+        })
+      ),
+    { dispatch: false }
+  );
+  getAllCoupons$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(userActions.getAllCoupon),
+      switchMap((data) =>
+        this.couponService.getCouponsToUser(data.packageId).pipe(
+          map((response) =>
+            userActions.getAllCouponSuccess({
+              success: response.success,
+              coupons: response.coupons,
+            })
+          )
+        )
+      ),
+      catchError((error) => of(userActions.bookingPageError({ error: error })))
+    )
+  );
+  getAllCouponSuccess$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(userActions.getAllCouponSuccess),
         tap(() => {
           this.router.navigate(['/booking']);
         })

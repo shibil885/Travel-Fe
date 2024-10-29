@@ -2,23 +2,28 @@ import { createReducer, on } from '@ngrx/store';
 import * as userActions from './user.action';
 import { IUser } from '../../models/user.model';
 import { IPackage } from '../../interfaces/package.interface';
+import { ICoupon } from '../../interfaces/coupon.interface';
 
 export interface UserState {
   user: IUser | null;
+  coupons: ICoupon[] | null;
   error: string;
   success: boolean;
   package: IPackage | null;
   loading: boolean;
   renderOtp: boolean;
+  price: number;
 }
 
 export const initialUserState: UserState = {
   user: null,
+  coupons: null,
   error: '',
   renderOtp: false,
   loading: false,
   success: false,
   package: null,
+  price: 0,
 };
 
 export const UserReducer = createReducer(
@@ -117,5 +122,50 @@ export const UserReducer = createReducer(
       success: false,
       error,
     };
+  }),
+  on(userActions.getAllCouponSuccess, (state, { success, coupons }) => {
+    return {
+      ...state,
+      success,
+      coupons,
+    };
+  }),
+  on(userActions.getAllCouponError, (state, { error }) => {
+    return {
+      ...state,
+      success: false,
+      error,
+    };
+  }),
+  on(userActions.applyCoupon, (state, { id, packagePrice }) => {
+    let price = packagePrice; // Default to package price if no valid discount is applied
+
+    if (state.coupons) {
+      const coupon = state.coupons.find((coupon) => coupon._id === id);
+
+      if (coupon) {
+        if (coupon.discount_type === 'fixed' && coupon.discount_value) {
+          price = packagePrice - coupon.discount_value;
+        } else if (coupon.discount_type === 'percentage' && coupon.percentage) {
+          let discount = (packagePrice * coupon.percentage) / 100;
+          if (coupon.maxAmt && discount > coupon.maxAmt) {
+            discount = coupon.maxAmt;
+          }
+          price = packagePrice - discount;
+        }
+        price = Math.max(price, 0);
+      }
+    }
+
+    return {
+      ...state,
+      price: price,
+    };
+  }),
+  on(userActions.cancelCoupon,(state) =>{
+    return {
+      ...state,
+      price:0
+    }
   })
 );

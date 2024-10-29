@@ -33,3 +33,11 @@ export const selectPackage = createSelector(
   selectUserState,
   (state: UserState) => state.package
 );
+export const selectCoupons = createSelector(
+  selectUserState,
+  (state: UserState) => state.coupons
+);
+export const selectPrice = createSelector(
+  selectUserState,
+  (state: UserState) => state.price
+);

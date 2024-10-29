@@ -8,12 +8,11 @@ export class BookingService {
   private api = 'http://localhost:3000/payment';
   constructor(private http: HttpClient) {}
 
-  createPayment() {
+  createPayment(packageId: string | undefined, couponId: string) {
     return this.http.post(
       `${this.api}/create-order`,
-      { amount: 1000 },
+      { packageId, couponId },
       { withCredentials: true }
     );
   }
 }
-    
