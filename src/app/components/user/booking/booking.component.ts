@@ -42,6 +42,15 @@ export class BookingComponent {
   couponMessage: string = '';
   couponValid: boolean = false;
 
+  // In your component.ts file
+  coupons: string[] = [
+    'COUPON10 - 10% Off',
+    'COUPON20 - 20% Off',
+    'COUPON30 - 30% Off',
+    'COUPON40 - 40% Off',
+  ];
+  showAllCoupons = false;
+
   constructor(
     private fb: FormBuilder,
     private store: Store,
