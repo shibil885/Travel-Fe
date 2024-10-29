@@ -18,6 +18,8 @@ import { ToastService } from '../../../shared/services/toaster.service';
 import { Router } from '@angular/router';
 import { TruncatePipe } from '../../../shared/pipes/truncate.pipe';
 import { showSinglePackage } from '../../../store/user/user.action';
+import { BookingService } from '../../../shared/services/booking.service';
+// import Razorpay from 'razorpay';
 
 @Component({
   standalone: true,
@@ -44,7 +46,8 @@ export class BookingComponent {
     private fb: FormBuilder,
     private store: Store,
     private toastService: ToastService,
-    private router: Router
+    private router: Router,
+    private bookingService: BookingService
   ) {}
 
   ngOnInit() {
@@ -110,11 +113,11 @@ export class BookingComponent {
     }
   }
 
-//   addTraveler() {
-//     const newValue = this.bookingForm.get('person')?.value + 1;
-//     this.bookingForm.patchValue({ persons: newValue });
-//     console.log(this.persons.value)
-// }
+  //   addTraveler() {
+  //     const newValue = this.bookingForm.get('person')?.value + 1;
+  //     this.bookingForm.patchValue({ persons: newValue });
+  //     console.log(this.persons.value)
+  // }
 
   viewDetails() {
     if (this.packageDetails._id) {
@@ -126,19 +129,43 @@ export class BookingComponent {
   }
 
   applyCoupon() {
-    const couponCode = this.bookingForm.get('couponCode')?.value;
-    if (couponCode === 'ADVENTURE25') {
-      this.couponMessage = 'Coupon applied successfully! 25% discount added.';
-      this.couponValid = true;
-    } else {
-      this.couponMessage = 'Invalid coupon code. Please try again.';
-      this.couponValid = false;
-    }
+    // const couponCode = this.bookingForm.get('couponCode')?.value;
+    // if (couponCode === 'ADVENTURE25') {
+    //   this.couponMessage = 'Coupon applied successfully! 25% discount added.';
+    //   this.couponValid = true;
+    // } else {
+    //   this.couponMessage = 'Invalid coupon code. Please try again.';
+    //   this.couponValid = false;
+    // }
   }
 
   onSubmit() {
-    if (this.bookingForm.valid) {
-      console.log('Booking submitted:', this.bookingForm.value);
-    }
+    // if (this.bookingForm.valid) {
+    //   console.log('Booking submitted:', this.bookingForm.value);
+    // }
+    this.bookingService.createPayment().subscribe((res: any) => {
+      const options = {
+        key_id: 'rzp_test_ihsNz6lracNIu3', // Replace with your Razorpay Key ID
+        amount: res.amount,
+        currency: res.currency,
+        name: 'Your App Name',
+        description: 'Test Transaction',
+        order_id: res.id,
+        handler: (response: any) => {
+          console.log('Payment Success', response);
+          // Handle post-payment success logic here (e.g., updating database)
+        },
+        prefill: {
+          name: 'Customer Name',
+          email: 'customer@example.com',
+          contact: '1234567890',
+        },
+        theme: {
+          color: '#3399cc',
+        },
+      };
+      const razorpay = new Razorpay(options);
+      razorpay.open();
+    });
   }
 }
