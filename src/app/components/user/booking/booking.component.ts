@@ -76,9 +76,12 @@ export class BookingComponent {
       travelers: new FormArray([]),
     });
     this.bookingForm.get('person')?.valueChanges.subscribe((value) => {
-      this.updateTraveller(value);
+      if (Number(value) <= Number(this.packageDetails.people)) {
+        this.updateTraveller(value);
+        return;
+      }
     });
-    this.updateTraveller();
+    this.updateTraveller(1);
   }
 
   get travelers() {
@@ -90,31 +93,28 @@ export class BookingComponent {
   }
 
   updateTraveller(person = this.persons.value) {
-    console.log(person);
-    if (person <= this.packageDetails.people) {
-      const currentPeoples = this.travelers.length;
-      if (person > currentPeoples) {
-        for (let i = currentPeoples; i < person; i++) {
-          const travelerForm = this.fb.group({
-            name: ['', Validators.required],
-            age: ['', [Validators.required, Validators.min(0)]],
-            passportNumber: ['', Validators.required],
-          });
-          this.travelers.push(travelerForm);
-        }
-      } else if (person < currentPeoples) {
-        for (let i = currentPeoples - 1; i >= person; i--) {
-          this.travelers.removeAt(i);
-        }
+    const currentPeoples = this.travelers.length;
+    if (person > currentPeoples) {
+      for (let i = currentPeoples; i < person; i++) {
+        const travelerForm = this.fb.group({
+          name: ['', Validators.required],
+          age: ['', [Validators.required, Validators.min(0)]],
+          passportNumber: ['', Validators.required],
+        });
+        this.travelers.push(travelerForm);
+      }
+    } else if (person < currentPeoples) {
+      for (let i = currentPeoples - 1; i >= person; i--) {
+        this.travelers.removeAt(i);
       }
     }
   }
 
-//   addTraveler() {
-//     const newValue = this.bookingForm.get('person')?.value + 1;
-//     this.bookingForm.patchValue({ persons: newValue });
-//     console.log(this.persons.value)
-// }
+  //   addTraveler() {
+  //     const newValue = this.bookingForm.get('person')?.value + 1;
+  //     this.bookingForm.patchValue({ persons: newValue });
+  //     console.log(this.persons.value)
+  // }
 
   viewDetails() {
     if (this.packageDetails._id) {
@@ -138,7 +138,7 @@ export class BookingComponent {
 
   onSubmit() {
     if (this.bookingForm.valid) {
-      console.log('Booking submitted:', this.bookingForm.value);
+      // console.log('Booking submitted:', this.bookingForm.value);
     }
   }
 }
