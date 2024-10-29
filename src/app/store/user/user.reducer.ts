@@ -138,7 +138,7 @@ export const UserReducer = createReducer(
     };
   }),
   on(userActions.applyCoupon, (state, { id, packagePrice }) => {
-    let price = packagePrice; // Default to package price if no valid discount is applied
+    let price = packagePrice;
 
     if (state.coupons) {
       const coupon = state.coupons.find((coupon) => coupon._id === id);
@@ -162,10 +162,10 @@ export const UserReducer = createReducer(
       price: price,
     };
   }),
-  on(userActions.cancelCoupon,(state) =>{
+  on(userActions.cancelCoupon, (state) => {
     return {
       ...state,
-      price:0
-    }
+      price: 0,
+    };
   })
 );

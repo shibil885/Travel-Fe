@@ -56,7 +56,7 @@ export class BookingComponent {
   showAllCoupons = false;
   price$: Observable<number> = this.store.select(selectPrice);
   discoundedPrice!: number;
-  discount!: number
+  discount!: number;
   selectedCouponId: string = '';
   constructor(
     private fb: FormBuilder,
@@ -129,7 +129,6 @@ export class BookingComponent {
         const travelerForm = this.fb.group({
           name: ['', Validators.required],
           age: ['', [Validators.required, Validators.min(0)]],
-          passportNumber: ['', Validators.required],
         });
         this.travelers.push(travelerForm);
       }
@@ -161,8 +160,8 @@ export class BookingComponent {
       this.store.dispatch(applyCoupon({ id: id, packagePrice: priceInNumber }));
       this.price$.subscribe((result) => {
         this.discoundedPrice = result;
-        this.discount = Number(this.packageDetails.price) -result
-        this.coupons = []
+        this.discount = Number(this.packageDetails.price) - result;
+        this.coupons = [];
         this.selectedCouponId = id;
       });
       return;
@@ -172,38 +171,51 @@ export class BookingComponent {
   }
   cancelCoupon() {
     this.fetchCoupon();
-    this.discoundedPrice = 0
-    this.discount = 0
-    this.selectedCouponId = ''
+    this.discoundedPrice = 0;
+    this.discount = 0;
+    this.selectedCouponId = '';
   }
 
   onSubmit() {
     // if (this.bookingForm.valid) {
-    //   console.log('Booking submitted:', this.bookingForm.value);
+    console.log('Booking submitted:', this.bookingForm.value);
     // }
-    this.bookingService.createPayment(this.packageDetails._id, this.selectedCouponId).subscribe((res: any) => {
-      const options = {
-        key_id: 'rzp_test_ihsNz6lracNIu3',
-        amount: res.amount,
-        currency: res.currency,
-        name: 'Travel',
-        description: 'Test Transaction',
-        order_id: res.id,
-        handler: (response: any) => {
-          console.log('Payment Success', response);
-          // Handle post-payment success logic here (e.g., updating database)
-        },
-        prefill: {
-          name: 'Customer Name',
-          email: 'customer@example.com',
-          contact: '1234567890',
-        },
-        theme: {
-          color: '#3399cc',
-        },
-      };
-      const razorpay = new Razorpay(options);
-      razorpay.open();
-    });
+    this.bookingService
+      .createPayment(this.packageDetails._id, this.selectedCouponId)
+      .subscribe((res: any) => {
+        const options = {
+          key_id: 'rzp_test_ihsNz6lracNIu3',
+          amount: res.amount,
+          currency: res.currency,
+          name: 'Travel',
+          description: 'Test Transaction',
+          order_id: res.id,
+          handler: (response: any) => {
+            this.bookingService
+              .verifyPayment(
+                response.razorpay_order_id,
+                response.razorpay_payment_id,
+                response.razorpay_signature,
+                this.packageDetails._id,
+                this.selectedCouponId,
+                this.bookingForm.value
+              )
+              .subscribe(() => {
+                this.toastService.showToast('booking confirmed', 'success');
+              });
+            console.log('Payment Success', response);
+          },
+          prefill: {
+            name: 'Customer Name',
+            email: 'customer@example.com',
+            contact: '1234567890',
+          },
+          theme: {
+            color: '#3399cc',
+          },
+        };
+        const razorpay = new Razorpay(options);
+        razorpay.open();
+      });
   }
 }
