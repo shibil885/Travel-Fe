@@ -30,6 +30,13 @@ import { BookingService } from '../../../shared/services/booking.service';
 import { ICoupon } from '../../../interfaces/coupon.interface';
 import { CouponService } from '../../../shared/services/coupon.service';
 import { Observable } from 'rxjs';
+import { dateValidator } from '../../../validatores/date.validator';
+import {
+  endWithSpace,
+  invalidChar,
+  letterOrNumber,
+} from '../../../validatores/name.validator';
+import { invalidPhone } from '../../../validatores/phone.validator';
 // import Razorpay from 'razorpay';
 
 @Component({
@@ -80,7 +87,7 @@ export class BookingComponent {
     this.fetchCoupon();
 
     this.bookingForm = this.fb.group({
-      travelDates: ['', Validators.required],
+      travelDates: ['', [Validators.required, dateValidator]],
       person: [
         1,
         [
@@ -90,10 +97,28 @@ export class BookingComponent {
           Validators.pattern(/^\d+$/),
         ],
       ],
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
+      firstName: [
+        '',
+        [
+          Validators.required,
+          Validators.maxLength(20),
+          endWithSpace,
+          letterOrNumber,
+          invalidChar,
+        ],
+      ],
+      lastName: [
+        '',
+        [
+          Validators.required,
+          Validators.maxLength(20),
+          endWithSpace,
+          letterOrNumber,
+          invalidChar,
+        ],
+      ],
       email: ['', [Validators.required, Validators.email]],
-      phone: ['', Validators.required],
+      phone: ['', [Validators.required, invalidPhone]],
       travelers: new FormArray([]),
     });
     this.bookingForm.get('person')?.valueChanges.subscribe((value) => {
@@ -127,8 +152,18 @@ export class BookingComponent {
     if (person > currentPeoples) {
       for (let i = currentPeoples; i < person; i++) {
         const travelerForm = this.fb.group({
-          name: ['', Validators.required],
-          age: ['', [Validators.required, Validators.min(0)]],
+          name: [
+            '',
+            [
+              Validators.required,
+              Validators.minLength(2),
+              Validators.maxLength(20),
+            ],
+          ],
+          age: [
+            '',
+            [Validators.required, Validators.min(1), Validators.max(120)],
+          ],
         });
         this.travelers.push(travelerForm);
       }

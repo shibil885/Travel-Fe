@@ -13,6 +13,15 @@
                         <div class="relative">
                             <input type="date" id="travelDates" formControlName="travelDates"
                                 class="w-full rounded-md border border-gray-300 focus:ring-2 focus:ring-indigo-600 focus:border-indigo-600 py-2 px-3 appearance-none" />
+                            <div class="error-message text-red-700"
+                                *ngIf="bookingForm.get('travelDates')?.touched && bookingForm.get('travelDates')?.invalid">
+                                <span *ngIf="bookingForm.get('travelDates')?.errors?.['required']">Date
+                                    is required*
+                                </span>
+                                <span *ngIf="bookingForm.get('travelDates')?.errors?.['invalidDate']">
+                                    Date must be a future date*
+                                </span>
+                            </div>
                         </div>
                     </div>
                     <div>
@@ -23,16 +32,16 @@
                         <div class="error-message text-red-700"
                             *ngIf="bookingForm.get('person')?.touched && bookingForm.get('person')?.invalid">
                             <span *ngIf="bookingForm.get('person')?.errors?.['required']">Number of
-                                people is required
+                                people is required*
                             </span>
                             <span *ngIf="bookingForm.get('person')?.errors?.['max']">Number of
-                                people must less than {{packageDetails.people}}
+                                people must less than {{packageDetails.people}}*
                             </span>
                             <span *ngIf="bookingForm.get('person')?.errors?.['min']">Number of
-                                people must a positive number
+                                people must a positive number*
                             </span>
                             <span *ngIf="bookingForm.get('person')?.errors?.['pattern']">Please enter a
-                                valid number
+                                valid number*
                             </span>
                         </div>
                     </div>
@@ -50,12 +59,54 @@
                                 <input type="text" id="firstName" formControlName="firstName"
                                     placeholder="Your First Name"
                                     class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                                <div class="error-message text-red-700"
+                                    *ngIf="bookingForm.get('firstName')?.touched && bookingForm.get('firstName')?.invalid">
+                                    <span class="block" *ngIf="bookingForm.get('firstName')?.errors?.['required']">First
+                                        name is
+                                        required*
+                                    </span>
+                                    <span class="block"
+                                        *ngIf="bookingForm.get('firstName')?.errors?.['endWithSpace']">First name cannot
+                                        end with spaces*
+                                    </span>
+                                    <span class="block"
+                                        *ngIf="bookingForm.get('firstName')?.errors?.['letterOrNumber']">Last name must
+                                        start with a letter or number*
+                                    </span>
+                                    <span class="block"
+                                        *ngIf="bookingForm.get('firstName')?.errors?.['invalidChar']">First name can
+                                        only contain letters, numbers, spaces, hyphens (-), and apostrophes (')*
+                                    </span>
+                                    <span *ngIf="bookingForm.get('firstName')?.errors?.['maxlength']">Full Name must be
+                                        at less than 20 characters.</span>
+                                </div>
                             </div>
                             <div>
                                 <label for="lastName" class="block text-sm font-medium text-gray-700 mb-1">Last
                                     Name</label>
                                 <input type="text" id="lastName" formControlName="lastName" placeholder="Your Last Name"
                                     class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                                <div class="error-message text-red-700"
+                                    *ngIf="bookingForm.get('lastName')?.touched && bookingForm.get('lastName')?.invalid">
+                                    <span class="block" *ngIf="bookingForm.get('lastName')?.errors?.['required']">Last
+                                        name is
+                                        required*
+                                    </span>
+                                    <span class="block"
+                                        *ngIf="bookingForm.get('lastName')?.errors?.['endWithSpace']">Last name cannot
+                                        end with spaces*
+                                    </span>
+                                    <span class="block"
+                                        *ngIf="bookingForm.get('lastName')?.errors?.['letterOrNumber']">Last name must
+                                        start with a letter or number*
+                                    </span>
+                                    <span class="block"
+                                        *ngIf="bookingForm.get('lastName')?.errors?.['invalidChar']">Last name can only
+                                        contain letters, numbers, spaces, hyphens (-), and apostrophes (')*
+                                    </span>
+                                    <span *ngIf="bookingForm.get('lastName')?.errors?.['maxlength']">Full Name must be
+                                        at less than 20 characters.</span>
+                                </div>
                             </div>
                         </div>
                         <div class="mt-4">
@@ -63,12 +114,30 @@
                                 Address</label>
                             <input type="email" id="email" formControlName="email" placeholder="your.email@example.com"
                                 class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                            <div class="error-message text-red-700"
+                                *ngIf="bookingForm.get('email')?.touched && bookingForm.get('email')?.invalid">
+                                <span class="block" *ngIf="bookingForm.get('email')?.errors?.['required']">Email is
+                                    required*
+                                </span>
+                                <span class="block" *ngIf="bookingForm.get('email')?.errors?.['email']">Invalid email
+                                    format*
+                                </span>
+                            </div>
                         </div>
                         <div class="mt-4">
                             <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
                             <div>
                                 <input type="tel" id="phone" formControlName="phone" placeholder="Your Phone Number"
                                     class="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                                <div class="error-message text-red-700"
+                                    *ngIf="bookingForm.get('phone')?.touched && bookingForm.get('phone')?.invalid">
+                                    <span class="block" *ngIf="bookingForm.get('phone')?.errors?.['required']">Email is
+                                        required*
+                                    </span>
+                                    <span class="block"
+                                        *ngIf="bookingForm.get('phone')?.errors?.['invalidPhone']">Invalid phone number*
+                                    </span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -86,6 +155,15 @@
                                         <input [id]="'travelerName' + i" type="text" formControlName="name"
                                             placeholder="Traveler's Full Name"
                                             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                                        <div *ngIf="traveler.get('name')?.invalid && (traveler.get('name')?.touched || traveler.get('name')?.dirty)"
+                                            class="text-red-500 text-sm mt-1">
+                                            <span *ngIf="traveler.get('name')?.errors?.['required']">Full Name is
+                                                required.</span>
+                                            <span *ngIf="traveler.get('name')?.errors?.['minlength']">Full Name must be
+                                                at least 2 characters.</span>
+                                            <span *ngIf="traveler.get('name')?.errors?.['maxlength']">Full Name must be
+                                                at less than 20 characters.</span>
+                                        </div>
                                     </div>
                                     <div>
                                         <label [for]="'travelerAge' + i"
@@ -93,7 +171,17 @@
                                         <input [id]="'travelerAge' + i" type="number" formControlName="age"
                                             placeholder="Traveler's Age"
                                             class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                                        <div *ngIf="traveler.get('age')?.invalid && (traveler.get('age')?.touched || traveler.get('age')?.dirty)"
+                                            class="text-red-500 text-sm mt-1">
+                                            <span *ngIf="traveler.get('age')?.errors?.['required']">Age is
+                                                required.</span>
+                                            <span *ngIf="traveler.get('age')?.errors?.['min']">Age must be at least
+                                                1.</span>
+                                            <span *ngIf="traveler.get('age')?.errors?.['max']">Age must be less than
+                                                120.</span>
+                                        </div>
                                     </div>
+
                                 </div>
                             </div>
                         </div>
