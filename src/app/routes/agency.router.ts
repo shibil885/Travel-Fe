@@ -37,6 +37,7 @@ import { LoginComponent } from '../components/agency/login/login.component';
 import { PackagesComponent } from '../components/agency/packages/packages.component';
 import { authGuard } from '../auth/guards/auth.guard';
 import { preventGuard } from '../auth/guards/logged.guard';
+import { BookingComponent } from '../components/agency/booking/booking.component';
 
 export const agencyRouter: Routes = [
   { path: 'agency', redirectTo: 'agency/home', pathMatch: 'full' },
@@ -64,6 +65,12 @@ export const agencyRouter: Routes = [
   {
     path: 'agency/packages',
     component: PackagesComponent,
+    canActivate: [authGuard],
+    data: { role: 'agency' },
+  },
+  {
+    path: 'agency/bookings',
+    component: BookingComponent,
     canActivate: [authGuard],
     data: { role: 'agency' },
   },

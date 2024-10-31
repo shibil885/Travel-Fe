@@ -14,11 +14,13 @@ import {
   showSinglePackage,
 } from '../../../store/user/user.action';
 import { ToastService } from '../../../shared/services/toaster.service';
+import { SideBarComponent } from '../side-bar/side-bar.component';
 @Component({
   selector: 'app-packages',
   standalone: true,
   imports: [
     HeaderComponent,
+    SideBarComponent,
     SearchComponent,
     PaginationComponent,
     RouterLink,

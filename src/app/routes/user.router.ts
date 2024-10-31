@@ -8,6 +8,8 @@ import { authGuard } from '../auth/guards/auth.guard';
 import { preventGuard } from '../auth/guards/logged.guard';
 import { SinglePackageComponent } from '../components/user/packages/single-package/single-package.component';
 import { BookingComponent } from '../components/user/booking/booking.component';
+import { BookedComponent } from '../components/user/booked/booked.component';
+import { SingleBookedComponent } from '../components/user/booked/single-booked/single-booked.component';
 
 export const userRouter: Routes = [
   {
@@ -50,6 +52,18 @@ export const userRouter: Routes = [
   {
     path: 'booking',
     component: BookingComponent,
+    canActivate: [authGuard],
+    data: { role: 'user' },
+  },
+  {
+    path: 'booked',
+    component: BookedComponent,
+    canActivate: [authGuard],
+    data: { role: 'user' },
+  },
+  {
+    path: 'singlebooked',
+    component: SingleBookedComponent,
     canActivate: [authGuard],
     data: { role: 'user' },
   },

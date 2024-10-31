@@ -37,12 +37,14 @@ import {
   letterOrNumber,
 } from '../../../validatores/name.validator';
 import { invalidPhone } from '../../../validatores/phone.validator';
+import { SideBarComponent } from '../side-bar/side-bar.component';
 // import Razorpay from 'razorpay';
 
 @Component({
   standalone: true,
   imports: [
     HeaderComponent,
+    SideBarComponent,
     CommonModule,
     ReactiveFormsModule,
     TruncatePipe,
@@ -65,6 +67,8 @@ export class BookingComponent {
   discoundedPrice!: number;
   discount!: number;
   selectedCouponId: string = '';
+  invalidForm!: boolean;
+
   constructor(
     private fb: FormBuilder,
     private store: Store,
@@ -212,9 +216,11 @@ export class BookingComponent {
   }
 
   onSubmit() {
-    // if (this.bookingForm.valid) {
-    console.log('Booking submitted:', this.bookingForm.value);
-    // }
+    if (!this.bookingForm.valid) {
+      console.log('Booking submitted:', this.bookingForm.value);
+      this.invalidForm = true;
+      return;
+    }
     this.bookingService
       .createPayment(this.packageDetails._id, this.selectedCouponId)
       .subscribe((res: any) => {
@@ -232,17 +238,22 @@ export class BookingComponent {
                 response.razorpay_payment_id,
                 response.razorpay_signature,
                 this.packageDetails._id,
+                this.packageDetails.agencyId._id,
                 this.selectedCouponId,
                 this.bookingForm.value
               )
-              .subscribe(() => {
-                this.toastService.showToast('booking confirmed', 'success');
+              .subscribe((res) => {
+                if (res) {
+                  this.toastService.showToast(res.message, 'success');
+                  this.router.navigate(['/packages']);
+                  return;
+                }
               });
             console.log('Payment Success', response);
           },
           prefill: {
-            name: 'Customer Name',
-            email: 'customer@example.com',
+            name: 'testUser',
+            email: 'test@gmail.com',
             contact: '1234567890',
           },
           theme: {

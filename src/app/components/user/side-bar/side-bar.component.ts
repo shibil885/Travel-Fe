@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import {
   trigger,
   state,
@@ -6,14 +7,18 @@ import {
   animate,
   transition,
 } from '@angular/animations';
-import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { selectUser } from '../../../store/user/user.selector';
+import { IUser } from '../../../models/user.model';
 
 @Component({
   selector: 'app-side-bar',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './side-bar.component.html',
-  styleUrl: './side-bar.component.css',
+  styleUrls: ['./side-bar.component.css'],
   animations: [
     trigger('slideInOut', [
       state(
@@ -25,7 +30,7 @@ import { CommonModule } from '@angular/common';
       state(
         'out',
         style({
-          transform: 'translateX(-100%)',
+          transform: 'translateX(100%)',
         })
       ),
       transition('in => out', animate('300ms ease-in-out')),
@@ -34,21 +39,25 @@ import { CommonModule } from '@angular/common';
   ],
 })
 export class SideBarComponent {
-  isOpen = false;
+  isOpen = signal(false);
+  user!:IUser | null;
   menuItems = [
-    { icon: 'person', label: 'Profile' },
-    { icon: 'book', label: 'Bookings' },
-    { icon: 'account_balance_wallet', label: 'Wallet' },
-    { icon: 'settings', label: 'Settings' },
-    { icon: 'help', label: 'Help' },
-    { icon: 'exit_to_app', label: 'Logout' },
+    { icon: 'person', label: 'Profile', route: '/profile' },
+    { icon: 'book', label: 'Booked', route: '/booked' },
+    { icon: 'account_balance_wallet', label: 'Wallet', route: '/wallet' },
+    { icon: 'notifications', label: 'Notifications', route: '/notifications' },
+    { icon: 'settings', label: 'Settings', route: '/settings' },
+    { icon: 'help', label: 'Help', route: '/help' },
+    { icon: 'logout', label: 'Logout', route: '/logout' },
   ];
+  constructor(private store: Store) {}
 
-  constructor() {}
-
-  ngOnInit(): void {}
-
+  ngOnInit(): void {
+    this.store.select(selectUser).subscribe((user) => {
+      this.user = user
+    })
+  }
   toggleSidebar() {
-    this.isOpen = !this.isOpen;
+    this.isOpen.update((v) => !v);
   }
 }

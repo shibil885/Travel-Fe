@@ -1,0 +1,70 @@
+<div
+    class="max-w-xl mx-auto bg-gradient-to-r from-[#FBE9D0] to-[#F8F2E7] rounded-lg shadow-2xl p-10 mt-12 text-[#244855] border border-gray-300 relative">
+    <!-- Title Section -->
+    <div class="text-center mb-10">
+        <h2 class="text-3xl font-bold text-[#244855] tracking-wide uppercase">Booking Details</h2>
+        <p class="text-sm text-gray-500">Manage the booking status and review details</p>
+    </div>
+
+    <!-- Booking Details Grid -->
+    <div class="grid gap-6" *ngIf="booking">
+        <div class="bg-white p-5 rounded-xl shadow-md border border-gray-200">
+            <label class="block font-semibold text-xs uppercase text-gray-500">Booking ID</label>
+            <p class="text-xl text-[#244855]">{{ booking._id }}</p>
+        </div>
+
+        <div class="bg-white p-5 rounded-xl shadow-md border border-gray-200">
+            <label class="block font-semibold text-xs uppercase text-gray-500">Package Name</label>
+            <p class="text-xl text-[#244855]">{{ booking.package_id.name }}</p>
+        </div>
+
+        <div class="bg-white p-5 rounded-xl shadow-md border border-gray-200">
+            <label class="block font-semibold text-xs uppercase text-gray-500">User Name</label>
+            <p class="text-xl text-[#244855]">{{ booking.user_id.username }}</p>
+        </div>
+
+        <div class="bg-white p-5 rounded-xl shadow-md border border-gray-200">
+            <label class="block font-semibold text-xs uppercase text-gray-500">Booking Date</label>
+            <p class="text-xl text-[#244855]">{{ booking.createdAt | date: 'longDate' }}</p>
+        </div>
+
+        <div class="bg-white p-5 rounded-xl shadow-md border border-gray-200">
+            <label class="block font-semibold text-xs uppercase text-gray-500">Start date</label>
+            <p class="text-xl text-[#244855]">{{ booking.start_date | date: 'longDate' }}</p>
+        </div>
+
+        <div class="bg-white p-5 rounded-xl shadow-md border border-gray-200 flex items-center">
+            <label class="block font-semibold text-xs uppercase text-gray-500 mr-4">Confirmation </label>
+            <span class="px-4 py-1 text-sm font-semibold rounded-full transition duration-200 tracking-wide" [ngClass]="{
+                    'bg-green-100 text-green-800': booking.confirmation, 
+                    'bg-red-100 text-red-800': !booking.confirmation
+                }">
+                {{ booking.confirmation ? 'Confirmed' : 'Pending' }}
+            </span>
+        </div>
+
+        <!-- Travel Status Update Dropdown -->
+        <div *ngIf="booking" class="bg-white p-5 rounded-xl shadow-md border border-gray-200">
+            <label for="travelStatus" class="block font-semibold text-xs uppercase text-gray-500 mb-2">Travel
+                Status</label>
+            <select [(ngModel)]="booking.travel_status" id="travelStatus"
+                class="w-full p-3 border border-[#90AEAD] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#244855] transition">
+                <option *ngFor="let status of travelStatusOptions" [value]="status">{{ status }}</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="mt-10 flex space-x-5 justify-center">
+        <button (click)="confirmBooking()" [ngClass]="booking?.confirmation ? 'cursor-not-allowed':''"
+            class="bg-[#90AEAD] text-white font-semibold py-3 px-8 rounded-lg hover:bg-[#244855] transition-transform transform  shadow-lg hover:shadow-xl focus:outline-none"
+            [disabled]="booking?.confirmation">
+            Confirm Booking
+        </button>
+
+        <button (click)="cancelBooking()"
+            class="bg-[#E64833] text-white font-semibold py-3 px-8 rounded-lg hover:bg-[#874F41] transition-transform transform hover:-translate-y-1 shadow-lg hover:shadow-xl focus:outline-none">
+            Cancel Booking
+        </button>
+    </div>
+</div>

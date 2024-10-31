@@ -37,7 +37,7 @@ export class AgenciesComponent implements OnInit {
   totalAgencies: number = 0;
   currentPage: number = 1;
   limit: number = 5;
-
+  
   agencyHeaders = [
     { label: 'Agency Name', key: 'name' },
     { label: 'Email', key: 'email' },

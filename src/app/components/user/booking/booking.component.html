@@ -1,4 +1,5 @@
 <app-header></app-header>
+<app-side-bar></app-side-bar>
 <div class="bg-gray-100 min-h-screen font-sans">
     <main class="container mx-auto px-4 py-8">
         <h1 class="text-5xl font-bold mb-8 text-[#656262] text-center">Embark on Your Dream Journey</h1>
@@ -15,10 +16,10 @@
                                 class="w-full rounded-md border border-gray-300 focus:ring-2 focus:ring-indigo-600 focus:border-indigo-600 py-2 px-3 appearance-none" />
                             <div class="error-message text-red-700"
                                 *ngIf="bookingForm.get('travelDates')?.touched && bookingForm.get('travelDates')?.invalid">
-                                <span *ngIf="bookingForm.get('travelDates')?.errors?.['required']">Date
+                                <span class="text-xs" *ngIf="bookingForm.get('travelDates')?.errors?.['required']">Date
                                     is required*
                                 </span>
-                                <span *ngIf="bookingForm.get('travelDates')?.errors?.['invalidDate']">
+                                <span class="text-xs" *ngIf="bookingForm.get('travelDates')?.errors?.['invalidDate']">
                                     Date must be a future date*
                                 </span>
                             </div>
@@ -31,16 +32,16 @@
                             placeholder="Enter number of persons" />
                         <div class="error-message text-red-700"
                             *ngIf="bookingForm.get('person')?.touched && bookingForm.get('person')?.invalid">
-                            <span *ngIf="bookingForm.get('person')?.errors?.['required']">Number of
+                            <span class="text-xs" *ngIf="bookingForm.get('person')?.errors?.['required']">Number of
                                 people is required*
                             </span>
-                            <span *ngIf="bookingForm.get('person')?.errors?.['max']">Number of
+                            <span class="text-xs" *ngIf="bookingForm.get('person')?.errors?.['max']">Number of
                                 people must less than {{packageDetails.people}}*
                             </span>
-                            <span *ngIf="bookingForm.get('person')?.errors?.['min']">Number of
+                            <span class="text-xs" *ngIf="bookingForm.get('person')?.errors?.['min']">Number of
                                 people must a positive number*
                             </span>
-                            <span *ngIf="bookingForm.get('person')?.errors?.['pattern']">Please enter a
+                            <span class="text-xs" *ngIf="bookingForm.get('person')?.errors?.['pattern']">Please enter a
                                 valid number*
                             </span>
                         </div>
@@ -340,8 +341,7 @@
                                 *ngIf="discoundedPrice" (click)="cancelCoupon()">X</button>
                         </div>
                     </div>
-
-
+                    <small class="text-red-500" *ngIf="invalidForm">Fill required field</small>
                     <button type="submit"
                         class="w-full bg-[#FF7D68] text-white py-3 px-4 rounded-md hover:bg-[#ff674f] transition duration-300 text-lg font-semibold">Book
                         Your Adventure

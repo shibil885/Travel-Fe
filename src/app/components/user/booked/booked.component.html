@@ -1,0 +1,27 @@
+<app-header></app-header>
+<app-side-bar></app-side-bar>
+<section class="flex items-center justify-center min-h-screen" *ngIf="renderBookedList">
+    <div class="w-full max-w-4xl px-4 sm:px-6 py-8 rounded-lg space-y-6">
+        <h1 class="text-2xl font-bold text-gray-800 text-center mb-6">Your Booked Packages</h1>
+        <div *ngFor="let booking of bookings"
+            class="bg-white shadow-md rounded-lg flex flex-col sm:flex-row overflow-hidden border border-gray-200">
+            <img [src]="booking.package_id.images[0]" alt="{{ booking.package_id.finalDestination }}"
+                class="w-full sm:w-1/3 h-48 sm:h-auto object-cover">
+            <div class="p-6 w-full sm:w-2/3">
+                <h2 class="text-xl font-semibold text-gray-800">{{ booking.package_id.finalDestination }}</h2>
+                <!-- <p class="text-green-600 text-sm mb-2">Agency: {{ booking.package_id.agencyId.name }}</p> -->
+                <!-- <p class="text-gray-600 text-sm">Package: {{ booking.package_id.category.name }}</p> -->
+                <div class="flex items-center text-sm text-gray-600 my-2">
+                    <span class="mr-4 flex items-center">👥 {{ booking.peoples.length }} Person</span>
+                    <span class="flex items-center">📅 {{ booking.package_id.days }} Days</span>
+                </div>
+                <p class="text-gray-600 text-sm mb-2">Date: {{ booking.start_date | date: 'dd-MM-yyyy' }}</p>
+                <p class="text-orange-500 text-2xl font-bold">${{ booking.total_price| number }}</p>
+                <button class="mt-4 bg-orange-500 hover:bg-orange-600 text-white rounded-full px-6 py-2"
+                    (click)="showSingleBooking(booking._id)">Details</button>
+            </div>
+        </div>
+    </div>
+</section>
+<app-booking-detail *ngIf="!renderBookedList" [bookingDetails]="singleBookedPackage"
+    (closePageEvent)="closeSingleBookedPAckagePage()"></app-booking-detail>

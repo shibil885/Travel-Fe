@@ -10,18 +10,13 @@ import { CommonModule } from '@angular/common';
 import { HeaderComponent } from '../../header/header.component';
 import { Observable } from 'rxjs';
 import { MatStepperModule } from '@angular/material/stepper';
-import {
-  trigger,
-  transition,
-  style,
-  animate,
-  state,
-} from '@angular/animations';
+import { trigger, transition, style, animate } from '@angular/animations';
+import { SideBarComponent } from '../../side-bar/side-bar.component';
 
 @Component({
   selector: 'app-single-package',
   standalone: true,
-  imports: [HeaderComponent, CommonModule, MatStepperModule],
+  imports: [HeaderComponent, SideBarComponent, CommonModule, MatStepperModule],
   templateUrl: './single-package.component.html',
   styleUrl: './single-package.component.css',
   animations: [

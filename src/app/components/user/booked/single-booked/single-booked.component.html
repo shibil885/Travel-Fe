@@ -1,0 +1,107 @@
+<div class="booking-container" *ngIf="bookingDetails">
+    <button class="back-button" (click)="goBack()">
+        <i class="fas fa-arrow-left"></i> Back
+    </button>
+    <div class="booking-header">
+        <div class="image-container">
+            <img [src]="bookingDetails.package_id.images[0]" alt="Resort view" />
+        </div>
+        <div class="header-content">
+            <div class="location-container">
+                <h1>{{ bookingDetails.package_id.finalDestination }}</h1>
+                <!-- <span class="rating">{{ bookingDetails.package_id.rating }}</span> -->
+                <span class="rating">5</span>
+            </div>
+            <div class="booking-meta">
+                <div class="meta-item">
+                    <span class="label">Agency:</span>
+                    <!-- <span class="value">{{ bookingDetails.package_id.agencyId.name }}</span> -->
+                    <span class="value">Royal Travels</span>
+                </div>
+                <div class="meta-item">
+                    <span class="label">Package:</span>
+                    <span class="value">{{ bookingDetails.package_id.name }}</span>
+                </div>
+            </div>
+            <div class="booking-stats">
+                <div class="stat-item">
+                    <i class="fas fa-user"></i>
+                    <span>{{ bookingDetails.peoples.length }} Person(s)</span>
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-calendar"></i>
+                    <span>{{ bookingDetails.start_date | date }} - {{ bookingDetails.end_date | date }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Details Section -->
+    <div class="details-section">
+        <h2>Details :</h2>
+
+        <div class="content-grid">
+            <!-- Left Column -->
+            <div class="left-column">
+                <div class="peoples-section">
+                    <h3>Travelers :</h3>
+                    <div class="people-list">
+                        <div class="person-item" *ngFor="let person of bookingDetails.peoples">
+                            <div class="person-details">
+                                <span class="label">Name : {{ person.name }}</span>
+                                <span class="label">Age : {{ person.age }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <span class="label">Payment :</span>
+                    <span class="value status-paid">{{ bookingDetails.payment }}</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="label">Travel Status :</span>
+                    <span class="value status-{{ bookingDetails.travel_status | lowercase }}">
+                        {{ bookingDetails.travel_status }}
+                    </span>
+                </div>
+
+                <div class="info-item">
+                    <span class="label">Confirmation status :</span>
+                    <span class="value status-{{ bookingDetails.confirmation }}">
+                        {{ bookingDetails.travel_status }}
+                    </span>
+                </div>
+            </div>
+
+            <!-- Right Column -->
+            <div class="right-column">
+                <div class="billing-section">
+                    <h3>Billing To :</h3>
+                    <div class="billing-details">
+                        <div class="billing-item">
+                            <span class="label">Name :</span>
+                            <span class="value">
+                                {{ bookingDetails.billing_details.firstName }} {{
+                                bookingDetails.billing_details.lastName }}
+                            </span>
+                        </div>
+                        <div class="billing-item">
+                            <span class="label">Email :</span>
+                            <span class="value">{{ bookingDetails.billing_details.email }}</span>
+                        </div>
+                        <div class="billing-item">
+                            <span class="label">Net Amount :</span>
+                            <span class="value">{{ bookingDetails.total_price | currency }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="actions">
+            <button class="cancel-button" (click)="onCancel()">Cancel</button>
+        </div>
+    </div>
+</div>

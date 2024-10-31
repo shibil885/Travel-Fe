@@ -1,25 +1,28 @@
-<div class="profile-container">
-    <button class="profile-icon" (click)="toggleSidebar()">
-      <i class="material-icons">account_circle</i>
-    </button>
-  
-    <div class="sidebar" [@slideInOut]="isOpen ? 'in' : 'out'">
-      <div class="sidebar-header">
-        <img src="assets/images/dp.png" alt="User Avatar" class="user-avatar">
-        <h2>John Doe</h2>
-        <p>john.doeexample.com</p>
-      </div>
-      <nav class="sidebar-nav">
-        <ul>
-          <li *ngFor="let item of menuItems">
-            <a href="#">
-              <i class="material-icons">{{item.icon}}</i>
-              <span>{{item.label}}</span>
-            </a>
-          </li>
-        </ul>
-      </nav>
+<button class="profile-toggle" (click)="toggleSidebar()" [attr.aria-expanded]="isOpen()"
+    aria-label="Toggle user profile sidebar">
+    <img src="https://github.com/shadcn.png" alt="User avatar" class="avatar">
+</button>
+
+<div class="overlay" [class.active]="isOpen()" (click)="toggleSidebar()" aria-hidden="true">
+</div>
+
+<aside class="sidebar" [class.active]="isOpen()" [attr.aria-hidden]="!isOpen()">
+    <div class="sidebar-content">
+        <div class="user-info">
+            <img src="https://github.com/shadcn.png" alt="User avatar" class="avatar large">
+            <h2>{{user?.username}}</h2>
+            <p>{{user?.email}}</p>
+        </div>
+        <button class="view-profile-btn">View Profile</button>
+        <nav>
+            <ul>
+                <li *ngFor="let item of menuItems">
+                    <a [routerLink]="item.route" class="menu-item" (click)="toggleSidebar()">
+                        <i class="material-icons">{{item.icon}}</i>
+                        <span>{{item.label}}</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
     </div>
-  </div>
-  
-  <div class="overlay" [class.active]="isOpen" (click)="toggleSidebar()"></div>
+</aside>
