@@ -160,6 +160,7 @@ export const UserReducer = createReducer(
     return {
       ...state,
       price: price,
+      coupons: []
     };
   }),
   on(userActions.cancelCoupon, (state) => {

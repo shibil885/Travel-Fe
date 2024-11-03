@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnDestroy } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -29,7 +29,7 @@ import {
 import { BookingService } from '../../../shared/services/booking.service';
 import { ICoupon } from '../../../interfaces/coupon.interface';
 import { CouponService } from '../../../shared/services/coupon.service';
-import { Observable } from 'rxjs';
+import { Observable, Subject, take, takeUntil } from 'rxjs';
 import { dateValidator } from '../../../validatores/date.validator';
 import {
   endWithSpace,
@@ -38,7 +38,8 @@ import {
 } from '../../../validatores/name.validator';
 import { invalidPhone } from '../../../validatores/phone.validator';
 import { SideBarComponent } from '../side-bar/side-bar.component';
-// import Razorpay from 'razorpay';
+import { LocalStorageService } from '../../../shared/services/local-storage.service';
+import { UserService } from '../../../shared/services/user.service';
 
 @Component({
   standalone: true,
@@ -56,50 +57,68 @@ import { SideBarComponent } from '../side-bar/side-bar.component';
   templateUrl: './booking.component.html',
   styleUrls: ['./booking.component.css'],
 })
-export class BookingComponent {
+export class BookingComponent implements OnDestroy {
+  showPolicy = false
   bookingForm!: FormGroup;
-  packageDetails!: IPackage;
+  packageDetails: IPackage = {} as IPackage;
   couponMessage: string = '';
   couponValid: boolean = false;
-  coupons: ICoupon[] = [];
+  coupons$: Observable<ICoupon[] | null> = this._store.select(selectCoupons);
   showAllCoupons = false;
-  price$: Observable<number> = this.store.select(selectPrice);
-  discoundedPrice!: number;
-  discount!: number;
+  price$: Observable<number> = this._store.select(selectPrice);
+  discoundedPrice: number = 0;
+  discount: number = 0;
   selectedCouponId: string = '';
-  invalidForm!: boolean;
+  invalidForm: boolean = false;
+  private destroy$ = new Subject<void>();
 
   constructor(
-    private fb: FormBuilder,
-    private store: Store,
-    private toastService: ToastService,
-    private router: Router,
-    private bookingService: BookingService
+    private _fb: FormBuilder,
+    private _store: Store,
+    private _toastService: ToastService,
+    private _router: Router,
+    private _bookingService: BookingService,
+    private _localStorage: LocalStorageService,
+    private _userService: UserService
   ) {}
 
   ngOnInit() {
-    this.store.select(selectPackage).subscribe((res) => {
-      if (res) {
-        window.scrollTo(0, 0);
-        this.packageDetails = res;
-        return;
-      }
-      this.toastService.showToast('Something went wrong', 'error');
-      return this.router.navigate(['packages']);
-    });
+    this.initializePackageDetails();
+    this.initializeForm();
+    this.fetchCoupons();
+  }
 
-    this.fetchCoupon();
+  private initializePackageDetails() {
+    this._store
+      .select(selectPackage)
+      .pipe(take(1))
+      .subscribe((res) => {
+        if (res) {
+          window.scrollTo(0, 0);
+          this.packageDetails = res;
+        } else {
+          const packageId = this._localStorage.getItem('_packageId');
+          if (packageId) {
+            this._userService
+              .getSinglePackage(packageId)
+              .pipe(take(1))
+              .subscribe((response) => {
+                this.packageDetails = response.package;
+              });
+          } else {
+            this._toastService.showToast('Package ID not found', 'error');
+            this._router.navigate(['packages']);
+          }
+        }
+      });
+  }
 
-    this.bookingForm = this.fb.group({
+  private initializeForm() {
+    this.bookingForm = this._fb.group({
       travelDates: ['', [Validators.required, dateValidator]],
       person: [
         1,
-        [
-          Validators.required,
-          Validators.min(1),
-          Validators.max(Number(this.packageDetails.people)),
-          Validators.pattern(/^\d+$/),
-        ],
+        [Validators.required, Validators.min(1), Validators.pattern(/^\d+$/)],
       ],
       firstName: [
         '',
@@ -125,37 +144,34 @@ export class BookingComponent {
       phone: ['', [Validators.required, invalidPhone]],
       travelers: new FormArray([]),
     });
+
     this.bookingForm.get('person')?.valueChanges.subscribe((value) => {
       if (Number(value) <= Number(this.packageDetails.people)) {
         this.updateTraveller(value);
-        return;
       }
     });
+
     this.updateTraveller(1);
+  }
+
+  private fetchCoupons() {
+    const id =
+      this.packageDetails?._id ||
+      this._localStorage.getItem('_packageId') ||
+      '';
+    if (id) {
+      this._store.dispatch(getAllCoupon({ packageId: id }));
+    }
   }
 
   get travelers() {
     return this.bookingForm.get('travelers') as FormArray;
   }
 
-  get persons() {
-    return this.bookingForm.get('person') as FormGroup;
-  }
-
-  fetchCoupon() {
-    if (this.packageDetails._id) {
-      this.store.dispatch(getAllCoupon({ packageId: this.packageDetails._id }));
-      this.store.select(selectCoupons).subscribe((res) => {
-        return res ? (this.coupons = res) : false;
-      });
-    }
-  }
-
-  updateTraveller(person = this.persons.value) {
-    const currentPeoples = this.travelers.length;
-    if (person > currentPeoples) {
-      for (let i = currentPeoples; i < person; i++) {
-        const travelerForm = this.fb.group({
+  updateTraveller(personCount: number) {
+    const travelersArray = new FormArray(
+      Array.from({ length: personCount }, () =>
+        this._fb.group({
           name: [
             '',
             [
@@ -168,61 +184,51 @@ export class BookingComponent {
             '',
             [Validators.required, Validators.min(1), Validators.max(120)],
           ],
-        });
-        this.travelers.push(travelerForm);
-      }
-    } else if (person < currentPeoples) {
-      for (let i = currentPeoples - 1; i >= person; i--) {
-        this.travelers.removeAt(i);
-      }
-    }
+        })
+      )
+    );
+    this.bookingForm.setControl('travelers', travelersArray);
   }
-
-  //   addTraveler() {
-  //     const newValue = this.bookingForm.get('person')?.value + 1;
-  //     this.bookingForm.patchValue({ persons: newValue });
-  //     console.log(this.persons.value)
-  // }
 
   viewDetails() {
     if (this.packageDetails._id) {
-      this.store.dispatch(showSinglePackage({ id: this.packageDetails._id }));
-      return;
+      this._store.dispatch(showSinglePackage({ id: this.packageDetails._id }));
+    } else {
+      this._toastService.showToast('Something went wrong', 'error');
+      this._router.navigate(['packages']);
     }
-    this.toastService.showToast('Something went wrong', 'error');
-    return this.router.navigate(['packages']);
   }
 
   applyCoupon(id: string | undefined, price: string | undefined) {
     if (id && price) {
-      const priceInNumber = Number(price);
-      this.store.dispatch(applyCoupon({ id: id, packagePrice: priceInNumber }));
-      this.price$.subscribe((result) => {
+      this._store.dispatch(applyCoupon({ id, packagePrice: Number(price) }));
+
+      this.price$.pipe(takeUntil(this.destroy$)).subscribe((result) => {
         this.discoundedPrice = result;
         this.discount = Number(this.packageDetails.price) - result;
-        this.coupons = [];
         this.selectedCouponId = id;
       });
-      return;
+    } else {
+      this._toastService.showToast('Cannot find Coupon', 'error');
     }
-    this.toastService.showToast('Cant find Coupon', 'error');
-    return;
   }
+
   cancelCoupon() {
-    this.fetchCoupon();
+    this.fetchCoupons();
     this.discoundedPrice = 0;
     this.discount = 0;
     this.selectedCouponId = '';
   }
 
   onSubmit() {
-    if (!this.bookingForm.valid) {
-      console.log('Booking submitted:', this.bookingForm.value);
+    if (this.bookingForm.invalid) {
       this.invalidForm = true;
       return;
     }
-    this.bookingService
+
+    this._bookingService
       .createPayment(this.packageDetails._id, this.selectedCouponId)
+      .pipe(takeUntil(this.destroy$))
       .subscribe((res: any) => {
         const options = {
           key_id: 'rzp_test_ihsNz6lracNIu3',
@@ -231,26 +237,7 @@ export class BookingComponent {
           name: 'Travel',
           description: 'Test Transaction',
           order_id: res.id,
-          handler: (response: any) => {
-            this.bookingService
-              .verifyPayment(
-                response.razorpay_order_id,
-                response.razorpay_payment_id,
-                response.razorpay_signature,
-                this.packageDetails._id,
-                this.packageDetails.agencyId._id,
-                this.selectedCouponId,
-                this.bookingForm.value
-              )
-              .subscribe((res) => {
-                if (res) {
-                  this.toastService.showToast(res.message, 'success');
-                  this.router.navigate(['/packages']);
-                  return;
-                }
-              });
-            console.log('Payment Success', response);
-          },
+          handler: (response: any) => this.handlePayment(response),
           prefill: {
             name: 'testUser',
             email: 'test@gmail.com',
@@ -260,8 +247,33 @@ export class BookingComponent {
             color: '#3399cc',
           },
         };
+
         const razorpay = new Razorpay(options);
         razorpay.open();
       });
+  }
+
+  private handlePayment(response: any) {
+    this._bookingService
+      .verifyPayment(
+        response.razorpay_order_id,
+        response.razorpay_payment_id,
+        response.razorpay_signature,
+        this.packageDetails._id,
+        this.packageDetails.agencyId._id,
+        this.selectedCouponId,
+        this.bookingForm.value
+      )
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        if (res) {
+          this._toastService.showToast(res.message, 'success');
+          this._router.navigate(['/packages']);
+        }
+      });
+  }
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

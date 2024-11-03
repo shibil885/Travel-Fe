@@ -41,7 +41,7 @@ export class BookingService {
     );
   }
   getAllBookedPackages() {
-    return this.http.get<{ success: boolean; booked: any }>(
+    return this.http.get<{ success: boolean; booked: IBooking[] }>(
       `${this.api}/booking/getAllBooked`,
       {
         withCredentials: true,

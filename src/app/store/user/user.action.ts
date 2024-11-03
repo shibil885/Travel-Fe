@@ -96,11 +96,11 @@ export const getAllCoupon = createAction(
   props<{ packageId: string }>()
 );
 export const getAllCouponSuccess = createAction(
-  '[getAllCoupons] BookingCoumponent',
+  '[getAllCoupons] BookingCoumponentSuccess',
   props<{ success: boolean; coupons: ICoupon[]  }>()
 );
 export const getAllCouponError = createAction(
-  '[getAllCoupons] BookingCoumponent',
+  '[getAllCoupons] BookingCoumponentError',
   props<{ error: string }>()
 );
 

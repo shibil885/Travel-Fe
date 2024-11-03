@@ -1,62 +1,38 @@
-import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { IBooking } from '../../../interfaces/booking.interface';
+import { BookingService } from '../../../shared/services/booking.service';
 import { HeaderComponent } from '../header/header.component';
 import { SideBarComponent } from '../side-bar/side-bar.component';
-import { BookingService } from '../../../shared/services/booking.service';
-import { IBooking } from '../../../interfaces/booking.interface';
-import { SingleBookedComponent } from './single-booked/single-booked.component';
-import { ToastService } from '../../../shared/services/toaster.service';
+import { SearchComponent } from '../../../shared/components/search/search.component';
+import { LocalStorageService } from '../../../shared/services/local-storage.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-booking-list',
   standalone: true,
-  imports: [
-    CommonModule,
-    RouterModule,
-    HeaderComponent,
-    SideBarComponent,
-    SingleBookedComponent,
-  ],
+  imports: [HeaderComponent, SideBarComponent, CommonModule, SearchComponent],
   templateUrl: './booked.component.html',
-  styles: [
-    `
-      :host {
-        display: block;
-        background-color: #f3f4f6;
-        min-height: 100vh;
-      }
-    `,
-  ],
+  styleUrls: ['./booked.component.css'],
 })
-export class BookedComponent {
-  bookings: IBooking[] = [];
+export class BookedComponent implements OnInit {
+  bookings!: IBooking[];
   singleBookedPackage!: IBooking;
-  renderBookedList: boolean = true;
-
   constructor(
-    private bookingService: BookingService,
-    private toastService: ToastService
+    private _bookingService: BookingService,
+    private _storageService: LocalStorageService,
+    private _router: Router
   ) {}
 
   ngOnInit() {
-    this.bookingService.getAllBookedPackages().subscribe((res) => {
+    this._storageService.removeItem('_bookingId');
+    this._bookingService.getAllBookedPackages().subscribe((res) => {
       console.log(res);
       this.bookings = res.booked;
     });
   }
-  showSingleBooking(id: string) {
-    this.bookingService.getSingleBookedPackage(id).subscribe((res) => {
-      if (res.success) {
-        this.singleBookedPackage = res.bookedPackage;
-        this.renderBookedList = !this.renderBookedList;
-        return;
-      }
-      this.toastService.showToast('Somthing Went Wrong', 'error');
-      return;
-    });
-  }
-  closeSingleBookedPAckagePage() {
-    this.renderBookedList = !this.renderBookedList;
+  viewDetails(id: string) {
+    this._storageService.setItem('_bookingId', id);
+    this._router.navigate(['/singlebooked']);
   }
 }

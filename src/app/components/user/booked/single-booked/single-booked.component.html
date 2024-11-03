@@ -1,7 +1,6 @@
+<app-header></app-header>
+<app-side-bar></app-side-bar>
 <div class="booking-container" *ngIf="bookingDetails">
-    <button class="back-button" (click)="goBack()">
-        <i class="fas fa-arrow-left"></i> Back
-    </button>
     <div class="booking-header">
         <div class="image-container">
             <img [src]="bookingDetails.package_id.images[0]" alt="Resort view" />
@@ -75,7 +74,6 @@
                 </div>
             </div>
 
-            <!-- Right Column -->
             <div class="right-column">
                 <div class="billing-section">
                     <h3>Billing To :</h3>

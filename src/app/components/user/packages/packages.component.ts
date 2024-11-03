@@ -15,6 +15,7 @@ import {
 } from '../../../store/user/user.action';
 import { ToastService } from '../../../shared/services/toaster.service';
 import { SideBarComponent } from '../side-bar/side-bar.component';
+import { LocalStorageService } from '../../../shared/services/local-storage.service';
 @Component({
   selector: 'app-packages',
   standalone: true,
@@ -51,17 +52,19 @@ export class PackagesComponent {
   numberOfPerson!: number;
 
   constructor(
-    private userPackages: UserService,
-    private store: Store,
-    private toastService: ToastService
+    private _userPackages: UserService,
+    private _store: Store,
+    private _toastService: ToastService,
+    private _localStorage: LocalStorageService
   ) {}
 
   ngOnInit() {
+    this._localStorage.removeItem('_packageId');
     this.fetchAllPackages();
   }
 
   fetchAllPackages() {
-    this.userPackages
+    this._userPackages
       .getPackages(this.currentPage, this.limit)
       .subscribe((res) => {
         this.packages = res.packages;
@@ -80,18 +83,19 @@ export class PackagesComponent {
 
   showSinglePackage(id: string | undefined) {
     if (id) {
-      this.store.dispatch(showSinglePackage({ id: id }));
+      this._store.dispatch(showSinglePackage({ id: id }));
       return;
     }
-    this.toastService.showToast('somthing went wrong', 'error');
+    this._toastService.showToast('somthing went wrong', 'error');
     return;
   }
   bookPackage(id: string | undefined) {
     if (id) {
-      this.store.dispatch(bookingPage({ id }));
+      this._store.dispatch(bookingPage({ id }));
+      this._localStorage.setItem('_packageId', id);
       return;
     }
-    this.toastService.showToast('somthing went wrong', 'error');
+    this._toastService.showToast('somthing went wrong', 'error');
     return;
   }
 }
