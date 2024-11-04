@@ -1,6 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { IBooking } from '../../interfaces/booking.interface';
+import { TravelConfirmationStatus } from '../../enum/travelConfirmation.enum';
 
 @Injectable({
   providedIn: 'root',
@@ -68,10 +69,19 @@ export class BookingService {
       withCredentials: true,
     });
   }
-  confirmBooking(bookingId: string, status: boolean) {
+  confirmBooking(bookingId: string, status: TravelConfirmationStatus) {
+    console.log(status);
     return this.http.patch<{ success: boolean; message: string }>(
       `${this.api}/booking/confirmBooking/${bookingId}`,
       { status },
+      { withCredentials: true }
+    );
+  }
+
+  cancelBooking(bookingId: string | undefined, user: string) {
+    return this.http.patch<{ success: boolean; message: string }>(
+      `${this.api}/booking/cancelBooking/${bookingId}`,
+      { user },
       { withCredentials: true }
     );
   }

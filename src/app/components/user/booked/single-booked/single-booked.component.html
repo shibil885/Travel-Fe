@@ -91,7 +91,7 @@
                         </div>
                         <div class="billing-item">
                             <span class="label">Net Amount :</span>
-                            <span class="value">{{ bookingDetails.total_price | currency }}</span>
+                            <span class="value">{{ bookingDetails.total_price | currency:'INR' }}</span>
                         </div>
                     </div>
                 </div>
@@ -99,7 +99,8 @@
         </div>
 
         <div class="actions">
-            <button class="cancel-button" (click)="onCancel()">Cancel</button>
+            <button class="cancel-button" (click)="onCancel(bookingDetails._id)"
+                [hidden]="bookingDetails.confirmation === 'rejected'">Cancel</button>
         </div>
     </div>
 </div>

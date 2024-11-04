@@ -35,16 +35,18 @@
 
         <div class="bg-white p-5 rounded-xl shadow-md border border-gray-200 flex items-center">
             <label class="block font-semibold text-xs uppercase text-gray-500 mr-4">Confirmation </label>
-            <span class="px-4 py-1 text-sm font-semibold rounded-full transition duration-200 tracking-wide" [ngClass]="{
-                    'bg-green-100 text-green-800': booking.confirmation, 
-                    'bg-red-100 text-red-800': !booking.confirmation
+            <span class=" uppercase px-4 py-1 text-sm font-semibold rounded-full transition duration-200 tracking-wide"
+                [ngClass]="{
+                    'bg-green-100 text-green-800': booking.confirmation === 'confirmed', 
+                    'bg-red-100 text-red-800': booking.confirmation === 'rejected',
+                    'bg-gray-100 text-gray-950': booking.confirmation === 'pending'
                 }">
-                {{ booking.confirmation ? 'Confirmed' : 'Pending' }}
+                {{ booking.confirmation }}
             </span>
         </div>
 
-        <!-- Travel Status Update Dropdown -->
-        <div *ngIf="booking" class="bg-white p-5 rounded-xl shadow-md border border-gray-200">
+        <div *ngIf="booking.confirmation === 'confirmed'"
+            class="bg-white p-5 rounded-xl shadow-md border border-gray-200">
             <label for="travelStatus" class="block font-semibold text-xs uppercase text-gray-500 mb-2">Travel
                 Status</label>
             <select [(ngModel)]="booking.travel_status" id="travelStatus"
@@ -54,16 +56,18 @@
         </div>
     </div>
 
-    <!-- Actions -->
     <div class="mt-10 flex space-x-5 justify-center">
-        <button (click)="confirmBooking()" [ngClass]="booking?.confirmation ? 'cursor-not-allowed':''"
+        <button (click)="confirmBooking()"
+            [ngClass]="booking?.confirmation === 'confirmed' ? 'cursor-not-allowed':'' || booking?.travel_status === 'cancelled' ? 'cursor-not-allowed':''"
             class="bg-[#90AEAD] text-white font-semibold py-3 px-8 rounded-lg hover:bg-[#244855] transition-transform transform  shadow-lg hover:shadow-xl focus:outline-none"
-            [disabled]="booking?.confirmation">
+            [hidden]="booking?.confirmation === 'confirmed' || booking?.travel_status === 'cancelled'">
             Confirm Booking
         </button>
 
-        <button (click)="cancelBooking()"
-            class="bg-[#E64833] text-white font-semibold py-3 px-8 rounded-lg hover:bg-[#874F41] transition-transform transform hover:-translate-y-1 shadow-lg hover:shadow-xl focus:outline-none">
+        <button (click)="cancelBooking(booking?._id)"
+            [ngClass]="booking?.travel_status === 'cancelled' ? 'cursor-not-allowed':''"
+            class="bg-[#E64833] text-white font-semibold py-3 px-8 rounded-lg hover:bg-[#874F41] transition-transform transform shadow-lg hover:shadow-xl focus:outline-none"
+            [hidden]="booking?.travel_status === 'cancelled' || booking?.confirmation === 'pending'">
             Cancel Booking
         </button>
     </div>

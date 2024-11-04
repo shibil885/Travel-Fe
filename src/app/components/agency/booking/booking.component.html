@@ -27,7 +27,7 @@
                             <th class="px-4 py-2 border">Package Name</th>
                             <th class="px-4 py-2 border">User Name</th>
                             <th class="px-4 py-2 border">Booking Date</th>
-                            <th class="px-4 py-2 border">Status</th>
+                            <th class="px-4 py-2 border">Confirmation</th>
                             <th class="px-4 py-2 border">Actions</th>
                         </tr>
                     </thead>
@@ -40,7 +40,7 @@
                             <td class="px-4 py-2 border">
                                 <span
                                     class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ booking.confirmation ? 'bg-[#90AEAD] text-[#244855]' : 'bg-[#E64833] text-white' }}">
-                                    {{ booking.confirmation ? 'Confirmed' : 'Pending' }}
+                                    {{ booking.confirmation }}
                                 </span>
                             </td>
                             <td class="px-4 py-2 border">
@@ -63,8 +63,8 @@
                     [typeOfUser]="'agency'" (pageChange)="onPageChange($event)">
                 </app-pagination>
             </div>
-            <app-single-booking *ngIf="renderSingleBooking && singleBooking" (closePageEvent)="closeSingleBookingPage()" [id]="singleBooking._id"
-               ></app-single-booking>
+            <app-single-booking *ngIf="renderSingleBooking && singleBooking" (closePageEvent)="closeSingleBookingPage()"
+                [id]="singleBooking._id"></app-single-booking>
         </main>
     </div>
 </div>

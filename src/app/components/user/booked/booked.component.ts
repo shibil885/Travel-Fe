@@ -15,7 +15,7 @@ import { Router } from '@angular/router';
   templateUrl: './booked.component.html',
   styleUrls: ['./booked.component.css'],
 })
-export class BookedComponent implements OnInit {
+export class BookedComponent {
   bookings!: IBooking[];
   singleBookedPackage!: IBooking;
   constructor(
