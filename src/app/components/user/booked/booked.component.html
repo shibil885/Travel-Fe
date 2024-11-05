@@ -4,7 +4,7 @@
     <app-search></app-search>
     <div class="booking-card" *ngFor="let booking of bookings">
         <div class="booking-image">
-            <img [src]="booking.package_id.images[0]"  [alt]="booking.package_id.finalDestination" class="rounded-lg">
+            <img [src]="booking.package_id.images[0]" [alt]="booking.package_id.finalDestination" class="rounded-lg">
         </div>
         <div class="booking-content">
             <div class="booking-header">
@@ -22,7 +22,7 @@
                 <div class="booking-meta">
                     <div class="meta-item">
                         <i class="fas fa-user"></i>
-                        <span>{{booking.package_id.people}} Person</span>
+                        <span>{{booking.peoples.length}} Person</span>
                     </div>
                     <div class="meta-item">
                         <i class="fas fa-calendar"></i>
@@ -35,9 +35,15 @@
                 </div>
             </div>
             <div class="booking-footer">
-                <div class="price">{{booking.package_id.price | currency:'INR'}}</div>
+                <div class="price">{{booking.total_price| currency:'INR'}}</div>
                 <button class="details-button" (click)="viewDetails(booking._id)">Details</button>
             </div>
+        </div>
+    </div>
+    <div class="booking-content">
+        <div>
+            <hr class="mb-3">
+            <p class="text-center text-sm text-slate-700" *ngIf="bookings.length == 0">No booking :)</p>
         </div>
     </div>
 </div>

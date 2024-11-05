@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { IBooking } from '../../../interfaces/booking.interface';
 import { BookingService } from '../../../shared/services/booking.service';
 import { HeaderComponent } from '../header/header.component';

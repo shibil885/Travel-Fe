@@ -15,14 +15,32 @@
                 <div class="step-content" formGroupName="packageInfo">
                     <div class="form-grid">
                         <div class="form-group">
-                            <label for="name">Package Name</label>  
+                            <label for="name">Package Name</label>
                             <input id="name" type="text" formControlName="name">
                             <div class="error-message"
                                 *ngIf="packageForm.get('packageInfo.name')?.touched && packageForm.get('packageInfo.name')?.invalid">
-                                <span *ngIf="packageForm.get('packageInfo.name')?.errors?.['required']">Package name is
-                                    required</span>
-                                <span *ngIf="packageForm.get('packageInfo.name')?.errors?.['minlength']">Package name
-                                    must be at least 3 characters long</span>
+                                <small *ngIf="packageForm.get('packageInfo.name')?.errors?.['required']">*Package name
+                                    is
+                                    required
+                                </small>
+                                <small *ngIf="packageForm.get('packageInfo.name')?.errors?.['minlength']">*Package name
+                                    must be at least 3 characters long
+                                </small>
+                                <small *ngIf="packageForm.get('packageInfo.name')?.errors?.['maxlength']">*Package name
+                                    must be at most 20 characters long
+                                </small>
+                                <small class="text-red-600 block"
+                                    *ngIf="packageForm.get('packageInfo.name')?.errors?.['invalidChar']">*package
+                                    name can only contain letters, numbers, spaces, hyphens (-), and apostrophes (')
+                                </small>
+                                <small class="text-red-600 block"
+                                    *ngIf="packageForm.get('packageInfo.name')?.errors?.['letterOrNumber']">*package
+                                    name must start with a letter or number
+                                </small>
+                                <small class="text-red-600 block"
+                                    *ngIf="packageForm.get('packageInfo.name')?.errors?.['endWithSpace']">*package
+                                    name cannot end with spaces.
+                                </small>
                             </div>
                         </div>
                         <div class="form-group">
@@ -45,8 +63,9 @@
                                 </div>
                                 <div class="text-red-500 text-sm mt-1"
                                     *ngIf="packageForm.get('packageInfo.category')?.touched && packageForm.get('packageInfo.category')?.invalid">
-                                    <span *ngIf="packageForm.get('packageInfo.category')?.errors?.['required']">Please
-                                        select a category</span>
+                                    <small *ngIf="packageForm.get('packageInfo.category')?.errors?.['required']">*Please
+                                        select a category
+                                    </small>
                                 </div>
                             </div>
                         </div>
@@ -57,8 +76,19 @@
                             <input id="country" type="text" formControlName="country">
                             <div class="error-message"
                                 *ngIf="packageForm.get('packageInfo.country')?.touched && packageForm.get('packageInfo.country')?.invalid">
-                                <span *ngIf="packageForm.get('packageInfo.country')?.errors?.['required']">Country is
-                                    required</span>
+                                <small *ngIf="packageForm.get('packageInfo.country')?.errors?.['required']">*Country is
+                                    required
+                                </small>
+                                <small *ngIf="packageForm.get('packageInfo.country')?.errors?.['minlength']">*Country
+                                    must be at least 3 characters long
+                                </small>
+                                <small *ngIf="packageForm.get('packageInfo.country')?.errors?.['required']">*Country
+                                    must be at most 15 characters long
+                                </small>
+                                <small
+                                    *ngIf="packageForm.get('packageInfo.country')?.errors?.['invalidCountry']">*Invalid
+                                    country name
+                                </small>
                             </div>
                         </div>
                     </div>

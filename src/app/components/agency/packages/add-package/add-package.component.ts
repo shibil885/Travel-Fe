@@ -22,6 +22,12 @@ import { MatSelectModule } from '@angular/material/select';
 import { PackageService } from '../../../../shared/services/package.service';
 import { ICategory } from '../../../../interfaces/category.interface';
 import { ToastService } from '../../../../shared/services/toaster.service';
+import {
+  endWithSpace,
+  invalidChar,
+  letterOrNumber,
+} from '../../../../validatores/name.validator';
+import { countryValidator } from '../../../../validatores/country.validator';
 @Component({
   selector: 'app-add-package',
   standalone: true,
@@ -63,9 +69,18 @@ export class AddPackageComponent {
         name: new FormControl('', [
           Validators.required,
           Validators.minLength(3),
+          Validators.maxLength(20),
+          invalidChar,
+          letterOrNumber,
+          endWithSpace,
         ]),
         category: new FormControl('', Validators.required),
-        country: new FormControl('', Validators.required),
+        country: new FormControl('', [
+          Validators.required,
+          Validators.minLength(3),
+          Validators.maxLength(15),
+          countryValidator,
+        ]),
         description: new FormControl('', [
           Validators.required,
           Validators.minLength(10),
@@ -121,7 +136,7 @@ export class AddPackageComponent {
   get tourPlans(): FormArray {
     return this.packageForm.get('tourPlans') as FormArray;
   }
-  
+
   addIncludedItem(): void {
     if (this.included.length < 10) {
       this.included.push(new FormControl('', Validators.required));
@@ -228,8 +243,7 @@ export class AddPackageComponent {
     if (file) {
       const validImageTypes = ['image/jpeg', 'image/jpg', 'image/png'];
       if (!validImageTypes.includes(file.type)) {
-        this.imageError.nativeElement.innerText =
-          'Selected file is not image';
+        this.imageError.nativeElement.innerText = 'Selected file is not image';
         return;
       }
       const reader = new FileReader();

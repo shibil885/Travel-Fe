@@ -17,7 +17,7 @@ import { SingleBookingComponent } from './single-booking/single-booking.componen
     CommonModule,
     SearchComponent,
     PaginationComponent,
-    SingleBookingComponent
+    SingleBookingComponent,
   ],
   templateUrl: './booking.component.html',
   styleUrl: './booking.component.css',
@@ -44,7 +44,7 @@ export class BookingComponent {
       .subscribe((response) => {
         this.bookings = response.booking;
         this.totalItems = response.totalItems;
-        this.currentPage = response.currentPage
+        this.currentPage = response.currentPage;
       });
   }
 
