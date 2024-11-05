@@ -10,6 +10,7 @@ import { SinglePackageComponent } from '../components/user/packages/single-packa
 import { BookingComponent } from '../components/user/booking/booking.component';
 import { BookedComponent } from '../components/user/booked/booked.component';
 import { SingleBookedComponent } from '../components/user/booked/single-booked/single-booked.component';
+import { WalletComponent } from '../components/user/wallet/wallet.component';
 
 export const userRouter: Routes = [
   {
@@ -64,6 +65,12 @@ export const userRouter: Routes = [
   {
     path: 'singlebooked',
     component: SingleBookedComponent,
+    canActivate: [authGuard],
+    data: { role: 'user' },
+  },
+  {
+    path: 'wallet',
+    component: WalletComponent,
     canActivate: [authGuard],
     data: { role: 'user' },
   },
