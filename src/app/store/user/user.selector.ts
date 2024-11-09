@@ -25,7 +25,7 @@ export const selectEmail = createSelector(
   selectUserState,
   (state: UserState) => state.user?.email
 );
-export const selectSucess = createSelector(
+export const selectSuccess = createSelector(
   selectUserState,
   (state: UserState) => state.success
 );
@@ -40,4 +40,20 @@ export const selectCoupons = createSelector(
 export const selectPrice = createSelector(
   selectUserState,
   (state: UserState) => state.price
+);
+export const selectAmount = createSelector(
+  selectUserState,
+  (state: UserState) => state.amount
+);
+export const selectCurrency = createSelector(
+  selectUserState,
+  (state: UserState) => state.currency
+);
+export const selectOrderId = createSelector(
+  selectUserState,
+  (state: UserState) => state.orderId
+);
+export const selectMessage = createSelector(
+  selectUserState,
+  (state: UserState) => state.message
 );

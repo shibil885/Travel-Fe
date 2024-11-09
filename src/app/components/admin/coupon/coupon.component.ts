@@ -24,6 +24,7 @@ import { ToastService } from '../../../shared/services/toaster.service';
 import { descriptionValidator } from '../../../validatores/description.validator';
 import { SingleCouponComponent } from '../../../shared/components/single-coupon/single-coupon.component';
 import { CouponFormComponent } from '../../../shared/components/coupon-form/coupon-form.component';
+import { PackagesComponent } from '../../user/packages/packages.component';
 
 @Component({
   selector: 'app-coupon',
@@ -43,6 +44,7 @@ import { CouponFormComponent } from '../../../shared/components/coupon-form/coup
     MatNativeDateModule,
     MatSlideToggleModule,
     MatButtonModule,
+    PackagesComponent,
   ],
   templateUrl: './coupon.component.html',
   styleUrl: './coupon.component.css',
@@ -69,10 +71,10 @@ export class CouponComponent {
   renderCouponList: boolean = true;
   renderCouponAddForm: boolean = false;
   renderCouponEditForm: boolean = false;
-  coupons!: any[];
-  totalCoupons!: number;
-  limit!: number;
-  currentPage!: number;
+  coupons!: ICoupon[];
+  totalCoupons: number = 0;
+  limit: number = 5;
+  currentPage: number = 1;
   couponForm!: FormGroup;
   isEditMode: boolean = false;
   isModalOpen = false;
@@ -94,12 +96,19 @@ export class CouponComponent {
     this.fetchAllCoupons();
   }
   fetchAllCoupons() {
-    this.couponService.getAllCoupons().subscribe((res) => {
-      console.log(res);
-      this.coupons = res.coupons;
-    });
+    this.couponService
+      .getAllCoupons(this.limit, this.currentPage)
+      .subscribe((res) => {
+        console.log(res);
+        this.currentPage = res.currentPage;
+        this.totalCoupons = res.totalItems;
+        this.coupons = res.coupons;
+      });
   }
-  onPageChange(page: number) {}
+  onPageChange(page: number) {
+    this.currentPage = page;
+    this.fetchAllCoupons();
+  }
 
   onRenderCouponList() {
     this.fetchAllCoupons();

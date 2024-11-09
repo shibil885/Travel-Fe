@@ -15,11 +15,11 @@ import Cookies from 'universal-cookie';
 })
 export class AuthService {
   private readonly api = 'http://localhost:3000';
-  private accessTokenSubject = new BehaviorSubject<string | null>(null);
-  private cookie = new Cookies();
+  private _accessTokenSubject = new BehaviorSubject<string | null>(null);
+  private _cookie = new Cookies();
 
-  constructor(private http: HttpClient) {
-    const token = this.cookie.get('accessToken');
+  constructor(private _http: HttpClient) {
+    const token = this._cookie.get('accessToken');
     if (token) {
       this.setAccessToken(token);
     }
@@ -35,7 +35,7 @@ export class AuthService {
       user: `${this.api}/auth/user`,
     };
     const loginUrl = endpoints[role];
-    return this.http
+    return this._http
       .post<{
         message: string;
         success: boolean;
@@ -59,7 +59,7 @@ export class AuthService {
 
   logout(role: string) {
     if (role === 'admin') {
-      return this.http
+      return this._http
         .patch(`${this.api}/admin/logout`, {}, { withCredentials: true })
         .pipe(
           tap(() => {
@@ -71,7 +71,7 @@ export class AuthService {
           })
         );
     } else if (role === 'agency') {
-      return this.http
+      return this._http
         .patch(`${this.api}/agency/logout`, {}, { withCredentials: true })
         .pipe(
           tap(() => {
@@ -83,7 +83,7 @@ export class AuthService {
           })
         );
     } else {
-      return this.http
+      return this._http
         .patch(`${this.api}/user/logout`, {}, { withCredentials: true })
         .pipe(
           tap(() => {
@@ -98,8 +98,8 @@ export class AuthService {
   }
 
   setAccessToken(token: string) {
-    this.accessTokenSubject.next(token);
-    this.cookie.set('accessToken', token, {
+    this._accessTokenSubject.next(token);
+    this._cookie.set('accessToken', token, {
       path: '/',
       secure: true,
       sameSite: 'strict',
@@ -107,16 +107,16 @@ export class AuthService {
   }
 
   getAccessToken(): string | null {
-    return this.accessTokenSubject.getValue();
+    return this._accessTokenSubject.getValue();
   }
 
   clearAccessToken(): void {
-    this.accessTokenSubject.next(null);
-    this.cookie.remove('accessToken', { path: '/' });
+    this._accessTokenSubject.next(null);
+    this._cookie.remove('accessToken', { path: '/' });
   }
 
   refreshToken(): Observable<string> {
-    return this.http
+    return this._http
       .post<{ accessToken: string }>(
         `${this.api}/auth/refresh`,
         {},
@@ -131,7 +131,7 @@ export class AuthService {
   }
 
   validateToken(): Observable<{ valid: boolean; role: string }> {
-    return this.http
+    return this._http
       .post<{ valid: boolean; role: string }>(
         `${this.api}/auth/validate-token`,
         {},

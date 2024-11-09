@@ -8,7 +8,7 @@
   overflow: hidden;
 }
 
-.half-rectangle {
+/* .half-rectangle {
   width: 45%;
   height: 100%;
   background: linear-gradient(135deg, #6e8efb, #a777e3);
@@ -16,7 +16,7 @@
   left: 0;
   z-index: 1;
   border-radius: 15px 0 0 15px;
-}
+} */
 
 .main-rectangle {
   width: 100%;

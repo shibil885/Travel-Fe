@@ -1,28 +1,31 @@
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import * as userActions from '../user/user.action';
-import { catchError, map, of, switchMap, tap } from 'rxjs';
+import { catchError, map, of, switchMap, take, tap } from 'rxjs';
 import { Router } from '@angular/router';
 import { UserService } from '../../shared/services/user.service';
 import { AuthService } from '../../auth/service/service.service';
 import { error } from 'console';
 import { CouponService } from '../../shared/services/coupon.service';
+import { BookingService } from '../../shared/services/booking.service';
 
 @Injectable()
 export class UserEffect {
   constructor(
-    private actions$: Actions,
-    private userService: UserService,
-    private authService: AuthService,
-    private router: Router,
-    private couponService: CouponService
+    private _actions$: Actions,
+    private _userService: UserService,
+    private _authService: AuthService,
+    private _router: Router,
+    private _couponService: CouponService,
+    private _bookingService: BookingService,
+    private _ngZone: NgZone
   ) {}
 
   userLogin$ = createEffect(() =>
-    this.actions$.pipe(
+    this._actions$.pipe(
       ofType(userActions.userLogin),
       switchMap((action) =>
-        this.authService.login(action, 'user').pipe(
+        this._authService.login(action, 'user').pipe(
           map((response) => {
             return userActions.userLoginSuccess({
               user: response['user'],
@@ -46,21 +49,21 @@ export class UserEffect {
 
   userLoginSuccess$ = createEffect(
     () =>
-      this.actions$.pipe(
+      this._actions$.pipe(
         ofType(userActions.userLoginSuccess),
         tap(() => {
           console.log('entered to home');
-          this.router.navigate(['/home']);
+          this._router.navigate(['/home']);
         })
       ),
     { dispatch: false }
   );
 
   userSignup$ = createEffect(() =>
-    this.actions$.pipe(
+    this._actions$.pipe(
       ofType(userActions.userSignup),
       switchMap((data) =>
-        this.userService.registerUser(data).pipe(
+        this._userService.registerUser(data).pipe(
           map((response) => {
             return userActions.otpRenderFromSignup({
               user: response.user,
@@ -76,10 +79,10 @@ export class UserEffect {
   );
 
   submitOtp$ = createEffect(() =>
-    this.actions$.pipe(
+    this._actions$.pipe(
       ofType(userActions.submitOtp),
       switchMap((data) =>
-        this.userService
+        this._userService
           .verifyOtpUser({ otp: data.otp, email: data.email })
           .pipe(
             map((response) => {
@@ -96,19 +99,19 @@ export class UserEffect {
   );
   userSignupSuccess$ = createEffect(
     () =>
-      this.actions$.pipe(
+      this._actions$.pipe(
         ofType(userActions.userSignupSuccess),
         tap(() => {
-          this.router.navigate(['/home']);
+          this._router.navigate(['/home']);
         })
       ),
     { dispatch: false }
   );
   resendOtp$ = createEffect(() =>
-    this.actions$.pipe(
+    this._actions$.pipe(
       ofType(userActions.resendOtp),
       switchMap((data) =>
-        this.userService.resendOtp({ email: data.email }).pipe(
+        this._userService.resendOtp({ email: data.email }).pipe(
           map((res) => {
             return userActions.resendOtpSuccess({ user: res.user });
           }),
@@ -123,12 +126,12 @@ export class UserEffect {
   );
   logout$ = createEffect(
     () =>
-      this.actions$.pipe(
+      this._actions$.pipe(
         ofType(userActions.logout),
         switchMap(() =>
-          this.authService.logout('user').pipe(
+          this._authService.logout('user').pipe(
             tap(() => {
-              this.router.navigate(['/login']);
+              this._router.navigate(['/login']);
             }),
             catchError((error) => {
               console.error('Logout error: ', error);
@@ -141,10 +144,10 @@ export class UserEffect {
   );
 
   showSinglePaackage$ = createEffect(() =>
-    this.actions$.pipe(
+    this._actions$.pipe(
       ofType(userActions.showSinglePackage),
       switchMap((data) =>
-        this.userService.getSinglePackage(data.id).pipe(
+        this._userService.getSinglePackage(data.id).pipe(
           map((response) =>
             userActions.showSinglePackageSuccess({
               success: response.success,
@@ -160,19 +163,19 @@ export class UserEffect {
   );
   showSinglePackageSuccess$ = createEffect(
     () =>
-      this.actions$.pipe(
+      this._actions$.pipe(
         ofType(userActions.showSinglePackageSuccess),
         tap(() => {
-          this.router.navigate(['/package']);
+          this._router.navigate(['/package']);
         })
       ),
     { dispatch: false }
   );
   bookingPage$ = createEffect(() =>
-    this.actions$.pipe(
+    this._actions$.pipe(
       ofType(userActions.bookingPage),
       switchMap((data) =>
-        this.userService.getSinglePackage(data.id).pipe(
+        this._userService.getSinglePackage(data.id).pipe(
           map((response) =>
             userActions.bookingPageSuccess({
               success: response.success,
@@ -186,19 +189,19 @@ export class UserEffect {
   );
   bookingPageSuccess$ = createEffect(
     () =>
-      this.actions$.pipe(
+      this._actions$.pipe(
         ofType(userActions.bookingPageSuccess),
         tap(() => {
-          this.router.navigate(['/booking']);
+          this._router.navigate(['/booking']);
         })
       ),
     { dispatch: false }
   );
   getAllCoupons$ = createEffect(() =>
-    this.actions$.pipe(
+    this._actions$.pipe(
       ofType(userActions.getAllCoupon),
       switchMap((data) =>
-        this.couponService.getCouponsToUser(data.packageId).pipe(
+        this._couponService.getCouponsToUser(data.packageId).pipe(
           map((response) =>
             userActions.getAllCouponSuccess({
               success: response.success,
@@ -212,10 +215,73 @@ export class UserEffect {
   );
   getAllCouponSuccess$ = createEffect(
     () =>
-      this.actions$.pipe(
+      this._actions$.pipe(
         ofType(userActions.getAllCouponSuccess),
         tap(() => {
-          this.router.navigate(['/booking']);
+          this._router.navigate(['/booking']);
+        })
+      ),
+    { dispatch: false }
+  );
+ 
+  initiatePayment$ = createEffect(() =>
+    this._actions$.pipe(
+      ofType(userActions.initiatePayment),
+      switchMap((data) =>
+        this._bookingService.createPayment(data.packageId, data.couponId).pipe(
+          map((response) =>
+            userActions.initiatePaymentSuccess({
+              success: response.success,
+              amount: response.amount,
+              currency: response.currency,
+              orderId: response.id,
+            })
+          )
+        )
+      ),
+      catchError((error) =>
+        of(userActions.initiatePaymentFailure({ error: error.message }))
+      )
+    )
+  );
+
+  verifyPayment$ = createEffect(() =>
+    this._actions$.pipe(
+      ofType(userActions.verifyPayment),
+      switchMap((data) =>
+        this._bookingService
+          .verifyPayment(
+            data.razorpay_order_id,
+            data.razorpay_payment_id,
+            data.razorpay_signature,
+            data.packageId,
+            data.agencyId,
+            data.couponId,
+            data.bookingData
+          )
+          .pipe(
+            map((res) => {
+              console.log('res from ---> effect', res);
+              return userActions.verifyPaymentSuccess({
+                message: res.message,
+              });
+            })
+          )
+      ),
+      catchError((error) =>
+        of(userActions.verifyPaymentFailure({ error: error.message }))
+      )
+    )
+  );
+
+  verifyPaymentSuccess$ = createEffect(
+    () =>
+      this._actions$.pipe(
+        ofType(userActions.verifyPaymentSuccess),
+        tap(() => {
+          console.log('payment success listern from effect');
+            console.log('log from ng zone');
+            this._router.navigate(['/packages']);
         })
       ),
     { dispatch: false }

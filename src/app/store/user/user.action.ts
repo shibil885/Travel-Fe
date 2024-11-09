@@ -2,6 +2,7 @@ import { createAction, props } from '@ngrx/store';
 import { IUser } from '../../models/user.model';
 import { IPackage } from '../../interfaces/package.interface';
 import { ICoupon } from '../../interfaces/coupon.interface';
+import { FormGroup } from '@angular/forms';
 
 export const userLogin = createAction(
   '[Login Component] userLogin',
@@ -11,6 +12,7 @@ export const userLoginSuccess = createAction(
   '[Login Component] userLoginSuccess',
   props<{ user: IUser }>()
 );
+
 export const userLoginError = createAction(
   '[Login Component] userLoginError',
   props<{ error: string }>()
@@ -27,7 +29,7 @@ export const otpRenderFromSignup = createAction(
 
 export const userSignup = createAction(
   '[Signup Component] userSignup',
-  props<{ userdata: any }>()
+  props<{ userdata: FormGroup }>()
 );
 
 export const userSignupSuccess = createAction(
@@ -65,6 +67,7 @@ export const resendOtpError = createAction(
 export const logout = createAction('[Logout] User');
 export const logoutSuccess = createAction('[Logout Success] User');
 
+
 export const showSinglePackage = createAction(
   '[showPackage] showSinglePackageComponent',
   props<{ id: string }>()
@@ -97,7 +100,7 @@ export const getAllCoupon = createAction(
 );
 export const getAllCouponSuccess = createAction(
   '[getAllCoupons] BookingCoumponentSuccess',
-  props<{ success: boolean; coupons: ICoupon[]  }>()
+  props<{ success: boolean; coupons: ICoupon[] }>()
 );
 export const getAllCouponError = createAction(
   '[getAllCoupons] BookingCoumponentError',
@@ -106,9 +109,49 @@ export const getAllCouponError = createAction(
 
 export const applyCoupon = createAction(
   '[apply coupon BookingCoumponent]',
-  props<{ id: string, packagePrice: number }>()
+  props<{ id: string; packagePrice: number }>()
 );
-export const cancelCoupon = createAction(
-  '[cancel coupon BookingCoumponent]',
+export const cancelCoupon = createAction('[cancel coupon BookingCoumponent]');
+
+export const initiatePayment = createAction(
+  '[Payment] Initiate Payment',
+  props<{ packageId: string | undefined; couponId: string }>()
 );
 
+export const initiatePaymentSuccess = createAction(
+  '[Payment] Initiate Payment Success',
+  props<{
+    success: boolean;
+    amount: number;
+    currency: string;
+    orderId: string;
+  }>()
+);
+
+export const initiatePaymentFailure = createAction(
+  '[Payment] Initiate Payment Failure',
+  props<{ error: string }>()
+);
+
+export const verifyPayment = createAction(
+  '[Payment] Verify Payment',
+  props<{
+    razorpay_order_id: string;
+    razorpay_payment_id: string;
+    razorpay_signature: string;
+    packageId: string | undefined;
+    agencyId: string;
+    couponId: string;
+    bookingData: FormGroup;
+  }>()
+);
+
+export const verifyPaymentSuccess = createAction(
+  '[Payment] Verify Payment Success',
+  props<{  message: string }>()
+);
+
+export const verifyPaymentFailure = createAction(
+  '[Payment] Verify Payment Failure',
+  props<{ error: string }>()
+);

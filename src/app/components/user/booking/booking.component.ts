@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, OnDestroy } from '@angular/core';
+import { Component, ElementRef, NgZone, OnDestroy } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -14,9 +14,15 @@ import { HeaderComponent } from '../header/header.component';
 import { IPackage } from '../../../interfaces/package.interface';
 import { Store } from '@ngrx/store';
 import {
+  selectAmount,
   selectCoupons,
+  selectCurrency,
+  selectError,
+  selectMessage,
+  selectOrderId,
   selectPackage,
   selectPrice,
+  selectSuccess,
 } from '../../../store/user/user.selector';
 import { ToastService } from '../../../shared/services/toaster.service';
 import { Router } from '@angular/router';
@@ -24,12 +30,13 @@ import { TruncatePipe } from '../../../shared/pipes/truncate.pipe';
 import {
   applyCoupon,
   getAllCoupon,
+  initiatePayment,
   showSinglePackage,
+  verifyPayment,
 } from '../../../store/user/user.action';
 import { BookingService } from '../../../shared/services/booking.service';
 import { ICoupon } from '../../../interfaces/coupon.interface';
-import { CouponService } from '../../../shared/services/coupon.service';
-import { Observable, Subject, take, takeUntil } from 'rxjs';
+import { last, Observable, Subject, take, takeUntil } from 'rxjs';
 import { dateValidator } from '../../../validatores/date.validator';
 import {
   endWithSpace,
@@ -57,32 +64,41 @@ import { UserService } from '../../../shared/services/user.service';
   templateUrl: './booking.component.html',
   styleUrls: ['./booking.component.css'],
 })
-export class BookingComponent implements OnDestroy {
-  showPolicy = false
+export class BookingComponent {
+  showPolicy = false;
   bookingForm!: FormGroup;
   packageDetails: IPackage = {} as IPackage;
   couponMessage: string = '';
   couponValid: boolean = false;
-  coupons$: Observable<ICoupon[] | null> = this._store.select(selectCoupons);
   showAllCoupons = false;
   price$: Observable<number> = this._store.select(selectPrice);
+  coupons$: Observable<ICoupon[] | null> = this._store.select(selectCoupons);
+  amount$: Observable<number> = this._store.select(selectAmount);
+  currency$: Observable<string> = this._store.select(selectCurrency);
+  orderId$: Observable<string> = this._store.select(selectOrderId);
+  success$: Observable<boolean> = this._store.select(selectSuccess);
+  message$: Observable<string> = this._store.select(selectMessage);
+  error$: Observable<string> = this._store.select(selectError);
+  amount!: number;
+  currency!: string;
+  orderId!: string;
   discoundedPrice: number = 0;
   discount: number = 0;
   selectedCouponId: string = '';
   invalidForm: boolean = false;
-  private destroy$ = new Subject<void>();
 
   constructor(
     private _fb: FormBuilder,
     private _store: Store,
     private _toastService: ToastService,
     private _router: Router,
-    private _bookingService: BookingService,
     private _localStorage: LocalStorageService,
-    private _userService: UserService
+    private _userService: UserService,
+    private _ngZone: NgZone
   ) {}
 
   ngOnInit() {
+    console.log('ng oninit worked');
     this.initializePackageDetails();
     this.initializeForm();
     this.fetchCoupons();
@@ -203,7 +219,7 @@ export class BookingComponent implements OnDestroy {
     if (id && price) {
       this._store.dispatch(applyCoupon({ id, packagePrice: Number(price) }));
 
-      this.price$.pipe(takeUntil(this.destroy$)).subscribe((result) => {
+      this.price$.subscribe((result) => {
         this.discoundedPrice = result;
         this.discount = Number(this.packageDetails.price) - result;
         this.selectedCouponId = id;
@@ -220,60 +236,74 @@ export class BookingComponent implements OnDestroy {
     this.selectedCouponId = '';
   }
 
-  onSubmit() {
+  async onSubmit() {
+    console.log('form submitted');
     if (this.bookingForm.invalid) {
       this.invalidForm = true;
       return;
     }
 
-    this._bookingService
-      .createPayment(this.packageDetails._id, this.selectedCouponId)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((res: any) => {
+    this._store.dispatch(
+      initiatePayment({
+        packageId: this.packageDetails._id,
+        couponId: this.selectedCouponId,
+      })
+    );
+
+    this.success$.subscribe((success) => {
+      if (success) {
+        this.amount$.subscribe((amount) => (this.amount = amount));
+        this.currency$.subscribe((currency) => (this.currency = currency));
+        this.orderId$.subscribe((orderId) => (this.orderId = orderId));
         const options = {
           key_id: 'rzp_test_ihsNz6lracNIu3',
-          amount: res.amount,
-          currency: res.currency,
+          amount: this.amount,
+          currency: this.currency,
           name: 'Travel',
           description: 'Test Transaction',
-          order_id: res.id,
-          handler: (response: any) => this.handlePayment(response),
+          order_id: this.orderId,
+          handler: (response: {
+            razorpay_order_id: string;
+            razorpay_payment_id: string;
+            razorpay_signature: string;
+          }) => this.handlePayment(response),
           prefill: {
             name: 'testUser',
             email: 'test@gmail.com',
             contact: '1234567890',
           },
           theme: {
-            color: '#3399cc',
+            color: '#6196cc',
           },
         };
-
         const razorpay = new Razorpay(options);
         razorpay.open();
-      });
+      }
+      return;
+    });
   }
 
-  private handlePayment(response: any) {
-    this._bookingService
-      .verifyPayment(
-        response.razorpay_order_id,
-        response.razorpay_payment_id,
-        response.razorpay_signature,
-        this.packageDetails._id,
-        this.packageDetails.agencyId._id,
-        this.selectedCouponId,
-        this.bookingForm.value
-      )
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => {
-        if (res) {
-          this._toastService.showToast(res.message, 'success');
-          this._router.navigate(['/packages']);
-        }
+  private handlePayment(response: {
+    razorpay_order_id: string;
+    razorpay_payment_id: string;
+    razorpay_signature: string;
+  }) {
+    this._ngZone.run(() => {
+      this._store.dispatch(
+        verifyPayment({
+          razorpay_order_id: response.razorpay_order_id,
+          razorpay_payment_id: response.razorpay_payment_id,
+          razorpay_signature: response.razorpay_signature,
+          agencyId: this.packageDetails.agencyId._id,
+          packageId: this.packageDetails._id,
+          couponId: this.selectedCouponId,
+          bookingData: this.bookingForm.value,
+        })
+      );
+
+      this.message$.pipe(take(1)).subscribe((message) => {
+        this._toastService.showToast('Successfully booked', 'success');
       });
-  }
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
+    });
   }
 }

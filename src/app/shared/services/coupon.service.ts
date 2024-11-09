@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ICoupon } from '../../interfaces/coupon.interface';
 import { takeUntil } from 'rxjs';
@@ -39,12 +39,18 @@ export class CouponService {
     );
   }
 
-  getAllCoupons() {
+  getAllCoupons(limit: number, currentPage: number) {
+    const params = new HttpParams()
+      .set('limit', limit)
+      .set('currentPage', currentPage);
     return this.http.get<{
       success: boolean;
       message: string;
+      currentPage: number;
+      totalItems: number;
       coupons: ICoupon[];
     }>(`${this.api}/getAllCoupons`, {
+      params,
       withCredentials: true,
     });
   }
@@ -54,6 +60,6 @@ export class CouponService {
       {
         withCredentials: true,
       }
-    );  
+    );
   }
 }

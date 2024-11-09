@@ -2,6 +2,8 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { IBooking } from '../../interfaces/booking.interface';
 import { TravelConfirmationStatus } from '../../enum/travelConfirmation.enum';
+import { FormGroup } from '@angular/forms';
+import { tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -11,11 +13,22 @@ export class BookingService {
   constructor(private http: HttpClient) {}
 
   createPayment(packageId: string | undefined, couponId: string) {
-    return this.http.post(
-      `${this.api}/payment/create-order/`,
-      { packageId, couponId },
-      { withCredentials: true }
-    );
+    return this.http
+      .post<{
+        success: boolean;
+        amount: number;
+        currency: string;
+        id: string;
+      }>(
+        `${this.api}/payment/create-order/`,
+        { packageId, couponId },
+        { withCredentials: true }
+      )
+      .pipe(
+        tap((res) => {
+          console.log('res log from tap', res);
+        })
+      );
   }
 
   verifyPayment(
@@ -25,21 +38,27 @@ export class BookingService {
     packageId: string | undefined,
     agencyId: string,
     couponId: string,
-    bookingData: any
+    bookingData: FormGroup
   ) {
-    return this.http.post<{ success: string; message: string }>(
-      `${this.api}/payment/verify`,
-      {
-        razorpay_order_id,
-        razorpay_payment_id,
-        razorpay_signature,
-        packageId,
-        agencyId,
-        couponId,
-        bookingData,
-      },
-      { withCredentials: true }
-    );
+    return this.http
+      .post<{ success: boolean; message: string }>(
+        `${this.api}/payment/verify`,
+        {
+          razorpay_order_id,
+          razorpay_payment_id,
+          razorpay_signature,
+          packageId,
+          agencyId,
+          couponId,
+          bookingData,
+        },
+        { withCredentials: true }
+      )
+      .pipe(
+        tap((res) => {
+          console.log('res verify log ----->', res);
+        })
+      );
   }
   getAllBookedPackages() {
     return this.http.get<{ success: boolean; booked: IBooking[] }>(

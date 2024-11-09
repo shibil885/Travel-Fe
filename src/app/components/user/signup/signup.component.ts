@@ -15,7 +15,6 @@ import {
   upperCase,
 } from '../../../validatores/password.validator';
 import { invalidPhone } from '../../../validatores/phone.validator';
-import { notValidAddress } from '../../../validatores/address.validator';
 import { UserService } from '../../../shared/services/user.service';
 import { OtpComponent } from '../otp/otp.component';
 import { Existing } from '../../../validatores/existing.validator';
@@ -82,6 +81,5 @@ export class SignupComponent {
     this.renderSignup = false;
     const formValue = this.reactiveForm.value;
     this.store.dispatch(userActions.userSignup(formValue));
-    console.log('working');
   }
 }

@@ -13,6 +13,10 @@ export interface UserState {
   loading: boolean;
   renderOtp: boolean;
   price: number;
+  amount: number;
+  currency: string;
+  orderId: string;
+  message: string;
 }
 
 export const initialUserState: UserState = {
@@ -24,6 +28,10 @@ export const initialUserState: UserState = {
   success: false,
   package: null,
   price: 0,
+  amount: 0,
+  currency: '',
+  orderId: '',
+  message: '',
 };
 
 export const UserReducer = createReducer(
@@ -160,13 +168,57 @@ export const UserReducer = createReducer(
     return {
       ...state,
       price: price,
-      coupons: []
+      coupons: [],
     };
   }),
   on(userActions.cancelCoupon, (state) => {
     return {
       ...state,
       price: 0,
+    };
+  }),
+ 
+  on(userActions.initiatePayment, (state) => {
+    return {
+      ...state,
+      success: false,
+    };
+  }),
+  on(
+    userActions.initiatePaymentSuccess,
+    (state, { success, amount, currency, orderId }) => {
+      return {
+        ...state,
+        success,
+        amount,
+        currency,
+        orderId,
+        message: ''
+      };
+    }
+  ),
+  on(userActions.initiatePaymentFailure, (state, { error }) => {
+    return {
+      ...state,
+      error,
+    };
+  }),
+  on(userActions.verifyPayment, (state) => {
+    return {
+      ...state,
+      success: false,
+    };
+  }),
+  on(userActions.verifyPaymentSuccess, (state, { message }) => {
+    return {
+      ...state,
+      message,
+    };
+  }),
+  on(userActions.verifyPaymentFailure, (state, { error }) => {
+    return {
+      ...state,
+      error,
     };
   })
 );

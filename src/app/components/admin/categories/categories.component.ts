@@ -49,8 +49,8 @@ export class CategoriesComponent {
   });
 
   constructor(
-    private categoryService: CategoryService,
-    private tosterService: ToastService
+    private _categoryService: CategoryService,
+    private _tosterService: ToastService
   ) {}
 
   ngOnInit() {
@@ -65,7 +65,7 @@ export class CategoriesComponent {
   }
 
   getCategories() {
-    this.categoryService
+    this._categoryService
       .getCategories(this.currentPage, this.limit)
       .subscribe((data) => {
         this.categories = data.categories;
@@ -77,14 +77,14 @@ export class CategoriesComponent {
   onSubmit() {
     if (this.categoryForm.valid) {
       if (this.editMode) {
-        this.categoryService
+        this._categoryService
           .updateCategory(this.currentCategoryId, this.categoryForm.value)
           .subscribe(() => {
             this.getCategories();
             this.toggleAddForm();
           });
       } else {
-        this.categoryService
+        this._categoryService
           .addCategory(this.categoryForm.value)
           .subscribe(() => {
             this.getCategories();
@@ -111,15 +111,15 @@ export class CategoriesComponent {
     this.getCategories();
   }
   changeStatus(id: string, status: boolean) {
-    this.categoryService.changeStatus(id, !status).subscribe((res) => {
+    this._categoryService.changeStatus(id, !status).subscribe((res) => {
       if (res.success) {
         console.log(res);
         if (res.warning) {
-          this.tosterService.showToast(res.message, 'warning');
+          this._tosterService.showToast(res.message, 'warning');
           this.getCategories();
           return;
         }
-        this.tosterService.showToast(res.message, 'success');
+        this._tosterService.showToast(res.message, 'success');
         this.getCategories();
       }
     });

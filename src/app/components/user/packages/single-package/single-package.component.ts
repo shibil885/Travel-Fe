@@ -3,7 +3,7 @@ import { IPackage } from '../../../../interfaces/package.interface';
 import { Store } from '@ngrx/store';
 import {
   selectPackage,
-  selectSucess,
+  selectSuccess,
 } from '../../../../store/user/user.selector';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -44,7 +44,7 @@ export class SinglePackageComponent {
 
   singlePackage!: IPackage;
 
-  renderPage$: Observable<boolean> = this.store.select(selectSucess);
+  renderPage$: Observable<boolean> = this.store.select(selectSuccess);
   constructor(private store: Store, private router: Router) {}
   ngOnInit(): void {
     window.scrollTo(0, 0);
