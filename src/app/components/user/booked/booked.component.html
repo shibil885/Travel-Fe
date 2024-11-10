@@ -4,19 +4,19 @@
     <app-search></app-search>
     <div class="booking-card" *ngFor="let booking of bookings">
         <div class="booking-image">
-            <img [src]="booking.package_id.images[0]" [alt]="booking.package_id.finalDestination" class="rounded-lg">
+            <img [src]="booking.package.images[0]" [alt]="booking.package.finalDestination" class="rounded-lg">
         </div>
         <div class="booking-content">
             <div class="booking-header">
-                <h2>{{booking.package_id.name}}, {{booking.package_id.country}}</h2>
+                <h2>{{booking.package.name}}, {{booking.package.country}}</h2>
                 <div class="booking-info">
                     <div class="info-row">
                         <span class="label">Agency :</span>
-                        <span class="value">{{booking.package_id.agencyId.name}}</span>
+                        <span class="value">{{booking.agency.name}}</span>
                     </div>
                     <div class="info-row">
                         <span class="label">Package :</span>
-                        <span class="value">{{booking.package_id.category.name}}</span>
+                        <span class="value">{{booking.category.name}}</span>
                     </div>
                 </div>
                 <div class="booking-meta">
@@ -26,11 +26,11 @@
                     </div>
                     <div class="meta-item">
                         <i class="fas fa-calendar"></i>
-                        <span>{{booking.package_id.days}} Day(s)</span>
+                        <span>{{booking.package.days}} Day(s)</span>
                     </div>
                     <div class="meta-item">
                         <span class="date-label">Date :</span>
-                        <span>{{booking.start_date}}</span>
+                        <span>{{booking.start_date |date: 'mediumDate'}}</span>
                     </div>
                 </div>
             </div>
@@ -40,6 +40,9 @@
             </div>
         </div>
     </div>
+    <hr class="mb-3">   
+    <app-pagination [currentPage]="currenPage"  [itemsPerPage]="limit" [totalItems]="totalPackages"
+        [typeOfUser]="'user'" (pageChange)="onPageChange($event)"></app-pagination>
     <div class="booking-content">
         <div>
             <hr class="mb-3">

@@ -40,33 +40,30 @@ export class BookingService {
     couponId: string,
     bookingData: FormGroup
   ) {
-    return this.http
-      .post<{ success: boolean; message: string }>(
-        `${this.api}/payment/verify`,
-        {
-          razorpay_order_id,
-          razorpay_payment_id,
-          razorpay_signature,
-          packageId,
-          agencyId,
-          couponId,
-          bookingData,
-        },
-        { withCredentials: true }
-      )
-      .pipe(
-        tap((res) => {
-          console.log('res verify log ----->', res);
-        })
-      );
-  }
-  getAllBookedPackages() {
-    return this.http.get<{ success: boolean; booked: IBooking[] }>(
-      `${this.api}/booking/getAllBooked`,
+    return this.http.post<{ success: boolean; message: string }>(
+      `${this.api}/payment/verify`,
       {
-        withCredentials: true,
-      }
+        razorpay_order_id,
+        razorpay_payment_id,
+        razorpay_signature,
+        packageId,
+        agencyId,
+        couponId,
+        bookingData,
+      },
+      { withCredentials: true }
     );
+  }
+  getAllBookedPackages(page: number, limit: number) {
+    console.log('page', page);
+    console.log('page', limit);
+    const params = new HttpParams().set('page', page).set('limit', limit);
+    return this.http.get<{
+      success: boolean;
+      booked: IBooking[];
+      totalItems: number;
+      currentPage: number;
+    }>(`${this.api}/booking/getAllBooked`, { params, withCredentials: true });
   }
 
   getSingleBookedPackage(id: string) {
@@ -80,7 +77,7 @@ export class BookingService {
     const params = new HttpParams().set('page', page).set('limit', limit);
     return this.http.get<{
       success: boolean;
-      booking: IBooking[];
+      booked: IBooking[];
       totalItems: number;
       currentPage: number;
     }>(`${this.api}/booking/getAllBookingsForAgency`, {

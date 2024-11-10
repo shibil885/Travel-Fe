@@ -1,6 +1,8 @@
 import { TravelConfirmationStatus } from '../enum/travelConfirmation.enum';
 import { TravelStatus } from '../enum/travelStatus.enum';
+import { IAgency } from '../models/agency.model';
 import { IUser } from '../models/user.model';
+import { ICategory } from './category.interface';
 import { ICoupon } from './coupon.interface';
 import { IPackage } from './package.interface';
 
@@ -28,4 +30,8 @@ export interface IBooking {
   };
   createdAt?: Date;
   updatedAt?: Date;
+  package: IPackage;
+  agency: IAgency;
+  user: IUser;
+  category: ICategory
 }

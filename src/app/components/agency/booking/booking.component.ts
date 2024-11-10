@@ -42,7 +42,7 @@ export class BookingComponent {
     this.bookingService
       .getAllBookedPackagesForAgency(this.currentPage, this.limit)
       .subscribe((response) => {
-        this.bookings = response.booking;
+        this.bookings = response.booked;
         this.totalItems = response.totalItems;
         this.currentPage = response.currentPage;
       });
