@@ -1,14 +1,18 @@
-.wallet-container {
+/* .wallet-container {
   font-family: "Roboto", sans-serif;
   max-width: 1000px;
-  height: 500px;
+  height: auto;
   margin: 20px auto;
+  padding: 15px;
   display: flex;
   position: relative;
   overflow: hidden;
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  background-color: #f5f5f7;
 }
 
-/* .half-rectangle {
+.half-rectangle {
   width: 45%;
   height: 100%;
   background: linear-gradient(135deg, #6e8efb, #a777e3);
@@ -16,41 +20,36 @@
   left: 0;
   z-index: 1;
   border-radius: 15px 0 0 15px;
-} */
+  box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.2);
+}
 
 .main-rectangle {
-  width: 100%;
-  height: 100%;
-  background-color: white;
-  border-radius: 15px;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
   display: flex;
-  z-index: 2;
-  overflow: hidden;
+  flex-grow: 1;
   position: relative;
+  z-index: 2;
+  padding: 20px;
 }
 
 .balance-section {
-  width: 33%;
-  padding: 20px;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(8px);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  width: 30%;
+  padding: 25px;
+  background: linear-gradient(135deg, #a777e3, #6e8efb);
+  border-radius: 15px;
   color: white;
-  z-index: 3; 
-  position: relative;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  margin-right: 20px;
 }
 
 .balance-section h2 {
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   font-weight: 500;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 }
 
 .balance {
-  font-size: 2.2rem;
+  font-size: 2.5rem;
   font-weight: 700;
 }
 
@@ -58,14 +57,15 @@
   width: 67%;
   padding: 20px;
   background-color: white;
-  z-index: 2;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .history-section h2 {
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   font-weight: 500;
   color: #333;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
 }
 
 .transaction-list {
@@ -76,8 +76,8 @@
 .transaction {
   display: flex;
   align-items: center;
-  padding: 12px 0;
-  border-bottom: 1px solid #f0f0f0;
+  padding: 15px 0;
+  border-bottom: 1px solid #e0e0e0;
 }
 
 .transaction:last-child {
@@ -85,13 +85,14 @@
 }
 
 .transaction-icon {
-  width: 35px;
-  height: 35px;
+  width: 45px;
+  height: 45px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-right: 12px;
+  margin-right: 15px;
+  font-size: 1.2rem;
 }
 
 .transaction-icon.income {
@@ -110,20 +111,20 @@
 
 .transaction-description {
   margin: 0;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   font-weight: 500;
   color: #333;
 }
 
 .transaction-date {
   margin: 4px 0 0;
-  font-size: 0.75rem;
-  color: #888;
+  font-size: 0.8rem;
+  color: #777;
 }
 
 .transaction-amount {
-  font-size: 0.9rem;
-  font-weight: 500;
+  font-size: 1rem;
+  font-weight: 600;
 }
 
 .transaction-amount.income {
@@ -134,12 +135,10 @@
   color: #f44336;
 }
 
-
 @media (max-width: 768px) {
   .wallet-container {
-    height: auto;
     flex-direction: column;
-    margin: 20px;
+    padding: 10px;
   }
 
   .half-rectangle {
@@ -148,55 +147,172 @@
     border-radius: 15px 15px 0 0;
   }
 
-  .main-rectangle {
-    flex-direction: column;
-    height: auto;
-  }
-
   .balance-section,
   .history-section {
     width: 100%;
-    padding: 20px;
+    padding: 15px;
+    margin-bottom: 15px;
   }
 
   .balance-section {
     background: linear-gradient(135deg, #6e8efb, #a777e3);
     border-radius: 15px 15px 0 0;
   }
+} */
+/* Wallet Container */
+.wallet-container {
+  font-family: "Roboto", sans-serif;
+  max-width: 1000px;
+  margin: 20px auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Top Balance Section */
+.half-rectangle {
+  width: 100%;
+  height: 180px;
+  background: linear-gradient(135deg, #6e8efb, #a777e3);
+  border-radius: 15px 15px 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.5rem;
+}
+
+.balance {
+  font-size: 2.2rem;
+  font-weight: bold;
+}
+
+/* Main Rectangle for Transactions */
+.main-rectangle {
+  width: 100%;
+  padding: 20px;
+  background: white;
+  border-radius: 0 0 15px 15px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* History Section */
+.history-section {
+  width: 100%;
+  padding: 20px;
+  margin-top: -20px;
+  background-color: white;
+  border-radius: 15px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.transaction-list {
+  max-height: 350px;
+  overflow-y: auto;
+  padding: 10px;
+}
+
+/* Individual Transaction */
+.transaction {
+  display: flex;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.transaction:last-child {
+  border-bottom: none;
+}
+
+.transaction-icon {
+  width: 35px;
+  height: 35px;
+  background-color: #f4f4f8;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 12px;
+  font-size: 1.2rem;
+}
+
+.transaction-details {
+  flex-grow: 1;
+}
+
+.transaction-description {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.transaction-date {
+  font-size: 0.8rem;
+  color: #888;
+}
+
+.transaction-amount {
+  font-size: 0.95rem;
+  font-weight: bold;
+  color: #4CAF50; /* For positive amount */
+}
+
+.transaction-amount.negative {
+  color: #F44336; /* For negative amount */
+}
+
+/* Responsiveness */
+@media (max-width: 768px) {
+  .wallet-container {
+    width: 90%;
+    padding: 10px;
+  }
+
+  .half-rectangle {
+    height: 160px;
+    font-size: 1.3rem;
+  }
+
+  .balance {
+    font-size: 1.8rem;
+  }
+
+  .history-section {
+    padding: 15px;
+  }
 
   .transaction-list {
-    max-height: none;
+    max-height: 300px;
   }
 }
 
 @media (max-width: 480px) {
   .wallet-container {
-    margin: 10px;
-  }
-
-  .balance-section,
-  .history-section {
-    padding: 15px;
+    width: 100%;
+    padding: 10px;
   }
 
   .balance {
-    font-size: 2rem;
+    font-size: 1.6rem;
   }
 
   .transaction-icon {
     width: 30px;
     height: 30px;
+    font-size: 1rem;
   }
 
   .transaction-description {
-    font-size: 0.8rem;
+    font-size: 0.85rem;
   }
 
   .transaction-date {
-    font-size: 0.7rem;
+    font-size: 0.75rem;
   }
 
   .transaction-amount {
-    font-size: 0.8rem;
+    font-size: 0.85rem;
   }
 }

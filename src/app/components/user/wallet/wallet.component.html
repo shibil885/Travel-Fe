@@ -1,4 +1,4 @@
-<app-header></app-header>
+<!-- <app-header></app-header>
 <app-side-bar></app-side-bar>
 <div class="wallet-container">
     <div class="half-rectangle"></div>
@@ -24,6 +24,35 @@
                 </div>
             </div>
         </div>
-        <p *ngIf="wallet?.history?.length == 0" class="text-center text-sm text-slate-700">No transaction :)</p>
+        <p *ngIf="wallet?.history?.length == 0" class="text-center text-sm text-slate-700">No transactions yet :)</p>
     </div>
+</div> -->
+
+<app-header></app-header>
+<app-side-bar></app-side-bar>
+
+<div class="wallet-container">
+    <div class="half-rectangle">
+        <p>Your Balance: <span class="balance">{{ wallet?.balance | currency:'INR' }}</span></p>
+    </div>
+
+    <div class="main-rectangle history-section">
+        <h2>Transaction History</h2>
+        <div class="transaction-list">
+            <div class="transaction" *ngFor="let transaction of wallet?.history">
+                <div class="transaction-icon" [ngClass]="transaction.type.toLowerCase()">
+                    <i class="fas" [ngClass]="transaction.type === 'credit' ? 'fa-arrow-up' : 'fa-arrow-down'"></i>
+                </div>
+                <div class="transaction-details">
+                    <p class="transaction-description">{{ transaction.description }}</p>
+                    <p class="transaction-date">{{ transaction.createdAt | date:'MMM d, y, h:mm a' }}</p>
+                </div>
+                <p class="transaction-amount" [ngClass]="transaction.type === 'debit' ? 'negative' : ''">
+                    {{ transaction.type === 'credit' ? '+' : '-' }}{{ transaction.amount | currency }}
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <p *ngIf="wallet?.history?.length == 0" class="text-center text-sm text-slate-700">No transactions yet :)</p>
 </div>
