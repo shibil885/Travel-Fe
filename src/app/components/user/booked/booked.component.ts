@@ -1,59 +1,64 @@
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Router, RouterModule } from '@angular/router';
 import { IBooking } from '../../../interfaces/booking.interface';
 import { BookingService } from '../../../shared/services/booking.service';
-import { HeaderComponent } from '../header/header.component';
-import { SideBarComponent } from '../side-bar/side-bar.component';
-import { SearchComponent } from '../../../shared/components/search/search.component';
 import { LocalStorageService } from '../../../shared/services/local-storage.service';
-import { Router } from '@angular/router';
+import { SearchComponent } from '../../../shared/components/search/search.component';
 import { PaginationComponent } from '../../../shared/components/pagination/pagination.component';
+import { HeaderSidebarComponent } from '../header-and-side-bar/header-and-side-bar.component';
 
 @Component({
   selector: 'app-booking-list',
   standalone: true,
   imports: [
-    HeaderComponent,
-    SideBarComponent,
+    CommonModule,
+    RouterModule,
+    HeaderSidebarComponent,
     SearchComponent,
     PaginationComponent,
-    CommonModule,
   ],
   templateUrl: './booked.component.html',
   styleUrls: ['./booked.component.css'],
 })
-export class BookedComponent {
-  bookings!: IBooking[];
+export class BookedComponent implements OnInit {
+  bookings: IBooking[] = [];
   limit: number = 5;
-  currenPage: number = 1;
-  totalPackages!: number;
-  singleBookedPackage!: IBooking;
+  currentPage: number = 1;
+  totalPackages: number = 0;
 
   constructor(
-    private _bookingService: BookingService,
-    private _storageService: LocalStorageService,
-    private _router: Router
+    private bookingService: BookingService,
+    private storageService: LocalStorageService,
+    private router: Router
   ) {}
 
   ngOnInit() {
-    this.fetchbookings();
-    this._storageService.removeItem('_bookingId');
+    this.fetchBookings();
+    this.storageService.removeItem('_bookingId');
   }
-  fetchbookings() {
-    this._bookingService
-      .getAllBookedPackages(this.currenPage, this.limit)
+
+  fetchBookings() {
+    this.bookingService
+      .getAllBookedPackages(this.currentPage, this.limit)
       .subscribe((res) => {
         this.bookings = res.booked;
         this.totalPackages = res.totalItems;
-        this.currenPage = res.currentPage;
+        this.currentPage = res.currentPage;
       });
   }
+
   viewDetails(id: string) {
-    this._storageService.setItem('_bookingId', id);
-    this._router.navigate(['/singlebooked']);
+    this.storageService.setItem('_bookingId', id);
+    this.router.navigate(['/singlebooked']);
   }
+
   onPageChange(page: number) {
-    this.currenPage = page;
-    this.fetchbookings();
+    this.currentPage = page;
+    this.fetchBookings();
+  }
+
+  onSearch(searchTerm: Event) {
+    console.log('Searching for:', searchTerm);
   }
 }

@@ -1,0 +1,52 @@
+<header class="rounded-br-3xl rounded-bl-3xl sticky top-0 z-50 bg-white shadow-md">
+    <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+      <div class="text-2xl font-bold text-gray-800 cursor-pointer" (click)="toggleMenu()">
+        Travel
+      </div>
+      <nav class="hidden md:flex space-x-6 ml-5">
+          <a [routerLink]="['/home']" class="text-gray-800 hover:text-indigo-600">Home</a>
+          <a [routerLink]='["/agencies" ]' class="text-gray-800 hover:text-indigo-600">Agencies</a>
+          <a [routerLink]='["/packages"]' class="text-gray-800 hover:text-indigo-600">Packages</a>
+          <a [routerLink]='["/contact" ]'class="text-gray-800 hover:text-indigo-600">Contact</a>
+      </nav>  
+      <button class="md:hidden text-gray-600 focus:outline-none" (click)="toggleMenu()">
+        <mat-icon>{{ isMenuOpen ? 'close' : 'menu' }}</mat-icon>
+      </button>
+      <nav
+        class=" md:hidden space-x-6"
+        *ngIf="isMenuOpen || windowWidth > 768"
+        [@expandCollapse]="isMenuOpen ? 'expanded' : 'collapsed'"
+      >
+        <a [routerLink]="['/home']" class="text-gray-800 hover:text-indigo-600">Home</a>
+        <a [routerLink]="['/agencies']" class="text-gray-800 hover:text-indigo-600">Agencies</a>
+        <a [routerLink]="['/packages']" class="text-gray-800 hover:text-indigo-600">Packages</a>
+        <a [routerLink]="['/contact']" class="text-gray-800 hover:text-indigo-600">Contact</a>
+      </nav>
+      <button class="profile-toggle" (click)="toggleSidebar()" aria-label="Toggle user profile sidebar">
+        <img src="https://github.com/shadcn.png" alt="User avatar" class="avatar w-10 h-10 rounded-full" />
+      </button>
+    </div>
+  </header>
+
+  <div class="overlay" [class.active]="isOpen()" (click)="toggleSidebar()" aria-hidden="true"></div>
+
+  <aside class="sidebar" [class.active]="isOpen()" aria-hidden="!isOpen()">
+    <div class="sidebar-content">
+      <div class="user-info">
+        <img src="https://github.com/shadcn.png" alt="User avatar" class="avatar large" />
+        <h2>{{ user?.username }}</h2>
+        <p>{{ user?.email }}</p>
+      </div>
+      <nav>
+        <ul>
+          <li *ngFor="let item of menuItems">
+            <a [routerLink]="item.route" class="menu-item" (click)="toggleSidebar()">
+              <i class="material-icons">{{ item.icon }}</i>
+              <span>{{ item.label }}</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+      <button class="logout-btn" (click)="userLogout()">Logout</button>
+    </div>
+  </aside>

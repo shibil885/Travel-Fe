@@ -1,52 +1,60 @@
-<app-header></app-header>
-<app-side-bar></app-side-bar>
-<div class="bookings-container">
-    <app-search></app-search>
-    <div class="booking-card" *ngFor="let booking of bookings">
-        <div class="booking-image">
-            <img [src]="booking.package.images[0]" [alt]="booking.package.finalDestination" class="rounded-lg">
-        </div>
-        <div class="booking-content">
-            <div class="booking-header">
-                <h2>{{booking.package.name}}, {{booking.package.country}}</h2>
-                <div class="booking-info">
-                    <div class="info-row">
-                        <span class="label">Agency :</span>
-                        <span class="value">{{booking.agency.name}}</span>
+<app-header-sidebar></app-header-sidebar>
+<main class="bg-gray-100 min-h-screen p-4 md:p-8">
+    <div class="max-w-6xl mx-auto">
+        <h1 class="text-3xl font-bold text-gray-800 mb-6">Your Bookings</h1>
+        <app-search (search)="onSearch($event)" class="mb-6"></app-search>
+        <div class="space-y-6">
+            <div *ngFor="let booking of bookings"
+                class="bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300 hover:shadow-lg">
+                <div class="md:flex">
+                    <div class="md:flex-shrink-0">
+                        <img [src]="booking.package.images[0]" [alt]="booking.package.finalDestination"
+                            class="h-48 w-full object-cover md:w-48">
                     </div>
-                    <div class="info-row">
-                        <span class="label">Package :</span>
-                        <span class="value">{{booking.category.name}}</span>
-                    </div>
-                </div>
-                <div class="booking-meta">
-                    <div class="meta-item">
-                        <i class="fas fa-user"></i>
-                        <span>{{booking.peoples.length}} Person</span>
-                    </div>
-                    <div class="meta-item">
-                        <i class="fas fa-calendar"></i>
-                        <span>{{booking.package.days}} Day(s)</span>
-                    </div>
-                    <div class="meta-item">
-                        <span class="date-label">Date :</span>
-                        <span>{{booking.start_date |date: 'mediumDate'}}</span>
+                    <div class="p-6 md:flex-1 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-2">
+                                <h2 class="text-xl font-semibold text-gray-800">{{booking.package.name}},
+                                    {{booking.package.country}}</h2>
+                                <span class="px-3 py-1 text-sm font-semibold text-green-800 bg-green-100 rounded-full">
+                                    {{booking.category.name}}
+                                </span>
+                            </div>
+                            <p class="text-gray-600 mb-4">{{booking.agency.name}}</p>
+                            <div class="flex items-center space-x-4 text-sm text-gray-500 mb-4">
+                                <div class="flex items-center">
+                                    <i class="fas fa-user mr-2"></i>
+                                    <span>{{booking.peoples.length}} Person(s)</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <i class="fas fa-calendar mr-2"></i>
+                                    <span>{{booking.package.days}} Day(s)</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <i class="fas fa-clock mr-2"></i>
+                                    <span>{{booking.start_date | date:'mediumDate'}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between mt-4">
+                            <div class="text-2xl font-bold text-indigo-600">{{booking.total_price | currency:'INR'}}
+                            </div>
+                            <button (click)="viewDetails(booking._id)"
+                                class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors duration-300">
+                                View Details
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="booking-footer">
-                <div class="price">{{booking.total_price| currency:'INR'}}</div>
-                <button class="details-button" (click)="viewDetails(booking._id)">Details</button>
-            </div>
         </div>
-    </div>
-    <hr class="mb-3">   
-    <app-pagination [currentPage]="currenPage"  [itemsPerPage]="limit" [totalItems]="totalPackages"
-        [typeOfUser]="'user'" (pageChange)="onPageChange($event)"></app-pagination>
-    <div class="booking-content">
-        <div>
-            <hr class="mb-3">
-            <p class="text-center text-sm text-slate-700" *ngIf="bookings.length == 0">No booking :)</p>
+
+        <div *ngIf="bookings.length === 0" class="text-center py-12">
+            <p class="text-xl text-gray-600">No bookings found. Time to plan your next adventure!</p>
         </div>
+
+        <app-pagination [currentPage]="currentPage" [itemsPerPage]="limit" [totalItems]="totalPackages"
+            [typeOfUser]="'user'" (pageChange)="onPageChange($event)" class="mt-8">
+        </app-pagination>
     </div>
-</div>
+</main>

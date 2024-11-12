@@ -1,106 +1,127 @@
-<app-header></app-header>
-<app-side-bar></app-side-bar>
-<div class="booking-container" *ngIf="bookingDetails">
-    <div class="booking-header">
-        <div class="image-container">
-            <img [src]="bookingDetails.package_id.images[0]" alt="Resort view" />
-        </div>
-        <div class="header-content">
-            <div class="location-container">
-                <h1>{{ bookingDetails.package_id.finalDestination }}</h1>
-                <!-- <span class="rating">{{ bookingDetails.package_id.rating }}</span> -->
-                <span class="rating">5</span>
-            </div>
-            <div class="booking-meta">
-                <div class="meta-item">
-                    <span class="label">Agency:</span>
-                    <!-- <span class="value">{{ bookingDetails.package_id.agencyId.name }}</span> -->
-                    <span class="value">Royal Travels</span>
-                </div>
-                <div class="meta-item">
-                    <span class="label">Package:</span>
-                    <span class="value">{{ bookingDetails.package_id.name }}</span>
-                </div>
-            </div>
-            <div class="booking-stats">
-                <div class="stat-item">
-                    <i class="fas fa-user"></i>
-                    <span>{{ bookingDetails.peoples.length }} Person(s)</span>
-                </div>
-                <div class="stat-item">
-                    <i class="fas fa-calendar"></i>
-                    <span>{{ bookingDetails.start_date | date }} - {{ bookingDetails.end_date | date }}</span>
+<app-header-sidebar></app-header-sidebar>
+<main class="bg-gray-100 min-h-screen p-4 md:p-8">
+    <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden" *ngIf="bookingDetails">
+        <div class="relative h-64 md:h-96">
+            <img [src]="bookingDetails.package_id.images[0]" alt="Resort view" class="w-full h-full object-cover" />
+            <div class="absolute inset-0 bg-black bg-opacity-50 flex items-end">
+                <div class="p-6 text-white">
+                    <h1 class="text-3xl md:text-4xl font-bold mb-2">
+                        {{ bookingDetails.package_id.finalDestination }}
+                    </h1>
+                    <div class="flex items-center space-x-4">
+                        <span class="bg-green-500 text-white px-2 py-1 rounded-full text-sm font-semibold">
+                            <!-- {{ bookingDetails.package_id.rating }} ★ -->
+                            5 ★
+                        </span>
+                        <span class="text-sm">{{
+                            bookingDetails.package_id.name
+                            }}</span>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Details Section -->
-    <div class="details-section">
-        <h2>Details :</h2>
+        <div class="p-6 space-y-6">
+            <div class="flex flex-wrap justify-between items-center">
+                <div class="space-y-2">
+                    <div class="text-gray-600">Agency</div>
+                    <div class="font-semibold">
+                        {{ bookingDetails.package_id.agencyId.name }}
+                    </div>
+                </div>
+                <div class="space-y-2">
+                    <div class="text-gray-600">Travel Dates</div>
+                    <div class="font-semibold">
+                        {{ bookingDetails.start_date | date }} -
+                        {{ bookingDetails.end_date | date }}
+                    </div>
+                </div>
+                <div class="space-y-2">
+                    <div class="text-gray-600">Travelers</div>
+                    <div class="font-semibold">
+                        {{ bookingDetails.peoples.length }} Person(s)
+                    </div>
+                </div>
+            </div>
 
-        <div class="content-grid">
-            <!-- Left Column -->
-            <div class="left-column">
-                <div class="peoples-section">
-                    <h3>Travelers :</h3>
-                    <div class="people-list">
-                        <div class="person-item" *ngFor="let person of bookingDetails.peoples">
-                            <div class="person-details">
-                                <span class="label">Name : {{ person.name }}</span>
-                                <span class="label">Age : {{ person.age }}</span>
+            <div class="border-t border-gray-200 pt-6">
+                <h2 class="text-2xl font-bold mb-4">Travelers</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div *ngFor="let person of bookingDetails.peoples" class="bg-gray-50 p-4 rounded-lg">
+                        <div class="font-semibold">{{ person.name }}</div>
+                        <div class="text-gray-600">Age: {{ person.age }}</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border-t border-gray-200 pt-6">
+                <h2 class="text-2xl font-bold mb-4">Booking Details</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <div class="text-gray-600 mb-2">Payment Status</div>
+                        <div class="font-semibold text-green-600">
+                            {{ bookingDetails.payment }}
+                        </div>
+                    </div>
+                    <div>
+                        <div class="text-gray-600 mb-2">Travel Status</div>
+                        <div [ngClass]="{
+                  'text-blue-600': bookingDetails.travel_status === 'started',
+                  'text-green-600':
+                    bookingDetails.travel_status === 'completed',
+                  'text-red-600': bookingDetails.travel_status === 'cancelled'
+                }" class="font-semibold">
+                            {{ bookingDetails.travel_status }}
+                        </div>
+                    </div>
+                    <div>
+                        <div class="text-gray-600 mb-2">Confirmation Status</div>
+                        <div [ngClass]="{
+                  'text-green-600':
+                    bookingDetails.confirmation === 'confirmed',
+                  'text-yellow-600':
+                    bookingDetails.confirmation === 'pending',
+                  'text-red-600': bookingDetails.confirmation === 'rejected'
+                }" class="font-semibold">
+                            {{ bookingDetails.confirmation }}
+                        </div>
+                    </div>
+                    <div>
+                        <div class="text-gray-600 mb-2">Total Price</div>
+                        <div class="font-semibold text-2xl">
+                            {{ bookingDetails.total_price | currency : 'INR' }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border-t border-gray-200 pt-6">
+                <h2 class="text-2xl font-bold mb-4">Billing Details</h2>
+                <div class="bg-gray-50 p-6 rounded-lg">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <div class="text-gray-600 mb-1">Name</div>
+                            <div class="font-semibold">
+                                {{ bookingDetails.billing_details.firstName }}
+                                {{ bookingDetails.billing_details.lastName }}
+                            </div>
+                        </div>
+                        <div>
+                            <div class="text-gray-600 mb-1">Email</div>
+                            <div class="font-semibold">
+                                {{ bookingDetails.billing_details.email }}
                             </div>
                         </div>
                     </div>
                 </div>
-
-                <div class="info-item">
-                    <span class="label">Payment :</span>
-                    <span class="value status-paid">{{ bookingDetails.payment }}</span>
-                </div>
-
-                <div class="info-item">
-                    <span class="label">Travel Status :</span>
-                    <span class="value status-{{ bookingDetails.travel_status | lowercase }}">
-                        {{ bookingDetails.travel_status }}
-                    </span>
-                </div>
-
-                <div class="info-item">
-                    <span class="label">Confirmation status :</span>
-                    <span class="value status-{{ bookingDetails.confirmation }}">
-                        {{ bookingDetails.confirmation }}
-                    </span>
-                </div>
             </div>
 
-            <div class="right-column">
-                <div class="billing-section">
-                    <h3>Billing To :</h3>
-                    <div class="billing-details">
-                        <div class="billing-item">
-                            <span class="label">Name :</span>
-                            <span class="value">
-                                {{ bookingDetails.billing_details.firstName }} {{
-                                bookingDetails.billing_details.lastName }}
-                            </span>
-                        </div>
-                        <div class="billing-item">
-                            <span class="label">Email :</span>
-                            <span class="value">{{ bookingDetails.billing_details.email }}</span>
-                        </div>
-                        <div class="billing-item">
-                            <span class="label">Net Amount :</span>
-                            <span class="value">{{ bookingDetails.total_price | currency:'INR' }}</span>
-                        </div>
-                    </div>
-                </div>
+            <div class="flex justify-center pt-6" *ngIf="bookingDetails.confirmation !== 'rejected'">
+                <button (click)="onCancel(bookingDetails._id)"
+                    class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-6 rounded-full transition duration-300 ease-in-out transform hover:scale-105">
+                    Cancel Booking
+                </button>
             </div>
-        </div>
-
-        <div class="actions">
-            <button class="cancel-button" (click)="onCancel(bookingDetails._id)"
-                [hidden]="bookingDetails.confirmation === 'rejected'">Cancel</button>
         </div>
     </div>
-</div>
+</main>
