@@ -2,57 +2,89 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HeaderSidebarComponent } from '../header-and-side-bar/header-and-side-bar.component';
-
-interface User {
-  email: string;
-  username: string;
-  profilePicture?: string;
-  phone?: number;
-  preferences: string[];
-  isActive: boolean;
-  isVerified: boolean;
-}
-
+import { IUser } from '../../../models/user.model';
+import { UserService } from '../../../shared/services/user.service';
+import { Router } from '@angular/router';
+import { ToastService } from '../../../shared/services/toaster.service';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatIconModule } from '@angular/material/icon';
+import { HttpEvent, HttpEventType } from '@angular/common/http';
 @Component({
   selector: 'app-user-profile',
   standalone: true,
-  imports: [HeaderSidebarComponent, CommonModule, FormsModule],
+  imports: [
+    HeaderSidebarComponent,
+    CommonModule,
+    FormsModule,
+    MatProgressBarModule,
+    MatIconModule,
+  ],
   templateUrl: './profile.component.html',
+  styleUrl: './profile.component.css',
 })
 export class ProfileComponent {
-  user: User = {
-    email: '',
-    username: '',
-    profilePicture: '',
-    phone: undefined,
-    preferences: [],
-    isActive: false,
-    isVerified: false,
-  };
-
+  user!: IUser;
+  selectedProfileImage!: File;
   showChangePasswordModal = false;
+  progress: number | null = null;
+
   passwordChange = {
     currentPassword: '',
     newPassword: '',
     confirmPassword: '',
   };
+  constructor(
+    private _userService: UserService,
+    private _router: Router,
+    private _ToastService: ToastService
+  ) {}
 
   ngOnInit() {
-    // Simulating fetching user data
-    this.user = {
-      email: 'user@example.com',
-      username: 'johndoe',
-      profilePicture: '',
-      phone: 1234567890,
-      preferences: ['Travel', 'Photography'],
-      isActive: true,
-      isVerified: true,
-    };
+    this.fetchUserData();
   }
 
-  onChangeProfilePicture() {
-    // Implement profile picture change logic
-    console.log('Changing profile picture');
+  fetchUserData() {
+    this._userService.getUserData().subscribe((res) => {
+      if (res.success) this.user = res.user;
+      else if (!res.success) this._router.navigate(['/home']);
+    });
+  }
+
+  onChangeProfilePicture(event: Event) {
+    const file = (event.target as HTMLInputElement).files;
+    if (file) {
+      const acceptableTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+      if (acceptableTypes.includes(file[0].type)) {
+        const formData = new FormData();
+        formData.append('profileImg', file[0]);
+
+        this._userService.uploadProfileImg(formData).subscribe(
+          (event: HttpEvent<any>) => {
+            switch (event.type) {
+              case HttpEventType.UploadProgress:
+                this.progress = event.total
+                  ? Math.round((100 * event.loaded) / event.total)
+                  : 0;
+                break;
+              case HttpEventType.Response:
+                this.progress = null; // Reset progress after completion
+                this._ToastService.showToast(
+                  'Image uploaded successfully!',
+                  'success'
+                );
+                this.fetchUserData();
+                break;
+            }
+          },
+          (error) => {
+            this.progress = null;
+            this._ToastService.showToast('Upload failed', 'error');
+          }
+        );
+      } else {
+        this._ToastService.showToast('Select a valid image file', 'error');
+      }
+    }
   }
 
   addPreference(pref: string) {
@@ -62,7 +94,7 @@ export class ProfileComponent {
   }
 
   removePreference(pref: string) {
-    this.user.preferences = this.user.preferences.filter(p => p !== pref);
+    this.user.preferences = this.user.preferences.filter((p) => p !== pref);
   }
 
   saveChanges() {
@@ -71,7 +103,9 @@ export class ProfileComponent {
   }
 
   changePassword() {
-    if (this.passwordChange.newPassword !== this.passwordChange.confirmPassword) {
+    if (
+      this.passwordChange.newPassword !== this.passwordChange.confirmPassword
+    ) {
       console.error('New passwords do not match');
       return;
     }

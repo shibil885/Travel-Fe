@@ -10,7 +10,7 @@ import { HtmlParser } from '@angular/compiler';
   providedIn: 'root',
 })
 export class UserService {
-  api = 'http://localhost:3000';
+  private readonly api = 'http://localhost:3000';
   constructor(private http: HttpClient, private authService: AuthService) {}
 
   findEmail(email: string) {
@@ -28,6 +28,7 @@ export class UserService {
         })
       );
   }
+
   registerUser(formData: any) {
     console.log('formdata', formData);
     return this.http.post<{ user: IUser; message: string; success: boolean }>(
@@ -36,6 +37,7 @@ export class UserService {
       { withCredentials: true }
     );
   }
+
   verifyOtpUser(formData: {
     otp: string;
     email: string | null | undefined;
@@ -62,6 +64,25 @@ export class UserService {
       { withCredentials: true }
     );
   }
+
+  getUserData() {
+    return this.http.get<{ success: boolean; user: IUser; message: string }>(
+      `${this.api}/user/details`,
+      {
+        withCredentials: true,
+      }
+    );
+  }
+
+  uploadProfileImg(data: FormData) {
+    return this.http.patch(`${this.api}/user/profileImage-update`, data, {
+      withCredentials: true,
+      reportProgress: true,
+      observe: 'events',
+    });
+  }
+  
+
   getPackages(page: number, limit: number) {
     const params = new HttpParams()
       .set('limit', limit)
@@ -74,6 +95,7 @@ export class UserService {
       currentPage: number;
     }>(`${this.api}/user/getPackages`, { params, withCredentials: true });
   }
+
   getSinglePackage(id: string) {
     return this.http.get<{ success: boolean; package: IPackage }>(
       `${this.api}/user/package/${id}`,
