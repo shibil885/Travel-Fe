@@ -5,6 +5,7 @@ import { IUser } from '../../models/user.model';
 import { IPackage } from '../../interfaces/package.interface';
 import { AuthService } from '../../auth/service/service.service';
 import { HtmlParser } from '@angular/compiler';
+import { FormGroup } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root',
@@ -81,7 +82,15 @@ export class UserService {
       observe: 'events',
     });
   }
-  
+  updateUserProfile(userData: FormGroup) {
+    return this.http.patch<{ success: boolean; message: string }>(
+      `${this.api}/user/update-userProfile`,
+      userData,
+      {
+        withCredentials: true,
+      }
+    );
+  }
 
   getPackages(page: number, limit: number) {
     const params = new HttpParams()

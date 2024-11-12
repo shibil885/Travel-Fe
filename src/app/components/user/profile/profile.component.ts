@@ -1,6 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { HeaderSidebarComponent } from '../header-and-side-bar/header-and-side-bar.component';
 import { IUser } from '../../../models/user.model';
 import { UserService } from '../../../shared/services/user.service';
@@ -9,34 +14,45 @@ import { ToastService } from '../../../shared/services/toaster.service';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatIconModule } from '@angular/material/icon';
 import { HttpEvent, HttpEventType } from '@angular/common/http';
+import {
+  endWithSpace,
+  invalidChar,
+  letterOrNumber,
+} from '../../../validatores/name.validator';
+import { invalidPhone } from '../../../validatores/phone.validator';
+
 @Component({
   selector: 'app-user-profile',
   standalone: true,
   imports: [
     HeaderSidebarComponent,
     CommonModule,
-    FormsModule,
     MatProgressBarModule,
     MatIconModule,
+    ReactiveFormsModule,
   ],
   templateUrl: './profile.component.html',
-  styleUrl: './profile.component.css',
+  styleUrls: ['./profile.component.css'], // corrected styleUrl to styleUrls
 })
-export class ProfileComponent {
+export class ProfileComponent implements OnInit {
   user!: IUser;
+  profileForm!: FormGroup;
   selectedProfileImage!: File;
   showChangePasswordModal = false;
   progress: number | null = null;
+  isUploading: boolean = false;
+  isEditing = false;
 
   passwordChange = {
     currentPassword: '',
     newPassword: '',
     confirmPassword: '',
   };
+
   constructor(
     private _userService: UserService,
     private _router: Router,
-    private _ToastService: ToastService
+    private _toastService: ToastService
   ) {}
 
   ngOnInit() {
@@ -45,68 +61,92 @@ export class ProfileComponent {
 
   fetchUserData() {
     this._userService.getUserData().subscribe((res) => {
-      if (res.success) this.user = res.user;
-      else if (!res.success) this._router.navigate(['/home']);
+      if (res.success) {
+        this.user = res.user;
+        this.profileForm = new FormGroup({
+          username: new FormControl(this.user.username, [
+            Validators.required,
+            Validators.minLength(4),
+            Validators.maxLength(20),
+            endWithSpace,
+            letterOrNumber,
+            invalidChar,
+          ]),
+          email: new FormControl(this.user.email, [
+            Validators.required,
+            Validators.email,
+          ]),
+          phone: new FormControl(this.user.phone, [
+            Validators.required,
+            invalidPhone,
+          ]),
+        });
+      } else {
+        this._router.navigate(['/home']);
+      }
     });
   }
 
   onChangeProfilePicture(event: Event) {
-    const file = (event.target as HTMLInputElement).files;
+    const file = (event.target as HTMLInputElement).files?.[0];
     if (file) {
       const acceptableTypes = ['image/jpeg', 'image/png', 'image/jpg'];
-      if (acceptableTypes.includes(file[0].type)) {
+      if (acceptableTypes.includes(file.type)) {
         const formData = new FormData();
-        formData.append('profileImg', file[0]);
+        formData.append('profileImg', file);
 
-        this._userService.uploadProfileImg(formData).subscribe(
-          (event: HttpEvent<any>) => {
-            switch (event.type) {
-              case HttpEventType.UploadProgress:
-                this.progress = event.total
-                  ? Math.round((100 * event.loaded) / event.total)
-                  : 0;
-                break;
-              case HttpEventType.Response:
-                this.progress = null; // Reset progress after completion
-                this._ToastService.showToast(
-                  'Image uploaded successfully!',
-                  'success'
-                );
-                this.fetchUserData();
-                break;
+        this.isUploading = true;
+        this.progress = 0;
+
+        this._userService.uploadProfileImg(formData).subscribe({
+          next: (event: HttpEvent<any>) => {
+            if (event.type === HttpEventType.UploadProgress && event.total) {
+              this.progress = Math.round((100 * event.loaded) / event.total);
+            } else if (event.type === HttpEventType.Response) {
+              this._toastService.showToast(
+                'Image uploaded successfully!',
+                'success'
+              );
+              this.isUploading = false;
+              this.progress = null;
+              this.fetchUserData();
             }
           },
-          (error) => {
+          error: () => {
+            this._toastService.showToast('Upload failed', 'error');
+            this.isUploading = false;
             this.progress = null;
-            this._ToastService.showToast('Upload failed', 'error');
-          }
-        );
+          },
+        });
       } else {
-        this._ToastService.showToast('Select a valid image file', 'error');
+        this._toastService.showToast('Select a valid image file', 'error');
       }
     }
   }
 
-  addPreference(pref: string) {
-    if (pref && !this.user.preferences.includes(pref)) {
-      this.user.preferences.push(pref);
+  toggleEdit() {
+    if (this.isEditing && this.profileForm.valid) {
+      this.saveChanges();
     }
-  }
-
-  removePreference(pref: string) {
-    this.user.preferences = this.user.preferences.filter((p) => p !== pref);
+    this.isEditing = !this.isEditing;
   }
 
   saveChanges() {
-    // Implement save changes logic
-    console.log('Saving changes', this.user);
+    const updatedUserData = this.profileForm.value;
+    this._userService.updateUserProfile(updatedUserData).subscribe((res) => {
+      if (res.success) {
+        this._toastService.showToast(res.message, 'success');
+        this.user = { ...this.user, ...updatedUserData };
+        this.isEditing = false; 
+      }
+    });
   }
 
   changePassword() {
     if (
       this.passwordChange.newPassword !== this.passwordChange.confirmPassword
     ) {
-      console.error('New passwords do not match');
+      this._toastService.showToast('New passwords do not match', 'error');
       return;
     }
     // Implement change password logic
