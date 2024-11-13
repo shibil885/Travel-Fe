@@ -1,9 +1,8 @@
-import { Component, Input } from '@angular/core';
-import { HeaderComponent } from '../header/header.component';
+import { Component } from '@angular/core';
 import { IPackage } from '../../../interfaces/package.interface';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { UserService } from '../../../shared/services/user.service';
 import { SearchComponent } from '../../../shared/components/search/search.component';
 import { trigger, transition, style, animate } from '@angular/animations';
@@ -14,14 +13,13 @@ import {
   showSinglePackage,
 } from '../../../store/user/user.action';
 import { ToastService } from '../../../shared/services/toaster.service';
-import { SideBarComponent } from '../side-bar/side-bar.component';
 import { LocalStorageService } from '../../../shared/services/local-storage.service';
+import { HeaderSidebarComponent } from '../header-and-side-bar/header-and-side-bar.component';
 @Component({
   selector: 'app-packages',
   standalone: true,
   imports: [
-    HeaderComponent,
-    SideBarComponent,
+    HeaderSidebarComponent,
     SearchComponent,
     PaginationComponent,
     RouterLink,

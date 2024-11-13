@@ -10,7 +10,6 @@ import {
 import { CalendarModule } from 'primeng/calendar';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputNumberModule } from 'primeng/inputnumber';
-import { HeaderComponent } from '../header/header.component';
 import { IPackage } from '../../../interfaces/package.interface';
 import { Store } from '@ngrx/store';
 import {
@@ -34,9 +33,8 @@ import {
   showSinglePackage,
   verifyPayment,
 } from '../../../store/user/user.action';
-import { BookingService } from '../../../shared/services/booking.service';
 import { ICoupon } from '../../../interfaces/coupon.interface';
-import { last, Observable, Subject, take, takeUntil } from 'rxjs';
+import { Observable, take } from 'rxjs';
 import { dateValidator } from '../../../validatores/date.validator';
 import {
   endWithSpace,
@@ -44,15 +42,14 @@ import {
   letterOrNumber,
 } from '../../../validatores/name.validator';
 import { invalidPhone } from '../../../validatores/phone.validator';
-import { SideBarComponent } from '../side-bar/side-bar.component';
 import { LocalStorageService } from '../../../shared/services/local-storage.service';
 import { UserService } from '../../../shared/services/user.service';
+import { HeaderSidebarComponent } from '../header-and-side-bar/header-and-side-bar.component';
 
 @Component({
   standalone: true,
   imports: [
-    HeaderComponent,
-    SideBarComponent,
+    HeaderSidebarComponent,
     CommonModule,
     ReactiveFormsModule,
     TruncatePipe,

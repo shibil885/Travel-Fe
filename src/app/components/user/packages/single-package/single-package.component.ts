@@ -7,16 +7,15 @@ import {
 } from '../../../../store/user/user.selector';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { HeaderComponent } from '../../header/header.component';
 import { Observable } from 'rxjs';
 import { MatStepperModule } from '@angular/material/stepper';
 import { trigger, transition, style, animate } from '@angular/animations';
-import { SideBarComponent } from '../../side-bar/side-bar.component';
+import { HeaderSidebarComponent } from '../../header-and-side-bar/header-and-side-bar.component';
 
 @Component({
   selector: 'app-single-package',
   standalone: true,
-  imports: [HeaderComponent, SideBarComponent, CommonModule, MatStepperModule],
+  imports: [HeaderSidebarComponent, CommonModule, MatStepperModule],
   templateUrl: './single-package.component.html',
   styleUrl: './single-package.component.css',
   animations: [

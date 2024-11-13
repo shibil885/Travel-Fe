@@ -4,16 +4,14 @@ import { ITransaction, IWallet } from '../../../interfaces/wallet.interface';
 import { WalletService } from '../../../shared/services/wallet.service';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
-import { HeaderComponent } from '../header/header.component';
-import { SideBarComponent } from '../side-bar/side-bar.component';
 import { CommonModule } from '@angular/common';
+import { HeaderSidebarComponent } from '../header-and-side-bar/header-and-side-bar.component';
 
 @Component({
   selector: 'app-wallet',
   standalone: true,
   imports: [
-    HeaderComponent,
-    SideBarComponent,
+    HeaderSidebarComponent,
     CommonModule,
     MatCardModule,
     MatIconModule,
