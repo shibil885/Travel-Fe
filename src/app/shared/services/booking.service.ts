@@ -77,7 +77,7 @@ export class BookingService {
     const params = new HttpParams().set('page', page).set('limit', limit);
     return this.http.get<{
       success: boolean;
-      booked: IBooking[];
+      booking: IBooking[];
       totalItems: number;
       currentPage: number;
     }>(`${this.api}/booking/getAllBookingsForAgency`, {

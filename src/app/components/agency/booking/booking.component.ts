@@ -26,7 +26,7 @@ export class BookingComponent {
   bookings: IBooking[] = [];
   singleBooking: IBooking | null = null;
   currentPage: number = 1;
-  limit: number = 10;
+  limit: number = 5;
   totalItems: number = 0;
   renderTableRelatedData = true;
   renderAddForm = false;
@@ -42,7 +42,7 @@ export class BookingComponent {
     this.bookingService
       .getAllBookedPackagesForAgency(this.currentPage, this.limit)
       .subscribe((response) => {
-        this.bookings = response.booked;
+        this.bookings = response.booking;
         this.totalItems = response.totalItems;
         this.currentPage = response.currentPage;
       });
