@@ -34,14 +34,12 @@ export class WalletComponent implements OnInit {
   ngOnInit() {
     this._walletService.getOrCreateUserWallet().subscribe(
       (wallet: IWallet) => {
+        console.log('wallet -->', wallet);
         this.wallet = wallet;
         this.dataSource.data = wallet.history.sort(
           (a, b) =>
             new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
         );
-      },
-      (error) => {
-        console.error('Error fetching wallet data:', error);
       }
     );
   }

@@ -137,7 +137,7 @@ export class ProfileComponent implements OnInit {
       if (res.success) {
         this._toastService.showToast(res.message, 'success');
         this.user = { ...this.user, ...updatedUserData };
-        this.isEditing = false; 
+        this.isEditing = false;
       }
     });
   }
@@ -149,7 +149,6 @@ export class ProfileComponent implements OnInit {
       this._toastService.showToast('New passwords do not match', 'error');
       return;
     }
-    // Implement change password logic
     console.log('Changing password', this.passwordChange);
     this.showChangePasswordModal = false;
   }

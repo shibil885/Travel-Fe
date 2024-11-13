@@ -48,11 +48,11 @@
                     <p class="transaction-date">{{ transaction.createdAt | date:'MMM d, y, h:mm a' }}</p>
                 </div>
                 <p class="transaction-amount" [ngClass]="transaction.type === 'debit' ? 'negative' : ''">
-                    {{ transaction.type === 'credit' ? '+' : '-' }}{{ transaction.amount | currency }}
+                   {{ transaction.amount | currency:'INR' }} {{ transaction.type === 'credit' ? ' +' : ' -' }}
                 </p>
             </div>
         </div>
+        <p *ngIf="wallet?.history?.length == 0" class="text-center text-sm text-slate-700">No transactions yet :)</p>
     </div>
 
-    <p *ngIf="wallet?.history?.length == 0" class="text-center text-sm text-slate-700">No transactions yet :)</p>
 </div>
