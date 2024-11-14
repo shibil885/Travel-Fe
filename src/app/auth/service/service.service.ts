@@ -9,6 +9,7 @@ import {
   throwError,
 } from 'rxjs';
 import Cookies from 'universal-cookie';
+import { Role } from '../../enum/role.enum';
 
 @Injectable({
   providedIn: 'root',
@@ -115,19 +116,12 @@ export class AuthService {
     this._cookie.remove('accessToken', { path: '/' });
   }
 
-  refreshToken(): Observable<string> {
-    return this._http
-      .post<{ accessToken: string }>(
-        `${this.api}/auth/refresh`,
-        {},
-        { withCredentials: true }
-      )
-      .pipe(
-        map((response) => response.accessToken),
-        tap((newAccessToken: string) => {
-          this.setAccessToken(newAccessToken);
-        })
-      );
+  refreshToken(): Observable<{ role: Role; isRefreshed: boolean }> {
+    return this._http.post<{ role: Role; isRefreshed: boolean }>(
+      `${this.api}/auth/refresh`,
+      {},
+      { withCredentials: true }
+    );
   }
 
   validateToken(): Observable<{ valid: boolean; role: string }> {
