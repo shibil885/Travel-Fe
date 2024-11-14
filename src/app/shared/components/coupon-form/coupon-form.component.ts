@@ -64,7 +64,7 @@ export class CouponFormComponent implements OnInit {
           percentageControl?.setValidators([
             Validators.required,
             Validators.min(1),
-            Validators.max(100),
+            Validators.max(99),
           ]);
           discountValueControl?.clearValidators();
         }

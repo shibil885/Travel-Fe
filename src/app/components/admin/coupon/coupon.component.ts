@@ -20,8 +20,6 @@ import {
   Validators,
 } from '@angular/forms';
 import { CouponService } from '../../../shared/services/coupon.service';
-import { ToastService } from '../../../shared/services/toaster.service';
-import { descriptionValidator } from '../../../validatores/description.validator';
 import { SingleCouponComponent } from '../../../shared/components/single-coupon/single-coupon.component';
 import { CouponFormComponent } from '../../../shared/components/coupon-form/coupon-form.component';
 import { PackagesComponent } from '../../user/packages/packages.component';
