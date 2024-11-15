@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../auth/service/service.service';
+import { Store } from '@ngrx/store';
+import { logout } from '../../../store/agency/agency.action';
 
 @Component({
   selector: 'app-header',
@@ -11,13 +13,13 @@ import { AuthService } from '../../../auth/service/service.service';
 })
 export class HeaderComponent {
   isMobileMenuOpen = false;
+  constructor(private readonly _store: Store) { }
 
   toggleMobileMenu() {
     this.isMobileMenuOpen = !this.isMobileMenuOpen;
   }
-  constructor(private authService: AuthService) { }
 
   logout(){
-    this.authService.clearAccessToken();
+    this._store.dispatch(logout())
   }
 }

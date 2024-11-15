@@ -83,19 +83,12 @@ export class AgencyService {
     otp: string;
     email: string | null | undefined;
   }): Observable<any> {
-    return this.http
-      .post<{
-        agency: IAgency;
-        message: string;
-        success: boolean;
-        token: string;
-      }>(`${this.api}/otp/agency`, formData, { withCredentials: true })
-      .pipe(
-        map((response) => {
-          this.authService.setAccessToken(response.token);
-          this.router.navigate(['/agency/home']);
-        })
-      );
+    return this.http.post<{
+      agency: IAgency;
+      message: string;
+      success: boolean;
+      token: string;
+    }>(`${this.api}/otp/agency`, formData, { withCredentials: true });
   }
   resendOtp(formData: { email: string | null | undefined }): Observable<any> {
     return this.http.post<{ agency: IAgency }>(

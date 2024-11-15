@@ -1,66 +1,54 @@
 import { inject } from '@angular/core';
-import { Router, CanActivateFn, ActivatedRouteSnapshot } from '@angular/router';
+import { CanActivateFn, Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
-import { switchMap, catchError } from 'rxjs/operators';
+import { catchError, map, switchMap } from 'rxjs/operators';
 import { AuthService } from '../service/service.service';
 import { Role } from '../../enum/role.enum';
 
-export const authGuard: CanActivateFn = (
-  route: ActivatedRouteSnapshot
-): Observable<boolean> => {
+export const authGuard: CanActivateFn = (route): Observable<boolean> => {
   const authService = inject(AuthService);
-  const injectedRouter = inject(Router);
-  const requestedRole = route.data['role'];
+  const router = inject(Router);
+  const role: Role = route.data['role'];
 
   return authService.validateToken().pipe(
     switchMap((res) => {
-      if (res.role === requestedRole && res.valid) {
+      if (res.valid && res.role === role) {
         return of(true);
-      } else if (!res.valid) {
+      } else if (res.valid && res.role !== role) {
+        handleUnauthorizedAccess(router, res.role);
+        return of(false);
+      } else {
         return authService.refreshToken().pipe(
-          switchMap((response) => {
-            if (response.role === requestedRole && response.isRefreshed)
-              return of(true);
-            else handleUnauthorizedAccess(injectedRouter, res.role);
-            return of(false);
+          map((refreshRes) => {
+            if (refreshRes.isRefreshed && refreshRes.role === role) {
+              return true;
+            } else if (refreshRes.isRefreshed && refreshRes.role !== role) {
+              handleUnauthorizedAccess(router, refreshRes.role);
+              return false;
+            } else {
+              handleUnauthenticated(router);
+              return false;
+            }
           }),
-          catchError((error) => {
-            console.error('Error during token validation:', error);
-            handleUnauthenticated(injectedRouter, requestedRole);
+          catchError(() => {
+            handleUnauthenticated(router);
             return of(false);
           })
         );
-      } else {
-        handleUnauthorizedAccess(injectedRouter, res.role);
-        return of(false);
       }
     }),
-    catchError((error) => {
-      console.error('Error during token validation:', error);
-      handleUnauthenticated(injectedRouter, requestedRole);
+    catchError(() => {
+      handleUnauthenticated(router);
       return of(false);
     })
   );
 };
 
-function handleUnauthenticated(router: Router, role: string): void {
-  if (role === Role.USER) router.navigate([`/login`]);
-  else router.navigate([`/${role}/login`]);
+function handleUnauthenticated(router: Router): void {
+  router.navigate(['/login']);
 }
 
-function handleUnauthorizedAccess(router: Router, role: string): void {
-  switch (role) {
-    case Role.ADMIN:
-      router.navigate(['/admin']);
-      break;
-    case Role.USER:
-      router.navigate(['/home']);
-      break;
-    case Role.AGENCY:
-      router.navigate(['/agency']);
-      break;
-    default:
-      router.navigate(['/login']);
-      break;
-  }
+function handleUnauthorizedAccess(router: Router, role: Role): void {
+  const redirectUrl = role === Role.USER ? '/home' : `/${role}`;
+  router.navigate([redirectUrl]);
 }

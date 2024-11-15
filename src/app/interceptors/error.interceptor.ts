@@ -71,12 +71,13 @@ export const errorInterceptorFn: HttpInterceptorFn = (req, next) => {
           'error'
         );
       } else if (error.status === 401) {
+        console.log('interceptor --> ', error.error);
         toastService.showToast(error.error.message, 'error');
       } else if (error.status === 403) {
         toastService.showToast(
           error.error.message
-            ? error.error.message
-            : 'Forbidden. You do not have access to this resource.',
+          ? error.error.message
+          : 'Forbidden. You do not have access to this resource.',
           'error'
         );
       } else if (error.status === 404) {
@@ -85,6 +86,7 @@ export const errorInterceptorFn: HttpInterceptorFn = (req, next) => {
           error.error.info ? 'info' : 'error'
         );
       } else {
+        console.log('interceptor else --> ', error.error);
         toastService.showToast(
           `${error.error.message || 'An error occurred.'}`,
           error.error.warning ? 'warning' : error.error.info ? 'info' : 'error'

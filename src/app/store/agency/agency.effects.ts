@@ -120,13 +120,10 @@ export class AgencyEffect {
     () =>
       this.actions$.pipe(
         ofType(agencyActions.logout),
-        tap(() => {
-        }),
         switchMap(() =>
           this.authService.logout('agency').pipe(
             tap(() => {
-              this.router.navigate(['/agency/login']).then(() => {
-              });
+              this.router.navigate(['/agency/login'])
             }),
             catchError((error) => {
               console.error('Logout error: ', error);

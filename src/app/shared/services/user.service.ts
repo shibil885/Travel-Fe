@@ -50,12 +50,6 @@ export class UserService {
         user: IUser;
         token: string;
       }>(`${this.api}/otp/user`, formData, { withCredentials: true })
-      .pipe(
-        map((response) => {
-          this.authService.setAccessToken(response.token);
-          return response;
-        })
-      );
   }
 
   resendOtp(formData: { email: string | null | undefined }): Observable<any> {

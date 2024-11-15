@@ -1,30 +1,15 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import {
-  BehaviorSubject,
-  catchError,
-  map,
-  Observable,
-  tap,
-  throwError,
-} from 'rxjs';
-import Cookies from 'universal-cookie';
+import { catchError, Observable, of, tap } from 'rxjs';
 import { Role } from '../../enum/role.enum';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   private readonly api = 'http://localhost:3000';
-  private _accessTokenSubject = new BehaviorSubject<string | null>(null);
-  private _cookie = new Cookies();
-
-  constructor(private _http: HttpClient) {
-    const token = this._cookie.get('accessToken');
-    if (token) {
-      this.setAccessToken(token);
-    }
-  }
+  constructor(private _http: HttpClient, private readonly router: Router) {}
 
   login(
     loginData: { email: string; password: string },
@@ -36,104 +21,83 @@ export class AuthService {
       user: `${this.api}/auth/user`,
     };
     const loginUrl = endpoints[role];
-    return this._http
-      .post<{
-        message: string;
-        success: boolean;
-        access_token: string;
-        [key: string]: any;
-      }>(loginUrl, loginData, { withCredentials: true })
-      .pipe(
-        map((response) => {
-          const accessToken = response.access_token;
-          if (accessToken) {
-            this.setAccessToken(accessToken);
-          }
-          return response;
-        }),
-        catchError((error) => {
-          console.log('Login error: ', error);
-          return throwError(() => error);
-        })
-      );
+    return this._http.post<{
+      message: string;
+      success: boolean;
+      access_token: string;
+      [key: string]: any;
+    }>(loginUrl, loginData, { withCredentials: true });
   }
 
   logout(role: string) {
     if (role === 'admin') {
-      return this._http
-        .patch(`${this.api}/admin/logout`, {}, { withCredentials: true })
-        .pipe(
-          tap(() => {
-            this.clearAccessToken();
-          }),
-          catchError((error) => {
-            console.error('error', error);
-            return throwError(() => error);
-          })
-        );
+      return this._http.patch(
+        `${this.api}/admin/logout`,
+        {},
+        { withCredentials: true }
+      );
     } else if (role === 'agency') {
-      return this._http
-        .patch(`${this.api}/agency/logout`, {}, { withCredentials: true })
-        .pipe(
-          tap(() => {
-            this.clearAccessToken();
-          }),
-          catchError((error) => {
-            console.error('error', error);
-            return throwError(() => error);
-          })
-        );
+      return this._http.patch(
+        `${this.api}/agency/logout`,
+        {},
+        { withCredentials: true }
+      );
     } else {
-      return this._http
-        .patch(`${this.api}/user/logout`, {}, { withCredentials: true })
-        .pipe(
-          tap(() => {
-            this.clearAccessToken();
-          }),
-          catchError((error) => {
-            console.error('UserAuthService: logout API error', error);
-            return throwError(() => error);
-          })
-        );
+      return this._http.patch(
+        `${this.api}/user/logout`,
+        {},
+        { withCredentials: true }
+      );
     }
   }
 
-  setAccessToken(token: string) {
-    this._accessTokenSubject.next(token);
-    this._cookie.set('accessToken', token, {
-      path: '/',
-      secure: true,
-      sameSite: 'strict',
-    });
-  }
-
-  getAccessToken(): string | null {
-    return this._accessTokenSubject.getValue();
-  }
-
-  clearAccessToken(): void {
-    this._accessTokenSubject.next(null);
-    this._cookie.remove('accessToken', { path: '/' });
-  }
-
-  refreshToken(): Observable<{ role: Role; isRefreshed: boolean }> {
-    return this._http.post<{ role: Role; isRefreshed: boolean }>(
-      `${this.api}/auth/refresh`,
-      {},
-      { withCredentials: true }
-    );
-  }
-
-  validateToken(): Observable<{ valid: boolean; role: string }> {
+  validateToken(): Observable<{
+    success: boolean;
+    message: string;
+    valid: boolean;
+    role: Role;
+  }> {
     return this._http
-      .post<{ valid: boolean; role: string }>(
-        `${this.api}/auth/validate-token`,
-        {},
-        { withCredentials: true }
-      )
-      .pipe(map((res) => res));
+      .post<{
+        success: boolean;
+        message: string;
+        valid: boolean;
+        role: Role;
+      }>(`${this.api}/auth/validate-token`, {}, { withCredentials: true })
+      .pipe(
+        catchError((error) => {
+          return of({
+            success: error.error.success,
+            message: error.error?.message,
+            valid: error.error.valid,
+            role: error.error?.role,
+          });
+        })
+      );
   }
-  isAuthenticated(): boolean {
-    return !!this.getAccessToken();
+
+  refreshToken(): Observable<{
+    success: string;
+    message: string;
+    role: Role;
+    isRefreshed: boolean;
+  }> {
+    return this._http
+      .post<{
+        success: string;
+        message: string;
+        role: Role;
+        isRefreshed: boolean;
+      }>(`${this.api}/auth/refresh`, {}, { withCredentials: true })
+      .pipe(
+        catchError((error) => {
+          return of({
+            success: error.error.success,
+            message: error.error?.message ,
+            role: error.error?.role,
+            isRefreshed: error.error.isRefreshed,
+          });
+        })
+      );
   }
 }
