@@ -69,7 +69,7 @@ export class SignupComponent {
         confirmPassword: new FormControl(null, [Validators.required]),
         phone: new FormControl('', [Validators.required, invalidPhone]),
       },
-      { validators: confirmPasswordValidator('password', 'confirmPassword') }
+      { validators: confirmPasswordValidator('password', 'confirmpassword') }
     );
   }
 

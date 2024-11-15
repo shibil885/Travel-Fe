@@ -26,6 +26,9 @@ export const specialChar = (control: AbstractControl): ValidationErrors | null =
 }
 
 export function confirmPasswordValidator(password: string, confirmPassword: string): ValidatorFn {
+  console.log('new', password);
+  console.log('confirm', confirmPassword);
+  
   return (formGroup: AbstractControl): ValidationErrors | null => {
     const passwordControl = formGroup.get(password);
     const confirmPasswordControl = formGroup.get(confirmPassword);

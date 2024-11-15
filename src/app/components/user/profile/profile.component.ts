@@ -20,6 +20,13 @@ import {
   letterOrNumber,
 } from '../../../validatores/name.validator';
 import { invalidPhone } from '../../../validatores/phone.validator';
+import {
+  confirmPasswordValidator,
+  lowerCase,
+  noDigit,
+  specialChar,
+  upperCase,
+} from '../../../validatores/password.validator';
 
 @Component({
   selector: 'app-user-profile',
@@ -32,22 +39,19 @@ import { invalidPhone } from '../../../validatores/phone.validator';
     ReactiveFormsModule,
   ],
   templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.css'], // corrected styleUrl to styleUrls
+  styleUrls: ['./profile.component.css'],
 })
 export class ProfileComponent implements OnInit {
   user!: IUser;
   profileForm!: FormGroup;
+  passwordForm!: FormGroup;
   selectedProfileImage!: File;
   showChangePasswordModal = false;
   progress: number | null = null;
   isUploading: boolean = false;
   isEditing = false;
-
-  passwordChange = {
-    currentPassword: '',
-    newPassword: '',
-    confirmPassword: '',
-  };
+  toggleProfile!: boolean;
+  togglePasswordForm!: boolean;
 
   constructor(
     private _userService: UserService,
@@ -57,6 +61,32 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit() {
     this.fetchUserData();
+    this.toggleProfile = true;
+    this.togglePasswordForm = false;
+    this.passwordForm = new FormGroup(
+      {
+        currentpassword: new FormControl('', [
+          Validators.required,
+          Validators.minLength(8),
+          upperCase,
+          lowerCase,
+          noDigit,
+          specialChar,
+        ]),
+        newpassword: new FormControl('', [
+          Validators.required,
+          Validators.minLength(8),
+          upperCase,
+          lowerCase,
+          noDigit,
+          specialChar,
+        ]),
+        confirmpassword: new FormControl('', [
+          Validators.required,
+        ]),
+      },
+      { validators: confirmPasswordValidator('newpassword', 'confirmpassword') }
+    );
   }
 
   fetchUserData() {
@@ -125,6 +155,8 @@ export class ProfileComponent implements OnInit {
   }
 
   toggleEdit() {
+    this.toggleProfile = true;
+    this.togglePasswordForm = false;
     if (this.isEditing && this.profileForm.valid) {
       this.saveChanges();
     }
@@ -143,13 +175,11 @@ export class ProfileComponent implements OnInit {
   }
 
   changePassword() {
-    if (
-      this.passwordChange.newPassword !== this.passwordChange.confirmPassword
-    ) {
-      this._toastService.showToast('New passwords do not match', 'error');
-      return;
+    if (this.isEditing) this.isEditing = false;
+    this.togglePasswordForm = true;
+    this.toggleProfile = false;
+    if (this.togglePasswordForm && !this.passwordForm.valid) {
+
     }
-    console.log('Changing password', this.passwordChange);
-    this.showChangePasswordModal = false;
   }
 }
