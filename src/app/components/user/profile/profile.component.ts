@@ -81,9 +81,7 @@ export class ProfileComponent implements OnInit {
           noDigit,
           specialChar,
         ]),
-        confirmpassword: new FormControl('', [
-          Validators.required,
-        ]),
+        confirmpassword: new FormControl('', [Validators.required]),
       },
       { validators: confirmPasswordValidator('newpassword', 'confirmpassword') }
     );
@@ -178,8 +176,18 @@ export class ProfileComponent implements OnInit {
     if (this.isEditing) this.isEditing = false;
     this.togglePasswordForm = true;
     this.toggleProfile = false;
-    if (this.togglePasswordForm && !this.passwordForm.valid) {
-
+    if (this.togglePasswordForm && this.passwordForm.valid) {
+      this._userService
+        .changePassword(this.passwordForm.value)
+        .subscribe((res) => {
+          if (res.success) {
+            this._toastService.showToast(res.message, 'success');
+            this.toggleProfile = true;
+            this.togglePasswordForm = false;
+            this.passwordForm.reset();
+            return;
+          }
+        });
     }
   }
 }

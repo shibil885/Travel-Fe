@@ -43,13 +43,12 @@ export class UserService {
     otp: string;
     email: string | null | undefined;
   }): Observable<any> {
-    return this.http
-      .post<{
-        message: string;
-        success: boolean;
-        user: IUser;
-        token: string;
-      }>(`${this.api}/otp/user`, formData, { withCredentials: true })
+    return this.http.post<{
+      message: string;
+      success: boolean;
+      user: IUser;
+      token: string;
+    }>(`${this.api}/otp/user`, formData, { withCredentials: true });
   }
 
   resendOtp(formData: { email: string | null | undefined }): Observable<any> {
@@ -102,6 +101,16 @@ export class UserService {
   getSinglePackage(id: string) {
     return this.http.get<{ success: boolean; package: IPackage }>(
       `${this.api}/user/package/${id}`,
+      {
+        withCredentials: true,
+      }
+    );
+  }
+
+  changePassword(passworData: FormGroup) {
+    return this.http.patch<{ success: boolean; message: string }>(
+      `${this.api}/user/changePassword`,
+      passworData,
       {
         withCredentials: true,
       }
