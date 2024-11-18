@@ -24,19 +24,23 @@
                     <thead class="bg-[#244855] text-white">
                         <tr>
                             <th class="px-4 py-2 border">Name</th>
-                            <th class="px-4 py-2 border">Country</th>
-                            <th class="px-4 py-2 border">Price</th>
+                            <th class="px-4 py-2 border">Discount Type</th>
+                            <th class="px-4 py-2 border">Expiry Date</th>
                             <th class="px-4 py-2 border">Status</th>
                             <th class="px-4 py-2 border">Actions</th>
                         </tr>
                     </thead>
-                    <tbody *ngIf="true">
-                        <tr  class="text-[#244855] text-center">
-                            <td class="px-4 py-2 border"> package.name</td>
+                    <tbody *ngIf="offers.length">
+                        <tr *ngFor="let offer of offers" class="text-[#244855] text-center">
+                            <td class="px-4 py-2 border"> {{offer.title}}</td>
+                            <td class="px-4 py-2 border"> {{offer.discount_type}}</td>
+                            <td class="px-4 py-2 border"> {{offer.expiry_date}}</td>
+                            <td class="px-4 py-2 border"> {{offer.isActive}}</td>
+                            <td class="px-4 py-2 border"> block </td>
                         </tr>
                     </tbody>
                 </table>
-                <p class="text-center text-gray-600 mt-8 mb-8 items-center" *ngIf="true"><b>No packages
+                <p class="text-center text-gray-600 mt-8 mb-8 items-center" *ngIf="!offers.length"><b>No packages
                         found for this
                         agency</b>
                 </p>

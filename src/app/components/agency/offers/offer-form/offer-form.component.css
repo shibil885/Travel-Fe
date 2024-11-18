@@ -1,69 +1,107 @@
-:host {
-  display: block;
-}
-/* 
-.bg-[#FBE9D0] {
-  background-color: #fbe9d0;
+:root {
+  --primary-gradient: linear-gradient(135deg, #244855, #E64833);
+  --input-bg: #FBE9D0;
+  --text-color: #874F41;
+  --label-color: #90AEAD;
+  --field-radius: 8px;
+  --shadow: rgba(0, 0, 0, 0.1) 0px 4px 8px;
 }
 
-.text-[#244855] {
+.coupon-form-container {
+  max-width: 400px;
+  width: 100%;
+  padding: 25px;
+  background-color: #FBE9D0;
+  border-radius: 10px;
+  box-shadow: var(--shadow);
+}
+
+.coupon-form-container h2 {
+  font-size: 1.8em;
+  color: #244855;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.form-field {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.form-field input,
+.form-field select,
+.form-field textarea {
+  width: 100%;
+  padding: 10px 15px;
+  font-size: 1rem;
+  border: 2px solid #90AEAD;
+  border-radius: var(--field-radius);
+  background: var(--input-bg);
+  color: var(--text-color);
+  transition: border-color 0.3s;
+}
+
+.form-field input:focus,
+.form-field select:focus,
+.form-field textarea:focus {
+  border-color: #244855;
+  outline: none;
+}
+
+.form-field label {
+  position: absolute;
+  top: 50%;
+  left: 15px;
+  transform: translateY(-50%);
+  color: var(--label-color);
+  font-size: 0.9rem;
+  pointer-events: none;
+  transition: 0.3s ease;
+}
+
+.form-field input:focus + label,
+.form-field input:not(:placeholder-shown) + label,
+.form-field select:focus + label,
+.form-field select:not(:placeholder-shown) + label,
+.form-field textarea:focus + label,
+.form-field textarea:not(:placeholder-shown) + label {
+  top: -6px;
+  background: #FBE9D0;
+  padding: 0 5px;
+  font-size: 0.75rem;
   color: #244855;
 }
 
-.text-[#874F41] {
-  color: #874f41;
+.submit-btn {
+  width: 100%;
+  padding: 12px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #ffffff;
+  border: none;
+  background: var(--primary-gradient);
+  cursor: pointer;
+  border-radius: var(--field-radius);
 }
 
-.border-[#90AEAD] {
-  border-color: #90aead;
+@media (max-width: 500px) {
+  .coupon-form-container {
+    padding: 20px;
+  }
+
+  .coupon-form-container h2 {
+    font-size: 1.6em;
+  }
 }
 
-.bg-[#244855] {
-  background-color: #244855;
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
 }
 
-.hover\:bg-[#1b3844]:hover {
-  background-color: #1b3844;
-}
-
-.focus\:border-[#244855]:focus {
-  border-color: #244855;
-}
-
-.focus\:ring-[#244855]:focus {
-  --tw-ring-color: #244855;
-} */
-
-input[type="checkbox"]:checked {
-  background-color: #244855;
-  border-color: #244855;
-}
-
-input[type="checkbox"]:focus {
-  --tw-ring-color: #244855;
-}
-
-.fas {
-  font-family: "Font Awesome 5 Free";
-  font-weight: 900;
-}
-
-.fa-percent::before {
-  content: "\f295";
-}
-
-.fa-dollar-sign::before {
-  content: "\f155";
-}
-
-.fa-calendar::before {
-  content: "\f133";
-}
-
-.fa-box::before {
-  content: "\f466";
-}
-
-.fa-users::before {
-  content: "\f0c0";
+@media (min-width: 768px) {
+  .form-grid {
+    grid-template-columns: 1fr 1fr;
+  }
 }

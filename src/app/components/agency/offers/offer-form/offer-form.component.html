@@ -1,181 +1,117 @@
-<!-- <div class="bg-[#FBE9D0] min-h-screen flex items-center justify-center p-4">
-    <form [formGroup]="offerForm" (ngSubmit)="onSubmit()" class="bg-white rounded-lg shadow-xl p-8 w-full max-w-2xl">
-        <h2 class="text-3xl font-bold text-[#244855] mb-6">{{ offer ? 'Edit Offer' : 'Add New Offer' }}</h2>
-        <div class="space-y-6">
-            <div>
-                <label for="title" class="block text-sm font-medium text-[#874F41]">Offer Title</label>
-                <input type="text" id="title" formControlName="title"
-                    class="mt-1 block w-full rounded-md border-[#90AEAD] shadow-sm focus:border-[#244855] focus:ring focus:ring-[#244855] focus:ring-opacity-50">
-            </div>
-
-            <div>
-                <label for="description" class="block text-sm font-medium text-[#874F41]">Description</label>
-                <textarea id="description" formControlName="description" rows="3"
-                    class="mt-1 block w-full rounded-md border-[#90AEAD] shadow-sm focus:border-[#244855] focus:ring focus:ring-[#244855] focus:ring-opacity-50"></textarea>
-            </div>
-            <div class="grid grid-cols-2 gap-4">
-                <div>
-                    <label for="discount_type" class="block text-sm font-medium text-[#874F41]">Discount Type</label>
-                    <select id="discount_type" formControlName="discount_type"
-                        class="mt-1 block w-full rounded-md border-[#90AEAD] shadow-sm focus:border-[#244855] focus:ring focus:ring-[#244855] focus:ring-opacity-50">
-                        <option value="">Select Type</option>
-                        <option *ngFor="let type of offerTypes" [value]="type">{{ type }}</option>
-                    </select>
-                </div>
-                <div>
-                    <label for="discount_value" class="block text-sm font-medium text-[#874F41]">Discount Value</label>
-                    <div class="mt-1 relative rounded-md shadow-sm">
-                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <i class="fas"
-                                [ngClass]="{'fa-percent': offerForm.get('discount_type')?.value === 'PERCENTAGE', 'fa-dollar-sign': offerForm.get('discount_type')?.value === 'FIXED'}"></i>
-                        </div>
-                        <input type="number" id="discount_value" formControlName="discount_value"
-                            class="block w-full pl-10 rounded-md border-[#90AEAD] shadow-sm focus:border-[#244855] focus:ring focus:ring-[#244855] focus:ring-opacity-50">
-                    </div>
-                </div>
-            </div>
-            <div>
-                <label for="expiry_date" class="block text-sm font-medium text-[#874F41]">Expiry Date</label>
-                <div class="mt-1 relative rounded-md shadow-sm">
-                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <i class="fas fa-calendar"></i>
-                    </div>
-                    <input type="date" id="expiry_date" formControlName="expiry_date"
-                        class="block w-full pl-10 rounded-md border-[#90AEAD] shadow-sm focus:border-[#244855] focus:ring focus:ring-[#244855] focus:ring-opacity-50">
-                </div>
-            </div>
-            <div>
-                <label for="applicable_packages" class="block text-sm font-medium text-[#874F41]">Applicable
-                    Packages</label>
-                <div class="mt-1 relative rounded-md shadow-sm">
-                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <i class="fas fa-box"></i>
-                    </div>
-                    <select id="applicable_packages" formControlName="applicable_packages" multiple
-                        class="block w-full pl-10 rounded-md border-[#90AEAD] shadow-sm focus:border-[#244855] focus:ring focus:ring-[#244855] focus:ring-opacity-50">
-                        <option *ngFor="let pkg of packages" [value]="pkg._id">{{ pkg.name }}</option>
-                    </select>
-                </div>
-            </div>
-            <div>
-                <label for="min_people" class="block text-sm font-medium text-[#874F41]">Minimum People</label>
-                <div class="mt-1 relative rounded-md shadow-sm">
-                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <i class="fas fa-users"></i>
-                    </div>
-                    <input type="number" id="min_people" formControlName="min_people"
-                        class="block w-full pl-10 rounded-md border-[#90AEAD] shadow-sm focus:border-[#244855] focus:ring focus:ring-[#244855] focus:ring-opacity-50">
-                </div>
-            </div>
-            <div class="flex items-center">
-                <input type="checkbox" id="isActive" formControlName="isActive"
-                    class="h-4 w-4 text-[#244855] focus:ring-[#244855] border-[#90AEAD] rounded">
-                <label for="isActive" class="ml-2 block text-sm text-[#874F41]">
-                    Active Offer
-                </label>
-            </div>
-        </div>
-        <div class="mt-8">
-            <button type="submit" [disabled]="!offerForm.valid"
-                class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#244855] hover:bg-[#1b3844] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#244855] disabled:opacity-50">
-                {{ offer ? 'Update Offer' : 'Create Offer' }}
-            </button>
-        </div>
-    </form>
-</div> -->
-
-<div class="flex h-screen">
+<div class="flex h-screen bg-[#F1F1F2]">
     <app-side-bar></app-side-bar>
     <div class="flex-1 flex flex-col overflow-hidden">
         <app-header></app-header>
-        <main class="flex-1 overflow-y-auto p-6 sm:p-4 relative">
-            <div class="min-h-screen flex items-center justify-center p-4">
-                <form [formGroup]="offerForm" (ngSubmit)="onSubmit()"
-                    class="bg-white rounded-lg shadow-xl p-8 w-full max-w-2xl">
-                    <h2 class="text-3xl font-bold text-[#244855] mb-6">{{ offer ? 'Edit Offer' : 'Add New Offer' }}</h2>
-                    <div class="space-y-6">
-                        <div>
-                            <label for="title" class="block text-sm font-medium text-[#874F41]">Offer Title</label>
-                            <input type="text" id="title" formControlName="title"
-                                class="mt-1 block w-full rounded-md border-[#90AEAD] shadow-sm focus:border-[#244855] focus:ring focus:ring-[#244855] focus:ring-opacity-50">
-                        </div>
-
-                        <div>
-                            <label for="description"
-                                class="block text-sm font-medium text-[#874F41]">Description</label>
-                            <textarea id="description" formControlName="description" rows="3"
-                                class="mt-1 block w-full rounded-md border-[#90AEAD] shadow-sm focus:border-[#244855] focus:ring focus:ring-[#244855] focus:ring-opacity-50"></textarea>
-                        </div>
-                        <div class="grid grid-cols-2 gap-4">
-                            <div>
-                                <label for="discount_type" class="block text-sm font-medium text-[#874F41]">Discount
-                                    Type</label>
-                                <select id="discount_type" formControlName="discount_type"
-                                    class="mt-1 block w-full rounded-md border-[#90AEAD] shadow-sm focus:border-[#244855] focus:ring focus:ring-[#244855] focus:ring-opacity-50">
-                                    <option value="">Select Type</option>
-                                    <option *ngFor="let type of offerTypes" [value]="type">{{ type }}</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label for="discount_value" class="block text-sm font-medium text-[#874F41]">Discount
-                                    Value</label>
-                                <div class="mt-1 relative rounded-md shadow-sm">
-                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                        <i class="fas"
-                                            [ngClass]="{'fa-percent': offerForm.get('discount_type')?.value === 'PERCENTAGE', 'fa-dollar-sign': offerForm.get('discount_type')?.value === 'FIXED'}"></i>
-                                    </div>
-                                    <input type="number" id="discount_value" formControlName="discount_value"
-                                        class="block w-full pl-10 rounded-md border-[#90AEAD] shadow-sm focus:border-[#244855] focus:ring focus:ring-[#244855] focus:ring-opacity-50">
-                                </div>
-                            </div>
-                        </div>
-                        <div>
-                            <label for="expiry_date" class="block text-sm font-medium text-[#874F41]">Expiry
-                                Date</label>
-                            <div class="mt-1 relative rounded-md shadow-sm">
-                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                    <i class="fas fa-calendar"></i>
-                                </div>
-                                <input type="date" id="expiry_date" formControlName="expiry_date"
-                                    class="block w-full pl-10 rounded-md border-[#90AEAD] shadow-sm focus:border-[#244855] focus:ring focus:ring-[#244855] focus:ring-opacity-50">
-                            </div>
-                        </div>
-                        <div>
-                            <label for="applicable_packages" class="block text-sm font-medium text-[#874F41]">Applicable
-                                Packages</label>
-                            <div class="mt-1 relative rounded-md shadow-sm">
-                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                    <i class="fas fa-box"></i>
-                                </div>
-                                <select id="applicable_packages" formControlName="applicable_packages" multiple
-                                    class="block w-full pl-10 rounded-md border-[#90AEAD] shadow-sm focus:border-[#244855] focus:ring focus:ring-[#244855] focus:ring-opacity-50">
-                                    <option *ngFor="let pkg of packages" [value]="pkg._id">{{ pkg.name }}</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div>
-                            <label for="min_people" class="block text-sm font-medium text-[#874F41]">Minimum
-                                People</label>
-                            <div class="mt-1 relative rounded-md shadow-sm">
-                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                    <i class="fas fa-users"></i>
-                                </div>
-                                <input type="number" id="min_people" formControlName="min_people"
-                                    class="block w-full pl-10 rounded-md border-[#90AEAD] shadow-sm focus:border-[#244855] focus:ring focus:ring-[#244855] focus:ring-opacity-50">
-                            </div>
-                        </div>
-                        <div class="flex items-center">
-                            <input type="checkbox" id="isActive" formControlName="isActive"
-                                class="h-4 w-4 text-[#244855] focus:ring-[#244855] border-[#90AEAD] rounded">
-                            <label for="isActive" class="ml-2 block text-sm text-[#874F41]">
-                                Active Offer
-                            </label>
+        <main class="flex-1 overflow-y-auto bg-[#F1F1F2] p-6 sm:p-4 relative">
+            <div class="flex justify-end items-end mx-auto p-5">
+                <button class="bg-[#E64833] text-white px-4 py-2 rounded-lg hover:bg-[#fc6955] transition duration-200">
+                    Cancel
+                </button>
+            </div>
+            <div class="luxury-form-container relative">
+                <form class="grid grid-cols-1 lg:grid-cols-2 gap-6" [formGroup]="offerForm" (ngSubmit)="onSubmit()">
+                    <div class="form-field relative">
+                        <input type="text" id="offerName" class="form-input" formControlName="offerName"
+                            aria-describedby="offerNameError" />
+                        <label for="offerName" class="floating-label">Offer Name</label>
+                        <div *ngIf="offerForm.get('offerName')?.touched && offerForm.get('offerName')?.invalid"
+                            id="offerNameError">
+                            <small *ngIf="offerForm.get('offerName')?.errors?.['required']"
+                                class="text-red-700 text-sm">
+                                Offer name is required*
+                            </small>
+                            <small *ngIf="offerForm.get('offerName')?.errors?.['minlength']"
+                                class="text-red-700 text-sm">
+                                Offer name must have at least 4 characters*
+                            </small>
                         </div>
                     </div>
-                    <div class="mt-8">
-                        <button type="submit" [disabled]="!offerForm.valid"
-                            class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#244855] hover:bg-[#1b3844] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#244855] disabled:opacity-50">
-                            {{ offer ? 'Update Offer' : 'Create Offer' }}
+                    <div class="form-field relative">
+                        <select id="offerType" class="form-input" formControlName="offerType"
+                            aria-describedby="offerTypeError">
+                            <option value="" disabled selected>Select Offer Type</option>
+                            <option value="percentage">Percentage</option>
+                            <option value="fixed">Fixed</option>
+                        </select>
+                        <label for="offerType" class="floating-label">Offer Type</label>
+                        <div *ngIf="offerForm.get('offerType')?.touched && offerForm.get('offerType')?.invalid"
+                            id="offerTypeError">
+                            <small *ngIf="offerForm.get('offerType')?.errors?.['required']"
+                                class="text-red-700 text-sm">
+                                Offer type is required*
+                            </small>
+                        </div>
+                    </div>
+                    <div class="form-field relative col-span-1 lg:col-span-2">
+                        <textarea id="description" class="form-input" formControlName="description" rows="3"
+                            aria-describedby="descriptionError"></textarea>
+                        <label for="description" class="floating-label">Description</label>
+                        <div *ngIf="offerForm.get('description')?.touched && offerForm.get('description')?.invalid"
+                            id="descriptionError">
+                            <small *ngIf="offerForm.get('description')?.errors?.['required']"
+                                class="text-red-700 text-sm">
+                                Description is required*
+                            </small>
+                            <small *ngIf="offerForm.get('description')?.errors?.['minlength']"
+                                class="text-red-700 text-sm">
+                                Description must have at least 10 characters*
+                            </small>
+                        </div>
+                    </div>
+                    <div class="form-field relative">
+                        <input type="date" id="expiryDate" class="form-input" formControlName="expiryDate"
+                            aria-describedby="expiryDateError" />
+                        <label for="expiryDate" class="floating-label">Expiry Date</label>
+                        <div *ngIf="offerForm.get('expiryDate')?.touched && offerForm.get('expiryDate')?.invalid"
+                            id="expiryDateError">
+                            <small *ngIf="offerForm.get('expiryDate')?.errors?.['required']"
+                                class="text-red-700 text-sm">
+                                Expiry date is required*
+                            </small>
+                            <small *ngIf="offerForm.get('expiryDate')?.errors?.['invalidDate']"
+                                class="text-red-700 text-sm">
+                                Expiry date must be a future date*
+                            </small>
+                        </div>
+                    </div>
+                    <div class="form-field relative" *ngIf="offerForm.get('offerType')?.value === 'percentage'">
+                        <input type="number" id="percentage" class="form-input" formControlName="percentage"
+                            aria-describedby="percentageError" />
+                        <label for="percentage" class="floating-label">Percentage</label>
+                        <div *ngIf="offerForm.get('percentage')?.touched && offerForm.get('percentage')?.invalid"
+                            id="percentageError">
+                            <small *ngIf="offerForm.get('percentage')?.errors?.['required']"
+                                class="text-red-700 text-sm">
+                                Percentage is required*
+                            </small>
+                            <small *ngIf="offerForm.get('percentage')?.errors?.['min']" class="text-red-700 text-sm">
+                                Percentage must be at least 1%*
+                            </small>
+                        </div>
+                    </div>
+                    <div class="form-field relative" *ngIf="offerForm.get('offerType')?.value === 'fixed'">
+                        <input type="number" id="discount_value" class="form-input" formControlName="discount_value"
+                            aria-describedby="discount_valueError" />
+                        <label for="discount_value" class="floating-label">Discount</label>
+                        <div *ngIf="offerForm.get('discount_value')?.touched && offerForm.get('discount_value')?.invalid"
+                            id="discount_valueError">
+                            <small *ngIf="offerForm.get('discount_value')?.errors?.['required']"
+                                class="text-red-700 text-sm">
+                                Discount is required*
+                            </small>
+                            <small *ngIf="offerForm.get('discount_value')?.errors?.['min']"
+                                class="text-red-700 text-sm">
+                                Discount must be at least 1*
+                            </small>
+                        </div>
+                    </div>
+                    <div class="form-field relative col-span-1 lg:col-span-2">
+                        <button type="submit" class="submit-btn" [ngStyle]="{
+                                'background': isNotValidForm
+                                    ? 'linear-gradient(135deg, #ff4d4d, #ff1a1a)'
+                                    : 'linear-gradient(135deg, #90AEAD, #244855)'
+                            }">
+                            Create Offer
                         </button>
                     </div>
                 </form>
