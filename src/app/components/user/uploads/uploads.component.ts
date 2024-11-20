@@ -1,20 +1,18 @@
 import { Component } from '@angular/core';
 import { HeaderSidebarComponent } from '../header-and-side-bar/header-and-side-bar.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { animate, style, transition, trigger } from '@angular/animations';
-interface Post {
-  id: number;
-  imageUrl: string;
-  caption: string;
-  likes: number;
-  comments: number;
-  createdAt: Date;
-  user: {
-    username: string;
-    profilePicture: string;
-  };
-}
+import { validateCaption } from '../../../validatores/caption.validator';
+import { PostService } from '../../../shared/services/post.service';
+import { ToastService } from '../../../shared/services/toaster.service';
+import { IPost } from '../../../interfaces/post.interface';
 
 @Component({
   selector: 'app-uploads',
@@ -38,17 +36,30 @@ interface Post {
   ],
 })
 export class UploadsComponent {
-  posts: Post[] = [];
-  selectedPost: Post | null = null;
+  posts: IPost[] = [];
+  selectedPost: IPost | null = null;
   isUploadModalOpen = false;
   newPostImage: string | ArrayBuffer | null = null;
-  newPostCaption = '';
+  imageError: string | null = null;
+  postForm!: FormGroup;
+  selectedImage!: File;
+  constructor(
+    private readonly _postService: PostService,
+    private readonly _toastService: ToastService
+  ) {}
 
-  constructor() {}
+  ngOnInit(): void {
+    this.fetchPosts();
+  }
 
-  ngOnInit(): void {}
+  fetchPosts() {
+    this._postService.fetchPosts().subscribe((res) => {
+      console.log('response', res.posts);
+      this.posts = res.posts;
+    });
+  }
 
-  openPostModal(post: Post): void {
+  openPostModal(post: IPost): void {
     this.selectedPost = post;
   }
 
@@ -67,42 +78,82 @@ export class UploadsComponent {
 
   openUploadModal(): void {
     this.isUploadModalOpen = true;
+    this.postForm = new FormGroup({
+      caption: new FormControl('', [validateCaption()]),
+      image: new FormControl('', [Validators.required]),
+    });
   }
 
   closeUploadModal(): void {
     this.isUploadModalOpen = false;
     this.newPostImage = null;
-    this.newPostCaption = '';
   }
 
   onFileSelected(event: Event): void {
     const file = (event.target as HTMLInputElement).files?.[0];
+    this.imageError = null;
+
     if (file) {
+      const validFileTypes = ['image/jpeg', 'image/png', 'image/gif'];
+      const maxFileSize = 5 * 1024 * 1024;
+
+      if (!validFileTypes.includes(file.type)) {
+        this.imageError = 'Only JPEG, PNG, or GIF files are allowed.';
+        this.postForm.get('image')?.setErrors({ invalidFileType: true });
+        return;
+      }
+
+      if (file.size > maxFileSize) {
+        this.imageError = 'File size must not exceed 5MB.';
+        this.postForm.get('image')?.setErrors({ fileTooLarge: true });
+        return;
+      }
+
       const reader = new FileReader();
       reader.onload = (e) => {
         this.newPostImage = e.target?.result || null;
+        this.postForm.patchValue({ image: this.newPostImage });
+        this.selectedImage = file;
       };
       reader.readAsDataURL(file);
+    } else {
+      this.imageError = 'Please select a valid image file.';
     }
   }
 
   uploadNewPost(): void {
-    if (this.newPostImage && this.newPostCaption) {
-      const newPost: Post = {
-        id: this.posts.length + 1,
-        imageUrl: this.newPostImage as string,
-        caption: this.newPostCaption,
-        likes: 0,
-        comments: 0,
-        createdAt: new Date(),
-        user: {
-          username: 'current_user',
-          profilePicture: 'https://picsum.photos/id/64/100/100',
-        },
-      };
-      this.posts.unshift(newPost);
-      this.closeUploadModal();
+    if (this.postForm.valid) {
+      const formData = new FormData();
+      formData.append('caption', this.postForm.get('caption')?.value);
+      formData.append('image', this.selectedImage);
+      this._postService.uploadPost(formData).subscribe((res) => {
+        if (res.success) {
+          this._toastService.showToast(res.message, 'success');
+          this.closeUploadModal();
+        }
+      });
+      this.newPostImage = null;
+      this.postForm.reset();
     }
   }
-}
 
+  get captionError(): string {
+    const captionControl = this.postForm.get('caption');
+    if (captionControl?.hasError('required')) {
+      return 'Caption is required.';
+    }
+    if (captionControl?.hasError('minLength')) {
+      return captionControl.getError('minLength');
+    }
+    if (captionControl?.hasError('maxLength')) {
+      return captionControl.getError('maxLength');
+    }
+    if (captionControl?.hasError('invalidCaption')) {
+      return captionControl.getError('invalidCaption');
+    }
+    return '';
+  }
+  get captionControl() {
+    return this.postForm.get('caption');
+  }
+}

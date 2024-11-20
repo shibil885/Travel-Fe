@@ -5,15 +5,15 @@
             <i class="fas fa-camera"></i>
             <h2>No Posts Yet</h2>
             <p>When you share photos, they'll appear here.</p>
-            <button (click)="openUploadModal()" class="btn-primary">Share your first photo</button>
+            <button (click)="openUploadModal()"><i class="fa-solid fa-plus"></i></button>
         </div>
         <div *ngIf="posts.length > 0" class="post-grid">
             <div *ngFor="let post of posts" class="post-item" (click)="openPostModal(post)">
                 <img [src]="post.imageUrl" [alt]="post.caption" class="post-image">
                 <div class="post-overlay">
                     <div class="post-info">
-                        <span><i class="fas fa-heart"></i> {{ formatNumber(post.likes) }}</span>
-                        <span><i class="fas fa-comment"></i> {{ formatNumber(post.comments) }}</span>
+                        <span><i class="fas fa-heart"></i> {{ formatNumber(post.likes.length) }}</span>
+                        <span><i class="fas fa-comment"></i> {{ formatNumber(post.comments.length) }}</span>
                     </div>
                 </div>
             </div>
@@ -38,8 +38,8 @@
                         <p><strong>{{ selectedPost.user.username }}</strong> {{ selectedPost.caption }}</p>
                     </div>
                     <div class="post-stats">
-                        <p><strong>{{ formatNumber(selectedPost.likes) }} likes</strong></p>
-                        <p><strong>{{ formatNumber(selectedPost.comments) }} comments</strong></p>
+                        <p><strong>{{ formatNumber(selectedPost.likes.length) }} likes</strong></p>
+                        <p><strong>{{ formatNumber(selectedPost.comments.length) }} comments</strong></p>
                     </div>
                     <div class="post-actions">
                         <button><i class="far fa-heart"></i></button>
@@ -56,23 +56,46 @@
     <div class="modal" *ngIf="isUploadModalOpen" [@fadeInOut]>
         <div class="modal-background" (click)="closeUploadModal()"></div>
         <div class="modal-content">
-            <button class="modal-close" (click)="closeUploadModal()">&times;</button>
             <div class="upload-modal">
                 <h2>Create New Post</h2>
-                <div class="image-preview" *ngIf="newPostImage">
-                    <img [src]="newPostImage" alt="New post preview">
-                </div>
-                <div class="file-input-wrapper" *ngIf="!newPostImage">
-                    <label for="file-input" class="file-input-label">
-                        <i class="fas fa-camera"></i>
-                        <span>Select from computer</span>
-                    </label>
-                    <input type="file" id="file-input" (change)="onFileSelected($event)" accept="image/*">
-                </div>
-                <textarea [(ngModel)]="newPostCaption" placeholder="Write a caption..." rows="3"></textarea>
-                <button (click)="uploadNewPost()" class="btn-primary"
-                    [disabled]="!newPostImage || !newPostCaption">Share</button>
+                <form [formGroup]="postForm" (ngSubmit)="uploadNewPost()">
+                    <!-- Image Preview -->
+                    <div class="image-preview" *ngIf="newPostImage">
+                        <img [src]="newPostImage" alt="New post preview">
+                    </div>
+
+                    <!-- File Input -->
+                    <div class="file-input-wrapper" *ngIf="!newPostImage">
+                        <label for="file-input" class="file-input-label">
+                            <i class="fas fa-camera"></i>
+                            <span>Select from your device</span>
+                        </label>
+                        <input type="file" id="file-input" (change)="onFileSelected($event)" accept="image/*" />
+                    </div>
+
+                    <!-- Image Validation Errors -->
+                    <div class="error" *ngIf="imageError">
+                        <p>{{ imageError }}</p>
+                    </div>
+
+                    <!-- Caption Input -->
+                    <textarea placeholder="Write a caption..." rows="3" formControlName="caption"></textarea>
+
+                    <!-- Caption Validation Errors -->
+                    <div *ngIf="captionControl?.invalid && captionControl?.touched" class="error">
+                        <p *ngIf="captionControl?.hasError('required')">Caption is required.</p>
+                        <p *ngIf="captionControl?.hasError('minLength')">Caption must be at least 3 characters long.</p>
+                        <p *ngIf="captionControl?.hasError('maxLength')">Caption must not exceed 255 characters.</p>
+                        <p *ngIf="captionControl?.hasError('invalidCaption')">
+                            {{ captionControl?.getError('invalidCaption') }}
+                        </p>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button class="btn-primary" [disabled]="postForm.invalid">Share</button>
+                </form>
             </div>
+
         </div>
     </div>
 </div>

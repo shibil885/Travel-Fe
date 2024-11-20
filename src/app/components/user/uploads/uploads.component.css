@@ -80,7 +80,9 @@ body {
 }
 
 .btn-primary {
-  background-color: #0095f6;
+  /* background-color: #0095f6;
+   */
+   background-color: #E64833;
   color: white;
   border: none;
   padding: 8px 16px;
@@ -360,3 +362,9 @@ body {
     max-width: none;
   }
 }
+.error {
+    color: red;
+    font-size: 0.875rem;
+    margin-top: 4px;
+  }
+  
