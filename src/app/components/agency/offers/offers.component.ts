@@ -49,9 +49,21 @@ export class OffersComponent {
         this.totalOffers = res.totalItems;
       });
   }
+
   addOffer() {
     this._router.navigate(['agency/addOffer']);
   }
-  onPageChange(page: number) {}
+  editOffer(id: string) {
+    this._router.navigate(['agency/editOffer', id]);
+  }
+
+  viewOffer(id: string) {
+    this._router.navigate(['/agency/viewOffer', id]);
+  }
+
+  onPageChange(page: number) {
+    this.currentPage = page;
+    this.fetchOffers();
+  }
   onSearch(text: string) {}
 }

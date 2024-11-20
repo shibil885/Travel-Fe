@@ -25,18 +25,30 @@
                         <tr>
                             <th class="px-4 py-2 border">Name</th>
                             <th class="px-4 py-2 border">Discount Type</th>
+                            <th class="px-4 py-2 border">Disc/Price</th>
                             <th class="px-4 py-2 border">Expiry Date</th>
                             <th class="px-4 py-2 border">Status</th>
-                            <th class="px-4 py-2 border">Actions</th>
+                            <th class="px-4 py-2 border">Edit</th>
+                            <th class="px-4 py-2 border">View</th>
                         </tr>
                     </thead>
                     <tbody *ngIf="offers.length">
                         <tr *ngFor="let offer of offers" class="text-[#244855] text-center">
-                            <td class="px-4 py-2 border"> {{offer.title}}</td>
+                            <td class="px-4 py-2 border font-semibold uppercase text-black"> {{offer.title}}</td>
                             <td class="px-4 py-2 border"> {{offer.discount_type}}</td>
-                            <td class="px-4 py-2 border"> {{offer.expiry_date}}</td>
-                            <td class="px-4 py-2 border"> {{offer.isActive}}</td>
-                            <td class="px-4 py-2 border"> block </td>
+                            <td class="px-4 py-2 border font-semibold"> {{offer.discount_type === 'fixed' ? '₹'
+                                +offer.discount_value : offer.percentage + '%'}}</td>
+                            <td class="px-4 py-2 border"> {{offer.expiry_date | date:'MMM d, y'}}</td>
+                            <td class="px-4 py-2 border font-semibold text-sm"
+                                [ngClass]="{ 'text-green-600': offer.isActive, 'text-red-600': !offer.isActive }">
+                                {{ offer.isActive ? 'Active' : 'Inactive' }}
+                            </td>
+                            <td class="px-4 py-2 border">
+                                <span class="text-sm bg-[#FBE9D0] px-2 py-1 cursor-pointer rounded-sm "(click)="editOffer(offer._id)">Edit</span>
+                            </td>
+                            <td class="px-4 py-2 border">
+                                <p class="hover:bg-[#f6766547] hover:shadow-lg py-1 rounded-md cursor-pointer" (click)="viewOffer(offer._id)">view</p>
+                            </td>
                         </tr>
                     </tbody>
                 </table>

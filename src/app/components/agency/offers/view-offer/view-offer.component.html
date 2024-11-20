@@ -1,0 +1,93 @@
+<div class="flex h-screen bg-[#F1F1F2]">
+    <app-side-bar></app-side-bar>
+    <div class="flex-1 flex flex-col overflow-hidden">
+        <app-header></app-header>
+        <main class="flex-1 overflow-y-auto bg-[#F1F1F2] p-6">
+            <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-lg" *ngIf="selectedOffer">
+                <div
+                    class="flex items-center justify-between bg-gradient-to-r from-purple-500 to-pink-500 text-white p-6 rounded-t-lg">
+                    <div>
+                        <h2 class="text-2xl font-bold">{{ selectedOffer.title }}</h2>
+                        <p class="text-sm mt-1">Expiry Date: <span>{{ selectedOffer.expiry_date | date }}</span></p>
+                        <p class="text-sm mt-1">
+                            Discount:
+                            <span *ngIf="selectedOffer?.discount_type === 'percentage'">{{ selectedOffer.percentage
+                                }}%</span>
+                            <span *ngIf="selectedOffer?.discount_type !== 'percentage'">{{ selectedOffer.discount_value
+                                | currency:'INR' }}</span>
+                        </p>
+                    </div>
+                    <button (click)="toggleOfferStatus()" [class.bg-green-500]="selectedOffer.isActive"
+                        [class.bg-red-500]="!selectedOffer.isActive"
+                        class="px-4 py-2 text-sm font-semibold rounded-lg shadow transition-colors duration-300 ease-in-out">
+                        {{ selectedOffer.isActive ? 'Active' : 'Inactive' }}
+                    </button>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-lg font-semibold mb-4">Applicable Packages</h3>
+                    <hr>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-4 mb-4">
+                        <div *ngFor="let pkg of applycable_Packages"
+                            class="group relative border rounded-lg shadow-md bg-white overflow-hidden transform transition-all hover:scale-105 hover:shadow-lg">
+                            <div class="relative h-40">
+                                <img [src]="pkg.images[0]" alt="Package Image"
+                                    class="w-full h-full object-cover group-hover:opacity-90" />
+                                <span
+                                    class="absolute top-2 left-2 bg-purple-600 text-white text-xs font-bold py-1 px-2 rounded-lg">
+                                    Featured
+                                </span>
+                            </div>
+                            <div class="p-4">
+                                <h3 class="text-lg font-semibold text-gray-800 group-hover:text-purple-600 transition">
+                                    {{ pkg.name }}
+                                </h3>
+                                <p class="text-gray-600 mt-2"> <span class="font-bold text-green-600">{{ pkg.price
+                                        | currency:'INR' }}</span></p>
+                            </div>
+                            <div
+                                class="absolute inset-0 bg-slate-200 bg-opacity-75 flex items-center justify-center text-white text-center text-sm font-bold opacity-0 group-hover:opacity-100 transition">
+                                <span
+                                    class="px-2 py-1 cursor-pointer rounded-md bg-gradient-to-r from-slate-400 to-slate-700"
+                                    (click)="removeOffer(pkg._id)">Remove</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p *ngIf="!selectedOffer.applicable_packages?.length"
+                    class="text-sm text-slate-500 text-center mb-5">No applicable packages</p>
+                    <hr>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-lg font-semibold mb-4">All Packages</h3>
+                    <hr>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">
+                        <div *ngFor="let pkg of packages"
+                            class="group relative border rounded-lg shadow-md bg-white overflow-hidden transform transition-all hover:scale-105 hover:shadow-lg">
+                            <div class="relative h-40">
+                                <img [src]="pkg.images[0]" alt="Package Image"
+                                    class="w-full h-full object-cover group-hover:opacity-90" />
+                                <span
+                                    class="absolute top-2 left-2 bg-purple-600 text-white text-xs font-bold py-1 px-2 rounded-lg">
+                                    Featured
+                                </span>
+                            </div>
+                            <div class="p-4">
+                                <h3 class="text-lg font-semibold text-gray-800 group-hover:text-purple-600 transition">
+                                    {{ pkg.name }}
+                                </h3>
+                                <p class="text-gray-600 mt-2"> <span class="font-bold text-green-600">{{ pkg.price
+                                        | currency:'INR' }}</span></p>
+                            </div>
+                            <div
+                                class="absolute inset-0 bg-slate-200 bg-opacity-75 flex items-center justify-center text-white text-center text-sm font-bold opacity-0 group-hover:opacity-100 transition">
+                                <span
+                                    class="px-2 py-1 cursor-pointer rounded-md bg-gradient-to-r from-slate-400 to-slate-700"
+                                    (click)="applyOffer(pkg._id)">Apply</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p *ngIf="!packages.length" class="text-sm text-slate-500 text-center mt-5">Add packages :)</p>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>

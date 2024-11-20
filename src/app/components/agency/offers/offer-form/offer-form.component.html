@@ -9,34 +9,35 @@
                 </button>
             </div>
             <div class="luxury-form-container relative">
-                <form class="grid grid-cols-1 lg:grid-cols-2 gap-6" [formGroup]="offerForm" (ngSubmit)="onSubmit()">
+                <form class="grid grid-cols-1 lg:grid-cols-2 gap-6" *ngIf="offerForm" [formGroup]="offerForm" (ngSubmit)="onSubmit()">
                     <div class="form-field relative">
-                        <input type="text" id="offerName" class="form-input" formControlName="offerName"
-                            aria-describedby="offerNameError" />
-                        <label for="offerName" class="floating-label">Offer Name</label>
-                        <div *ngIf="offerForm.get('offerName')?.touched && offerForm.get('offerName')?.invalid"
-                            id="offerNameError">
-                            <small *ngIf="offerForm.get('offerName')?.errors?.['required']"
-                                class="text-red-700 text-sm">
+                        <input type="text" id="title" class="form-input" formControlName="title"
+                            aria-describedby="titleError" />
+                        <label for="title" class="floating-label">Offer Name</label>
+                        <div *ngIf="offerForm.get('title')?.touched && offerForm.get('title')?.invalid" id="titleError">
+                            <small *ngIf="offerForm.get('title')?.errors?.['required']" class="text-red-700 text-sm">
                                 Offer name is required*
                             </small>
-                            <small *ngIf="offerForm.get('offerName')?.errors?.['minlength']"
-                                class="text-red-700 text-sm">
+                            <small *ngIf="offerForm.get('title')?.errors?.['minlength']" class="text-red-700 text-sm">
                                 Offer name must have at least 4 characters*
+                            </small>
+                            <small *ngIf="offerForm.get('title')?.errors?.['invalidCoupon']"
+                                class="text-red-700 text-sm">
+                                Invalid offer name*
                             </small>
                         </div>
                     </div>
                     <div class="form-field relative">
-                        <select id="offerType" class="form-input" formControlName="offerType"
-                            aria-describedby="offerTypeError">
+                        <select id="discount_type" class="form-input" formControlName="discount_type"
+                            aria-describedby="discount_typeError">
                             <option value="" disabled selected>Select Offer Type</option>
                             <option value="percentage">Percentage</option>
                             <option value="fixed">Fixed</option>
                         </select>
-                        <label for="offerType" class="floating-label">Offer Type</label>
-                        <div *ngIf="offerForm.get('offerType')?.touched && offerForm.get('offerType')?.invalid"
-                            id="offerTypeError">
-                            <small *ngIf="offerForm.get('offerType')?.errors?.['required']"
+                        <label for="discount_type" class="floating-label">Offer Type</label>
+                        <div *ngIf="offerForm.get('discount_type')?.touched && offerForm.get('discount_type')?.invalid"
+                            id="discount_typeError">
+                            <small *ngIf="offerForm.get('discount_type')?.errors?.['required']"
                                 class="text-red-700 text-sm">
                                 Offer type is required*
                             </small>
@@ -52,29 +53,32 @@
                                 class="text-red-700 text-sm">
                                 Description is required*
                             </small>
-                            <small *ngIf="offerForm.get('description')?.errors?.['minlength']"
+                            <small *ngIf="offerForm.get('description')?.errors?.['invalidDescription']"
                                 class="text-red-700 text-sm">
-                                Description must have at least 10 characters*
+                                Description
+                                must be 20-500 characters long and may only include letters, numbers, spaces, and common
+                                punctuation (.
+                                , ' ! ? -)*
                             </small>
                         </div>
                     </div>
                     <div class="form-field relative">
-                        <input type="date" id="expiryDate" class="form-input" formControlName="expiryDate"
-                            aria-describedby="expiryDateError" />
-                        <label for="expiryDate" class="floating-label">Expiry Date</label>
-                        <div *ngIf="offerForm.get('expiryDate')?.touched && offerForm.get('expiryDate')?.invalid"
-                            id="expiryDateError">
-                            <small *ngIf="offerForm.get('expiryDate')?.errors?.['required']"
+                        <input type="date" id="expiry_date" class="form-input" formControlName="expiry_date"
+                            aria-describedby="expiry_dateError" />
+                        <label for="expiry_date" class="floating-label">Expiry Date</label>
+                        <div *ngIf="offerForm.get('expiry_date')?.touched && offerForm.get('expiry_date')?.invalid"
+                            id="expiry_dateError">
+                            <small *ngIf="offerForm.get('expiry_date')?.errors?.['required']"
                                 class="text-red-700 text-sm">
                                 Expiry date is required*
                             </small>
-                            <small *ngIf="offerForm.get('expiryDate')?.errors?.['invalidDate']"
+                            <small *ngIf="offerForm.get('expiry_date')?.errors?.['invalidDate']"
                                 class="text-red-700 text-sm">
                                 Expiry date must be a future date*
                             </small>
                         </div>
                     </div>
-                    <div class="form-field relative" *ngIf="offerForm.get('offerType')?.value === 'percentage'">
+                    <div class="form-field relative" *ngIf="offerForm.get('discount_type')?.value === 'percentage'">
                         <input type="number" id="percentage" class="form-input" formControlName="percentage"
                             aria-describedby="percentageError" />
                         <label for="percentage" class="floating-label">Percentage</label>
@@ -85,11 +89,14 @@
                                 Percentage is required*
                             </small>
                             <small *ngIf="offerForm.get('percentage')?.errors?.['min']" class="text-red-700 text-sm">
-                                Percentage must be at least 1%*
+                                Percentage must be at least 1*
+                            </small>
+                            <small *ngIf="offerForm.get('percentage')?.errors?.['max']" class="text-red-700 text-sm">
+                                Percentage must be at most 99*
                             </small>
                         </div>
                     </div>
-                    <div class="form-field relative" *ngIf="offerForm.get('offerType')?.value === 'fixed'">
+                    <div class="form-field relative" *ngIf="offerForm.get('discount_type')?.value === 'fixed'">
                         <input type="number" id="discount_value" class="form-input" formControlName="discount_value"
                             aria-describedby="discount_valueError" />
                         <label for="discount_value" class="floating-label">Discount</label>
