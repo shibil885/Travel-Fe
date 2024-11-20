@@ -1,0 +1,131 @@
+.social-feed-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+  }
+  
+  .new-post-btn {
+    background-color: #3897f0;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-bottom: 20px;
+  
+    &:hover {
+      background-color: #1877f2;
+    }
+  }
+  
+  .new-post-form {
+    background-color: #fff;
+    border: 1px solid #dbdbdb;
+    border-radius: 5px;
+    padding: 20px;
+    margin-bottom: 20px;
+  
+    form {
+      display: flex;
+      flex-direction: column;
+  
+      input, textarea {
+        margin-bottom: 10px;
+        padding: 10px;
+        border: 1px solid #dbdbdb;
+        border-radius: 5px;
+      }
+  
+      button {
+        background-color: #3897f0;
+        color: white;
+        border: none;
+        padding: 10px;
+        border-radius: 5px;
+        cursor: pointer;
+  
+        &:disabled {
+          background-color: #b2dffc;
+          cursor: not-allowed;
+        }
+      }
+    }
+  }
+  
+  .post-card {
+    background-color: #fff;
+    border: 1px solid #dbdbdb;
+    border-radius: 5px;
+    margin-bottom: 20px;
+  }
+  
+  .post-header {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+  
+    .user-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      margin-right: 10px;
+    }
+  
+    .username {
+      font-weight: bold;
+    }
+  }
+  
+  .post-image {
+    width: 100%;
+    height: auto;
+  }
+  
+  .post-actions {
+    display: flex;
+    padding: 10px;
+  
+    button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+      margin-right: 15px;
+    }
+  }
+  
+  .post-caption, .post-comments {
+    padding: 0 10px;
+  
+    .username {
+      font-weight: bold;
+      margin-right: 5px;
+    }
+  }
+  
+  .add-comment {
+    display: flex;
+    padding: 10px;
+  
+    input {
+      flex-grow: 1;
+      border: none;
+      outline: none;
+    }
+  
+    button {
+      background: none;
+      border: none;
+      color: #3897f0;
+      font-weight: bold;
+      cursor: pointer;
+    }
+  }
+  
+  .post-time {
+    padding: 10px;
+    color: #8e8e8e;
+    font-size: 12px;
+  }

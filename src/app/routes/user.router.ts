@@ -12,6 +12,8 @@ import { BookedComponent } from '../components/user/booked/booked.component';
 import { SingleBookedComponent } from '../components/user/booked/single-booked/single-booked.component';
 import { WalletComponent } from '../components/user/wallet/wallet.component';
 import { ProfileComponent } from '../components/user/profile/profile.component';
+import { PostsComponent } from '../components/user/posts/posts.component';
+import { UploadsComponent } from '../components/user/uploads/uploads.component';
 
 export const userRouter: Routes = [
   {
@@ -78,6 +80,18 @@ export const userRouter: Routes = [
   {
     path: 'profile',
     component: ProfileComponent,
+    canActivate: [authGuard],
+    data: { role: 'user' },
+  },
+  {
+    path: 'posts',
+    component: PostsComponent,
+    canActivate: [authGuard],
+    data: { role: 'user' },
+  },
+  {
+    path: 'uploads',
+    component: UploadsComponent,
     canActivate: [authGuard],
     data: { role: 'user' },
   },

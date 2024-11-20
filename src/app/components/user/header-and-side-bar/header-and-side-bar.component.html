@@ -8,6 +8,7 @@
         <a [routerLink]="['/home']" class="text-gray-800 hover:text-indigo-600">Home</a>
         <a [routerLink]='["/agencies" ]' class="text-gray-800 hover:text-indigo-600">Agencies</a>
         <a [routerLink]='["/packages"]' class="text-gray-800 hover:text-indigo-600">Packages</a>
+        <a [routerLink]='["/posts" ]' class="text-gray-800 hover:text-indigo-600">Posts</a>
         <a [routerLink]='["/contact" ]' class="text-gray-800 hover:text-indigo-600">Contact</a>
       </nav>
       <button class="md:hidden text-gray-600 focus:outline-none" (click)="toggleMenu()">
@@ -18,6 +19,7 @@
         <a [routerLink]="['/home']" class="text-gray-800 hover:text-indigo-600">Home</a>
         <a [routerLink]="['/agencies']" class="text-gray-800 hover:text-indigo-600">Agencies</a>
         <a [routerLink]="['/packages']" class="text-gray-800 hover:text-indigo-600">Packages</a>
+        <a [routerLink]="['posts']" class="text-gray-800 hover:text-indigo-600">Posts</a>
         <a [routerLink]="['/contact']" class="text-gray-800 hover:text-indigo-600">Contact</a>
       </nav>
       <button class="profile-toggle" (click)="toggleSidebar()" aria-label="Toggle user profile sidebar">

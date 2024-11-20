@@ -1,0 +1,47 @@
+<app-header-sidebar></app-header-sidebar>
+<hr class="mt-10 mb-10">
+<app-search></app-search>
+<div class="social-feed-container">
+    <button (click)="toggleNewPostForm()" class="new-post-btn">
+        <i class="fas fa-plus-circle"></i> New Post
+    </button>
+
+    <div *ngIf="showNewPostForm" class="new-post-form">
+        <form [formGroup]="newPostForm" (ngSubmit)="addNewPost()">
+            <input type="text" formControlName="imageUrl" placeholder="Image URL" required>
+            <textarea formControlName="caption" placeholder="Write a caption..." required></textarea>
+            <button type="submit" [disabled]="!newPostForm.valid">Post</button>
+        </form>
+    </div>
+
+    <div class="post-list">
+        <div *ngFor="let post of posts" class="post-card">
+            <div class="post-header">
+                <img [src]="post.userAvatar" [alt]="post.username" class="user-avatar">
+                <span class="username">{{ post.username }}</span>
+            </div>
+            <img [src]="post.imageUrl" [alt]="post.caption" class="post-image">
+            <div class="post-actions">
+                <button (click)="likePost(post)" class="like-btn">
+                    <i class="fas fa-heart"></i> {{ post.likes }}
+                </button>
+                <button class="comment-btn">
+                    <i class="fas fa-comment"></i> {{ post.comments.length }}
+                </button>
+            </div>
+            <div class="post-caption">
+                <span class="username">{{ post.username }}</span> {{ post.caption }}
+            </div>
+            <div class="post-comments">
+                <div *ngFor="let comment of post.comments" class="comment">
+                    <span class="username">{{ comment.username }}</span> {{ comment.text }}
+                </div>
+            </div>
+            <div class="add-comment">
+                <input #commentInput type="text" placeholder="Add a comment...">
+                <button (click)="addComment(post, commentInput.value); commentInput.value = ''">Post</button>
+            </div>
+            <div class="post-time">{{ post.createdAt | date:'short' }}</div>
+        </div>
+    </div>
+</div>
