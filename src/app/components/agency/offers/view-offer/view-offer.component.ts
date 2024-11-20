@@ -123,7 +123,7 @@ export class ViewOfferComponent {
           this.getApplicableOffers()
         }
       });
-  }
+  } 
 
   toggleOfferStatus(): void {
     if (!this.selectedOfferId) {
