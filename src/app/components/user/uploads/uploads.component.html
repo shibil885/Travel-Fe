@@ -24,6 +24,7 @@
             </div>
         </div>
     </div>
+    
     <div class="modal" *ngIf="selectedPost" [@fadeInOut]>
         <div class="modal-background" (click)="closePostModal()"></div>
         <div class="modal-content">
@@ -34,12 +35,12 @@
                 </div>
                 <div class="post-details">
                     <div class="post-header">
-                        <img [src]="selectedPost.user.profilePicture" [alt]="selectedPost.user.username"
+                        <img [src]="selectedPost.userId.profilePicture" [alt]="selectedPost.userId.username"
                             class="user-avatar">
-                        <span class="username">{{ selectedPost.user.username }}</span>
+                        <span class="username">{{ selectedPost.userId.username }}</span>
                     </div>
                     <div class="post-caption">
-                        <p><strong>{{ selectedPost.user.username }}</strong> {{ selectedPost.caption }}</p>
+                        <p><strong>{{ selectedPost.userId.username }}</strong> {{ selectedPost.caption }}</p>
                     </div>
                     <div class="post-stats">
                         <p><strong>{{ formatNumber(selectedPost.likes.length) }} likes</strong></p>
@@ -48,8 +49,6 @@
                     <div class="post-actions">
                         <button><i class="far fa-heart"></i></button>
                         <button><i class="far fa-comment"></i></button>
-                        <!-- <button><i class="far fa-paper-plane"></i></button>
-                        <button class="bookmark"><i class="far fa-bookmark"></i></button> -->
                     </div>
                     <p class="post-date">{{ selectedPost.createdAt | date:'mediumDate' }}</p>
                 </div>

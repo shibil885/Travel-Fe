@@ -52,4 +52,11 @@ export class PostService {
       { withCredentials: true }
     );
   }
+  addComment(postId: string, comment: string) {
+    return this._http.patch<{ success: boolean; message: string }>(
+      `${this._api}/addComment/${postId}`,
+      { comment },
+      { withCredentials: true }
+    );
+  }
 }

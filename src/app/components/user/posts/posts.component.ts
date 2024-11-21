@@ -6,31 +6,35 @@ import {
   ViewChild,
 } from '@angular/core';
 import { HeaderSidebarComponent } from '../header-and-side-bar/header-and-side-bar.component';
-import {
-  ReactiveFormsModule,
-} from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { IPost } from '../../../interfaces/post.interface';
 import { PostService } from '../../../shared/services/post.service';
 import { IsLikedPipe } from '../../../shared/pipes/is-liked.pipe';
+import { animate, style, transition, trigger } from '@angular/animations';
 
 @Component({
   selector: 'app-posts',
   standalone: true,
-  imports: [
-    HeaderSidebarComponent,
-    ReactiveFormsModule,
-    CommonModule,
-    IsLikedPipe,
-  ],
+  imports: [HeaderSidebarComponent, IsLikedPipe, CommonModule, FormsModule],
   templateUrl: './posts.component.html',
   styleUrl: './posts.component.css',
+  animations: [
+    trigger('fadeInOut', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate('200ms', style({ opacity: 1 })),
+      ]),
+      transition(':leave', [animate('200ms', style({ opacity: 0 }))]),
+    ]),
+  ],
 })
 export class PostsComponent {
   posts: IPost[] = [];
   @ViewChild('like') likeIcon!: ElementRef;
-  @ViewChild('likeCount') likeCount!: ElementRef;
   currentUserId!: string;
+  commentText!: string;
+  selectedPost: IPost | null = null;
 
   constructor(private readonly _postService: PostService) {}
 
@@ -48,25 +52,41 @@ export class PostsComponent {
   }
 
   updateLike(postId: string, post: IPost) {
-    const liked = post.likes.some((like) => like.userId === this.currentUserId);
+    const liked = post.likes.some((like) => {
+      return like.userId === this.currentUserId;
+    });
     if (liked) {
       this._postService.removeLike(postId).subscribe((res) => {
         if (res.success) {
-          this.fetchPosts()
+          this.fetchPosts();
           this.likeIcon.nativeElement.style.color = 'black';
-
-          this.likeCount
         }
       });
     } else {
       this._postService.addLike(postId).subscribe((res) => {
         if (res.success) {
-          this.fetchPosts()
+          this.fetchPosts();
           this.likeIcon.nativeElement.style.color = 'red';
         }
       });
     }
   }
 
-  addComment(post: string, commentText: string) {}
+  addComment(postId: string) {
+    this._postService.addComment(postId, this.commentText).subscribe((res) => {
+      if (res.success) {
+        this.selectedPost = null;
+        this.commentText = '';
+        this.fetchPosts();
+      }
+    });
+  }
+
+  openPostModal(post: IPost) {
+    this.selectedPost = post;
+  }
+
+  closePostModal() {
+    this.selectedPost = null;
+  }
 }
