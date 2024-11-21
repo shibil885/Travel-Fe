@@ -54,7 +54,6 @@ export class UploadsComponent {
 
   fetchPosts() {
     this._postService.fetchPosts().subscribe((res) => {
-      console.log('response', res.posts);
       this.posts = res.posts;
     });
   }
@@ -129,9 +128,10 @@ export class UploadsComponent {
       this._postService.uploadPost(formData).subscribe((res) => {
         if (res.success) {
           this._toastService.showToast(res.message, 'success');
-          this.closeUploadModal();
+          this.fetchPosts();
         }
       });
+      this.closeUploadModal();
       this.newPostImage = null;
       this.postForm.reset();
     }

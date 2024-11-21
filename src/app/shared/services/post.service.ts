@@ -21,8 +21,34 @@ export class PostService {
   }
 
   fetchPosts() {
-    return this._http.get<{ success: boolean; message: string; posts: IPost[] }>(
-      `${this._api}/user`,
+    return this._http.get<{
+      success: boolean;
+      message: string;
+      posts: IPost[];
+    }>(`${this._api}/user`, { withCredentials: true });
+  }
+
+  fetchAllPosts() {
+    return this._http.get<{
+      success: boolean;
+      message: string;
+      posts: IPost[];
+      userId: string;
+    }>(`${this._api}`, { withCredentials: true });
+  }
+
+  addLike(postId: string) {
+    return this._http.patch<{ success: boolean; message: string }>(
+      `${this._api}/like/${postId}`,
+      {},
+      { withCredentials: true }
+    );
+  }
+
+  removeLike(postId: string) {
+    return this._http.patch<{ success: boolean; message: string }>(
+      `${this._api}/unlike/${postId}`,
+      {},
       { withCredentials: true }
     );
   }

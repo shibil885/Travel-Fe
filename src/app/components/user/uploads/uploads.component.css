@@ -1,7 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap");
 
 body {
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   background-color: #fafafa;
   color: #262626;
   margin: 0;
@@ -82,7 +82,7 @@ body {
 .btn-primary {
   /* background-color: #0095f6;
    */
-   background-color: #E64833;
+  background-color: #e64833;
   color: white;
   border: none;
   padding: 8px 16px;
@@ -363,8 +363,49 @@ body {
   }
 }
 .error {
-    color: red;
-    font-size: 0.875rem;
-    margin-top: 4px;
-  }
-  
+  color: red;
+  font-size: 0.875rem;
+  margin-top: 4px;
+}
+
+.post-item.upload-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px dashed #dbdbdb;
+  border-radius: 8px;
+  aspect-ratio: 1 / 1;
+  cursor: pointer;
+  background-color: #fafafa;
+  transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+.post-item.upload-item:hover {
+  border-color: #0095f6;
+  background-color: #f0f8ff;
+}
+
+.post-item.upload-item .upload-button {
+  background-color: #e64833;
+  color: white;
+  font-size: 32px;
+  border: none;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.post-item.upload-item .upload-button:hover {
+  background-color: #d83a2b;
+  transform: scale(1.1);
+}
+
+.post-item.upload-item .upload-button:active {
+  transform: scale(0.95);
+}

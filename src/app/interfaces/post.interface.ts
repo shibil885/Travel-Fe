@@ -6,12 +6,14 @@ export interface IPost {
   imageUrl: string;
   caption: string;
   likes: Array<{
-    userId: IUser;
+    userId: string;
+    user: IUser;
     createdAt: Date;
   }>;
   comments: Array<{
-    userId: IUser;
+    userId: string;
     comment: string;
+    user: IUser;
     createdAt: Date;
   }>;
   visibility: 'public' | 'private';
