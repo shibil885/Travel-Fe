@@ -28,13 +28,13 @@ export class CouponFormComponent implements OnInit {
   isEditMode = false;
   isNotValidForm!: boolean;
   constructor(
-    private fb: FormBuilder,
-    private couponService: CouponService,
-    private toastService: ToastService
+    private _fb: FormBuilder,
+    private _couponService: CouponService,
+    private _toastService: ToastService
   ) {}
 
   ngOnInit(): void {
-    this.couponForm = this.fb.group({
+    this.couponForm = this._fb.group({
       code: ['', [Validators.required, Validators.minLength(4), invalidCoupon]],
       discount_type: ['', Validators.required],
       description: ['', [Validators.required, descriptionValidator]],
@@ -75,11 +75,11 @@ export class CouponFormComponent implements OnInit {
 
     if (this.selectedCoupon) {
       this.isEditMode = true;
-      this.populateForm(this.selectedCoupon);
+      this._populateForm(this.selectedCoupon);
     }
   }
 
-  private populateForm(coupon: ICoupon): void {
+  private _populateForm(coupon: ICoupon): void {
     this.couponForm.patchValue({
       code: coupon.code,
       description: coupon.description,
@@ -106,21 +106,21 @@ export class CouponFormComponent implements OnInit {
       return;
     }
     if (this.isEditMode) {
-      this.couponService
+      this._couponService
         .editCoupon(this.selectedCoupon!._id, this.couponForm.value)
         .subscribe((res) => {
           if (res.success) {
-            this.toastService.showToast(res.message, 'success');
+            this._toastService.showToast(res.message, 'success');
           }
         });
       this.closeFormAfterAdditionOrEdit.emit();
       return;
     } else {
-      this.couponService
+      this._couponService
         .createCoupon(this.couponForm.value)
         .subscribe((res) => {
           if (res.success) {
-            this.toastService.showToast(res.message, 'success');
+            this._toastService.showToast(res.message, 'success');
           }
         });
       this.closeFormAfterAdditionOrEdit.emit();

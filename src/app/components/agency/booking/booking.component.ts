@@ -32,14 +32,14 @@ export class BookingComponent {
   renderAddForm = false;
   renderSingleBooking = false;
 
-  constructor(private bookingService: BookingService) {}
+  constructor(private _bookingService: BookingService) {}
 
   ngOnInit(): void {
     this.fetchBookings();
   }
 
   fetchBookings(): void {
-    this.bookingService
+    this._bookingService
       .getAllBookedPackagesForAgency(this.currentPage, this.limit)
       .subscribe((response) => {
         this.bookings = response.booking;

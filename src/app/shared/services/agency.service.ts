@@ -9,17 +9,17 @@ import { AuthService } from '../../auth/service/service.service';
   providedIn: 'root',
 })
 export class AgencyService {
-  private api = 'http://localhost:3000';
+  private _api = 'http://localhost:3000';
   constructor(
-    private http: HttpClient,
-    private authService: AuthService,
-    private router: Router
+    private _http: HttpClient,
+    private _authService: AuthService,
+    private _router: Router
   ) {}
 
   findEmail(email: string) {
-    return this.http
+    return this._http
       .post<{ isExisting: boolean }>(
-        `${this.api}/agency/isExistingMail`,
+        `${this._api}/agency/isExistingMail`,
         {
           email,
         },
@@ -36,9 +36,9 @@ export class AgencyService {
       );
   }
   findName(name: string) {
-    return this.http
+    return this._http
       .post<{ isExisting: boolean }>(
-        `${this.api}/agency/isExistingName`,
+        `${this._api}/agency/isExistingName`,
         {
           name,
         },
@@ -55,8 +55,8 @@ export class AgencyService {
       );
   }
   isConfirmed() {
-    return this.http
-      .get<{ isConfirmed: boolean }>(`${this.api}/agency/isConfirmed`, {
+    return this._http
+      .get<{ isConfirmed: boolean }>(`${this._api}/agency/isConfirmed`, {
         withCredentials: true,
       })
       .pipe(
@@ -73,8 +73,8 @@ export class AgencyService {
       );
   }
   registerAgency(formData: FormData): Observable<any> {
-    return this.http.post<{ agency: IAgency }>(
-      `${this.api}/agency/signup`,
+    return this._http.post<{ agency: IAgency }>(
+      `${this._api}/agency/signup`,
       formData,
       { withCredentials: true }
     );
@@ -83,16 +83,16 @@ export class AgencyService {
     otp: string;
     email: string | null | undefined;
   }): Observable<any> {
-    return this.http.post<{
+    return this._http.post<{
       agency: IAgency;
       message: string;
       success: boolean;
       token: string;
-    }>(`${this.api}/otp/agency`, formData, { withCredentials: true });
+    }>(`${this._api}/otp/agency`, formData, { withCredentials: true });
   }
   resendOtp(formData: { email: string | null | undefined }): Observable<any> {
-    return this.http.post<{ agency: IAgency }>(
-      `${this.api}/otp/resend`,
+    return this._http.post<{ agency: IAgency }>(
+      `${this._api}/otp/resend`,
       formData,
       { withCredentials: true }
     );

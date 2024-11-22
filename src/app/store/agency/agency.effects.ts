@@ -9,17 +9,17 @@ import { AuthService } from '../../auth/service/service.service';
 @Injectable()
 export class AgencyEffect {
   constructor(
-    private actions$: Actions,
-    private agencyService: AgencyService,
-    private router: Router,
-    private authService: AuthService,
+    private _actions$: Actions,
+    private _agencyService: AgencyService,
+    private _router: Router,
+    private _authService: AuthService,
   ) {}
 
   agencyLogin$ = createEffect(() =>
-    this.actions$.pipe(
+    this._actions$.pipe(
       ofType(agencyActions.agencyLogin),
       switchMap((data) =>
-        this.authService.login(data,'agency').pipe(
+        this._authService.login(data,'agency').pipe(
           map((data) => {
             return agencyActions.agencyLoginSuccess({
               agency: data['agency'],
@@ -44,20 +44,20 @@ export class AgencyEffect {
 
   agencyLoginSuccess$ = createEffect(
     () =>
-      this.actions$.pipe(
+      this._actions$.pipe(
         ofType(agencyActions.agencyLoginSuccess),
         tap((action) => {
-          this.router.navigate(['/agency/home']);
+          this._router.navigate(['/agency/home']);
         })
       ),
     { dispatch: false }
   );
 
   agencySignup$ = createEffect(() =>
-    this.actions$.pipe(
+    this._actions$.pipe(
       ofType(agencyActions.agencySignup),
       switchMap(({ agencyData: data }) =>
-        this.agencyService.registerAgency(data).pipe(
+        this._agencyService.registerAgency(data).pipe(
           map((response) => {
             return agencyActions.otpRenderFromSignup({
               agency: response?.agency,
@@ -72,10 +72,10 @@ export class AgencyEffect {
     )
   );
   submitOtp$ = createEffect(() =>
-    this.actions$.pipe(
+    this._actions$.pipe(
       ofType(agencyActions.submitOtp),
       switchMap((data) =>
-        this.agencyService.verifyOtp({ otp: data.otp, email: data.email }).pipe(
+        this._agencyService.verifyOtp({ otp: data.otp, email: data.email }).pipe(
           map((response) => {
             return agencyActions.agencySignupSuccess({
               agency: response.agency,
@@ -90,20 +90,20 @@ export class AgencyEffect {
   );
   agencySignupSuccess$ = createEffect(
     () =>
-      this.actions$.pipe(
+      this._actions$.pipe(
         ofType(agencyActions.agencySignupSuccess),
         tap((response) => {
           console.log();
-          this.router.navigate(['/agency/home']);
+          this._router.navigate(['/agency/home']);
         })
       ),
     { dispatch: false }
   );
   resendOtp$ = createEffect(() =>
-    this.actions$.pipe(
+    this._actions$.pipe(
       ofType(agencyActions.resendOtp),
       switchMap((data) =>
-        this.agencyService.resendOtp({ email: data.email }).pipe(
+        this._agencyService.resendOtp({ email: data.email }).pipe(
           map((res) => {
             return agencyActions.resendOtpSuccess({ agency: res.email });
           }),
@@ -118,12 +118,12 @@ export class AgencyEffect {
   );
   logout$ = createEffect(
     () =>
-      this.actions$.pipe(
+      this._actions$.pipe(
         ofType(agencyActions.logout),
         switchMap(() =>
-          this.authService.logout('agency').pipe(
+          this._authService.logout('agency').pipe(
             tap(() => {
-              this.router.navigate(['/agency/login'])
+              this._router.navigate(['/agency/login'])
             }),
             catchError((error) => {
               console.error('Logout error: ', error);

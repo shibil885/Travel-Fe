@@ -37,8 +37,8 @@ export class SinglePackageComponent {
   expandedPlan: number | null = null;
 
   constructor(
-    private packageService: PackageService,
-    private toastService: ToastService
+    private _packageService: PackageService,
+    private _toastService: ToastService
   ) {}
 
   ngOnInit() {
@@ -79,11 +79,11 @@ export class SinglePackageComponent {
   saveChanges() {
     this.package = JSON.parse(JSON.stringify(this.editedPackage));
     this.isEditing = false;
-    this.packageService
+    this._packageService
       .onSaveChanges(this.editedPackage, this.package._id)
       .subscribe((res) => {
         if (res.success) {
-          this.toastService.showToast(res.message, 'success');
+          this._toastService.showToast(res.message, 'success');
         }
       });
   }
@@ -91,11 +91,11 @@ export class SinglePackageComponent {
   toggleStatus(packageId: string | undefined) {
     if (this.package.isActive) {
       this.package.isActive = !this.package.isActive;
-      this.packageService.onChangeStatus(packageId, false)?.subscribe();
+      this._packageService.onChangeStatus(packageId, false)?.subscribe();
       return;
     }
     this.package.isActive = !this.package.isActive;
-    this.packageService.onChangeStatus(packageId, true)?.subscribe();
+    this._packageService.onChangeStatus(packageId, true)?.subscribe();
     return;
   }
 

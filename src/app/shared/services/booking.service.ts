@@ -9,18 +9,18 @@ import { tap } from 'rxjs';
   providedIn: 'root',
 })
 export class BookingService {
-  private api = 'http://localhost:3000';
-  constructor(private http: HttpClient) {}
+  private _api = 'http://localhost:3000';
+  constructor(private _http: HttpClient) {}
 
   createPayment(packageId: string | undefined, couponId: string) {
-    return this.http
+    return this._http
       .post<{
         success: boolean;
         amount: number;
         currency: string;
         id: string;
       }>(
-        `${this.api}/payment/create-order/`,
+        `${this._api}/payment/create-order/`,
         { packageId, couponId },
         { withCredentials: true }
       )
@@ -40,8 +40,8 @@ export class BookingService {
     couponId: string,
     bookingData: FormGroup
   ) {
-    return this.http.post<{ success: boolean; message: string }>(
-      `${this.api}/payment/verify`,
+    return this._http.post<{ success: boolean; message: string }>(
+      `${this._api}/payment/verify`,
       {
         razorpay_order_id,
         razorpay_payment_id,
@@ -58,45 +58,45 @@ export class BookingService {
     console.log('page', page);
     console.log('page', limit);
     const params = new HttpParams().set('page', page).set('limit', limit);
-    return this.http.get<{
+    return this._http.get<{
       success: boolean;
       booked: IBooking[];
       totalItems: number;
       currentPage: number;
-    }>(`${this.api}/booking/getAllBooked`, { params, withCredentials: true });
+    }>(`${this._api}/booking/getAllBooked`, { params, withCredentials: true });
   }
 
   getSingleBookedPackage(id: string) {
-    return this.http.get<{ success: boolean; bookedPackage: IBooking }>(
-      `${this.api}/booking/getSingleBookedPackage/${id}`,
+    return this._http.get<{ success: boolean; bookedPackage: IBooking }>(
+      `${this._api}/booking/getSingleBookedPackage/${id}`,
       { withCredentials: true }
     );
   }
 
   getAllBookedPackagesForAgency(page: number, limit: number) {
     const params = new HttpParams().set('page', page).set('limit', limit);
-    return this.http.get<{
+    return this._http.get<{
       success: boolean;
       booking: IBooking[];
       totalItems: number;
       currentPage: number;
-    }>(`${this.api}/booking/getAllBookingsForAgency`, {
+    }>(`${this._api}/booking/getAllBookingsForAgency`, {
       params,
       withCredentials: true,
     });
   }
   confirmBooking(bookingId: string, status: TravelConfirmationStatus) {
     console.log(status);
-    return this.http.patch<{ success: boolean; message: string }>(
-      `${this.api}/booking/confirmBooking/${bookingId}`,
+    return this._http.patch<{ success: boolean; message: string }>(
+      `${this._api}/booking/confirmBooking/${bookingId}`,
       { status },
       { withCredentials: true }
     );
   }
 
   cancelBooking(bookingId: string | undefined, user: string) {
-    return this.http.patch<{ success: boolean; message: string }>(
-      `${this.api}/booking/cancelBooking/${bookingId}`,
+    return this._http.patch<{ success: boolean; message: string }>(
+      `${this._api}/booking/cancelBooking/${bookingId}`,
       { user },
       { withCredentials: true }
     );

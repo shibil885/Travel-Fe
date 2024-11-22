@@ -25,10 +25,10 @@ import { CommonModule } from '@angular/common';
 export class ToastComponent implements OnInit {
   toastMessages: ToastMessage[] = [];
 
-  constructor(private toastService: ToastService) {}
+  constructor(private _toastService: ToastService) {}
 
   ngOnInit() {
-    this.toastService.toastState.subscribe((toast: ToastMessage) => {
+    this._toastService.toastState.subscribe((toast: ToastMessage) => {
       this.toastMessages.push(toast);
       setTimeout(() => this.removeToast(toast), 3000);
     });

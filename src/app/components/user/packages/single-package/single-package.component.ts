@@ -43,16 +43,16 @@ export class SinglePackageComponent {
 
   singlePackage!: IPackage;
 
-  renderPage$: Observable<boolean> = this.store.select(selectSuccess);
-  constructor(private store: Store, private router: Router) {}
+  renderPage$: Observable<boolean> = this._store.select(selectSuccess);
+  constructor(private _store: Store, private _router: Router) {}
   ngOnInit(): void {
     window.scrollTo(0, 0);
-    this.store.select(selectPackage).subscribe((data) => {
+    this._store.select(selectPackage).subscribe((data) => {
       if (data) {
         this.singlePackage = data;
         return;
       }
-      return this.router.navigate(['packages']);
+      return this._router.navigate(['packages']);
     });
   }
   onInfo() {

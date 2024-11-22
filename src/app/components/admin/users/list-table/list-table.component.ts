@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { MatIconModule } from '@angular/material/icon';
+import { IUser } from '../../../../models/user.model';
+import { IAgency } from '../../../../models/agency.model';
 
 @Component({
   selector: 'app-list-table',

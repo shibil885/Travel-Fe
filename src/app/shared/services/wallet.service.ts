@@ -7,12 +7,12 @@ import { ITransaction, IWallet } from '../../interfaces/wallet.interface';
   providedIn: 'root',
 })
 export class WalletService {
-  private api = 'http://localhost:3000';
+  private _api = 'http://localhost:3000';
 
-  constructor(private http: HttpClient) {}
+  constructor(private _http: HttpClient) {}
 
   getOrCreateUserWallet(): Observable<IWallet> {
-    return this.http.get<IWallet>(`${this.api}/wallet`, {
+    return this._http.get<IWallet>(`${this._api}/wallet`, {
       withCredentials: true,
     });
   }

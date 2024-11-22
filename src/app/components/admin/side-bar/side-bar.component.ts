@@ -18,8 +18,8 @@ export class SideBarComponent {
   notificationCount: number = 0;
 
   constructor(
-    private store: Store,
-    private notificationService: NotificationService
+    private _store: Store,
+    private _notificationService: NotificationService
   ) {}
 
   menuItems = [
@@ -52,7 +52,7 @@ export class SideBarComponent {
   
 
   ngOnInit(): void {
-    this.notificationService.getAllUnreadNotifications().subscribe((res) => {
+    this._notificationService.getAllUnreadNotifications().subscribe((res) => {
       this.notificationCount = res.length;
     });
   }
@@ -61,6 +61,6 @@ export class SideBarComponent {
   }
 
   logout() {
-    this.store.dispatch(logout());
+    this._store.dispatch(logout());
   }
 }

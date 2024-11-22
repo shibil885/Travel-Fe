@@ -10,14 +10,14 @@ import { FilterData } from '../../interfaces/filterData.interface';
 export class AdminService {
   private api = 'http://localhost:3000';
 
-  constructor(private http: HttpClient) {}
+  constructor(private _http: HttpClient) {}
 
   getAllAgencies(page: number = 1, limit: number): Observable<any> {
     const params = new HttpParams()
       .set('page', page.toString())
       .set('limit', limit.toString());
 
-    return this.http
+    return this._http
       .get(`${this.api}/admin/agencies`, { params, withCredentials: true });
   }
   getAllUsers(page: number = 1, limit: number): Observable<any> {
@@ -25,7 +25,7 @@ export class AdminService {
       .set('page', page.toString())
       .set('limit', limit.toString());
 
-    return this.http
+    return this._http
       .get(`${this.api}/admin/users`, { params, withCredentials: true })
       .pipe(
         map((response: any) => ({
@@ -42,7 +42,7 @@ export class AdminService {
     success: boolean;
     categories: any[];
   }> {
-    return this.http
+    return this._http
       .get<{ message: string; success: boolean; categories: any[] }>(
         `${this.api}/category/categories`,
         { withCredentials: true }
@@ -59,7 +59,7 @@ export class AdminService {
     id: string,
     status: string
   ): Observable<{ message: string; success: boolean }> {
-    return this.http
+    return this._http
       .patch<{ message: string; success: boolean }>(
         `${this.api}/admin/changeUserStatus/${id}`,
         { status },
@@ -79,7 +79,7 @@ export class AdminService {
     id: string,
     status: string
   ): Observable<{ message: string; success: boolean }> {
-    return this.http
+    return this._http
       .patch<{ message: string; success: boolean }>(
         `${this.api}/admin/changeAgencyStatus/${id}`,
         { status },
@@ -99,7 +99,7 @@ export class AdminService {
     id: string,
     status: string
   ): Observable<{ message: string; success: boolean }> {
-    return this.http
+    return this._http
       .patch<{ message: string; success: boolean }>(
         `${this.api}/admin/confirmation/${id}`,
         { status },
@@ -122,12 +122,12 @@ export class AdminService {
       params = params.append('isVerified', filters.isVerified.toString());
     if (filters.isConfirmed !== undefined)
       params = params.append('isConfirmed', filters.isConfirmed.toString());
-    return this.http.post(`${this.api}/admin/filter`, { user }, { params, withCredentials: true });
+    return this._http.post(`${this.api}/admin/filter`, { user }, { params, withCredentials: true });
   }
 
   searchUsers(searchText: string, user: string) {
     let params = new HttpParams().set('searchText', searchText);
-    return this.http.post(
+    return this._http.post(
       `${this.api}/admin/searchUsers`,
       { user },
       { params, withCredentials: true }

@@ -15,7 +15,7 @@ import { RouterLink } from '@angular/router';
 export class HeaderComponent {
   isMenuOpen: boolean = false;
 
-  constructor(private store: Store) {}
+  constructor(private _store: Store) {}
 
   toggleMenu(): void {
     this.isMenuOpen = !this.isMenuOpen;
@@ -23,6 +23,6 @@ export class HeaderComponent {
 
   userLogout(): void {
     console.log('User is logging out');
-    this.store.dispatch(logout());
+    this._store.dispatch(logout());
   }
 }

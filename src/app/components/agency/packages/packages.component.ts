@@ -44,7 +44,7 @@ export class PackagesComponent {
   limit: number = 5;
   totalItems!: number;
   currentPage: number = 1;
-  constructor(private packageService: PackageService) {}
+  constructor(private _packageService: PackageService) {}
 
   ngOnInit(): void {
     this.renderTableData();
@@ -63,7 +63,7 @@ export class PackagesComponent {
 
   renderTableData() {
     this.renderTableRelatedDatas = true;
-    this.packageService
+    this._packageService
       .getPackages(this.currentPage, this.limit)
       .subscribe((res) => {
         console.log(res);
@@ -90,7 +90,7 @@ export class PackagesComponent {
       this.renderTableData();
       return
     }
-    this.packageService.onSearchPackages(searchText).subscribe((res) =>{
+    this._packageService.onSearchPackages(searchText).subscribe((res) =>{
       this.packages = res.packages;
     })
   }

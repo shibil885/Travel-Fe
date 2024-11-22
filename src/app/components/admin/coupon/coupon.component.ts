@@ -42,7 +42,6 @@ import { PackagesComponent } from '../../user/packages/packages.component';
     MatNativeDateModule,
     MatSlideToggleModule,
     MatButtonModule,
-    PackagesComponent,
   ],
   templateUrl: './coupon.component.html',
   styleUrl: './coupon.component.css',
@@ -88,13 +87,13 @@ export class CouponComponent {
     { label: 'Status', key: 'isActive' },
     { label: 'Discount', key: 'discount_value' },
   ];
-  constructor(private fb: FormBuilder, private couponService: CouponService) {}
+  constructor(private _fb: FormBuilder, private _couponService: CouponService) {}
 
   ngOnInit(): void {
     this.fetchAllCoupons();
   }
   fetchAllCoupons() {
-    this.couponService
+    this._couponService
       .getAllCoupons(this.limit, this.currentPage)
       .subscribe((res) => {
         console.log(res);

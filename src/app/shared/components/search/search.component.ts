@@ -14,8 +14,8 @@ export class SearchComponent {
   @Output() searchUsersEvent = new EventEmitter()
   searchForm: FormGroup;
 
-  constructor(private fb: FormBuilder) {
-    this.searchForm = this.fb.group({
+  constructor(private _fb: FormBuilder) {
+    this.searchForm = this._fb.group({
       searchText: [''],
     });
   }

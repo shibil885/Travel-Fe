@@ -26,9 +26,9 @@ export class LoginComponent {
   reactiveForm!: FormGroup;
   invalidForm!: boolean;
   renderLogin!: boolean;
-  renderOtp$ = this.store.select(selectRenderOtpAgency);
-  mailToOtp$ = this.store.select(selectEmail);
-  constructor(private agencyService: AgencyService, private store: Store) {}
+  renderOtp$ = this._store.select(selectRenderOtpAgency);
+  mailToOtp$ = this._store.select(selectEmail);
+  constructor(private _agencyService: AgencyService, private _store: Store) {}
   ngOnInit(): void {
     this.renderLogin = true;
     this.reactiveForm = new FormGroup({
@@ -45,7 +45,7 @@ export class LoginComponent {
       this.invalidForm = true;
       return;
     }
-    this.store.dispatch(
+    this._store.dispatch(
       agencyActions.agencyLogin({
         email: formValue.email,
         password: formValue.password,

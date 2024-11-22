@@ -21,7 +21,7 @@ export class NotificationComponent implements OnInit {
   loading: boolean = false;
   errorMessage: string | null = null;
 
-  constructor(private notificationService: NotificationService) {}
+  constructor(private _notificationService: NotificationService) {}
 
   ngOnInit() {
     this.loadNotifications();
@@ -30,7 +30,7 @@ export class NotificationComponent implements OnInit {
   loadNotifications() {
     this.loading = true;
     this.errorMessage = null;
-    this.notificationService
+    this._notificationService
       .getNotifications()
       .pipe(
         catchError((error) => {
@@ -66,7 +66,7 @@ export class NotificationComponent implements OnInit {
 
   markAsRead(notification: Notification) {
     if (!notification.is_read) {
-      this.notificationService
+      this._notificationService
         .markAsRead(notification._id)
         .pipe(
           catchError((error) => {
@@ -84,7 +84,7 @@ export class NotificationComponent implements OnInit {
   }
 
   deleteNotification(notification: Notification) {
-    this.notificationService
+    this._notificationService
       .deleteNotification(notification._id)
       .pipe(
         catchError((error) => {

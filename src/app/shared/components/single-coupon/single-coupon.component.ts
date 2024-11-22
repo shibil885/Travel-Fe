@@ -33,8 +33,8 @@ export class SingleCouponComponent {
   @Output() closeModalEvent = new EventEmitter<void>();
 
   constructor(
-    private couponService: CouponService,
-    private toastService: ToastService
+    private _couponService: CouponService,
+    private _toastService: ToastService
   ) {}
 
   closeModal() {
@@ -55,9 +55,9 @@ export class SingleCouponComponent {
     }
   }
   onChangeStatus(id: string | undefined, status: boolean | undefined) {
-    this.couponService.changeStatus(id, status).subscribe((res) => {
+    this._couponService.changeStatus(id, status).subscribe((res) => {
       if (res.success) {
-        this.toastService.showToast(res.message, 'success');
+        this._toastService.showToast(res.message, 'success');
         this.selectedCoupon.isActive = !status;
         console.log(this.selectedCoupon.isActive);
         return;

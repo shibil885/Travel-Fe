@@ -13,31 +13,31 @@ export class ShowDetailsComponent {
   isUser!: boolean;
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private dialogRef: MatDialogRef<ShowDetailsComponent>,
-    private adminService: AdminService
+    private _dialogRef: MatDialogRef<ShowDetailsComponent>,
+    private _adminService: AdminService
   ) {
     this.isUser = !!data.username;
   }
   toggleActive(id: string, isActiveValue: boolean) {
     const action = isActiveValue ? 'block' : 'unblock';
     if (this.isUser) {
-      this.adminService.changeUserStatus(id, action).subscribe(() => {
+      this._adminService.changeUserStatus(id, action).subscribe(() => {
         this.data.isActive = !this.data.isActive;
       });
       return;
     }
-    this.adminService.changeAgencyStatus(id, action).subscribe(() => {
+    this._adminService.changeAgencyStatus(id, action).subscribe(() => {
       this.data.isActive = !this.data.isActive;
     });
     return;
   }
   toggleConfirmed(id: string, isConfirmedValue: boolean) {
     const action = isConfirmedValue ? 'declin' : 'confirm';
-    this.adminService.confirmation(id, action).subscribe(() => {
+    this._adminService.confirmation(id, action).subscribe(() => {
       this.data.isConfirmed = !this.data.isConfirmed;
     });
   }
   closeComponent() {
-    this.dialogRef.close();
+    this._dialogRef.close();
   }
 }

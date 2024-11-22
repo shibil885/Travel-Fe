@@ -8,7 +8,7 @@ import { IPackage } from '../../interfaces/package.interface';
   providedIn: 'root',
 })
 export class OfferService {
-  private readonly api = 'http://localhost:3000/offers';
+  private readonly _api = 'http://localhost:3000/offers';
   constructor(private readonly _http: HttpClient) {}
 
   getOffers(page: number, limit: number) {
@@ -19,12 +19,12 @@ export class OfferService {
       totalItems: number;
       message: string;
       info: boolean;
-    }>(this.api, { params, withCredentials: true });
+    }>(this._api, { params, withCredentials: true });
   }
 
   addOffer(offerData: FormBuilder) {
     return this._http.post<{ success: boolean; message: string }>(
-      `${this.api}/addOffer`,
+      `${this._api}/addOffer`,
       offerData,
       {
         withCredentials: true,
@@ -38,12 +38,12 @@ export class OfferService {
       info: boolean;
       offer: IOffer;
       message: string;
-    }>(`${this.api}/${offerId}`, { withCredentials: true });
+    }>(`${this._api}/${offerId}`, { withCredentials: true });
   }
 
   editOffer(offerId: string, offerData: IOffer) {
     return this._http.put<{ success: boolean; message: string }>(
-      `${this.api}/edit/${offerId}`,
+      `${this._api}/edit/${offerId}`,
       offerData,
       {
         withCredentials: true,
@@ -53,7 +53,7 @@ export class OfferService {
 
   applicableOffer(offerId: string) {
     return this._http.get<{ success: boolean; packages: IPackage[] }>(
-      `${this.api}/applicable/${offerId}`,
+      `${this._api}/applicable/${offerId}`,
       {
         withCredentials: true,
       }
@@ -66,14 +66,14 @@ export class OfferService {
       info: boolean;
       message: string;
       packages: IPackage[];
-    }>(`${this.api}/packages/${offerId}`, {
+    }>(`${this._api}/packages/${offerId}`, {
       withCredentials: true,
     });
   }
 
   applyOffer(offerId: string, packageId: string) {
     return this._http.patch<{ success: boolean; message: string }>(
-      `${this.api}/apply/${offerId}`,
+      `${this._api}/apply/${offerId}`,
       { packageId },
       { withCredentials: true }
     );
@@ -81,7 +81,7 @@ export class OfferService {
 
   removeOffer(offerId: string, packageId: string) {
     return this._http.patch<{ success: boolean; message: string }>(
-      `${this.api}/remove/${offerId}`,
+      `${this._api}/remove/${offerId}`,
       { packageId },
       { withCredentials: true }
     );

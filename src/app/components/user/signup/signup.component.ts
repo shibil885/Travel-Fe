@@ -35,18 +35,18 @@ import * as userActions from '../../../store/user/user.action';
 export class SignupComponent {
   reactiveForm!: FormGroup;
   isInvalidForm: boolean = false;
-  renderOtp$ = this.store.select(selectRenderOtpUser);
+  renderOtp$ = this._store.select(selectRenderOtpUser);
   renderSignup!: boolean;
-  mailToOtp$ = this.store.select(selectEmail);
+  mailToOtp$ = this._store.select(selectEmail);
   constructor(
-    private userService: UserService,
-    private agencyService: AgencyService,
-    private store: Store
+    private _userService: UserService,
+    private _agencyService: AgencyService,
+    private _store: Store
   ) {}
 
   ngOnInit(): void {
     this.renderSignup = true;
-    const existing = new Existing(this.agencyService, this.userService);
+    const existing = new Existing(this._agencyService, this._userService);
     this.reactiveForm = new FormGroup(
       {
         userName: new FormControl(null, [
@@ -80,6 +80,6 @@ export class SignupComponent {
     }
     this.renderSignup = false;
     const formValue = this.reactiveForm.value;
-    this.store.dispatch(userActions.userSignup(formValue));
+    this._store.dispatch(userActions.userSignup(formValue));
   }
 }

@@ -12,8 +12,8 @@ import * as adminActions from '../../../store/admin/admin.action'
 export class LoginComponent {
   email!: string;
   password!: string;
-  constructor(private store: Store) {}
+  constructor(private _store: Store) {}
   onSubmit() {
-    this.store.dispatch(adminActions.adminLogin({email:this.email,password:this.password}))
+    this._store.dispatch(adminActions.adminLogin({email:this.email,password:this.password}))
   }
 }

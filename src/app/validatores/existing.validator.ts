@@ -5,13 +5,13 @@ import { UserService } from '../shared/services/user.service';
 
 export class Existing {
   constructor(
-    private agencyService: AgencyService,
-    private userService: UserService
+    private _agencyService: AgencyService,
+    private _userService: UserService
   ) {}
   isExistingEmailUser(
     control: AbstractControl
   ): Observable<ValidationErrors | null> {
-    return this.userService.findEmail(control.value).pipe(
+    return this._userService.findEmail(control.value).pipe(
       map((data) => {
         return data.isExisting ? { isExistingEmail: true } : null;
       })
@@ -20,7 +20,7 @@ export class Existing {
   isExistingEmail(
     control: AbstractControl
   ): Observable<ValidationErrors | null> {
-    return this.agencyService.findEmail(control.value).pipe(
+    return this._agencyService.findEmail(control.value).pipe(
       map((data) => {
         return data.isExisting ? { isExistingEmail: true } : null;
       })
@@ -29,7 +29,7 @@ export class Existing {
   isExistingName(
     control: AbstractControl
   ): Observable<ValidationErrors | null> {
-    return this.agencyService.findName(control.value).pipe(
+    return this._agencyService.findName(control.value).pipe(
       map((data) => {
         return data.isExisting ? { isExistingEmail: true } : null;
       })

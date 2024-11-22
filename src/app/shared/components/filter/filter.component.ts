@@ -18,12 +18,12 @@ export class FilterComponent {
   searchForm: FormGroup;
 
   constructor(
-    private fb: FormBuilder,
-    private dialog: MatDialog,
-    @Inject(MAT_DIALOG_DATA) private data: any
+    private _fb: FormBuilder,
+    private _dialog: MatDialog,
+    @Inject(MAT_DIALOG_DATA) private _data: any
   ) {
-    this.isAgency = this.data;
-    this.searchForm = this.fb.group({
+    this.isAgency = this._data;
+    this.searchForm = this._fb.group({
       isActive: [true],
       isVerified: [true],
       isConfirmed: [true],
@@ -33,7 +33,7 @@ export class FilterComponent {
   onSubmit(): void {
     if (this.searchForm.valid) {
       this.filterDataEvent.emit(this.searchForm.value);
-      this.dialog.closeAll();
+      this._dialog.closeAll();
     }
   }
 
@@ -46,6 +46,6 @@ export class FilterComponent {
   }
 
   closeModal() {
-    this.dialog.closeAll();
+    this._dialog.closeAll();
   }
 }

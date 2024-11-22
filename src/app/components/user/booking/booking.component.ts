@@ -97,12 +97,12 @@ export class BookingComponent {
   ) {}
 
   ngOnInit() {
-    this.initializePackageDetails();
-    this.initializeForm();
-    this.fetchCoupons();
+    this._initializePackageDetails();
+    this._initializeForm();
+    this._fetchCoupons();
   }
 
-  private initializePackageDetails() {
+  private _initializePackageDetails() {
     this._store
       .select(selectPackage)
       .pipe(take(1))
@@ -128,7 +128,7 @@ export class BookingComponent {
       });
   }
 
-  private initializeForm() {
+  private _initializeForm() {
     this.bookingForm = this._fb.group({
       travelDates: ['', [Validators.required, dateValidator]],
       person: [
@@ -169,7 +169,7 @@ export class BookingComponent {
     this.updateTraveller(1);
   }
 
-  private fetchCoupons() {
+  private _fetchCoupons() {
     const id =
       this.packageDetails?._id ||
       this._localStorage.getItem('_packageId') ||
@@ -277,7 +277,7 @@ export class BookingComponent {
   }
 
   cancelCoupon() {
-    this.fetchCoupons();
+    this._fetchCoupons();
     this.discoundedPrice = 0;
     this.discount = 0;
     this.selectedCouponId = '';
@@ -313,7 +313,7 @@ export class BookingComponent {
             razorpay_order_id: string;
             razorpay_payment_id: string;
             razorpay_signature: string;
-          }) => this.handlePayment(response),
+          }) => this._handlePayment(response),
           prefill: {
             name: 'testUser',
             email: 'test@gmail.com',
@@ -330,7 +330,7 @@ export class BookingComponent {
     });
   }
 
-  private handlePayment(response: {
+  private _handlePayment(response: {
     razorpay_order_id: string;
     razorpay_payment_id: string;
     razorpay_signature: string;

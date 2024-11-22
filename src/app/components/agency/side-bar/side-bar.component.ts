@@ -36,11 +36,11 @@ export class SideBarComponent {
     },
   ];
 
-  constructor(private store: Store) {}
+  constructor(private _store: Store) {}
   toggleSidebar() {
     this.isCollapsed = !this.isCollapsed;
   }
   logout() {
-    this.store.dispatch(logout());
+    this._store.dispatch(logout());
   }
 }

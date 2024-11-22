@@ -50,10 +50,10 @@ export class SideBarComponent {
     { icon: 'help', label: 'Help', route: '/help' },
     { icon: 'logout', label: 'Logout', route: '/logout' },
   ];
-  constructor(private store: Store) {}
+  constructor(private _store: Store) {}
 
   ngOnInit(): void {
-    this.store.select(selectUser).subscribe((user) => {
+    this._store.select(selectUser).subscribe((user) => {
       this.user = user
     })
   }

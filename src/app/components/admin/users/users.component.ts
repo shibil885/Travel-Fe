@@ -18,9 +18,7 @@ import { PaginationComponent } from '../../../shared/components/pagination/pagin
   imports: [
     HeaderComponent,
     SideBarComponent,
-    FilterComponent,
     ReusableTableComponent,
-    DialogComponent,
     SearchComponent,
     MatIconModule,
     CommonModule,
@@ -45,9 +43,9 @@ export class UsersComponent {
   ];
 
   constructor(
-    private adminService: AdminService,
-    private dialog: MatDialog,
-    private snackBar: MatSnackBar
+    private _adminService: AdminService,
+    private _dialog: MatDialog,
+    private _snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -55,7 +53,7 @@ export class UsersComponent {
   }
 
   fetchUsers(page: number) {
-    this.adminService
+    this._adminService
       .getAllUsers(page, this.limit)
       .subscribe((response) => {
         this.users = response.users;
@@ -71,7 +69,7 @@ export class UsersComponent {
   }
 
   showToast(message: string, type: 'success' | 'error') {
-    this.snackBar.open(message, '😒', {
+    this._snackBar.open(message, '😒', {
       duration: 3000,
       panelClass: type === 'success' ? 'snack-success' : 'snack-error',
       horizontalPosition: 'right',
@@ -80,7 +78,7 @@ export class UsersComponent {
   }
 
   showSortAndFilter() {
-    const dialogRef = this.dialog.open(FilterComponent, {
+    const dialogRef = this._dialog.open(FilterComponent, {
       height: 'auto',
       panelClass: 'custom-dialog-container',
     });
@@ -93,7 +91,7 @@ export class UsersComponent {
   }
 
   onFilter(filterData: FilterData) {
-    this.adminService
+    this._adminService
       .getFilteredData(filterData, 'user')
       .subscribe((response) => {
         this.users = response;
@@ -104,7 +102,7 @@ export class UsersComponent {
       this.fetchUsers(this.currentPage);
       return;
     }
-    this.adminService.searchUsers(searchText, 'user').subscribe((res) => {
+    this._adminService.searchUsers(searchText, 'user').subscribe((res) => {
       this.users = res;
     });
   }

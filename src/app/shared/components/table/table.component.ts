@@ -17,7 +17,7 @@ export class ReusableTableComponent {
   @Input() data: any[] = []; 
   @Input() headers: { label: string, key: string }[] = [];  
   filteredData = [...this.data];
-  constructor(private dialog: MatDialog) {}
+  constructor(private _dialog: MatDialog) {}
 
   filter(event: Event) {
     const filter = (event.target as HTMLSelectElement).value;
@@ -26,7 +26,7 @@ export class ReusableTableComponent {
       : [...this.data];
   }
   showSinglePersonDetails(user: IAgency | IUser) {    
-    this.dialog.open(ShowDetailsComponent, {
+    this._dialog.open(ShowDetailsComponent, {
       width: '400px',
       data: user,
       panelClass: 'custom-dialog-container',

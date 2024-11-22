@@ -9,15 +9,15 @@ import { AuthService } from '../../auth/service/service.service';
 @Injectable()
 export class AdminEffects {
   constructor(
-    private authService: AuthService,
-    private actions$: Actions,
-    private router: Router
+    private _authService: AuthService,
+    private _actions$: Actions,
+    private _router: Router
   ) {}
   adminLogin$ = createEffect(() =>
-    this.actions$.pipe(
+    this._actions$.pipe(
       ofType(adminActions.adminLogin),
       switchMap((action) =>
-        this.authService.login(action,'admin').pipe(
+        this._authService.login(action,'admin').pipe(
           map((data) =>
             adminActions.adminLoginsuccess({
               token: data.access_token,
@@ -36,21 +36,21 @@ export class AdminEffects {
   );
   adminLoginSuccess$ = createEffect(
     () =>
-      this.actions$.pipe(
+      this._actions$.pipe(
         ofType(adminActions.adminLoginsuccess),
         tap(() => {
-          this.router.navigate(['/admin']);
+          this._router.navigate(['/admin']);
         })
       ),
     { dispatch: false }
   );
   logout$ = createEffect(() =>
-    this.actions$.pipe(
+    this._actions$.pipe(
       ofType(adminActions.logout),
       switchMap(() =>
-        this.authService.logout('admin').pipe(
+        this._authService.logout('admin').pipe(
           tap(() => {
-            this.router.navigate(['/admin/login']);
+            this._router.navigate(['/admin/login']);
           }),
           catchError((error) => {
             console.error('Logout error: ', error);

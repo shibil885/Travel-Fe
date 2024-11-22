@@ -11,10 +11,10 @@ export interface ToastMessage {
   providedIn: 'root',
 })
 export class ToastService {
-  private toastSubject = new Subject<ToastMessage>();
-  toastState = this.toastSubject.asObservable();
+  private _toastSubject = new Subject<ToastMessage>();
+  toastState = this._toastSubject.asObservable();
 
   showToast(message: string, type: 'success' | 'error' | 'info' | 'warning') {
-    this.toastSubject.next({ message, type });
+    this._toastSubject.next({ message, type });
   }
 }

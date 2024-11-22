@@ -6,35 +6,35 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class CategoryService {
-  private api = 'http://localhost:3000/category';
+  private _api = 'http://localhost:3000/category';
 
-  constructor(private http: HttpClient) {}
+  constructor(private _http: HttpClient) {}
 
   getCategories(currentPage: number, limit: number): Observable<any> {
     const params = new HttpParams()
       .set('currentPage', currentPage)
       .set('limit', limit);
-    return this.http.get(`${this.api}/categories`, {
+    return this._http.get(`${this._api}/categories`, {
       params,
       withCredentials: true,
     });
   }
 
   addCategory(category: any): Observable<any> {
-    return this.http.post(`${this.api}/add`, category, {
+    return this._http.post(`${this._api}/add`, category, {
       withCredentials: true,
     });
   }
   updateCategory(id: string | null, category: any) {
-    return this.http.put(`${this.api}/edit/${id}`, category, {
+    return this._http.put(`${this._api}/edit/${id}`, category, {
       withCredentials: true,
     });
   }
   changeStatus(id: string, status: boolean) {
-    return this.http.patch<{
+    return this._http.patch<{
       success: boolean;
       message: string;
       warning: boolean;
-    }>(`${this.api}/changeStatus/${id}`, { status }, { withCredentials: true });
+    }>(`${this._api}/changeStatus/${id}`, { status }, { withCredentials: true });
   }
 }

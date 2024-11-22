@@ -49,17 +49,17 @@ export class SignupComponent {
   filename: string = '';
   isInvalidForm!: boolean;
   renderSignupForm!: boolean;
-  renderOtpForm$ = this.store.select(selectRenderOtpAgency);
+  renderOtpForm$ = this._store.select(selectRenderOtpAgency);
   constructor(
-    private agencyService: AgencyService,
-    private userService: UserService,
-    private store: Store
+    private _agencyService: AgencyService,
+    private _userService: UserService,
+    private _store: Store
   ) {}
 
   ngOnInit(): void {
     this.formData = new FormData();
     this.renderSignupForm = true;
-    const existing = new Existing(this.agencyService, this.userService);
+    const existing = new Existing(this._agencyService, this._userService);
     this.reactiveForm = new FormGroup(
       {
         agencyName: new FormControl(
@@ -126,7 +126,7 @@ export class SignupComponent {
     this.formData.append('phone', formValue.phone);
     this.formData.append('place', formValue.place);
 
-    this.store.dispatch(
+    this._store.dispatch(
       agencyActions.agencySignup({ agencyData: this.formData })
     );
     this.renderSignupForm = false;

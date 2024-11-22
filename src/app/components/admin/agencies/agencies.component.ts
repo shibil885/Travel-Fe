@@ -20,8 +20,7 @@ import { PaginationComponent } from '../../../shared/components/pagination/pagin
   imports: [
     HeaderComponent,
     SideBarComponent,
-    FilterComponent,
-    DialogComponent,
+
     ReusableTableComponent,
     SearchComponent,
     PaginationComponent,
@@ -47,9 +46,9 @@ export class AgenciesComponent implements OnInit {
   ];
 
   constructor(
-    private adminService: AdminService,
-    private dialog: MatDialog,
-    private snackBar: MatSnackBar
+    private _adminService: AdminService,
+    private _dialog: MatDialog,
+    private _snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -57,7 +56,7 @@ export class AgenciesComponent implements OnInit {
   }
 
   fetchAgencies(page: number) {
-    this.adminService.getAllAgencies(page, this.limit).subscribe((response) => {
+    this._adminService.getAllAgencies(page, this.limit).subscribe((response) => {
       this.agencies = response.agencies;
       this.currentPage = response.currentPage;
       this.totalAgencies = response.totalAgencies;
@@ -70,7 +69,7 @@ export class AgenciesComponent implements OnInit {
   }
 
   showToast(message: string, type: 'success' | 'error') {
-    this.snackBar.open(message, '😒', {
+    this._snackBar.open(message, '😒', {
       duration: 3000,
       panelClass: type === 'success' ? 'snack-success' : 'snack-error',
       horizontalPosition: 'right',
@@ -79,7 +78,7 @@ export class AgenciesComponent implements OnInit {
   }
 
   showSortAndFilter() {
-    const dialogRef = this.dialog.open(FilterComponent, {
+    const dialogRef = this._dialog.open(FilterComponent, {
       height: 'auto',
       data: true,
       panelClass: 'custom-dialog-container',
@@ -94,7 +93,7 @@ export class AgenciesComponent implements OnInit {
   }
 
   onFilter(filterData: FilterData) {
-    this.adminService
+    this._adminService
       .getFilteredData(filterData, 'agency')
       .subscribe((response) => {
         this.agencies = response;
@@ -106,7 +105,7 @@ export class AgenciesComponent implements OnInit {
       this.fetchAgencies(this.currentPage);
       return;
     }
-    this.adminService.searchUsers(searchText, 'agency').subscribe((res) => {
+    this._adminService.searchUsers(searchText, 'agency').subscribe((res) => {
       this.agencies = res;
     });
   }

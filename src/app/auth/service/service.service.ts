@@ -8,17 +8,17 @@ import { Router } from '@angular/router';
   providedIn: 'root',
 })
 export class AuthService {
-  private readonly api = 'http://localhost:3000';
-  constructor(private _http: HttpClient, private readonly router: Router) {}
+  private readonly _api = 'http://localhost:3000';
+  constructor(private _http: HttpClient, private readonly _router: Router) {}
 
   login(
     loginData: { email: string; password: string },
     role: 'admin' | 'agency' | 'user'
   ) {
     const endpoints: { [key in 'admin' | 'agency' | 'user']: string } = {
-      admin: `${this.api}/auth/admin`,
-      agency: `${this.api}/auth/agency`,
-      user: `${this.api}/auth/user`,
+      admin: `${this._api}/auth/admin`,
+      agency: `${this._api}/auth/agency`,
+      user: `${this._api}/auth/user`,
     };
     const loginUrl = endpoints[role];
     return this._http.post<{
@@ -32,19 +32,19 @@ export class AuthService {
   logout(role: string) {
     if (role === 'admin') {
       return this._http.patch(
-        `${this.api}/admin/logout`,
+        `${this._api}/admin/logout`,
         {},
         { withCredentials: true }
       );
     } else if (role === 'agency') {
       return this._http.patch(
-        `${this.api}/agency/logout`,
+        `${this._api}/agency/logout`,
         {},
         { withCredentials: true }
       );
     } else {
       return this._http.patch(
-        `${this.api}/user/logout`,
+        `${this._api}/user/logout`,
         {},
         { withCredentials: true }
       );
@@ -63,7 +63,7 @@ export class AuthService {
         message: string;
         valid: boolean;
         role: Role;
-      }>(`${this.api}/auth/validate-token`, {}, { withCredentials: true })
+      }>(`${this._api}/auth/validate-token`, {}, { withCredentials: true })
       .pipe(
         catchError((error) => {
           return of({
@@ -88,7 +88,7 @@ export class AuthService {
         message: string;
         role: Role;
         isRefreshed: boolean;
-      }>(`${this.api}/auth/refresh`, {}, { withCredentials: true })
+      }>(`${this._api}/auth/refresh`, {}, { withCredentials: true })
       .pipe(
         catchError((error) => {
           return of({

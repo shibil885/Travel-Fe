@@ -58,11 +58,11 @@ export class AddPackageComponent {
   selectedImages: string[] = [];
   @ViewChild('imageError') imageError!: ElementRef;
   @Output() addFormCloseEvent = new EventEmitter();
-  private formData = new FormData();
+  private _formData = new FormData();
 
   constructor(
-    private packageService: PackageService,
-    private toasterService: ToastService
+    private _packageService: PackageService,
+    private _toasterService: ToastService
   ) {
     this.packageForm = new FormGroup({
       packageInfo: new FormGroup({
@@ -117,7 +117,7 @@ export class AddPackageComponent {
   }
 
   ngOnInit(): void {
-    this.packageService.getCategories().subscribe((res) => {
+    this._packageService.getCategories().subscribe((res) => {
       this.categories = res.categories;
     });
     this.packageForm.get('travelInfo.days')?.valueChanges.subscribe((days) => {
@@ -267,27 +267,34 @@ export class AddPackageComponent {
     }
     if (this.packageForm.valid) {
       const formValues = this.packageForm.value;
-      this.formData.append(
+      this._formData.append(
         'packageInfo',
         JSON.stringify(formValues.packageInfo)
       );
-      this.formData.append('travelInfo', JSON.stringify(formValues.travelInfo));
-      this.formData.append(
+      this._formData.append(
+        'travelInfo',
+        JSON.stringify(formValues.travelInfo)
+      );
+      this._formData.append(
         'packageFeatures',
         JSON.stringify(formValues.packageFeatures)
       );
-      this.formData.append('tourPlans', JSON.stringify(formValues.tourPlans));
+      this._formData.append(
+        'tourPlans',
+        JSON.stringify(formValues.tourPlans)
+      );
       this.selectedFiles.forEach((file: File) => {
-        this.formData.append('images', file);
+        this._formData.append('images', file);
       });
-      this.packageService.addPackages(this.formData).subscribe((res) => {
+      this._packageService.addPackages(this._formData).subscribe((res) => {
         if (res.success) {
-          this.toasterService.showToast(res.message, 'success');
+          this._toasterService.showToast(res.message, 'success');
           this.onCloseForm();
         }
       });
     }
   }
+  
   
   onCloseForm() {
     this.addFormCloseEvent.emit();

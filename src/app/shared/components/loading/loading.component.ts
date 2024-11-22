@@ -11,7 +11,7 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./loading.component.css'],
 })
 export class LoadingComponent {
-  isLoading$ = this.loadingService.loading$;
+  isLoading$ = this._loadingService.loading$;
 
-  constructor(private loadingService: LoadingService) {}
+  constructor(private _loadingService: LoadingService) {}
 }

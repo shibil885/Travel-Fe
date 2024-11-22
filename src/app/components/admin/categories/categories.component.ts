@@ -13,6 +13,7 @@ import { CommonModule } from '@angular/common';
 import { PaginationComponent } from '../../../shared/components/pagination/pagination.component';
 import { TruncatePipe } from '../../../shared/pipes/truncate.pipe';
 import { ToastService } from '../../../shared/services/toaster.service';
+import { ICategory } from '../../../interfaces/category.interface';
 
 @Component({
   selector: 'app-categories',
@@ -30,7 +31,7 @@ import { ToastService } from '../../../shared/services/toaster.service';
   styleUrls: ['./categories.component.css'],
 })
 export class CategoriesComponent {
-  categories: any = [];
+  categories: any[] = [];
   totalCategories!: number;
   limit: number = 5;
   currentPage: number = 1;
@@ -94,7 +95,7 @@ export class CategoriesComponent {
     }
   }
 
-  onEdit(category: any) {
+  onEdit(category: ICategory) {
     this.showAddForm = true;
     this.editMode = true;
     this.currentCategoryId = category._id;

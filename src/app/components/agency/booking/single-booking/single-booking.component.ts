@@ -19,8 +19,8 @@ export class SingleBookingComponent {
   @Output() closePageEvent = new EventEmitter();
 
   constructor(
-    private bookingService: BookingService,
-    private toastService: ToastService
+    private _bookingService: BookingService,
+    private _toastService: ToastService
   ) {}
 
   travelStatusOptions = ['Not Started', 'In Progress', 'Completed'];
@@ -30,25 +30,25 @@ export class SingleBookingComponent {
   }
 
   fetchbookingdata() {
-    this.bookingService.getSingleBookedPackage(this.id).subscribe((res) => {
+    this._bookingService.getSingleBookedPackage(this.id).subscribe((res) => {
       if (res.success) {
         this.booking = res.bookedPackage;
         return;
       }
-      this.toastService.showToast('Somthing went wrong', 'error');
+      this._toastService.showToast('Somthing went wrong', 'error');
     });
   }
 
   confirmBooking() {
     if (!this.booking) {
-      this.toastService.showToast('Somthing Went wrong', 'error');
+      this._toastService.showToast('Somthing Went wrong', 'error');
       return;
     }
-    this.bookingService
+    this._bookingService
       .confirmBooking(this.booking?._id, TravelConfirmationStatus.CONFIRMED)
       .subscribe((res) => {
         if (res.success) {
-          this.toastService.showToast(res.message, 'success');
+          this._toastService.showToast(res.message, 'success');
           this.fetchbookingdata();
         }
       });
@@ -56,11 +56,11 @@ export class SingleBookingComponent {
 
   cancelBooking(bookingId: string | undefined) {
     console.log('Booking cancelled:', this.booking);
-    this.bookingService.cancelBooking(bookingId, 'agency').subscribe((res) => {
+    this._bookingService.cancelBooking(bookingId, 'agency').subscribe((res) => {
       if (res.success) {
         if (this.booking?.confirmation)
           this.booking.confirmation = TravelConfirmationStatus.REJECTED;
-        this.toastService.showToast(res.message, 'success');
+        this._toastService.showToast(res.message, 'success');
       }
     });
   }

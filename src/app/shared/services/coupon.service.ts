@@ -7,13 +7,13 @@ import { takeUntil } from 'rxjs';
   providedIn: 'root',
 })
 export class CouponService {
-  private api = 'http://localhost:3000/coupon';
+  private _api = 'http://localhost:3000/coupon';
 
-  constructor(private http: HttpClient) {}
+  constructor(private _http: HttpClient) {}
 
   createCoupon(couponData: ICoupon) {
-    return this.http.post<{ success: boolean; message: string }>(
-      `${this.api}/createCoupon`,
+    return this._http.post<{ success: boolean; message: string }>(
+      `${this._api}/createCoupon`,
       couponData,
       {
         withCredentials: true,
@@ -22,8 +22,8 @@ export class CouponService {
   }
 
   editCoupon(id: string | undefined, editCouponData: ICoupon) {
-    return this.http.put<{ success: boolean; message: string }>(
-      `${this.api}/editCoupon/${id}`,
+    return this._http.put<{ success: boolean; message: string }>(
+      `${this._api}/editCoupon/${id}`,
       editCouponData,
       {
         withCredentials: true,
@@ -32,8 +32,8 @@ export class CouponService {
   }
 
   changeStatus(id: string | undefined, status: boolean | undefined) {
-    return this.http.patch<{ success: boolean; message: string }>(
-      `${this.api}/changeStatus/${id}`,
+    return this._http.patch<{ success: boolean; message: string }>(
+      `${this._api}/changeStatus/${id}`,
       { status },
       { withCredentials: true }
     );
@@ -43,20 +43,20 @@ export class CouponService {
     const params = new HttpParams()
       .set('limit', limit)
       .set('currentPage', currentPage);
-    return this.http.get<{
+    return this._http.get<{
       success: boolean;
       message: string;
       currentPage: number;
       totalItems: number;
       coupons: ICoupon[];
-    }>(`${this.api}/getAllCoupons`, {
+    }>(`${this._api}/getAllCoupons`, {
       params,
       withCredentials: true,
     });
   }
   getCouponsToUser(packageId: string | undefined) {
-    return this.http.get<{ success: boolean; coupons: ICoupon[] }>(
-      `${this.api}/getCouponsForUser/${packageId}`,
+    return this._http.get<{ success: boolean; coupons: ICoupon[] }>(
+      `${this._api}/getCouponsForUser/${packageId}`,
       {
         withCredentials: true,
       }

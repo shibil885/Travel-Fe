@@ -24,8 +24,8 @@ export class LoginComponent {
   invalidForm!: boolean;
   renderLogin: boolean = true;
   renderOtp: boolean = false;
-  constructor(private store: Store) {
-    this.store.select(selectRenderOtpUser).subscribe((res) => {
+  constructor(private _store: Store) {
+    this._store.select(selectRenderOtpUser).subscribe((res) => {
       this.renderOtp = res;
       this.renderLogin = false;
     });
@@ -51,7 +51,7 @@ export class LoginComponent {
       this.invalidForm = true;
       return;
     }
-    this.store.dispatch(
+    this._store.dispatch(
       userActions.userLogin({
         email: formValue.email,
         password: formValue.password,
