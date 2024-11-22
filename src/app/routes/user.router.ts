@@ -14,6 +14,8 @@ import { WalletComponent } from '../components/user/wallet/wallet.component';
 import { ProfileComponent } from '../components/user/profile/profile.component';
 import { PostsComponent } from '../components/user/posts/posts.component';
 import { UploadsComponent } from '../components/user/uploads/uploads.component';
+import { ForgotPasswordComponent } from '../components/user/forgot-password/forgot-password.component';
+import { ForgotPasswordFormComponent } from '../components/user/forgot-password/forgot-password-form/forgot-password-form.component';
 
 export const userRouter: Routes = [
   {
@@ -93,6 +95,18 @@ export const userRouter: Routes = [
     path: 'uploads',
     component: UploadsComponent,
     canActivate: [authGuard],
+    data: { role: 'user' },
+  },
+  {
+    path: 'forgotPassword',
+    component: ForgotPasswordComponent,
+    canActivate: [preventGuard],
+    data: { role: 'user' },
+  },
+  {
+    path: 'resetPassword/:id',
+    component: ForgotPasswordFormComponent,
+    canActivate: [preventGuard],
     data: { role: 'user' },
   },
 ];

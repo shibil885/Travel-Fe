@@ -11,12 +11,12 @@ import { FormGroup } from '@angular/forms';
   providedIn: 'root',
 })
 export class UserService {
-  private readonly api = 'http://localhost:3000';
-  constructor(private http: HttpClient, private authService: AuthService) {}
+  private readonly _api = 'http://localhost:3000';
+  constructor(private _http: HttpClient, private _authService: AuthService) {}
 
   findEmail(email: string) {
-    return this.http
-      .post<{ isExisting: boolean }>(`${this.api}/user/isExistingMail`, {
+    return this._http
+      .post<{ isExisting: boolean }>(`${this._api}/user/isExistingMail`, {
         email,
       })
       .pipe(
@@ -32,8 +32,8 @@ export class UserService {
 
   registerUser(formData: any) {
     console.log('formdata', formData);
-    return this.http.post<{ user: IUser; message: string; success: boolean }>(
-      `${this.api}/user/signup`,
+    return this._http.post<{ user: IUser; message: string; success: boolean }>(
+      `${this._api}/user/signup`,
       formData,
       { withCredentials: true }
     );
@@ -43,25 +43,25 @@ export class UserService {
     otp: string;
     email: string | null | undefined;
   }): Observable<any> {
-    return this.http.post<{
+    return this._http.post<{
       message: string;
       success: boolean;
       user: IUser;
       token: string;
-    }>(`${this.api}/otp/user`, formData, { withCredentials: true });
+    }>(`${this._api}/otp/user`, formData, { withCredentials: true });
   }
 
   resendOtp(formData: { email: string | null | undefined }): Observable<any> {
-    return this.http.post<{ user: IUser; success: boolean; message: string }>(
-      `${this.api}/otp/resend`,
+    return this._http.post<{ user: IUser; success: boolean; message: string }>(
+      `${this._api}/otp/resend`,
       formData,
       { withCredentials: true }
     );
   }
 
   getUserData() {
-    return this.http.get<{ success: boolean; user: IUser; message: string }>(
-      `${this.api}/user/details`,
+    return this._http.get<{ success: boolean; user: IUser; message: string }>(
+      `${this._api}/user/details`,
       {
         withCredentials: true,
       }
@@ -69,15 +69,15 @@ export class UserService {
   }
 
   uploadProfileImg(data: FormData) {
-    return this.http.patch(`${this.api}/user/profileImage-update`, data, {
+    return this._http.patch(`${this._api}/user/profileImage-update`, data, {
       withCredentials: true,
       reportProgress: true,
       observe: 'events',
     });
   }
   updateUserProfile(userData: FormGroup) {
-    return this.http.patch<{ success: boolean; message: string }>(
-      `${this.api}/user/update-userProfile`,
+    return this._http.patch<{ success: boolean; message: string }>(
+      `${this._api}/user/update-userProfile`,
       userData,
       {
         withCredentials: true,
@@ -89,18 +89,18 @@ export class UserService {
     const params = new HttpParams()
       .set('limit', limit)
       .set('currentPage', page);
-    return this.http.get<{
+    return this._http.get<{
       success: boolean;
       message: string;
       packages: IPackage[];
       packagesCount: number;
       currentPage: number;
-    }>(`${this.api}/user/getPackages`, { params, withCredentials: true });
+    }>(`${this._api}/user/getPackages`, { params, withCredentials: true });
   }
 
   getSinglePackage(id: string) {
-    return this.http.get<{ success: boolean; package: IPackage }>(
-      `${this.api}/user/package/${id}`,
+    return this._http.get<{ success: boolean; package: IPackage }>(
+      `${this._api}/user/package/${id}`,
       {
         withCredentials: true,
       }
@@ -108,12 +108,36 @@ export class UserService {
   }
 
   changePassword(passworData: FormGroup) {
-    return this.http.patch<{ success: boolean; message: string }>(
-      `${this.api}/user/changePassword`,
+    return this._http.patch<{ success: boolean; message: string }>(
+      `${this._api}/user/changePassword`,
       passworData,
       {
         withCredentials: true,
       }
+    );
+  }
+
+  generatPassword(email: string) {
+    return this._http.patch<{ success: boolean; message: string }>(
+      `${this._api}/auth/resetLink`,
+      {
+        email,
+        role: 'user',
+      },
+      { withCredentials: true }
+    );
+  }
+
+  resetPassword(userId: string | null, password: string) {
+    console.log('invoked', userId);
+    return this._http.patch<{ success: boolean; message: string }>(
+      `${this._api}/auth/resetPassword`,
+      {
+        password,
+        userId: userId,
+        role: 'user',
+      },
+      { withCredentials: true }
     );
   }
 }
