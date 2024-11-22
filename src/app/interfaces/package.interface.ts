@@ -1,5 +1,6 @@
-import { IAgency } from "../models/agency.model";
-import { ICategory } from "./category.interface";
+import { IAgency } from '../models/agency.model';
+import { ICategory } from './category.interface';
+import { IOffer } from './offer.interface';
 
 interface TourPlan {
   day: number;
@@ -23,5 +24,6 @@ export interface IPackage {
   days: string;
   tourPlans: TourPlan[];
   images: string[];
+  offerId: IOffer;
   isActive: boolean;
 }

@@ -60,6 +60,7 @@ export class UploadsComponent {
 
   openPostModal(post: IPost): void {
     this.selectedPost = post;
+    console.log(this.selectedPost);
   }
 
   closePostModal(): void {

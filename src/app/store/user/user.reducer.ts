@@ -2,7 +2,7 @@ import { createReducer, on } from '@ngrx/store';
 import * as userActions from './user.action';
 import { IUser } from '../../models/user.model';
 import { IPackage } from '../../interfaces/package.interface';
-import { ICoupon } from '../../interfaces/coupon.interface';
+import { DiscountType, ICoupon } from '../../interfaces/coupon.interface';
 
 export interface UserState {
   user: IUser | null;
@@ -146,15 +146,15 @@ export const UserReducer = createReducer(
     };
   }),
   on(userActions.applyCoupon, (state, { id, packagePrice }) => {
-    let price = packagePrice;
+    let price = packagePrice + 50;
 
     if (state.coupons) {
       const coupon = state.coupons.find((coupon) => coupon._id === id);
 
       if (coupon) {
-        if (coupon.discount_type === 'fixed' && coupon.discount_value) {
+        if (coupon.discount_type === DiscountType.FIXED && coupon.discount_value) {
           price = packagePrice - coupon.discount_value;
-        } else if (coupon.discount_type === 'percentage' && coupon.percentage) {
+        } else if (coupon.discount_type === DiscountType.PERCENTAGE && coupon.percentage) {
           let discount = (packagePrice * coupon.percentage) / 100;
           if (coupon.maxAmt && discount > coupon.maxAmt) {
             discount = coupon.maxAmt;

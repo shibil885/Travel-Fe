@@ -33,7 +33,7 @@ import {
   showSinglePackage,
   verifyPayment,
 } from '../../../store/user/user.action';
-import { ICoupon } from '../../../interfaces/coupon.interface';
+import { DiscountType, ICoupon } from '../../../interfaces/coupon.interface';
 import { Observable, take } from 'rxjs';
 import { dateValidator } from '../../../validatores/date.validator';
 import {
@@ -45,6 +45,7 @@ import { invalidPhone } from '../../../validatores/phone.validator';
 import { LocalStorageService } from '../../../shared/services/local-storage.service';
 import { UserService } from '../../../shared/services/user.service';
 import { HeaderSidebarComponent } from '../header-and-side-bar/header-and-side-bar.component';
+import { DiscountPipe } from '../../../shared/pipes/discount.pipe';
 
 @Component({
   standalone: true,
@@ -56,6 +57,7 @@ import { HeaderSidebarComponent } from '../header-and-side-bar/header-and-side-b
     CalendarModule,
     DropdownModule,
     InputNumberModule,
+    DiscountPipe,
   ],
   selector: 'app-deluxe-travel-booking',
   templateUrl: './booking.component.html',
@@ -95,7 +97,6 @@ export class BookingComponent {
   ) {}
 
   ngOnInit() {
-    console.log('ng oninit worked');
     this.initializePackageDetails();
     this.initializeForm();
     this.fetchCoupons();
@@ -116,6 +117,7 @@ export class BookingComponent {
               .getSinglePackage(packageId)
               .pipe(take(1))
               .subscribe((response) => {
+                console.log('package for booking', response.package);
                 this.packageDetails = response.package;
               });
           } else {
@@ -217,7 +219,23 @@ export class BookingComponent {
       this._store.dispatch(applyCoupon({ id, packagePrice: Number(price) }));
 
       this.price$.subscribe((result) => {
-        this.discoundedPrice = result;
+        if (this.packageDetails.offerId) {
+          if (
+            this.packageDetails.offerId.discount_type === DiscountType.FIXED
+          ) {
+            this.discoundedPrice =
+              result - Number(this.packageDetails.offerId.discount_value) + 50 ;
+          } else if (
+            this.packageDetails.offerId.discount_type ===
+            DiscountType.PERCENTAGE
+          ) {
+            this.discoundedPrice =
+              result -
+              Number(this.packageDetails.price) *
+                (Number(this.packageDetails.offerId.percentage) / 100) + 50 ;
+          }
+          console.log('discounted price', this.discoundedPrice);
+        }
         this.discount = Number(this.packageDetails.price) - result;
         this.selectedCouponId = id;
       });

@@ -7,11 +7,12 @@ import { OfferService } from '../../../../shared/services/offer.service';
 import { IOffer } from '../../../../interfaces/offer.interface';
 import { ToastService } from '../../../../shared/services/toaster.service';
 import { IPackage } from '../../../../interfaces/package.interface';
+import { DaysLeftPipe } from '../../../../shared/pipes/days-left.pipe';
 
 @Component({
   selector: 'app-view-offer',
   standalone: true,
-  imports: [HeaderComponent, SideBarComponent, CommonModule],
+  imports: [HeaderComponent, SideBarComponent, CommonModule, DaysLeftPipe],
   templateUrl: './view-offer.component.html',
   styleUrl: './view-offer.component.css',
 })
@@ -44,7 +45,9 @@ export class ViewOfferComponent {
       this._router.navigate(['agency/offers']);
     }
   }
-
+  get getDate() {
+    return new Date()
+  }
   getOfferData() {
     if (!this.selectedOfferId) {
       this._toastService.showToast('Somthing went wrong', 'error');

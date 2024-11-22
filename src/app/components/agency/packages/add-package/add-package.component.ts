@@ -209,6 +209,7 @@ export class AddPackageComponent {
           reader.readAsDataURL(files[i]);
         }
       }
+
       this.imageError.nativeElement.innerText = `${
         files.length - imageCount
       } of the selected files are not images`;
@@ -227,6 +228,7 @@ export class AddPackageComponent {
           reader.readAsDataURL(files[i]);
         }
       }
+
       if (files.length !== imageCount) {
         this.imageError.nativeElement.innerText = `${
           files.length - imageCount
@@ -234,10 +236,12 @@ export class AddPackageComponent {
       }
     }
   }
+
   deleteImage(index: number) {
     this.selectedFiles.splice(index, 1);
     return this.selectedImages.splice(index, 1);
   }
+
   replaceImage(event: Event, index: number) {
     const file = (event.target as HTMLInputElement).files?.[0];
     if (file) {
@@ -284,6 +288,7 @@ export class AddPackageComponent {
       });
     }
   }
+  
   onCloseForm() {
     this.addFormCloseEvent.emit();
   }

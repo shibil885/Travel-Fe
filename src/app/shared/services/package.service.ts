@@ -7,13 +7,13 @@ import { ICategory } from '../../interfaces/category.interface';
   providedIn: 'root',
 })
 export class PackageService {
-  private api = 'http://localhost:3000';
+  private _api = 'http://localhost:3000';
 
-  constructor(private http: HttpClient) {}
+  constructor(private _http: HttpClient) {}
 
   addPackages(packageData: FormData) {
-    return this.http.post<{ success: boolean; message: string }>(
-      `${this.api}/package/add`,
+    return this._http.post<{ success: boolean; message: string }>(
+      `${this._api}/package/add`,
       packageData,
       {
         withCredentials: true,
@@ -22,24 +22,24 @@ export class PackageService {
   }
 
   getCategories() {
-    return this.http.get<{
+    return this._http.get<{
       success: boolean;
       message: string;
       categories: ICategory[];
-    }>(`${this.api}/category/categories`, {
+    }>(`${this._api}/category/categories`, {
       withCredentials: true,
     });
   }
 
   getPackages(page: number, limit: number) {
     const params = new HttpParams().set('page', page).set('limit', limit);
-    return this.http.get<{
+    return this._http.get<{
       success: boolean;
       message: string;
       totalItems: number;
       currentPage: number;
       packages: IPackage[];
-    }>(`${this.api}/package/getAllPackages`, {
+    }>(`${this._api}/package/getAllPackages`, {
       params,
       withCredentials: true,
     });
@@ -47,15 +47,16 @@ export class PackageService {
 
   onChangeStatus(packageId: string | undefined, action: boolean) {
     if (!packageId) return;
-    return this.http.patch(
-      `${this.api}/package/changeStatus/${packageId}`,
+    return this._http.patch(
+      `${this._api}/package/changeStatus/${packageId}`,
       { action },
       { withCredentials: true }
     );
   }
+
   onSaveChanges(chagedData: IPackage, packagId: string | undefined) {
-    return this.http.put<{ message: string; success: boolean }>(
-      `${this.api}/package/saveChanges/${packagId}`,
+    return this._http.put<{ message: string; success: boolean }>(
+      `${this._api}/package/saveChanges/${packagId}`,
       chagedData,
       {
         withCredentials: true,
@@ -64,8 +65,21 @@ export class PackageService {
   }
   onSearchPackages(searchText: string) {
     const params = new HttpParams().set('searchText', searchText);
-    return this.http.get<{success: boolean, packages: IPackage[]}>(`${this.api}/package/searchPackage`, {
-      params,
+    return this._http.get<{ success: boolean; packages: IPackage[] }>(
+      `${this._api}/package/searchPackage`,
+      {
+        params,
+        withCredentials: true,
+      }
+    );
+  }
+
+  getOfferPackages() {
+    return this._http.get<{
+      success: boolean;
+      message: string;
+      packages: IPackage[];
+    }>(`${this._api}/package/offer`, {
       withCredentials: true,
     });
   }

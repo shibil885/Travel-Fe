@@ -12,7 +12,7 @@ export interface IOffer {
   isActive?: boolean;
   applicable_packages?: IPackage[];
   agencyId: string;
-  createdAt?: Date;
+  createdAt: Date;
   updatedAt?: Date;
   packages?: IPackage;
 }
