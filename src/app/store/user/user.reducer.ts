@@ -145,29 +145,46 @@ export const UserReducer = createReducer(
       error,
     };
   }),
-  on(userActions.applyCoupon, (state, { id, packagePrice }) => {
+  on(userActions.applyCoupon, (state, { id, packagePrice, offer }) => {
     let price = packagePrice + 50;
-
+    if (offer) {
+      if (offer.discount_type === DiscountType.FIXED) {
+        price = price - Number(offer.discount_value);
+      } else if (offer.discount_type === DiscountType.PERCENTAGE) {
+        price = price * (Number(offer.percentage) / 100);
+      }
+    }
+    console.log('price after reduce offer price', price);
     if (state.coupons) {
       const coupon = state.coupons.find((coupon) => coupon._id === id);
 
       if (coupon) {
-        if (coupon.discount_type === DiscountType.FIXED && coupon.discount_value) {
-          price = packagePrice - coupon.discount_value;
-        } else if (coupon.discount_type === DiscountType.PERCENTAGE && coupon.percentage) {
-          let discount = (packagePrice * coupon.percentage) / 100;
+        if (
+          coupon.discount_type === DiscountType.FIXED &&
+          coupon.discount_value
+        ) {
+          price = price - coupon.discount_value;
+          console.log('price after reduce fixed coupon price', price);
+        } else if (
+          coupon.discount_type === DiscountType.PERCENTAGE &&
+          coupon.percentage
+        ) {
+          let discount = (price * coupon.percentage) / 100;
+          console.log('dicount', discount);
+          console.log('max', coupon.maxAmt);
           if (coupon.maxAmt && discount > coupon.maxAmt) {
-            discount = coupon.maxAmt;
+            price = price -  coupon.maxAmt;
+          }else {
+            price = price - discount;
           }
-          price = packagePrice - discount;
+          console.log('price after reduce percentage coupon price', price);
         }
-        price = Math.max(price, 0);
       }
     }
-
+    console.log('last price', price);
     return {
       ...state,
-      price: price,
+      price: price <= 50 ? 50 : price,
       coupons: [],
     };
   }),
@@ -177,7 +194,7 @@ export const UserReducer = createReducer(
       price: 0,
     };
   }),
- 
+
   on(userActions.initiatePayment, (state) => {
     return {
       ...state,
@@ -193,7 +210,7 @@ export const UserReducer = createReducer(
         amount,
         currency,
         orderId,
-        message: ''
+        message: '',
       };
     }
   ),

@@ -326,27 +326,25 @@
                         </div>
                         <div class="flex justify-between">
                             <small class="text-gray-700">Service charge:</small>
-                            <small class="text-gray-900">50</small>
+                            <small class="text-gray-900">+ 50</small>
                         </div>
                         <div class="flex justify-between">
-                            <small class="text-gray-700" *ngIf="discount">Discount:</small>
-                            <small class="text-gray-900" *ngIf="discount">{{ discount | currency:'INR' }}</small>
+                            <small class="text-green-600" *ngIf="discount">Discount:</small>
+                            <small class="text-green-600" *ngIf="discount">- {{ discount | currency:'INR' }}</small>
                         </div>
                         <div class="flex justify-between">
-                            <small class="text-gray-700" *ngIf="packageDetails.offerId">offer:</small>
-                            <small class="text-gray-900" *ngIf="packageDetails.offerId">{{
+                            <small class="text-green-600" *ngIf="packageDetails.offerId">offer:</small>
+                            <small class="text-green-600" *ngIf="packageDetails.offerId">- {{
                                 packageDetails.offerId.discount_type === 'fixed' ? '₹' +
                                 packageDetails.offerId.discount_value
                                 : packageDetails.offerId.percentage + '%' }}</small>
                         </div>
                         <div class="flex justify-between mb-4">
                             <small class="text-gray-700 font-bold">Final Price:</small>
-                            <small class="text-gray-900 font-bold" *ngIf="discoundedPrice">{{ discoundedPrice|
+                            <small class="font-bold text-green-500" *ngIf="discoundedPrice">{{ discoundedPrice|
                                 currency:'INR' }}</small>
-                            <small class="text-gray-900 font-bold" *ngIf="!discoundedPrice">
-                                <!-- {{ packageDetails.price|
-                                currency:'INR' }} -->
-                                {{packageDetails.price| discount: packageDetails.offerId }}
+                            <small class="font-bold text-green-500" *ngIf="!discoundedPrice">
+                                {{packageDetails.price| discount: packageDetails.offerId | currency:'INR'}}
                             </small>
                         </div>
                         <div>

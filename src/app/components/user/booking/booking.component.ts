@@ -216,26 +216,58 @@ export class BookingComponent {
 
   applyCoupon(id: string | undefined, price: string | undefined) {
     if (id && price) {
-      this._store.dispatch(applyCoupon({ id, packagePrice: Number(price) }));
+      if (this.packageDetails.offerId) {
+        this._store.dispatch(
+          applyCoupon({
+            id,
+            packagePrice: Number(price),
+            offer: this.packageDetails.offerId,
+          })
+        );
+      } else {
+        this._store.dispatch(
+          applyCoupon({
+            id,
+            packagePrice: Number(price),
+            offer: undefined,
+          })
+        );
+      }
+
+      //////////////////////////////
 
       this.price$.subscribe((result) => {
-        if (this.packageDetails.offerId) {
-          if (
-            this.packageDetails.offerId.discount_type === DiscountType.FIXED
-          ) {
-            this.discoundedPrice =
-              result - Number(this.packageDetails.offerId.discount_value) + 50 ;
-          } else if (
-            this.packageDetails.offerId.discount_type ===
-            DiscountType.PERCENTAGE
-          ) {
-            this.discoundedPrice =
-              result -
-              Number(this.packageDetails.price) *
-                (Number(this.packageDetails.offerId.percentage) / 100) + 50 ;
-          }
-          console.log('discounted price', this.discoundedPrice);
-        }
+        // if (this.packageDetails.offerId) {
+        //   if (
+        //     this.packageDetails.offerId.discount_type === DiscountType.FIXED
+        //   ) {
+        //     const newAmt =
+        //       result - Number(this.packageDetails.offerId.discount_value) + 50;
+        //     if (newAmt <= 0) {
+        //       this.discoundedPrice = 50;
+        //     } else {
+        //       this.discoundedPrice = newAmt;
+        //     }
+        //   } else if (
+        //     this.packageDetails.offerId.discount_type ===
+        //     DiscountType.PERCENTAGE
+        //   ) {
+        //     this.discoundedPrice;
+        //     const newAmt =
+        //       result -
+        //       Number(this.packageDetails.price) *
+        //         (Number(this.packageDetails.offerId.percentage) / 100) +
+        //       50;
+        //     if (newAmt <= 0) {
+        //       this.discoundedPrice = 50;
+        //     } else {
+        //       this.discoundedPrice = newAmt;
+        //     }
+        //   }
+        // // }
+        // console.log('result', result);
+        // console.log('discounted price', this.discoundedPrice);
+        this.discoundedPrice = result
         this.discount = Number(this.packageDetails.price) - result;
         this.selectedCouponId = id;
       });

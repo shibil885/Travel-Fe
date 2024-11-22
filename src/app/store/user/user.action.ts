@@ -3,6 +3,7 @@ import { IUser } from '../../models/user.model';
 import { IPackage } from '../../interfaces/package.interface';
 import { ICoupon } from '../../interfaces/coupon.interface';
 import { FormGroup } from '@angular/forms';
+import { IOffer } from '../../interfaces/offer.interface';
 
 export const userLogin = createAction(
   '[Login Component] userLogin',
@@ -67,7 +68,6 @@ export const resendOtpError = createAction(
 export const logout = createAction('[Logout] User');
 export const logoutSuccess = createAction('[Logout Success] User');
 
-
 export const showSinglePackage = createAction(
   '[showPackage] showSinglePackageComponent',
   props<{ id: string }>()
@@ -109,7 +109,7 @@ export const getAllCouponError = createAction(
 
 export const applyCoupon = createAction(
   '[apply coupon BookingCoumponent]',
-  props<{ id: string; packagePrice: number }>()
+  props<{ id: string; packagePrice: number; offer: IOffer | undefined }>()
 );
 export const cancelCoupon = createAction('[cancel coupon BookingCoumponent]');
 
@@ -148,7 +148,7 @@ export const verifyPayment = createAction(
 
 export const verifyPaymentSuccess = createAction(
   '[Payment] Verify Payment Success',
-  props<{  message: string }>()
+  props<{ message: string }>()
 );
 
 export const verifyPaymentFailure = createAction(
