@@ -31,23 +31,19 @@ import { ICategory } from '../../../interfaces/category.interface';
   styleUrls: ['./categories.component.css'],
 })
 export class CategoriesComponent {
-  categories: any[] = [];
+  categories: ICategory[] = [];
   totalCategories!: number;
   limit: number = 5;
   currentPage: number = 1;
   showAddForm = false;
   editMode = false;
   currentCategoryId: string | null = null;
+  categoryForm!: FormGroup;
   headers = [
     { label: 'Name', key: 'name' },
     { label: 'Description', key: 'description' },
     { label: 'Status', key: 'isActive' },
   ];
-
-  categoryForm = new FormGroup({
-    name: new FormControl('', [Validators.required]),
-    description: new FormControl('', [Validators.required]),
-  });
 
   constructor(
     private _categoryService: CategoryService,
@@ -56,6 +52,10 @@ export class CategoriesComponent {
 
   ngOnInit() {
     this.getCategories();
+    this.categoryForm = new FormGroup({
+      name: new FormControl('', [Validators.required]),
+      description: new FormControl('', [Validators.required]),
+    });
   }
 
   toggleAddForm() {
@@ -111,7 +111,7 @@ export class CategoriesComponent {
     this.currentPage = page;
     this.getCategories();
   }
-  changeStatus(id: string, status: boolean) {
+  changeStatus(id: string, status: boolean | undefined) {
     this._categoryService.changeStatus(id, !status).subscribe((res) => {
       if (res.success) {
         console.log(res);

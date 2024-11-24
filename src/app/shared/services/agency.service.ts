@@ -72,7 +72,7 @@ export class AgencyService {
         })
       );
   }
-  registerAgency(formData: FormData): Observable<any> {
+  registerAgency(formData: FormData) {
     return this._http.post<{ agency: IAgency }>(
       `${this._api}/agency/signup`,
       formData,
@@ -82,7 +82,7 @@ export class AgencyService {
   verifyOtp(formData: {
     otp: string;
     email: string | null | undefined;
-  }): Observable<any> {
+  }) {
     return this._http.post<{
       agency: IAgency;
       message: string;
@@ -90,7 +90,7 @@ export class AgencyService {
       token: string;
     }>(`${this._api}/otp/agency`, formData, { withCredentials: true });
   }
-  resendOtp(formData: { email: string | null | undefined }): Observable<any> {
+  resendOtp(formData: { email: string | null | undefined }) {
     return this._http.post<{ agency: IAgency }>(
       `${this._api}/otp/resend`,
       formData,

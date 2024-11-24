@@ -59,12 +59,14 @@ export class HeaderSidebarComponent {
   }
 
   @HostListener('window:resize', ['$event'])
-  onResize(event: any) {
-    this.windowWidth = event.target.innerWidth;
+  onResize(event: UIEvent): void {
+    const target = event.target as Window;
+    this.windowWidth = target.innerWidth;
     if (this.windowWidth > 768) {
       this.isMenuOpen = false;
     }
   }
+  
 
   userLogout(): void {
     this.store.dispatch(logout());

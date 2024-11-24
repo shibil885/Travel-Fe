@@ -4,7 +4,6 @@ import { catchError, map, Observable, tap, throwError } from 'rxjs';
 import { IUser } from '../../models/user.model';
 import { IPackage } from '../../interfaces/package.interface';
 import { AuthService } from '../../auth/service/service.service';
-import { HtmlParser } from '@angular/compiler';
 import { FormGroup } from '@angular/forms';
 
 @Injectable({
@@ -30,7 +29,7 @@ export class UserService {
       );
   }
 
-  registerUser(formData: any) {
+  registerUser(formData: FormGroup) {
     console.log('formdata', formData);
     return this._http.post<{ user: IUser; message: string; success: boolean }>(
       `${this._api}/user/signup`,
@@ -42,7 +41,7 @@ export class UserService {
   verifyOtpUser(formData: {
     otp: string;
     email: string | null | undefined;
-  }): Observable<any> {
+  }){
     return this._http.post<{
       message: string;
       success: boolean;
@@ -51,7 +50,7 @@ export class UserService {
     }>(`${this._api}/otp/user`, formData, { withCredentials: true });
   }
 
-  resendOtp(formData: { email: string | null | undefined }): Observable<any> {
+  resendOtp(formData: { email: string | null | undefined }) {
     return this._http.post<{ user: IUser; success: boolean; message: string }>(
       `${this._api}/otp/resend`,
       formData,

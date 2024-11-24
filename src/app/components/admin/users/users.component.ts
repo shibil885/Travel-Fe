@@ -12,6 +12,7 @@ import { CommonModule } from '@angular/common';
 import { ReusableTableComponent } from '../../../shared/components/table/table.component';
 import { SearchComponent } from '../../../shared/components/search/search.component';
 import { PaginationComponent } from '../../../shared/components/pagination/pagination.component';
+import { IUser } from '../../../models/user.model';
 @Component({
   selector: 'app-users',
   standalone: true,
@@ -28,7 +29,7 @@ import { PaginationComponent } from '../../../shared/components/pagination/pagin
   styleUrl: './users.component.css',
 })
 export class UsersComponent {
-  users: any = [];
+  users: IUser[] = [];
   totalUsers: number = 0;
   totalPages: number = 0;
   currentPage: number = 1;
@@ -94,7 +95,7 @@ export class UsersComponent {
     this._adminService
       .getFilteredData(filterData, 'user')
       .subscribe((response) => {
-        this.users = response;
+        this.users = response as IUser[];
       });
   }
   onSearch(searchText: string) {
@@ -103,7 +104,7 @@ export class UsersComponent {
       return;
     }
     this._adminService.searchUsers(searchText, 'user').subscribe((res) => {
-      this.users = res;
+      this.users = res as IUser[];
     });
   }
 }

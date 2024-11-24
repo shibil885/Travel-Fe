@@ -63,7 +63,7 @@ export class UserEffect {
     this._actions$.pipe(
       ofType(userActions.userSignup),
       switchMap((data) =>
-        this._userService.registerUser(data).pipe(
+        this._userService.registerUser(data.userdata).pipe(
           map((response) => {
             return userActions.otpRenderFromSignup({
               user: response.user,

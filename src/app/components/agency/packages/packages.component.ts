@@ -39,7 +39,7 @@ export class PackagesComponent {
   renderTableRelatedDatas!: boolean;
   renderAddForm!: boolean;
   renderSinglePackage!: boolean;
-  singlePackage!: any;
+  singlePackage!: IPackage;
   packages: IPackage[] = [];
   limit: number = 5;
   totalItems!: number;
@@ -78,7 +78,7 @@ export class PackagesComponent {
     this.renderTableData()
   }
 
-  viewPackageDetails(packag: any) {
+  viewPackageDetails(packag: IPackage) {
     this.renderTableRelatedDatas = false;
     this.renderAddForm = false;
     this.renderSinglePackage = true;

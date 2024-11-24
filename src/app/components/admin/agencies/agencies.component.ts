@@ -13,6 +13,7 @@ import { CommonModule } from '@angular/common';
 import { FilterData } from '../../../interfaces/filterData.interface';
 import { SearchComponent } from '../../../shared/components/search/search.component';
 import { PaginationComponent } from '../../../shared/components/pagination/pagination.component';
+import { IAgency } from '../../../models/agency.model';
 
 @Component({
   selector: 'app-agencies',
@@ -32,7 +33,7 @@ import { PaginationComponent } from '../../../shared/components/pagination/pagin
   styleUrls: ['./agencies.component.css'],
 })
 export class AgenciesComponent implements OnInit {
-  agencies: any = [];
+  agencies: IAgency[] = [];
   totalAgencies: number = 0;
   currentPage: number = 1;
   limit: number = 5;
@@ -96,7 +97,7 @@ export class AgenciesComponent implements OnInit {
     this._adminService
       .getFilteredData(filterData, 'agency')
       .subscribe((response) => {
-        this.agencies = response;
+        this.agencies = response as IAgency[];
       });
   }
 
@@ -106,7 +107,7 @@ export class AgenciesComponent implements OnInit {
       return;
     }
     this._adminService.searchUsers(searchText, 'agency').subscribe((res) => {
-      this.agencies = res;
+      this.agencies = res as IAgency[];
     });
   }
 }

@@ -203,9 +203,15 @@ export class AddPackageComponent {
           imageCount++;
           const reader = new FileReader();
           this.selectedFiles.push(files[i]);
-          reader.onload = (e: any) => {
-            this.selectedImages = [...this.selectedImages, e.target.result];
+          reader.onload = (e: ProgressEvent<FileReader>) => {
+            if (e.target && e.target.result) {
+              this.selectedImages = [
+                ...this.selectedImages,
+                e.target.result as string,
+              ];
+            }
           };
+
           reader.readAsDataURL(files[i]);
         }
       }
@@ -222,8 +228,13 @@ export class AddPackageComponent {
           const reader = new FileReader();
           this.selectedFiles.push(files[i]);
 
-          reader.onload = (e: any) => {
-            this.selectedImages = [...this.selectedImages, e.target.result];
+          reader.onload = (e: ProgressEvent<FileReader>) => {
+            if (e.target && e.target.result) {
+              this.selectedImages = [
+                ...this.selectedImages,
+                e.target.result as string,
+              ];
+            }
           };
           reader.readAsDataURL(files[i]);
         }
@@ -251,9 +262,11 @@ export class AddPackageComponent {
         return;
       }
       const reader = new FileReader();
-      reader.onload = (e: any) => {
-        this.selectedFiles[index] = file;
-        this.selectedImages[index] = e.target.result;
+      reader.onload = (e: ProgressEvent<FileReader>) => {
+        if (e.target && e.target.result) {
+          this.selectedFiles[index] = file;
+          this.selectedImages[index] = e.target.result as string;
+        }
       };
       reader.readAsDataURL(file);
     }
@@ -279,10 +292,7 @@ export class AddPackageComponent {
         'packageFeatures',
         JSON.stringify(formValues.packageFeatures)
       );
-      this._formData.append(
-        'tourPlans',
-        JSON.stringify(formValues.tourPlans)
-      );
+      this._formData.append('tourPlans', JSON.stringify(formValues.tourPlans));
       this.selectedFiles.forEach((file: File) => {
         this._formData.append('images', file);
       });
@@ -294,8 +304,7 @@ export class AddPackageComponent {
       });
     }
   }
-  
-  
+
   onCloseForm() {
     this.addFormCloseEvent.emit();
   }

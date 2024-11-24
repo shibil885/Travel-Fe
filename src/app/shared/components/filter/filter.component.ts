@@ -20,7 +20,7 @@ export class FilterComponent {
   constructor(
     private _fb: FormBuilder,
     private _dialog: MatDialog,
-    @Inject(MAT_DIALOG_DATA) private _data: any
+    @Inject(MAT_DIALOG_DATA) private _data: boolean
   ) {
     this.isAgency = this._data;
     this.searchForm = this._fb.group({

@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { ICategory } from '../../interfaces/category.interface';
+import { FormGroup } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root',
@@ -10,22 +12,31 @@ export class CategoryService {
 
   constructor(private _http: HttpClient) {}
 
-  getCategories(currentPage: number, limit: number): Observable<any> {
+  getCategories(currentPage: number, limit: number) {
     const params = new HttpParams()
       .set('currentPage', currentPage)
       .set('limit', limit);
-    return this._http.get(`${this._api}/categories`, {
+    return this._http.get<{
+      success: boolean;
+      categories: ICategory[];
+      totalCategories: number;
+      currentPage: number;
+    }>(`${this._api}/categories`, {
       params,
       withCredentials: true,
     });
   }
 
-  addCategory(category: any): Observable<any> {
-    return this._http.post(`${this._api}/add`, category, {
+  addCategory(category: FormGroup) {
+    return this._http.post<{
+      success: boolean;
+      message: string;
+      newCategory: ICategory;
+    }>(`${this._api}/add`, category, {
       withCredentials: true,
     });
   }
-  updateCategory(id: string | null, category: any) {
+  updateCategory(id: string | null, category: FormGroup) {
     return this._http.put(`${this._api}/edit/${id}`, category, {
       withCredentials: true,
     });
@@ -35,6 +46,10 @@ export class CategoryService {
       success: boolean;
       message: string;
       warning: boolean;
-    }>(`${this._api}/changeStatus/${id}`, { status }, { withCredentials: true });
+    }>(
+      `${this._api}/changeStatus/${id}`,
+      { status },
+      { withCredentials: true }
+    );
   }
 }

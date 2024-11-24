@@ -21,7 +21,7 @@ export class OtpComponent {
   otpForm!: FormGroup;
   submitted: boolean = false;
   timeLeft: number = 60;
-  timer!: any;
+  timer!: number;
   isResendEnabled: boolean = false;
   email!: string | undefined;
 
@@ -48,7 +48,7 @@ export class OtpComponent {
     this.timeLeft = 60;
     this.isResendEnabled = false;
 
-    this.timer = setInterval(() => {
+    this.timer = window.setInterval(() => {
       if (this.timeLeft > 0) {
         this.timeLeft--;
       } else {

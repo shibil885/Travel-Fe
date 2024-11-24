@@ -99,16 +99,23 @@ export class SignupComponent {
     );
   }
 
-  onFileChange(event: any) {
-    const file = event.target.files[0];
-    this.filename = file.name;
+  onFileChange(event: Event): void {
+    const input = event.target as HTMLInputElement;
 
-    if (file && file.type !== 'application/pdf') {
+    if (input.files && input.files.length > 0) {
+      const file = input.files[0];
+      this.filename = file.name;
+
+      if (file.type !== 'application/pdf') {
+        this.invalidFile = true;
+        return;
+      }
+
+      this.invalidFile = false;
+      this.formData.append('document', file);
+    } else {
       this.invalidFile = true;
-      return;
     }
-    this.invalidFile = false;
-    this.formData.append('document', file);
   }
 
   onFormSubmitted() {

@@ -3,6 +3,9 @@ import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import { FilterData } from '../../interfaces/filterData.interface';
+import { IAgency } from '../../models/agency.model';
+import { IUser } from '../../models/user.model';
+import { ICategory } from '../../interfaces/category.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -12,38 +15,39 @@ export class AdminService {
 
   constructor(private _http: HttpClient) {}
 
-  getAllAgencies(page: number = 1, limit: number): Observable<any> {
+  getAllAgencies(page: number = 1, limit: number) {
     const params = new HttpParams()
       .set('page', page.toString())
       .set('limit', limit.toString());
 
-    return this._http
-      .get(`${this.api}/admin/agencies`, { params, withCredentials: true });
+    return this._http.get<{
+      success: boolean;
+      agencies: IAgency[];
+      totalAgencies: number;
+      currentPage: number;
+    }>(`${this.api}/admin/agencies`, { params, withCredentials: true });
   }
-  getAllUsers(page: number = 1, limit: number): Observable<any> {
+  getAllUsers(page: number = 1, limit: number) {
     const params = new HttpParams()
       .set('page', page.toString())
       .set('limit', limit.toString());
 
-    return this._http
-      .get(`${this.api}/admin/users`, { params, withCredentials: true })
-      .pipe(
-        map((response: any) => ({
-          users: response.users,
-          totalUsers: response.totalUsers,
-          totalPages: response.totalPages,
-          currentPage: response.currentPage,
-        }))
-      );
+    return this._http.get<{
+      success: boolean;
+      users: IUser[];
+      totalUsers: number;
+      currentPage: number;
+      totalPages: number;
+    }>(`${this.api}/admin/users`, { params, withCredentials: true });
   }
 
   getAllCategories(): Observable<{
     message: string;
     success: boolean;
-    categories: any[];
+    categories: ICategory[];
   }> {
     return this._http
-      .get<{ message: string; success: boolean; categories: any[] }>(
+      .get<{ message: string; success: boolean; categories: ICategory[] }>(
         `${this.api}/category/categories`,
         { withCredentials: true }
       )
@@ -113,7 +117,7 @@ export class AdminService {
         })
       );
   }
-  getFilteredData(filters: FilterData, user: string): Observable<any> {
+  getFilteredData(filters: FilterData, user: string): Observable<Object> {
     let params = new HttpParams();
 
     if (filters.isActive !== undefined)
@@ -122,7 +126,11 @@ export class AdminService {
       params = params.append('isVerified', filters.isVerified.toString());
     if (filters.isConfirmed !== undefined)
       params = params.append('isConfirmed', filters.isConfirmed.toString());
-    return this._http.post(`${this.api}/admin/filter`, { user }, { params, withCredentials: true });
+    return this._http.post(
+      `${this.api}/admin/filter`,
+      { user },
+      { params, withCredentials: true }
+    );
   }
 
   searchUsers(searchText: string, user: string) {

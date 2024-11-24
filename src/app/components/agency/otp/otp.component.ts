@@ -11,6 +11,7 @@ import * as agencyActions from '../../../store/agency/agency.action';
 import { Store } from '@ngrx/store';
 import { IAgency } from '../../../models/agency.model';
 import { selectEmail } from '../../../store/agency/agency.selector';
+
 @Component({
   selector: 'app-otp',
   standalone: true,
@@ -22,14 +23,14 @@ export class OtpComponent {
   otpForm!: FormGroup;
   submitted: boolean = false;
   timeLeft: number = 60;
-  timer!: any;
+  timer!: number;
   isResendEnabled: boolean = false;
   email!: string | undefined;
 
   constructor(private _store: Store) {}
 
   ngOnInit(): void {
-    this._store.select(selectEmail).subscribe((data) => this.email = data)
+    this._store.select(selectEmail).subscribe((data) => (this.email = data));
     this.startOtpTimer();
     this.otpForm = new FormGroup({
       otp: new FormControl('', [
@@ -39,14 +40,16 @@ export class OtpComponent {
       ]),
     });
   }
+
   ngOnDestroy(): void {
     clearInterval(this.timer);
   }
+
   startOtpTimer() {
     this.timeLeft = 60;
     this.isResendEnabled = false;
 
-    this.timer = setInterval(() => {
+    this.timer = window.setInterval(() => {
       if (this.timeLeft > 0) {
         this.timeLeft--;
       } else {
@@ -55,6 +58,7 @@ export class OtpComponent {
       }
     }, 1000);
   }
+
   onFormSubmit() {
     this.submitted = true;
 
@@ -70,6 +74,7 @@ export class OtpComponent {
   get otpControl() {
     return this.otpForm.get('otp');
   }
+
   resendOtp() {
     if (this.isResendEnabled) {
       this._store.dispatch(agencyActions.resendOtp({ email: this.email }));
