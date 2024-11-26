@@ -27,7 +27,7 @@ import { ToastService } from '../../../../shared/services/toaster.service';
 })
 export class ForgotPasswordFormComponent {
   newPasswordForm!: FormGroup;
-  id: string | null = null;
+  token: string | null = null;
 
   constructor(
     private _route: ActivatedRoute,
@@ -37,11 +37,21 @@ export class ForgotPasswordFormComponent {
   ) {}
 
   ngOnInit(): void {
-    this.id = this._route.snapshot.paramMap.get('id');
-    if (!this.id) {
+    this.token = this._route.snapshot.paramMap.get('token');
+    if (!this.token) {
       this._toastService.showToast('Id not provided', 'error');
       return;
     }
+
+    this._userService.validateLink(this.token).subscribe((res) => {
+      if (!res.success) {
+        console.log('invoked');
+        this._toastService.showToast(res.message, 'error');
+        this._router.navigate(['/forgotPassword']);
+        return;
+      }
+    });
+
     this.newPasswordForm = new FormGroup(
       {
         newPassword: new FormControl('', [
@@ -69,13 +79,10 @@ export class ForgotPasswordFormComponent {
   }
 
   onSubmitNewPassword(): void {
-    if (this.newPasswordForm.valid && this.id) {
+    if (this.newPasswordForm.valid && this.token) {
       const newPassword = this.newPasswordForm.get('newPassword')?.value;
       this._userService
-        .resetPassword(
-          this.id,
-          newPassword
-        )
+        .resetPassword(this.token, newPassword)
         .subscribe((res) => {
           if (res.success) {
             this._toastService.showToast(res.message, 'success');
@@ -84,7 +91,7 @@ export class ForgotPasswordFormComponent {
         });
       console.log(
         'Resetting password with token:',
-        this.id,
+        this.token,
         'and new password:',
         newPassword
       );

@@ -104,7 +104,7 @@ export const userRouter: Routes = [
     data: { role: 'user' },
   },
   {
-    path: 'resetPassword/:id',
+    path: 'resetPassword/:token',
     component: ForgotPasswordFormComponent,
     canActivate: [preventGuard],
     data: { role: 'user' },

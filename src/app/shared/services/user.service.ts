@@ -38,10 +38,7 @@ export class UserService {
     );
   }
 
-  verifyOtpUser(formData: {
-    otp: string;
-    email: string | null | undefined;
-  }){
+  verifyOtpUser(formData: { otp: string; email: string | null | undefined }) {
     return this._http.post<{
       message: string;
       success: boolean;
@@ -127,13 +124,20 @@ export class UserService {
     );
   }
 
-  resetPassword(userId: string | null, password: string) {
-    console.log('invoked', userId);
+  validateLink(token: string) {
+    const params = new HttpParams().set('token', token);
+    return this._http.get<{ success: boolean; message: string }>(
+      `${this._api}/auth/validateLink`,
+      { params }
+    );
+  }
+
+  resetPassword(token: string | null, password: string) {
     return this._http.patch<{ success: boolean; message: string }>(
       `${this._api}/auth/resetPassword`,
       {
         password,
-        userId: userId,
+        token: token,
         role: 'user',
       },
       { withCredentials: true }

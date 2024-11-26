@@ -39,7 +39,7 @@ export class HeaderSidebarComponent {
     { icon: 'account_balance_wallet', label: 'Wallet', route: '/wallet' },
     { icon: 'library_add', label: 'Uploads', route: '/uploads' },
     { icon: 'notifications', label: 'Notifications', route: '/notifications' },
-    { icon: 'help', label: 'Help', route: '/help' },
+    { icon: 'chat', label: 'Chat', route: '/chat' },
   ];
 
   constructor(private store: Store) {}
