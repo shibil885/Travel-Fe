@@ -33,6 +33,8 @@ export class HomeComponent {
     this.agencyService.isConfirmed().subscribe((status) => {
       this.isConfirmed = status;
     });
+
+    
   }
   onSearch(searchText: string) {
     console.log(searchText);

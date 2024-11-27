@@ -1,0 +1,30 @@
+<div class="bg-white rounded-lg shadow p-6">
+    <h2 class="text-lg font-semibold text-gray-900 mb-4">Recent Bookings</h2>
+    <ul class="divide-y divide-gray-200">
+        <li *ngFor="let bookings of recentBookings" class="py-4">
+            <div class="flex items-center space-x-4">
+                <div class="flex-shrink-0">
+                    <span class="inline-block h-12 w-12 rounded-full overflow-hidden bg-gray-100">
+                        <img [src]="bookings.user_id.profilePicture" alt="{{bookings.user_id.username}}">
+                    </span>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium text-gray-900 truncate">
+                        {{ bookings.package_id.name }}
+                    </p>
+                    <p class="text-sm text-gray-500 truncate">
+                        {{ bookings.user_id.username }}
+                    </p>
+                </div>
+                <div>
+                    <small class="text-sm text-slate-400 font-semibold me-2">Confirmation:</small>
+                    <span
+                        class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                        {{ bookings.confirmation }}
+                    </span>
+                </div>
+            </div>
+        </li>
+        <p *ngIf="!recentBookings.length" class="text-slate-600 text-sm font-bold text-center">No bookings found </p>
+    </ul>
+</div>
