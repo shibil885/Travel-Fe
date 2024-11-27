@@ -30,15 +30,16 @@
   <div class="flex-1 flex flex-col overflow-hidden">
     <app-header></app-header>
     <main class="flex-1 overflow-y-auto bg-gray-100 p-6 sm:p-4 relative">
-      <app-search (searchUsersEvent)="onSearch($event)"></app-search>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
-        <app-stats-card [title]="'Total Packages'" [value]="'156'" [icon]="'users'"></app-stats-card>
-        <app-stats-card [title]="'Bookings'" [value]="'23'" [icon]="'briefcase'"></app-stats-card>
-        <app-stats-card [title]="'Revenue(MTD)'" [value]="'$45,678'" [icon]="'dollar-sign'"></app-stats-card>
+        <app-stats-card [title]="item.title" [value]="item.value" [icon]="item.icon"
+          *ngFor="let item of statsItem"></app-stats-card>
+        <!-- <app-stats-card [title]="'Bookings'" [value]="'23'" [icon]="'briefcase'"></app-stats-card>
+        <app-stats-card [title]="'Revenue(MTD)'" [value]="'$45,678'" [icon]=""></app-stats-card> -->
       </div>
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
         <app-recent-booking></app-recent-booking>
-        <app-new-categories></app-new-categories>
+        <app-current-travellings></app-current-travellings>
+        <!-- <app-new-categories></app-new-categories> -->
       </div>
     </main>
   </div>

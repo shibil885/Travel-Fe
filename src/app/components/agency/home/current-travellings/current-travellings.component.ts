@@ -4,22 +4,22 @@ import { IBooking } from '../../../../interfaces/booking.interface';
 import { AgencyDashboardService } from '../../../../shared/services/dashboard/agency/agency-dashboard.service';
 
 @Component({
-  selector: 'app-recent-booking',
+  selector: 'app-current-travellings',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './recent-booking.component.html',
-  styleUrl: './recent-booking.component.css',
+  templateUrl: './current-travellings.component.html',
+  styleUrl: './current-travellings.component.css',
 })
-export class RecentBookingComponent {
-  recentBookings: IBooking[] = [];
+export class CurrentTravellingsComponent {
+  currentTravellings: IBooking[] = [];
 
   constructor(
     private readonly _AgencyDashboardService: AgencyDashboardService
   ) {}
 
   ngOnInit(): void {
-    this._AgencyDashboardService.getRecentBookings().subscribe((res) => {
-      this.recentBookings = res.bookings;
+    this._AgencyDashboardService.getCurrentTravellings().subscribe((res) => {
+      this.currentTravellings = res.bookings;
     });
   }
 }

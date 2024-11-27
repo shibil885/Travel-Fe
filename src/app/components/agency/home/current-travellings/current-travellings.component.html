@@ -1,0 +1,46 @@
+<div class="bg-white rounded-lg shadow p-6">
+    <h2 class="text-lg font-semibold text-gray-900 mb-4">Current Travellings</h2>
+    <ng-container *ngIf="currentTravellings.length; else noBookings">
+        <ul class="divide-y divide-gray-200">
+            <li *ngFor="let booking of currentTravellings" class="py-4">
+                <div class="flex items-center space-x-4">
+                    <div class="flex-shrink-0">
+                        <span class="inline-block h-12 w-12 rounded-full overflow-hidden bg-gray-100">
+                            <img [src]="booking.user_id.profilePicture || 'assets/default-avatar.png'"
+                                alt="{{ booking.user_id.username }}" class="object-cover w-full h-full" />
+                        </span>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-sm font-medium text-gray-900 truncate">
+                            {{ booking.package_id.name }}
+                        </p>
+                        <p class="text-sm text-gray-500 truncate">
+                            {{ booking.billing_details.firstName }}
+                            {{ booking.billing_details.lastName }}
+                        </p>
+                        <p class="text-xs text-slate-500">
+                            <span class="font-semibold">Travel Dates:</span>
+                            {{ booking.start_date | date: 'mediumDate' }} -
+                            {{ booking.end_date | date: 'mediumDate' }}
+                        </p>
+                    </div>
+
+                    <!-- Booking Status -->
+                    <div class="text-right">
+                        <p
+                            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                            {{ booking.travel_status }}
+                        </p>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </ng-container>
+
+    <!-- No Bookings Placeholder -->
+    <ng-template #noBookings>
+        <p class="text-slate-600 text-sm font-bold text-center">
+            No current travellings found
+        </p>
+    </ng-template>
+</div>

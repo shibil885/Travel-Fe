@@ -18,4 +18,26 @@ export class AgencyDashboardService {
       withCredentials: true,
     });
   }
+
+  getCurrentTravellings() {
+    return this._http.get<{
+      success: boolean;
+      message: string;
+      bookings: IBooking[];
+    }>(`${this._api}/currentTravellings`, {
+      withCredentials: true,
+    });
+  }
+
+  getStatsdata() {
+    return this._http.get<{
+      success: boolean;
+      message: string;
+      packagesCount: string;
+      totalBookings: string;
+      totalRevenue: string;
+    }>(`${this._api}/statsData`, {
+      withCredentials: true,
+    });
+  }
 }
