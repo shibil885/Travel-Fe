@@ -1,0 +1,36 @@
+.message-bubble {
+  max-width: 75%; /* Limit the width of the message bubble */
+  word-wrap: break-word; /* Break words that are too long */
+  word-break: break-word; /* Ensure text breaks appropriately */
+}
+img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+input[type="file"] {
+  display: none;
+}
+
+.chat-image {
+  width: 150px; /* Set a fixed width */
+  height: auto; /* Maintain aspect ratio */
+  cursor: pointer; /* Indicate that the image is clickable */
+  border-radius: 8px;
+  transition: transform 0.2s; /* Optional for hover effect */
+}
+
+.chat-image:hover {
+  transform: scale(1.05); /* Slight zoom effect on hover */
+}
+/* Optional - Add padding to prevent modal from touching edges */
+img.max-w-full {
+    max-width: 90%; /* Modal image max width */
+    max-height: 90%; /* Modal image max height */
+  }
+  /* button {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+  } */
+  

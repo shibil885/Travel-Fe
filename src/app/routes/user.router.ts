@@ -16,6 +16,7 @@ import { PostsComponent } from '../components/user/posts/posts.component';
 import { UploadsComponent } from '../components/user/uploads/uploads.component';
 import { ForgotPasswordComponent } from '../components/user/forgot-password/forgot-password.component';
 import { ForgotPasswordFormComponent } from '../components/user/forgot-password/forgot-password-form/forgot-password-form.component';
+import { ChatComponent } from '../components/user/chat/chat.component';
 
 export const userRouter: Routes = [
   {
@@ -107,6 +108,12 @@ export const userRouter: Routes = [
     path: 'resetPassword/:token',
     component: ForgotPasswordFormComponent,
     canActivate: [preventGuard],
+    data: { role: 'user' },
+  },
+  {
+    path: 'chat',
+    component: ChatComponent,
+    canActivate: [authGuard],
     data: { role: 'user' },
   },
 ];
