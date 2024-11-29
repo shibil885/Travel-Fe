@@ -10,7 +10,8 @@
     <div class="flex justify-evenly items-center p-4">
       <input type="text" placeholder="Search chats..."
         class="w-full px-4 py-2 bg-gray-50 text-black border-b-4 rounded-t focus:outline-none focus:bg-gray-200 focus:border-b-[#ff6b54]" />
-      <span class="bg-[#ff6b54] text-white rounded-full px-3 py-2 ms-2 items-center cursor-pointer"  (click)="onAddNewChat()">
+      <span class="bg-[#ff6b54] text-white rounded-full px-3 py-2 ms-2 items-center cursor-pointer"
+        (click)="onAddNewChat()">
         <i class="fa-solid fa-plus">
         </i>
       </span>
@@ -21,17 +22,18 @@
       <ng-container *ngIf="chats && chats.length > 0; else noChat">
         <div class="flex items-center p-3 hover:bg-gray-50 cursor-pointer" *ngFor="let chat of chats"
           [class.bg-gray-100]="chat === selectedChat" (click)="selectChat(chat)">
-          <img src="{{ chat.avatar }}" alt="Avatar" class="w-12 h-12 rounded-full mr-3" />
+          <!-- <img src="{{ chat.ag }}" alt="Avatar" /> -->
+          <span class="w-12 h-12 rounded-full mr-3">{{chat.agencyId.name.charAt(0)}}</span>
           <div class="flex-1">
             <h2 class="font-semibold text-gray-800">
-              {{ chat.name }}
+              {{ chat.agencyId.name }}
             </h2>
             <p class="text-sm text-gray-500 truncate">
-              {{ chat.lastMessage }}
+              {{ chat.lastMessageId }}
             </p>
           </div>
           <span class="text-xs text-gray-400">
-            {{ chat.time }}
+            {{ chat.createdAt }}
           </span>
         </div>
       </ng-container>
@@ -51,9 +53,10 @@
           <i class="fa-solid fa-arrow-left">
           </i>
         </button>
-        <img src="{{ selectedChat?.avatar }}" alt="Avatar" class="w-10 h-10 rounded-full mr-3" />
+        <!-- <img src="{{ selectedChat?.avatar }}" alt="Avatar" /> -->
+        <span class="w-10 h-10 rounded-full mr-3">{{ selectedChat.agencyId.name.charAt(0) }}</span>
         <h2 class="text-lg font-semibold text-gray-800">
-          {{ selectedChat?.name }}
+          {{ selectedChat.agencyId.name }}
         </h2>
       </div>
     </ng-container>
@@ -61,28 +64,28 @@
     <div class="flex-1 overflow-y-auto p-4 bg-gray-100">
       <ng-container *ngIf="messages && messages.length > 0; else noSelectedChat">
         <div *ngFor="let message of messages" class="mb-4 flex" [ngClass]="{
-          'justify-end': message.sender === 'me',
-          'justify-start': message.sender !== 'me'
+          'justify-end': message.senderType === 'user',
+          'justify-start': message.senderType !== 'user'
           }">
           <div class="px-4 py-2 rounded-lg shadow message-bubble" [ngClass]="{
-            'bg-[#ff6b54] text-white': message.sender === 'me',
-            'bg-gray-200 text-gray-800': message.sender !== 'me'
+            'bg-[#ff6b54] text-white': message.senderType === 'user',
+            'bg-gray-200 text-gray-800': message.senderType !== 'user'
             }">
-            <ng-container *ngIf="message.content; else imageTemplate">
-              {{ message.content }}
-            </ng-container>
-            <ng-template #imageTemplate>
+            <ng-container *ngIf="message.imageUrl; else contentTemplate">
               <img [src]="message.imageUrl" alt="Uploaded Image" class="chat-image"
                 (click)="openImageModal(message.imageUrl)">
+            </ng-container>
+            <ng-template #contentTemplate>
+              {{ message.content }}
             </ng-template>
             <div class="text-xs mt-1" [ngClass]="{
-              'text-right': message.sender === 'me',
-              'text-left': message.sender !== 'me'
+              'text-right': message.senderType === 'user',
+              'text-left': message.senderType !== 'user'
               }">
               <span class="text-gray-400">
-                {{ message.timestamp }}
+                {{ message.createdAt }}
               </span>
-              <span *ngIf="message.sender === 'me'" class="ml-2 text-green-400">
+              <span *ngIf="message.senderType === 'user'" class="ml-2 text-green-400">
                 ✔✔
               </span>
             </div>
@@ -103,8 +106,8 @@
       </ng-template>
     </div>
     <!-- Input -->
-    <div class="p-4 bg-white border-t flex items-center">
-      <input type="text" [(ngModel)]="newMessage" placeholder="Type a message..."
+    <div class="p-4 bg-white border-t flex items-center" *ngIf="selectedChat">
+      <input type=" text" [(ngModel)]="newMessage" placeholder="Type a message..."
         class="flex-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-blue-300" />
       <!-- <input type="file" (change)="uploadImage($event)" class="hidden"
         #fileInput />
@@ -112,7 +115,7 @@
           📷
         </button>
         -->
-      <button (click)="sendMessage()" class="ml-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-600">
+      <button class="ml-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-600">
         Send
       </button>
     </div>

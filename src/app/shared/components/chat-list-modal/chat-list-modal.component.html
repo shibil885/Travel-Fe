@@ -3,11 +3,17 @@
     <input type="text" placeholder="Search agencies..."
         class="w-full my-3 px-4 py-2 bg-gray-100 text-black border-b-4 rounded-lg focus:outline-none focus:border-b-[#ff6b54] transition-all ease-in-out duration-300" />
     <hr class="my-2 border-gray-200" />
+    <!-- <div class="flex items-center text-sm mb-1">
+        <span class="bg-[#ff9e8f] px-2 rounded-md text-white cursor-pointer">all</span>
+        <span class="bg-gray-300 px-2 rounded-md text-white ms-0.5 cursor-pointer">new</span>
+        <span class="bg-gray-300 px-2 rounded-md text-white ms-0.5 cursor-pointer">recent</span>
+    </div> -->
     <ng-container *ngIf="users && users.length; else noUsers">
         <ul class="space-y-2 overflow-y-auto max-h-64 scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-100">
             <li class="flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-gray-200 cursor-pointer transition-all duration-200"
-                *ngFor="let user of users">
-                <div class="w-10 h-10 rounded-full bg-[#ff6b54] text-white flex items-center justify-center">
+                *ngFor="let user of users; let i = index" (click)="onSelectUser(user)">
+                <div class="w-10 h-10 rounded-full text-white flex items-center justify-center"
+                    [ngStyle]="{ 'background-color': getColor(i) }">
                     <ng-container *ngIf="isUser(user); else agency">
                         {{ user.username[0] }}
                     </ng-container>
