@@ -11,11 +11,11 @@ import { IUser } from '../../../models/user.model';
   standalone: true,
   templateUrl: './table.component.html',
   styleUrl: './table.component.css',
-  imports: [ ShowDetailsComponent,CommonModule, FormsModule,]
+  imports: [CommonModule, FormsModule],
 })
 export class ReusableTableComponent {
-  @Input() data: any[] = []; 
-  @Input() headers: { label: string, key: string }[] = [];  
+  @Input() data: any[] = [];
+  @Input() headers: { label: string; key: string }[] = [];
   filteredData = [...this.data];
   constructor(private _dialog: MatDialog) {}
 
@@ -25,16 +25,16 @@ export class ReusableTableComponent {
       ? this.data.filter((item) => item.role === filter)
       : [...this.data];
   }
-  showSinglePersonDetails(user: IAgency | IUser) {    
+  showSinglePersonDetails(user: IAgency | IUser) {
     this._dialog.open(ShowDetailsComponent, {
       width: '400px',
       data: user,
       panelClass: 'custom-dialog-container',
       hasBackdrop: true,
-      disableClose:false,
-        position: { 
-          right: '20px', 
-        }
+      disableClose: false,
+      position: {
+        right: '20px',
+      },
     });
   }
 }
