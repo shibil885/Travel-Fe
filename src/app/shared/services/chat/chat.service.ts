@@ -4,6 +4,7 @@ import { IAgency } from '../../../models/agency.model';
 import { MessageSenderType } from '../../../enum/messageSenderType.enum';
 import { IChat } from '../../../interfaces/chat.interface';
 import { tap } from 'rxjs';
+import { IUser } from '../../../models/user.model';
 
 @Injectable({
   providedIn: 'root',
@@ -25,12 +26,12 @@ export class ChatService {
     });
   }
 
-  agenciesToChat() {
+  usersOrAgenciesToChat() {
     return this._http.get<{
       success: boolean;
       message: string;
-      agencies: IAgency[];
-    }>(`${this._api}/agencies`, { withCredentials: true });
+      users: (IAgency | IUser)[];
+    }>(`${this._api}/users`, { withCredentials: true });
   }
 
   initializeChat(id: string, userType: MessageSenderType) {

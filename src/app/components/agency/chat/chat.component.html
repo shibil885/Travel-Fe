@@ -1,1 +1,133 @@
-<p>chat works!</p>
+<div class="flex h-screen bg-[#F1F1F2]">
+    <app-side-bar></app-side-bar>
+    <div class="flex-1 flex flex-col overflow-hidden">
+        <app-header></app-header>
+        <main class="flex-1 overflow-y-auto bg-[#F1F1F2] p-6 sm:p-0 relative">
+            <div class="h-screen flex flex-col md:flex-row">
+                <div class="w-full md:w-1/4 bg-white flex flex-col border-r"
+                    [class.hidden]="isMobile && showChatWindow">
+                    <!-- Header -->
+                    <div class="p-4">
+                        <h1 class="text-xl font-bold text-gray-800">
+                            Chats
+                        </h1>
+                    </div>
+                    <!-- Search Bar -->
+                    <div class="flex justify-evenly items-center p-4">
+                        <input type="text" placeholder="Search chats..."
+                            class="w-full px-4 py-2 bg-gray-50 text-black border-b-4 rounded-t focus:outline-none focus:bg-gray-200 focus:border-b-[#ff6b54]" />
+                        <span class="bg-[#ff6b54] text-white rounded-full px-3 py-2 ms-2 items-center cursor-pointer"
+                            (click)="onAddNewChat()">
+                            <i class="fa-solid fa-plus">
+                            </i>
+                        </span>
+                    </div>
+                    <hr>
+                    <!-- Chats List -->
+                    <div class="flex-1 overflow-y-auto">
+                        <ng-container *ngIf="recentChats && recentChats.length > 0; else noChat">
+                            <div class="flex items-center p-3 hover:bg-gray-50 cursor-pointer"
+                                *ngFor="let chat of recentChats" [class.bg-gray-100]="chat === selectedChat"
+                                (click)="selectChat(chat)">
+                                <!-- <img src="{{ chat.ag }}" alt="Avatar" /> -->
+                                <span
+                                    class="w-10 h-10 rounded-full text-white flex items-center justify-center">{{chat.agencyId.name.charAt(0)}}</span>
+                                <div class="flex-1">
+                                    <h2 class="font-semibold text-gray-800">
+                                        {{ chat.agencyId.name }}
+                                    </h2>
+                                    <p class="text-sm text-gray-500 truncate">
+                                        {{ chat.lastMessageId }}
+                                    </p>
+                                </div>
+                                <span class="text-xs text-gray-400">
+                                    {{ chat.createdAt }}
+                                </span>
+                            </div>
+                        </ng-container>
+                        <ng-template #noChat>
+                            <p class="text-center text-slate-500 font-semibold text-sm mt-4">
+                                Add someone to chat
+                            </p>
+                        </ng-template>
+                    </div>
+                </div>
+                <!-- Chat Window -->
+                <div class="flex-1 flex flex-col bg-white shadow-lg rounded-lg"
+                    [class.hidden]="isMobile && !showChatWindow">
+                    <!-- Header -->
+                    <ng-container *ngIf="selectedChat">
+                        <div class="flex items-center p-4 border-b bg-gray-50">
+                            <button class="block md:hidden mr-4 text-gray-500 hover:text-gray-800"
+                                (click)="backToChatList()">
+                                <i class="fa-solid fa-arrow-left">
+                                </i>
+                            </button>
+                            <!-- <img src="{{ selectedChat?.avatar }}" alt="Avatar" /> -->
+                            <span
+                                class="w-10 h-10 rounded-full text-white flex items-center justify-center bg-gradient-to-br from-[#6e8efb] to-[#a777e3]">{{
+                                selectedChat.agencyId.name.charAt(0) }}</span>
+                            <h2 class="text-lg font-semibold text-gray-800 ms-2">
+                                {{ selectedChat.agencyId.name }}
+                            </h2>
+                        </div>
+                    </ng-container>
+                    <!-- Messages -->
+                    <div class="flex-1 overflow-y-auto p-4 bg-gray-100">
+                        <ng-container *ngIf="selectedChat; else noSelectedChat">
+                            <div *ngFor="let message of messages" class="mb-4 flex"
+                                [ngClass]="{'justify-end': message.senderType === 'user','justify-start': message.senderType !== 'user'}">
+                                <div class="px-4 py-2 rounded-lg shadow message-bubble"
+                                    [ngClass]="{'bg-[#ff6b54] text-white': message.senderType === 'user', 'bg-gray-200 text-gray-800': message.senderType !== 'user'}">
+                                    <ng-container *ngIf="message.imageUrl; else contentTemplate">
+                                        <img [src]="message.imageUrl" alt="Uploaded Image" class="chat-image"
+                                            (click)="openImageModal(message.imageUrl)">
+                                    </ng-container>
+                                    <ng-template #contentTemplate>
+                                        {{ message.content }}
+                                    </ng-template>
+                                    <div class="text-xs mt-1"
+                                        [ngClass]="{'text-right': message.senderType === 'user','text-left': message.senderType !== 'user'}">
+                                        <span class="text-gray-400">
+                                            {{ message.createdAt }}
+                                        </span>
+                                        <span *ngIf="message.senderType === 'user'" class="ml-2 text-green-400">
+                                            ✔✔
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-container>
+                        <ng-template #noSelectedChat>
+                            <div class="flex justify-center items-center h-full">
+                                <div class="text-center">
+                                    <h1 class="text-slate-500 font-semibold text-2xl">
+                                        Chat with users
+                                    </h1>
+                                    <p class="text-slate-300 text-sm">
+                                        Select or add an user to chat
+                                    </p>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </div>
+                    <div class="p-4 bg-white border-t flex items-center" *ngIf="selectedChat">
+                        <input type=" text" [(ngModel)]="newMessage" placeholder="Type a message..."
+                            class="flex-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-blue-300" />
+                        <button class="ml-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-600">
+                            Send
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="modalImage" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
+                <div class="relative">
+                    <img [src]="modalImage" alt="Full Image" class="max-w-full max-h-screen rounded-lg">
+                    <button (click)="closeImageModal()" class="absolute top-2 right-2 text-white text-2xl font-bold">
+                        X
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>

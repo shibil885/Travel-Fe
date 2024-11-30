@@ -23,22 +23,24 @@ export class ChatListModalComponent {
   ) {}
 
   ngOnInit(): void {
-    this.fetchAgencies();
+    this.fetchUsersOrAgencies();
   }
 
-  fetchAgencies(): void {
-    this._chatService.agenciesToChat().subscribe((res) => {
-      this.users = res.agencies;
+  fetchUsersOrAgencies(): void {
+    this._chatService.usersOrAgenciesToChat().subscribe((res) => {
+      this.users = res.users;
     });
   }
 
   getColor(index: number): string {
     return this.colors[index % this.colors.length];
   }
+
   isUser(user: IAgency | IUser): user is IUser {
     return (user as IUser).username !== undefined;
   }
-  onSelectUser(user: any) {
+
+  onSelectUser(user: IAgency | IUser) {
     if (this.isUser(user)) {
       this._dialogRef.close({ user: user, userType: MessageSenderType.USER });
     } else {
