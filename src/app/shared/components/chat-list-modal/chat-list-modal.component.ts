@@ -4,6 +4,7 @@ import { IAgency } from '../../../models/agency.model';
 import { IUser } from '../../../models/user.model';
 import { CommonModule } from '@angular/common';
 import { MatDialogRef } from '@angular/material/dialog';
+import { MessageSenderType } from '../../../enum/messageSenderType.enum';
 
 @Component({
   selector: 'app-chat-list-modal',
@@ -38,6 +39,10 @@ export class ChatListModalComponent {
     return (user as IUser).username !== undefined;
   }
   onSelectUser(user: any) {
-      this._dialogRef.close(user);
+    if (this.isUser(user)) {
+      this._dialogRef.close({ user: user, userType: MessageSenderType.USER });
+    } else {
+      this._dialogRef.close({ user: user, userType: MessageSenderType.AGENCY });
+    }
   }
 }
