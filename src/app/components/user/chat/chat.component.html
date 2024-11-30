@@ -31,11 +31,11 @@
               {{ chat.agencyId.name }}
             </h2>
             <p class="text-sm text-gray-500 truncate">
-              {{ chat.lastMessageId }}
+              {{ chat.lastMessageId?.content }}
             </p>
           </div>
           <span class="text-xs text-gray-400">
-            {{ chat.createdAt }}
+            {{ chat.createdAt | date:'shortDate' }}
           </span>
         </div>
       </ng-container>
@@ -87,9 +87,9 @@
               'text-left': message.senderType !== 'user'
               }">
               <span class="text-gray-400">
-                {{ message.createdAt }}
+                {{ message.createdAt | date: 'shortDate'}}
               </span>
-              <span *ngIf="message.senderType === 'user'" class="ml-2 text-green-400">
+              <span *ngIf="message.isRead" class="ml-2 text-green-400">
                 ✔✔
               </span>
             </div>
@@ -119,7 +119,7 @@
           📷
         </button>
         -->
-      <button class="ml-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-600">
+      <button class="ml-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-600" (click)="onSendMessage()">
         Send
       </button>
     </div>

@@ -5,6 +5,7 @@ import { MessageSenderType } from '../../../enum/messageSenderType.enum';
 import { IChat } from '../../../interfaces/chat.interface';
 import { tap } from 'rxjs';
 import { IUser } from '../../../models/user.model';
+import { IMessage } from '../../../interfaces/message.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -14,7 +15,6 @@ export class ChatService {
   constructor(private _http: HttpClient) {}
 
   getAllChats(userType: MessageSenderType) {
-    console.log('user type', userType);
     const params = new HttpParams().set('userType', userType);
     return this._http.get<{
       success: boolean;
@@ -22,6 +22,16 @@ export class ChatService {
       chats: IChat[];
     }>(`${this._api}`, {
       params,
+      withCredentials: true,
+    });
+  }
+
+  getAllMessages(chatId: string) {
+    return this._http.get<{
+      success: boolean;
+      message: string;
+      messages: IMessage[];
+    }>(`${this._api}/messages/${chatId}`, {
       withCredentials: true,
     });
   }
@@ -46,5 +56,13 @@ export class ChatService {
           console.log('log from tap', res);
         })
       );
+  }
+
+  addMessage(chatId: string, content: string) {
+    return this._http.post<{ success: boolean; message: string }>(
+      `${this._api}/addMessage/${chatId}`,
+      { content },
+      { withCredentials: true }
+    );
   }
 }
