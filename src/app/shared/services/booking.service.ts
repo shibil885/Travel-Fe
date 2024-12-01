@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { IBooking } from '../../interfaces/booking.interface';
 import { TravelConfirmationStatus } from '../../enum/travelConfirmation.enum';
 import { FormGroup } from '@angular/forms';
-import { tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -13,22 +12,16 @@ export class BookingService {
   constructor(private _http: HttpClient) {}
 
   createPayment(packageId: string | undefined, couponId: string) {
-    return this._http
-      .post<{
-        success: boolean;
-        amount: number;
-        currency: string;
-        id: string;
-      }>(
-        `${this._api}/payment/create-order/`,
-        { packageId, couponId },
-        { withCredentials: true }
-      )
-      .pipe(
-        tap((res) => {
-          console.log('res log from tap', res);
-        })
-      );
+    return this._http.post<{
+      success: boolean;
+      amount: number;
+      currency: string;
+      id: string;
+    }>(
+      `${this._api}/payment/create-order/`,
+      { packageId, couponId },
+      { withCredentials: true }
+    );
   }
 
   verifyPayment(

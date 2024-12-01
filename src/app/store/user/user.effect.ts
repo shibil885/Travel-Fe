@@ -261,7 +261,6 @@ export class UserEffect {
           )
           .pipe(
             map((res) => {
-              console.log('res from ---> effect', res);
               return userActions.verifyPaymentSuccess({
                 message: res.message,
               });

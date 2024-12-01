@@ -163,6 +163,8 @@ export class BookingComponent {
     this.bookingForm.get('person')?.valueChanges.subscribe((value) => {
       if (Number(value) <= Number(this.packageDetails.people)) {
         this.updateTraveller(value);
+      } else {
+        this.updateTraveller(Number(this.packageDetails.people));
       }
     });
 
@@ -183,6 +185,9 @@ export class BookingComponent {
     return this.bookingForm.get('travelers') as FormArray;
   }
 
+  get people() {
+    return Number(this.packageDetails.people);
+  }
   updateTraveller(personCount: number) {
     const travelersArray = new FormArray(
       Array.from({ length: personCount }, () =>
@@ -267,7 +272,7 @@ export class BookingComponent {
         // // }
         // console.log('result', result);
         // console.log('discounted price', this.discoundedPrice);
-        this.discoundedPrice = result
+        this.discoundedPrice = result;
         this.discount = Number(this.packageDetails.price) - result;
         this.selectedCouponId = id;
       });
@@ -284,7 +289,6 @@ export class BookingComponent {
   }
 
   async onSubmit() {
-    console.log('form submitted');
     if (this.bookingForm.invalid) {
       this.invalidForm = true;
       return;
