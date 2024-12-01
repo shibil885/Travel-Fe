@@ -88,6 +88,7 @@ export class ChatComponent {
       .addMessage(this.selectedChat._id, this.newMessage)
       .subscribe((res) => {
         if (res.success) {
+          this.newMessage = '';
           this._fetchChats();
           this._fetchMessages(this.selectedChat._id);
         }

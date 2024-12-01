@@ -43,6 +43,14 @@ export class ChatComponent {
     });
   }
 
+  private _fetchMessages(chatId: string) {
+    this._chatService.getAllMessages(chatId).subscribe((res) => {
+      if (res.success) {
+        this.messages = res.messages;
+      }
+    });
+  }
+
   openImageModal(imageUrl: string) {
     this.modalImage = imageUrl;
   }
@@ -65,6 +73,8 @@ export class ChatComponent {
 
   selectChat(chat: IChat) {
     this.selectedChat = chat;
+    this._fetchChats();
+    this._fetchMessages(this.selectedChat._id);
     if (this.isMobile) {
       this.showChatWindow = true;
     }
@@ -74,6 +84,17 @@ export class ChatComponent {
     this.showChatWindow = false;
   }
 
+  onSendMessage() {
+    this._chatService
+      .addMessage(this.selectedChat._id, this.newMessage)
+      .subscribe((res) => {
+        if (res.success) {
+          this.newMessage = '';
+          this._fetchChats();
+          this._fetchMessages(this.selectedChat._id);
+        }
+      });
+  }
   // uploadImage(event: Event) {
   //   const input = event.target as HTMLInputElement;
   //   if (input.files && input.files[0]) {

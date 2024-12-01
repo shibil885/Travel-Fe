@@ -31,17 +31,17 @@
                                 (click)="selectChat(chat)">
                                 <!-- <img src="{{ chat.ag }}" alt="Avatar" /> -->
                                 <span
-                                    class="w-10 h-10 rounded-full text-white flex items-center justify-center">{{chat.agencyId.name.charAt(0)}}</span>
+                                    class="w-10 h-10 rounded-full text-white flex items-center justify-center">{{chat.userId.username.charAt(0)}}</span>
                                 <div class="flex-1">
                                     <h2 class="font-semibold text-gray-800">
-                                        {{ chat.agencyId.name }}
+                                        {{ chat.userId.username }}
                                     </h2>
                                     <p class="text-sm text-gray-500 truncate">
-                                        {{ chat.lastMessageId }}
+                                        {{ chat.lastMessageId?.content }}
                                     </p>
                                 </div>
                                 <span class="text-xs text-gray-400">
-                                    {{ chat.createdAt }}
+                                    {{ chat.createdAt | date:'shortDate' }}
                                 </span>
                             </div>
                         </ng-container>
@@ -66,9 +66,9 @@
                             <!-- <img src="{{ selectedChat?.avatar }}" alt="Avatar" /> -->
                             <span
                                 class="w-10 h-10 rounded-full text-white flex items-center justify-center bg-gradient-to-br from-[#6e8efb] to-[#a777e3]">{{
-                                selectedChat.agencyId.name.charAt(0) }}</span>
+                                selectedChat.userId.username.charAt(0) }}</span>
                             <h2 class="text-lg font-semibold text-gray-800 ms-2">
-                                {{ selectedChat.agencyId.name }}
+                                {{ selectedChat.userId.username }}
                             </h2>
                         </div>
                     </ng-container>
@@ -76,9 +76,9 @@
                     <div class="flex-1 overflow-y-auto p-4 bg-gray-100">
                         <ng-container *ngIf="selectedChat; else noSelectedChat">
                             <div *ngFor="let message of messages" class="mb-4 flex"
-                                [ngClass]="{'justify-end': message.senderType === 'user','justify-start': message.senderType !== 'user'}">
+                                [ngClass]="{'justify-end': message.senderType === 'agency','justify-start': message.senderType !== 'agency'}">
                                 <div class="px-4 py-2 rounded-lg shadow message-bubble"
-                                    [ngClass]="{'bg-[#ff6b54] text-white': message.senderType === 'user', 'bg-gray-200 text-gray-800': message.senderType !== 'user'}">
+                                    [ngClass]="{'bg-[#ff6b54] text-white': message.senderType === 'agency', 'bg-gray-200 text-gray-800': message.senderType !== 'agency'}">
                                     <ng-container *ngIf="message.imageUrl; else contentTemplate">
                                         <img [src]="message.imageUrl" alt="Uploaded Image" class="chat-image"
                                             (click)="openImageModal(message.imageUrl)">
@@ -87,9 +87,9 @@
                                         {{ message.content }}
                                     </ng-template>
                                     <div class="text-xs mt-1"
-                                        [ngClass]="{'text-right': message.senderType === 'user','text-left': message.senderType !== 'user'}">
+                                        [ngClass]="{'text-right': message.senderType === 'agency','text-left': message.senderType !== 'agency'}">
                                         <span class="text-gray-400">
-                                            {{ message.createdAt }}
+                                            {{ message.createdAt| date:'shortDate' }}
                                         </span>
                                         <span *ngIf="message.senderType === 'user'" class="ml-2 text-green-400">
                                             ✔✔
@@ -114,7 +114,8 @@
                     <div class="p-4 bg-white border-t flex items-center" *ngIf="selectedChat">
                         <input type=" text" [(ngModel)]="newMessage" placeholder="Type a message..."
                             class="flex-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-blue-300" />
-                        <button class="ml-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-600">
+                        <button class="ml-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-600"
+                            (click)="onSendMessage()">
                             Send
                         </button>
                     </div>
