@@ -58,8 +58,8 @@
             Expiry Date
         </label>
 
-        <div *ngIf="couponForm.get('expiry_date')?.touched && couponForm.get('expiry_date')?.invalid">
-            <small class="text-red-500 text-sm block" *ngIf="couponForm.get('expiry_date')?.errors?.['required']">
+        <div *ngIf="couponForm.get('expiry_date')?.invalid">
+            <small class="text-red-500 text-sm block" *ngIf="couponForm.get('expiry_date')?.touched && couponForm.get('expiry_date')?.errors?.['required']">
                 Expiry Date is required*
             </small>
             <small class="text-red-500 text-sm block" *ngIf="couponForm.get('expiry_date')?.errors?.['invalidDate']">

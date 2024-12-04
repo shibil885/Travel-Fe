@@ -7,7 +7,7 @@ import {
 } from '@angular/forms';
 import { CouponService } from '../../services/coupon.service';
 import { ToastService } from '../../services/toaster.service';
-import { ICoupon } from '../../../interfaces/coupon.interface';
+import { DiscountType, ICoupon } from '../../../interfaces/coupon.interface';
 import { descriptionValidator } from '../../../validatores/description.validator';
 import { CommonModule } from '@angular/common';
 import { invalidCoupon } from '../../../validatores/couponCode.validator';
@@ -52,14 +52,14 @@ export class CouponFormComponent implements OnInit {
         const percentageControl = this.couponForm.get('percentage');
         const discountValueControl = this.couponForm.get('discount_value');
 
-        if (discountType === 'fixed') {
+        if (discountType === DiscountType.FIXED) {
           discountValueControl?.setValidators([
             Validators.required,
             priceValidator,
           ]);
           maxAmtControl?.clearValidators();
           percentageControl?.clearValidators();
-        } else if (discountType === 'percentage') {
+        } else if (discountType === DiscountType.PERCENTAGE) {
           maxAmtControl?.setValidators([Validators.required, priceValidator]);
           percentageControl?.setValidators([
             Validators.required,
@@ -92,11 +92,6 @@ export class CouponFormComponent implements OnInit {
         ? new Date(coupon.expiry_date).toISOString().split('T')[0]
         : null,
     });
-    console.log(
-      coupon.expiry_date
-        ? new Date(coupon.expiry_date).toISOString().split('T')[0]
-        : null
-    );
   }
 
   onSubmit(): void {

@@ -1,0 +1,72 @@
+<main class="flex h-screen bg-[#F1F1F2]">
+    <aside class="hidden sm:block">
+        <app-side-bar></app-side-bar>
+    </aside>
+    <div class="flex-1 flex flex-col overflow-hidden">
+        <header>
+            <app-header></app-header>
+        </header>
+        <section class="flex-1 overflow-y-auto bg-[#F1F1F2] p-4 sm:p-6 relative">
+            <h1 class="text-2xl font-semibold text-[#3D52A0] mb-2 sm:mb-4">Bookings</h1>
+            <app-search></app-search>
+            <div class="relative overflow-x-auto sm:rounded-lg mt-6">
+                <article>
+                    <table
+                        class="w-full text-sm text-left rtl:text-right text-gray-700 bg-[#EDE8F5] border border-gray-300 rounded-lg">
+                        <thead class="text-xs uppercase bg-[#8697C4] text-gray-700 border-b border-gray-300">
+                            <tr>
+                                <th scope="col" class="px-6 py-4 text-center font-semibold"></th>
+                                <th scope="col" class="px-6 py-4 text-center font-semibold">Agency name</th>
+                                <th scope="col" class="px-6 py-4 text-center font-semibold">Total bookings</th>
+                                <th scope="col" class="px-6 py-4 text-center font-semibold">Cancelled</th>
+                                <th scope="col" class="px-6 py-4 text-center font-semibold">Ongoing</th>
+                                <th scope="col" class="px-6 py-4 text-center font-semibold">Completed</th>
+                                <th scope="col" class="px-6 py-4 text-center font-semibold">Vie-bookingsw</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="bg-[#EDE8F5] hover:bg-[#d6d2e5]">
+                                <td class="px-6 py-2 text-center border-b border-gray-300 ">
+                                    <span
+                                        class="avatar-fallback px-4 py-3  text-white rounded-full bg-gradient-to-r from-[#3D52A0] to-[#7091E6]">O</span>
+                                </td>
+                                <td class="px-6 py-2 text-center border-b border-gray-300">Royal travels</td>
+                                <td class="px-6 py-2 text-center border-b border-gray-300">
+                                    15
+                                </td>
+                                <td class="px-6 py-2 text-center border-b border-gray-300">
+                                    5
+                                <td class="px-6 py-2 text-center border-b border-gray-300">
+                                    5
+                                </td>
+                                <td class="px-6 py-2 text-center border-b border-gray-300">
+                                    5
+                                </td>
+                                <td
+                                    class="px-6 py-2 text-center cursor-pointer text-green-500 border-b border-gray-300">
+                                    <button
+                                        class="rounded-lg px-2 py-1 hover:shadow-lg bg-gradient-to-r from-indigo-500 via-indigo-600 to-indigo-700 text-white">view-bookings
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </article>
+                <!--   
+          <article *ngIf="renderCouponAddForm" class="mt-6">
+            <div class="mx-auto">
+              <app-coupon-form [selectedCoupon]="selectedCoupon" (closeFormAfterAdditionOrEdit)="onRenderCouponList()"></app-coupon-form>
+            </div>
+          </article> -->
+
+                <!-- <app-single-coupon [selectedCoupon]="selectedCouponForShow" [isModalOpen]="isModalOpen"
+            (closeModalEvent)="closeModal()">
+          </app-single-coupon> -->
+            </div>
+
+            <!-- <app-pagination [totalItems]="totalCoupons" [itemsPerPage]="limit" [currentPage]="currentPage"
+          [typeOfUser]="'admin'" (pageChange)="onPageChange($event)">
+        </app-pagination> -->
+        </section>
+    </div>
+</main>
