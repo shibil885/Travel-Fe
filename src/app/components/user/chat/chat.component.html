@@ -21,11 +21,11 @@
     <!-- Chats List -->
     <div class="flex-1 overflow-y-auto">
       <ng-container *ngIf="recentChats && recentChats.length > 0; else noChat">
-        <div class="flex items-center p-3 hover:bg-gray-50 cursor-pointer" *ngFor="let chat of recentChats"
-          [class.bg-gray-100]="chat === selectedChat" (click)="selectChat(chat)">
-          <!-- <img src="{{ chat.ag }}" alt="Avatar" /> -->
-          <span
-            class="w-10 h-10 rounded-full text-white flex items-center justify-center">{{chat.agencyId.name.charAt(0)}}</span>
+        <div class="flex items-center p-3 hover:bg-gray-50 cursor-pointer"
+          *ngFor="let chat of recentChats;let i = index" [class.bg-gray-100]="chat === selectedChat"
+          (click)="selectChat(chat)">
+          <span class="w-10 h-10 rounded-full text-white flex items-center justify-center mb-1 mr-3"
+            [ngStyle]="{ 'background-color': getColor(i) }">{{chat.agencyId.name.charAt(0)}}</span>
           <div class="flex-1">
             <h2 class="font-semibold text-gray-800">
               {{ chat.agencyId.name }}

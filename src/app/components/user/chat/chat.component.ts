@@ -27,14 +27,16 @@ export class ChatComponent {
   isMobile: boolean = false;
   showChatWindow: boolean = false;
   newMessage = '';
+  colors: string[] = ['#ff6b54', '#34a853', '#4285f4', '#fbbc05'];
+
   constructor(private _chatService: ChatService, private _dialog: MatDialog) {}
 
   ngOnInit() {
     this.checkScreenSize();
     this._fetchChats();
     this._chatService.receiveMessages().subscribe((res: IMessage) => {
-      this.messages.push(res)
-    })
+      this.messages.push(res);
+    });
   }
 
   private _fetchChats() {
@@ -135,6 +137,10 @@ export class ChatComponent {
           }
         }
       );
+  }
+  
+  getColor(index: number): string {
+    return this.colors[index % this.colors.length];
   }
 
   private _handleSelectedUser(

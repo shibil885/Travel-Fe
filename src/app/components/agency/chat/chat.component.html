@@ -29,9 +29,8 @@
                             <div class="flex items-center p-3 hover:bg-gray-50 cursor-pointer"
                                 *ngFor="let chat of recentChats" [class.bg-gray-100]="chat === selectedChat"
                                 (click)="selectChat(chat)">
-                                <!-- <img src="{{ chat.ag }}" alt="Avatar" /> -->
-                                <span
-                                    class="w-10 h-10 rounded-full text-white flex items-center justify-center">{{chat.userId.username.charAt(0)}}</span>
+                                <img [src]="chat.userId.profilePicture" alt="Avatar"
+                                    class="w-10 h-10 rounded-full items-center mb-1 mr-3" />
                                 <div class="flex-1">
                                     <h2 class="font-semibold text-gray-800">
                                         {{ chat.userId.username }}
