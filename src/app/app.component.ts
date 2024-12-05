@@ -11,5 +11,5 @@ import { LoadingComponent } from './shared/components/loading/loading.component'
   styleUrl: './app.component.css',
 })
 export class AppComponent {
-  title = 'travel-be';
+  title = 'travel';
 }

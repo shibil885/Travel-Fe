@@ -28,12 +28,14 @@ export class ChatComponent {
   isMobile: boolean = false;
   showChatWindow: boolean = false;
   newMessage = '';
-
   constructor(private _chatService: ChatService, private _dialog: MatDialog) {}
 
   ngOnInit() {
     this.checkScreenSize();
     this._fetchChats();
+    this._chatService.receiveMessages().subscribe((res: IMessage) => {
+      this.messages.push(res)
+    })
   }
 
   private _fetchChats() {
@@ -72,6 +74,7 @@ export class ChatComponent {
   }
 
   selectChat(chat: IChat) {
+    this._chatService.joinChat(chat._id);
     this.selectedChat = chat;
     this._fetchChats();
     this._fetchMessages(this.selectedChat._id);

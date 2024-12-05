@@ -38,7 +38,7 @@
 //   ],
 // };
 
-import { ApplicationConfig } from '@angular/core';
+import { ApplicationConfig, importProvidersFrom } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { provideClientHydration } from '@angular/platform-browser';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
@@ -58,12 +58,13 @@ import { UserEffect } from './store/user/user.effect';
 import { AdminEffects } from './store/admin/admin.effect';
 import { AgencyEffect } from './store/agency/agency.effects';
 import { errorInterceptorFn } from './interceptors/error.interceptor';
-import { importProvidersFrom } from '@angular/core';
-import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
+import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
 
 const allRoutes = [...userRouter, ...adminRouter, ...agencyRouter];
-const config: SocketIoConfig = { url: 'http://localhost:', options: {} };
-
+const config: SocketIoConfig = {
+  url: 'http://localhost:3000',
+  options: { withCredentials: true },
+};
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(allRoutes),

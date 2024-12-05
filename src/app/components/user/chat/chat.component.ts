@@ -10,7 +10,6 @@ import { IAgency } from '../../../models/agency.model';
 import { MessageSenderType } from '../../../enum/messageSenderType.enum';
 import { ChatService } from '../../../shared/services/chat/chat.service';
 import { HeaderSidebarComponent } from '../header-and-side-bar/header-and-side-bar.component';
-import { Socket } from 'ngx-socket-io';
 
 @Component({
   selector: 'app-chat',
@@ -28,16 +27,14 @@ export class ChatComponent {
   isMobile: boolean = false;
   showChatWindow: boolean = false;
   newMessage = '';
-
-  constructor(
-    private _chatService: ChatService,
-    private _dialog: MatDialog,
-    private _socket: Socket
-  ) {}
+  constructor(private _chatService: ChatService, private _dialog: MatDialog) {}
 
   ngOnInit() {
     this.checkScreenSize();
     this._fetchChats();
+    this._chatService.receiveMessages().subscribe((res: IMessage) => {
+      this.messages.push(res)
+    })
   }
 
   private _fetchChats() {
@@ -51,7 +48,6 @@ export class ChatComponent {
     this._chatService.getAllMessages(chatId).subscribe((res) => {
       if (res.success) {
         this.messages = res.messages;
-        this._socket.fromEvent<string>('newMessage');
       }
     });
   }
@@ -77,6 +73,7 @@ export class ChatComponent {
   }
 
   selectChat(chat: IChat) {
+    this._chatService.joinChat(chat._id);
     this.selectedChat = chat;
     this._fetchChats();
     this._fetchMessages(this.selectedChat._id);

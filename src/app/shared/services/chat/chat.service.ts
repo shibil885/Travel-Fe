@@ -48,23 +48,34 @@ export class ChatService {
   initializeChat(id: string, userType: MessageSenderType) {
     return this._http
       .post<{ success: boolean; message: string; chat: IChat }>(
-        `${this._api}/initialize`,  
+        `${this._api}/initialize`,
         { id, userType },
         { withCredentials: true }
-      ) 
+      )
       .pipe(
         tap((res) => {
-          console.log('log from tap', res);
+          console.log('log from tap initialize', res);
         })
       );
   }
 
   addMessage(chatId: string, content: string) {
-    this._socket.emit('message', content);
     return this._http.post<{ success: boolean; message: string }>(
       `${this._api}/addMessage/${chatId}`,
       { content },
       { withCredentials: true }
     );
+  }
+
+  joinChat(chatId: string) {
+    this._socket.emit('joinChat', { chatId });
+  }
+
+  receiveMessages() {
+    return this._socket.fromEvent<IMessage>('message');
+  }
+
+  leaveChat(chatId: string) {
+    this._socket.emit('leaveChat', { chatId });
   }
 }
