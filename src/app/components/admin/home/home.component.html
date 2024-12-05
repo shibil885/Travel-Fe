@@ -1,9 +1,19 @@
-<div class="flex h-screen bg-[#F1F1F2]">
+<main class="flex h-screen bg-[#F1F1F2]">
+  <aside class="hidden sm:block">
     <app-side-bar></app-side-bar>
-    <div class="flex-1 flex flex-col overflow-hidden">
+  </aside>
+  <div class="flex-1 flex flex-col overflow-hidden">
+    <header>
       <app-header></app-header>
-      <main class="flex-1 overflow-y-auto bg-[#F1F1F2] p-6">
-      </main>
-    </div>
+    </header>
+    <section class="flex-1 overflow-y-auto bg-[#F1F1F2] p-4 sm:p-6 relative">
+      <h1 class="text-2xl font-semibold text-[#3D52A0] mb-2 sm:mb-4">Bookings</h1>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-6">
+        <app-stats-card [title]="item.title" [value]="item.value" [icon]="item.icon"
+          *ngFor="let item of statsItem"></app-stats-card>
+        <!-- <app-stats-card [title]="'Bookings'" [value]="'23'" [icon]="'briefcase'"></app-stats-card>
+        <app-stats-card [title]="'Revenue(MTD)'" [value]="'$45,678'" [icon]=""></app-stats-card> -->
+      </div>
+    </section>
   </div>
-  
+</main>
