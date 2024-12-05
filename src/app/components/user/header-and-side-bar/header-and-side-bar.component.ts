@@ -36,6 +36,7 @@ export class HeaderSidebarComponent {
   menuItems = [
     { icon: 'person', label: 'Profile', route: '/profile' },
     { icon: 'book', label: 'Booked', route: '/booked' },
+    { icon: 'history', label: 'Travel history', route: '/travelHistory' },
     { icon: 'account_balance_wallet', label: 'Wallet', route: '/wallet' },
     { icon: 'library_add', label: 'Uploads', route: '/uploads' },
     { icon: 'notifications', label: 'Notifications', route: '/notifications' },
@@ -66,7 +67,6 @@ export class HeaderSidebarComponent {
       this.isMenuOpen = false;
     }
   }
-  
 
   userLogout(): void {
     this.store.dispatch(logout());

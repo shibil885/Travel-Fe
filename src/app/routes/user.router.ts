@@ -17,6 +17,7 @@ import { UploadsComponent } from '../components/user/uploads/uploads.component';
 import { ForgotPasswordComponent } from '../components/user/forgot-password/forgot-password.component';
 import { ForgotPasswordFormComponent } from '../components/user/forgot-password/forgot-password-form/forgot-password-form.component';
 import { ChatComponent } from '../components/user/chat/chat.component';
+import { TravelHistoryComponent } from '../components/user/travel-history/travel-history.component';
 
 export const userRouter: Routes = [
   {
@@ -113,6 +114,12 @@ export const userRouter: Routes = [
   {
     path: 'chat',
     component: ChatComponent,
+    canActivate: [authGuard],
+    data: { role: 'user' },
+  },
+  {
+    path: 'travelHistory',
+    component: TravelHistoryComponent,
     canActivate: [authGuard],
     data: { role: 'user' },
   },

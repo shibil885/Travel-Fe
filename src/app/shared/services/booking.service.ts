@@ -49,8 +49,6 @@ export class BookingService {
     );
   }
   getAllBookedPackages(page: number, limit: number) {
-    console.log('page', page);
-    console.log('page', limit);
     const params = new HttpParams().set('page', page).set('limit', limit);
     return this._http.get<{
       success: boolean;
@@ -58,6 +56,16 @@ export class BookingService {
       totalItems: number;
       currentPage: number;
     }>(`${this._api}/booking/getAllBooked`, { params, withCredentials: true });
+  }
+
+  getTravelHistoryOfUser(page: number, limit: number) {
+    const params = new HttpParams().set('page', page).set('limit', limit);
+    return this._http.get<{
+      success: boolean;
+      history: IBooking[];
+      totalItems: number;
+      currentPage: number;
+    }>(`${this._api}/booking/travelHistory`, { params, withCredentials: true });
   }
 
   getSingleBookedPackage(id: string) {
@@ -154,5 +162,25 @@ export class BookingService {
       params,
       withCredentials: true,
     });
+  }
+
+  createFeedback(
+    packageId: string,
+    feedback: { rating: number; review: string }
+  ) {
+    return this._http.post<{ success: boolean; message: string }>(
+      `${this._api}/rating-review-package/${packageId}`,
+      feedback,
+      { withCredentials: true }
+    );
+  }
+
+  isFeedBackExist(packageId: string) {
+    return this._http.get<{ success: boolean; rating: number; review: string }>(
+      `${this._api}/rating-review-package/isExisting/${packageId}`,
+      {
+        withCredentials: true,
+      }
+    );
   }
 }
