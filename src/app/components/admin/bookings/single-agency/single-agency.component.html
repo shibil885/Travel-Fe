@@ -1,0 +1,347 @@
+<main class="flex h-screen bg-[#F1F1F2]">
+    <aside class="hidden sm:block">
+        <app-side-bar></app-side-bar>
+    </aside>
+    <div class="flex-1 flex flex-col overflow-hidden">
+        <header>
+            <app-header></app-header>
+        </header>
+
+        <section class="flex-1 overflow-y-auto bg-[#F1F1F2] p-4 sm:p-6 relative">
+            <h1 class="text-2xl font-semibold text-[#3D52A0] mb-2 sm:mb-4">Bookings
+            </h1>
+            <article class="bg-gray-100 p-6">
+                <header class="p-4">
+                    <div class="max-w-4xl mx-auto">
+                        <div class="space-y-6">
+                            <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                                <div class="p-6">
+                                    <div class="flex items-center mb-4">
+                                        <div
+                                            class="w-12 h-12 flex items-center justify-center text-xl font-bold text-white rounded-full bg-gradient-to-r from-indigo-500 to-purple-600">
+                                            R
+                                        </div>
+                                        <div class="ml-4">
+                                            <h2 class="text-xl font-semibold text-gray-800">Royal travels</h2>
+                                        </div>
+                                    </div>
+
+                                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+                                        <div class="text-center">
+                                            <p class="text-sm font-medium text-gray-500">Total Bookings</p>
+                                            <p class="text-2xl font-bold text-indigo-600">{{cancelled.length +
+                                                started.length + completed.length}}</p>
+                                        </div>
+                                        <div class="text-center">
+                                            <p class="text-sm font-medium text-gray-500">Cancelled</p>
+                                            <p class="text-2xl font-bold text-red-500">{{cancelled.length}}</p>
+                                        </div>
+                                        <div class="text-center">
+                                            <p class="text-sm font-medium text-gray-500">Ongoing</p>
+                                            <p class="text-2xl font-bold text-yellow-500">{{started.length}}</p>
+                                        </div>
+                                        <div class="text-center">
+                                            <p class="text-sm font-medium text-gray-500">Completed</p>
+                                            <p class="text-2xl font-bold text-green-500">{{completed.length}}</p>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+                <hr>
+                <section class="my-4">
+                    <h1 class="text-2xl font-semibold text-[#3D52A0] mb-2 sm:mb-4"> Completed </h1>
+                    <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+                        <ng-container *ngIf="completed && completed.length; else noData">
+                            <div *ngFor="let booking of completed"
+                                class="bg-white rounded-lg shadow-lg overflow-hidden transform transition duration-300">
+                                <div class="relative">
+                                    <img [src]="booking.package_id.images[0]" [alt]="booking.package.name"
+                                        class="w-full h-48 object-cover">
+                                    <span
+                                        [class]="'absolute top-4 right-4 px-3 py-1 text-xs font-semibold text-white rounded-full ' + getStatusColor(booking.travel_status)">
+                                        {{ booking.travel_status }}
+                                    </span>
+                                </div>
+                                <div class="p-6">
+                                    <h2 class="text-2xl font-semibold mb-2 text-gray-800">{{ booking.package_id.name }}
+                                    </h2>
+                                    <p class="text-gray-600 mb-4">{{ booking.package_id.description }}</p>
+                                    <div class="flex items-center space-x-4 mb-4">
+                                        <img [src]="booking.user_id.profilePicture" [alt]="booking.user_id.username "
+                                            class="w-12 h-12 rounded-full">
+                                        <div>
+                                            <p class="text-sm font-medium text-gray-800">{{ booking.user_id.username }}
+                                            <p class="text-sm text-gray-500">{{ booking.user_id.email }}</p>
+                                        </div>
+                                    </div>
+                                    <div class="space-y-2 mb-4">
+                                        <div class="flex items-center text-gray-700">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-500"
+                                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                            </svg>
+                                            <span class="text-sm">{{ booking.start_date| date:'shortDate' }} to {{
+                                                booking.end_date | date:'shortDate'
+                                                }}</span>
+                                        </div>
+                                        <div class="flex items-center text-gray-700">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-green-500"
+                                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                            </svg>
+                                            <span class="text-sm">{{ booking.package_id.departure }} to {{
+                                                booking.package_id.finalDestination }}</span>
+                                        </div>
+                                        <div class="flex items-center text-gray-700">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-purple-500"
+                                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                                            </svg>
+                                            <span class="text-sm">{{ booking.peoples.length }} people</span>
+                                        </div>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-lg font-bold text-blue-600">{{
+                                            booking.total_price|currency:'INR' }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-container>
+                        <ng-template #noData>
+                            <div class="text-center text-gray-500 text-lg py-8">
+                                <p>No completed bookings found.</p>
+                            </div>
+                        </ng-template>
+                    </div>
+                </section>
+                <hr>
+                <section class="my-4">
+                    <h1 class="text-2xl font-semibold text-[#3D52A0] mb-2 sm:mb-4"> On going </h1>
+                    <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+                        <ng-container *ngIf="started && started.length; else noData">
+                            <div *ngFor="let booking of started"
+                                class="bg-white rounded-lg shadow-lg overflow-hidden transform transition duration-300">
+                                <div class="relative">
+                                    <img [src]="booking.package_id.images[0]" [alt]="booking.package_id.name"
+                                        class="w-full h-48 object-cover">
+                                    <span
+                                        [class]="'absolute top-4 right-4 px-3 py-1 text-xs font-semibold text-white rounded-full ' + getStatusColor(booking.travel_status)">
+                                        {{ booking.travel_status }}
+                                    </span>
+                                </div>
+                                <div class="p-6">
+                                    <h2 class="text-2xl font-semibold mb-2 text-gray-800">{{ booking.package_id.name }}
+                                    </h2>
+                                    <p class="text-gray-600 mb-4">{{ booking.package_id.description }}</p>
+                                    <div class="flex items-center space-x-4 mb-4">
+                                        <img [src]="booking.user_id.profilePicture" [alt]="booking.user_id.username "
+                                            class="w-12 h-12 rounded-full">
+                                        <div>
+                                            <p class="text-sm font-medium text-gray-800">{{ booking.user_id.username }}
+                                            <p class="text-sm text-gray-500">{{ booking.user_id.email }}</p>
+                                        </div>
+                                    </div>
+                                    <div class="space-y-2 mb-4">
+                                        <div class="flex items-center text-gray-700">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-500"
+                                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                            </svg>
+                                            <span class="text-sm">{{ booking.start_date| date:'shortDate' }} to {{
+                                                booking.end_date | date:'shortDate'
+                                                }}</span>
+                                        </div>
+                                        <div class="flex items-center text-gray-700">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-green-500"
+                                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                            </svg>
+                                            <span class="text-sm">{{ booking.package_id.departure }} to {{
+                                                booking.package_id.finalDestination }}</span>
+                                        </div>
+                                        <div class="flex items-center text-gray-700">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-purple-500"
+                                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                                            </svg>
+                                            <span class="text-sm">{{ booking.peoples.length }} people</span>
+                                        </div>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-lg font-bold text-blue-600">{{ booking.total_price|
+                                            currency:'INR' }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-container>
+                        <ng-template #noData>
+                            <div class="text-center text-gray-500 text-lg py-8">
+                                <p>No On going bookings.</p>
+                            </div>
+                        </ng-template>
+                    </div>
+                </section>
+                <hr>
+                <section class="my-4">
+                    <h1 class="text-2xl font-semibold text-[#3D52A0] mb-2 sm:mb-4"> Pending </h1>
+                    <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+                        <ng-container *ngIf="pending && pending.length; else noData">
+                            <div *ngFor="let booking of pending"
+                                class="bg-white rounded-lg shadow-lg overflow-hidden transform transition duration-300">
+                                <div class="relative">
+                                    <img [src]="booking.package_id.images[0]" [alt]="booking.package_id.name"
+                                        class="w-full h-48 object-cover">
+                                    <span
+                                        [class]="'absolute top-4 right-4 px-3 py-1 text-xs font-semibold text-white rounded-full ' + getStatusColor(booking.travel_status)">
+                                        {{ booking.travel_status }}
+                                    </span>
+                                </div>
+                                <div class="p-6">
+                                    <h2 class="text-2xl font-semibold mb-2 text-gray-800">{{ booking.package_id.name }}
+                                    </h2>
+                                    <p class="text-gray-600 mb-4">{{ booking.package_id.description }}</p>
+                                    <div class="flex items-center space-x-4 mb-4">
+                                        <img [src]="booking.user_id.profilePicture" [alt]="booking.user_id.username "
+                                            class="w-12 h-12 rounded-full">
+                                        <div>
+                                            <p class="text-sm font-medium text-gray-800">{{ booking.user_id.username }}
+                                            <p class="text-sm text-gray-500">{{ booking.user_id.email }}</p>
+                                        </div>
+                                    </div>
+                                    <div class="space-y-2 mb-4">
+                                        <div class="flex items-center text-gray-700">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-500"
+                                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                            </svg>
+                                            <span class="text-sm">{{ booking.start_date| date:'shortDate' }} to {{
+                                                booking.end_date | date:'shortDate'
+                                                }}</span>
+                                        </div>
+                                        <div class="flex items-center text-gray-700">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-green-500"
+                                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                            </svg>
+                                            <span class="text-sm">{{ booking.package_id.departure }} to {{
+                                                booking.package_id.finalDestination }}</span>
+                                        </div>
+                                        <div class="flex items-center text-gray-700">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-purple-500"
+                                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                                            </svg>
+                                            <span class="text-sm">{{ booking.peoples.length }} people</span>
+                                        </div>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-lg font-bold text-blue-600">{{ booking.total_price|
+                                            currency:'INR' }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-container>
+                        <ng-template #noData>
+                            <div class="text-center text-gray-500 text-lg py-8">
+                                <p>No pending bookings.</p>
+                            </div>
+                        </ng-template>
+                    </div>
+                </section>
+                <hr>
+                <section class="my-4">
+                    <h1 class="text-2xl font-semibold text-[#3D52A0] mb-2 sm:mb-4"> Cancelled </h1>
+                    <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+                        <ng-container *ngIf="cancelled && cancelled.length; else noData">
+                            <div *ngFor="let booking of cancelled"
+                                class="bg-white rounded-lg shadow-lg overflow-hidden transform transition duration-300">
+                                <div class="relative">
+                                    <img [src]="booking.package_id.images[0]" [alt]="booking.package_id.name"
+                                        class="w-full h-48 object-cover">
+                                    <span
+                                        [class]="'absolute top-4 right-4 px-3 py-1 text-xs font-semibold text-white rounded-full ' + getStatusColor(booking.travel_status)">
+                                        {{ booking.travel_status }}
+                                    </span>
+                                </div>
+                                <div class="p-6">
+                                    <h2 class="text-2xl font-semibold mb-2 text-gray-800">{{ booking.package_id.name }}
+                                    </h2>
+                                    <p class="text-gray-600 mb-4">{{ booking.package_id.description }}</p>
+                                    <div class="flex items-center space-x-4 mb-4">
+                                        <img [src]="'https://api.dicebear.com/6.x/initials/svg?seed=' + booking.user_id.username"
+                                            [alt]="booking.user_id.username " class="w-12 h-12 rounded-full">
+                                        <div>
+                                            <p class="text-sm font-medium text-gray-800">{{ booking.user_id.username }}
+                                                {{
+                                                booking.user_id.username }}</p>
+                                            <p class="text-sm text-gray-500">{{ booking.user_id.email }}</p>
+                                        </div>
+                                    </div>
+                                    <div class="space-y-2 mb-4">
+                                        <div class="flex items-center space-x-4 mb-4">
+                                            <img [src]="booking.user_id.profilePicture"
+                                                [alt]="booking.user_id.username " class="w-12 h-12 rounded-full">
+                                            <div>
+                                                <p class="text-sm font-medium text-gray-800">{{ booking.user_id.username
+                                                    }}
+                                                <p class="text-sm text-gray-500">{{ booking.user_id.email }}</p>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center text-gray-700">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-green-500"
+                                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                            </svg>
+                                            <span class="text-sm">{{ booking.package_id.departure }} to {{
+                                                booking.package_id.finalDestination }}</span>
+                                        </div>
+                                        <div class="flex items-center text-gray-700">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-purple-500"
+                                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                                            </svg>
+                                            <span class="text-sm">{{ booking.peoples.length }} people</span>
+                                        </div>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-lg font-bold text-blue-600">{{ booking.total_price|
+                                            currency:'INR' }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-container>
+                        <ng-template #noData>
+                            <div class="text-center text-gray-500 text-lg py-8">
+                                <p>No cancelled bookings.</p>
+                            </div>
+                        </ng-template>
+                    </div>
+                </section>
+                <hr>
+            </article>
+        </section>
+    </div>
+</main>

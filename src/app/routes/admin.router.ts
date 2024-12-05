@@ -120,4 +120,13 @@ export const adminRouter: Routes = [
     canActivate: [authGuard],
     data: { role: 'admin' },
   },
+  {
+    path: 'admin/bookingsByAgency/:id',
+    loadComponent: () =>
+      import(
+        '../components/admin/bookings/single-agency/single-agency.component'
+      ).then((m) => m.SingleAgencyComponent),
+    canActivate: [authGuard],
+    data: { role: 'admin' },
+  },
 ];

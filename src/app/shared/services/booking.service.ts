@@ -102,8 +102,57 @@ export class BookingService {
       success: boolean;
       message: string;
       data: IAgencyBookingData[];
-      totalItems: number,
-      currentPage: number
+      totalItems: number;
+      currentPage: number;
     }>(`${this._api}/booking/byAgencies`, { params, withCredentials: true });
+  }
+
+  getCompletedBookings(agencyId: string, page: number, limit: number) {
+    const params = new HttpParams().set('page', page).set('limit', limit);
+    return this._http.get<{
+      success: boolean;
+      bookings: IBooking[];
+      totalItems: number;
+      page: number;
+    }>(`${this._api}/booking/completed/${agencyId}`, {
+      params,
+      withCredentials: true,
+    });
+  }
+  getPendingBookings(agencyId: string, page: number, limit: number) {
+    const params = new HttpParams().set('page', page).set('limit', limit);
+    return this._http.get<{
+      success: boolean;
+      bookings: IBooking[];
+      totalItems: number;
+      page: number;
+    }>(`${this._api}/booking/pending/${agencyId}`, {
+      params,
+      withCredentials: true,
+    });
+  }
+  getStartedBookings(agencyId: string, page: number, limit: number) {
+    const params = new HttpParams().set('page', page).set('limit', limit);
+    return this._http.get<{
+      success: boolean;
+      bookings: IBooking[];
+      totalItems: number;
+      page: number;
+    }>(`${this._api}/booking/started/${agencyId}`, {
+      params,
+      withCredentials: true,
+    });
+  }
+  getCancelledBookings(agencyId: string, page: number, limit: number) {
+    const params = new HttpParams().set('page', page).set('limit', limit);
+    return this._http.get<{
+      success: boolean;
+      bookings: IBooking[];
+      totalItems: number;
+      page: number;
+    }>(`${this._api}/booking/cancelled/${agencyId}`, {
+      params,
+      withCredentials: true,
+    });
   }
 }

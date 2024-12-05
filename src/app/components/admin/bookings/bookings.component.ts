@@ -7,6 +7,7 @@ import { BookingService } from '../../../shared/services/booking.service';
 import { IAgency } from '../../../models/agency.model';
 import { PaginationComponent } from '../../../shared/components/pagination/pagination.component';
 import { IAgencyBookingData } from '../../../interfaces/agencyBookingsData.interface';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-bookings',
@@ -34,7 +35,10 @@ export class BookingsComponent {
     'bg-gradient-to-r from-yellow-500 to-orange-600',
     'bg-gradient-to-r from-blue-200 to-cyan-200',
   ];
-  constructor(private _bookingService: BookingService) {}
+  constructor(
+    private _bookingService: BookingService,
+    private _router: Router
+  ) {}
 
   ngOnInit(): void {
     this._fetchBookingsByAgencies();
@@ -60,5 +64,8 @@ export class BookingsComponent {
   }
   viewBookings(index: number) {
     console.log(this.bookingsByAgencies[index]);
+    this._router.navigate([
+      `/admin/bookingsByAgency/${this.bookingsByAgencies[index].id}`,
+    ]);
   }
 }
