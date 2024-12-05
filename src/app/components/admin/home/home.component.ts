@@ -30,4 +30,23 @@ export class HomeComponent {
     { title: 'Bookings', value: '0', icon: 'briefcase' },
     { title: 'Revenue', value: '0', icon: 'rs-sign' },
   ];
+
+  agencies = [
+    {
+      name: 'Sky Travels',
+      firstName: 'Sky',
+      email: 'contact@skytravels.com',
+      joinedDate: '2023-12-01',
+      isActive: true,
+      isConfirmed: false,
+    },
+    {
+      name: 'Oceanic Tours',
+      firstName: 'Oceanic',
+      email: 'hello@oceanictours.com',
+      joinedDate: '2023-11-15',
+      isActive: false,
+      isConfirmed: true,
+    },
+  ];
 }
