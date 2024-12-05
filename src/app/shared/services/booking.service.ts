@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { IBooking } from '../../interfaces/booking.interface';
 import { TravelConfirmationStatus } from '../../enum/travelConfirmation.enum';
 import { FormGroup } from '@angular/forms';
+import { IAgencyBookingData } from '../../interfaces/agencyBookingsData.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -93,5 +94,16 @@ export class BookingService {
       { user },
       { withCredentials: true }
     );
+  }
+
+  getBookingsByAgencies(page: number, limit: number) {
+    const params = new HttpParams().set('page', page).set('limit', limit);
+    return this._http.get<{
+      success: boolean;
+      message: string;
+      data: IAgencyBookingData[];
+      totalItems: number,
+      currentPage: number
+    }>(`${this._api}/booking/byAgencies`, { params, withCredentials: true });
   }
 }

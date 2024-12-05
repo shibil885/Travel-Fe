@@ -9,64 +9,63 @@
         <section class="flex-1 overflow-y-auto bg-[#F1F1F2] p-4 sm:p-6 relative">
             <h1 class="text-2xl font-semibold text-[#3D52A0] mb-2 sm:mb-4">Bookings</h1>
             <app-search></app-search>
-            <div class="relative overflow-x-auto sm:rounded-lg mt-6">
-                <article>
-                    <table
-                        class="w-full text-sm text-left rtl:text-right text-gray-700 bg-[#EDE8F5] border border-gray-300 rounded-lg">
-                        <thead class="text-xs uppercase bg-[#8697C4] text-gray-700 border-b border-gray-300">
-                            <tr>
-                                <th scope="col" class="px-6 py-4 text-center font-semibold"></th>
-                                <th scope="col" class="px-6 py-4 text-center font-semibold">Agency name</th>
-                                <th scope="col" class="px-6 py-4 text-center font-semibold">Total bookings</th>
-                                <th scope="col" class="px-6 py-4 text-center font-semibold">Cancelled</th>
-                                <th scope="col" class="px-6 py-4 text-center font-semibold">Ongoing</th>
-                                <th scope="col" class="px-6 py-4 text-center font-semibold">Completed</th>
-                                <th scope="col" class="px-6 py-4 text-center font-semibold">Vie-bookingsw</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr class="bg-[#EDE8F5] hover:bg-[#d6d2e5]">
-                                <td class="px-6 py-2 text-center border-b border-gray-300 ">
-                                    <span
-                                        class="avatar-fallback px-4 py-3  text-white rounded-full bg-gradient-to-r from-[#3D52A0] to-[#7091E6]">O</span>
-                                </td>
-                                <td class="px-6 py-2 text-center border-b border-gray-300">Royal travels</td>
-                                <td class="px-6 py-2 text-center border-b border-gray-300">
-                                    15
-                                </td>
-                                <td class="px-6 py-2 text-center border-b border-gray-300">
-                                    5
-                                <td class="px-6 py-2 text-center border-b border-gray-300">
-                                    5
-                                </td>
-                                <td class="px-6 py-2 text-center border-b border-gray-300">
-                                    5
-                                </td>
-                                <td
-                                    class="px-6 py-2 text-center cursor-pointer text-green-500 border-b border-gray-300">
-                                    <button
-                                        class="rounded-lg px-2 py-1 hover:shadow-lg bg-gradient-to-r from-indigo-500 via-indigo-600 to-indigo-700 text-white">view-bookings
-                                    </button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </article>
-                <!--   
-          <article *ngIf="renderCouponAddForm" class="mt-6">
-            <div class="mx-auto">
-              <app-coupon-form [selectedCoupon]="selectedCoupon" (closeFormAfterAdditionOrEdit)="onRenderCouponList()"></app-coupon-form>
-            </div>
-          </article> -->
 
-                <!-- <app-single-coupon [selectedCoupon]="selectedCouponForShow" [isModalOpen]="isModalOpen"
-            (closeModalEvent)="closeModal()">
-          </app-single-coupon> -->
-            </div>
+            <article class="bg-gray-100 p-4">
+                <div class="max-w-7xl mx-auto">
+                    <h1 class="text-3xl font-bold text-center mb-8 text-gray-800">Agencies Bookings</h1>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div class="bg-white rounded-xl shadow-md overflow-hidden"
+                            *ngFor="let item of bookingsByAgencies;let i= index" (click)="viewBookings(i)">
+                            <div class="p-4">
+                                <div class="flex items-center mb-3">
+                                    <div class="w-10 h-10 flex items-center justify-center text-lg font-bold text-white rounded-full"
+                                        [ngClass]="getColors(i)">
+                                        {{item.name[0]}}
+                                    </div>
+                                    <div class="ml-3">
+                                        <h2 class="text-lg font-semibold text-gray-800">{{item.name}}</h2>
+                                        <p class="text-xs text-gray-600">Total: {{item.total}}</p>
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-2 gap-2 mb-3 text-center">
+                                    <div class="bg-indigo-50 rounded p-1">
+                                        <p class="text-xs font-medium text-gray-500">Pending</p>
+                                        <p class="text-lg font-bold text-indigo-600">{{item.pending}}</p>
+                                    </div>
+                                    <div class="bg-red-50 rounded p-1">
+                                        <p class="text-xs font-medium text-gray-500">Cancelled</p>
+                                        <p class="text-lg font-bold text-red-500">{{item.canceled}}</p>
+                                    </div>
+                                    <div class="bg-yellow-50 rounded p-1">
+                                        <p class="text-xs font-medium text-gray-500">Ongoing</p>
+                                        <p class="text-lg font-bold text-yellow-500">{{item.started}}</p>
+                                    </div>
+                                    <div class="bg-green-50 rounded p-1">
+                                        <p class="text-xs font-medium text-gray-500">Completed</p>
+                                        <p class="text-lg font-bold text-green-500">{{item.completed}}</p>
+                                    </div>
+                                </div>
 
-            <!-- <app-pagination [totalItems]="totalCoupons" [itemsPerPage]="limit" [currentPage]="currentPage"
-          [typeOfUser]="'admin'" (pageChange)="onPageChange($event)">
-        </app-pagination> -->
+                                <button
+                                    class="w-full flex items-center justify-center px-3 py-1.5 border border-transparent text-sm font-medium rounded-md text-white hover:shadow-md focus:outline-none"
+                                    [ngClass]="getColors(i)">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                    </svg>
+                                    View Bookings
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </article>
+            <app-pagination [totalItems]="totalItems" [itemsPerPage]="limit" [currentPage]="currentPage"
+                [typeOfUser]="'admin'" (pageChange)="onPageChange($event)">
+            </app-pagination>
         </section>
     </div>
 </main>
