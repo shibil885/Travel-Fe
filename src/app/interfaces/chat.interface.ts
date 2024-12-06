@@ -9,4 +9,5 @@ export interface IChat {
   lastMessageId?: IMessage;
   createdAt?: Date;
   updatedAt?: Date;
+  messages?: IMessage[];
 }

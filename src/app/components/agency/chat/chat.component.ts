@@ -34,8 +34,10 @@ export class ChatComponent {
     this.checkScreenSize();
     this._fetchChats();
     this._chatService.receiveMessages().subscribe((res: IMessage) => {
-      this.messages.push(res)
-    })
+      console.log('chat', this.chats);
+      console.log('response', res);
+      this.messages.push(res);
+    });
   }
 
   private _fetchChats() {
@@ -49,6 +51,7 @@ export class ChatComponent {
     this._chatService.getAllMessages(chatId).subscribe((res) => {
       if (res.success) {
         this.messages = res.messages;
+        this._fetchChats();
       }
     });
   }
@@ -74,9 +77,9 @@ export class ChatComponent {
   }
 
   selectChat(chat: IChat) {
+    this._makeAllMessageAsRead(chat._id);
     this._chatService.joinChat(chat._id);
     this.selectedChat = chat;
-    this._fetchChats();
     this._fetchMessages(this.selectedChat._id);
     if (this.isMobile) {
       this.showChatWindow = true;
@@ -156,5 +159,8 @@ export class ChatComponent {
           });
       }
     }
+  }
+  private _makeAllMessageAsRead(chatId: string) {
+    return this._chatService.makeAllMessageAsRead(chatId, 'agency').subscribe();
   }
 }

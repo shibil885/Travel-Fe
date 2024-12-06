@@ -67,6 +67,14 @@ export class ChatService {
     );
   }
 
+  makeAllMessageAsRead(chatId: string, userType: string) {
+    return this._http.patch<{ success: boolean; message: string }>(
+      `${this._api}/makeMessageRead`,
+      { chatId,userType },
+      { withCredentials: true }
+    );
+  }
+
   joinChat(chatId: string) {
     this._socket.emit('joinChat', { chatId });
   }

@@ -35,13 +35,18 @@
                                     <h2 class="font-semibold text-gray-800">
                                         {{ chat.userId.username }}
                                     </h2>
-                                    <p class="text-sm text-gray-500 truncate">
+                                    <p class="text-sm text-gray-500 truncate"
+                                        [ngClass]="{'text-green-600': !chat.lastMessageId?.isRead && chat.lastMessageId?.senderType =='user'}">
                                         {{ chat.lastMessageId?.content }}
                                     </p>
                                 </div>
-                                <span class="text-xs text-gray-400">
-                                    {{ chat.createdAt | date:'shortDate' }}
-                                </span>
+                                <div class="flex flex-col items-center">
+                                    <span class="text-xs text-gray-400">
+                                        {{ chat.createdAt | date:'shortDate' }}
+                                    </span>
+                                    <span *ngIf="chat.messages?.length"
+                                        class="text-[12px] bg-green-500 rounded-full px-1 items-center py-0 text-center text-white">{{chat.messages?.length}}</span>
+                                </div>
                             </div>
                         </ng-container>
                         <ng-template #noChat>
@@ -62,7 +67,6 @@
                                 <i class="fa-solid fa-arrow-left">
                                 </i>
                             </button>
-                            <!-- <img src="{{ selectedChat?.avatar }}" alt="Avatar" /> -->
                             <span
                                 class="w-10 h-10 rounded-full text-white flex items-center justify-center bg-gradient-to-br from-[#6e8efb] to-[#a777e3]">{{
                                 selectedChat.userId.username.charAt(0) }}</span>
@@ -90,7 +94,8 @@
                                         <span class="text-gray-400">
                                             {{ message.createdAt| date:'shortDate' }}
                                         </span>
-                                        <span *ngIf="message.senderType === 'user'" class="ml-2 text-green-400">
+                                        <span *ngIf="message.senderType === 'agency' && message.isRead"
+                                            class="ml-2 text-green-400">
                                             ✔✔
                                         </span>
                                     </div>

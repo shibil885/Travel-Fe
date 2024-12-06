@@ -1,13 +1,11 @@
 <app-header-sidebar></app-header-sidebar>
 <div class="h-screen flex flex-col md:flex-row">
   <div class="w-full md:w-1/4 bg-white flex flex-col border-r" [class.hidden]="isMobile && showChatWindow">
-    <!-- Header -->
     <div class="p-4">
       <h1 class="text-xl font-bold text-gray-800">
         Chats
       </h1>
     </div>
-    <!-- Search Bar -->
     <div class="flex justify-evenly items-center p-4">
       <input type="text" placeholder="Search chats..."
         class="w-full px-4 py-2 bg-gray-50 text-black border-b-4 rounded-t focus:outline-none focus:bg-gray-200 focus:border-b-[#ff6b54]" />
@@ -30,13 +28,18 @@
             <h2 class="font-semibold text-gray-800">
               {{ chat.agencyId.name }}
             </h2>
-            <p class="text-sm text-gray-500 truncate">
+            <p class="text-sm text-gray-500 truncate"
+              [ngClass]="{'text-green-500': !chat.lastMessageId?.isRead && chat.lastMessageId?.senderType =='agency'}">
               {{ chat.lastMessageId?.content }}
             </p>
           </div>
-          <span class="text-xs text-gray-400">
-            {{ chat.createdAt | date:'shortDate' }}
-          </span>
+          <div class="flex flex-col items-center">
+            <span class="text-xs text-gray-400">
+              {{ chat.createdAt | date:'shortDate' }}
+            </span>
+            <span *ngIf="chat.messages?.length"
+              class="text-[12px] bg-green-500 rounded-full px-1 items-center py-0 text-center text-white">{{chat.messages?.length}}</span>
+          </div>
         </div>
       </ng-container>
       <ng-template #noChat>
@@ -89,7 +92,7 @@
               <span class="text-gray-400">
                 {{ message.createdAt | date: 'shortDate'}}
               </span>
-              <span *ngIf="message.isRead" class="ml-2 text-green-400">
+              <span *ngIf="message.senderType == 'user' && message.isRead" class="ml-2 text-green-400">
                 ✔✔
               </span>
             </div>
