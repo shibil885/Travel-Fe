@@ -1,0 +1,157 @@
+.wallet-container {
+    font-family: "Roboto", sans-serif;
+    max-width: 1000px;
+    margin: 20px auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  /* Top Balance Section */
+  .half-rectangle {
+    width: 100%;
+    height: 180px;
+    background: linear-gradient(135deg, #6e8efb, #a777e3);
+    border-radius: 15px 15px 0 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.5rem;
+  }
+  
+  .balance {
+    font-size: 2.2rem;
+    font-weight: bold;
+  }
+  
+  /* Main Rectangle for Transactions */
+  .main-rectangle {
+    width: 100%;
+    padding: 20px;
+    background: white;
+    /* border-radius: 0 0 15px 15px; */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* History Section */
+  .history-section {
+    width: 100%;
+    padding: 20px;
+    margin-top: -20px;
+    background-color: white;
+    border-radius: 15px 15px 0 0;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .transaction-list {
+    max-height: 350px;
+    overflow-y: auto;
+    padding: 10px;
+  }
+  
+  /* Individual Transaction */
+  .transaction {
+    display: flex;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  
+  .transaction:last-child {
+    border-bottom: none;
+  }
+  
+  .transaction-icon {
+    width: 35px;
+    height: 35px;
+    background-color: #f4f4f8;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 12px;
+    font-size: 1.2rem;
+  }
+  
+  .transaction-details {
+    flex-grow: 1;
+  }
+  
+  .transaction-description {
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 500;
+  }
+  
+  .transaction-date {
+    font-size: 0.8rem;
+    color: #888;
+  }
+  
+  .transaction-amount {
+    font-size: 0.95rem;
+    font-weight: bold;
+    color: #4CAF50; /* For positive amount */
+  }
+  
+  .transaction-amount.negative {
+    color: #F44336; /* For negative amount */
+  }
+  
+  /* Responsiveness */
+  @media (max-width: 768px) {
+    .wallet-container {
+      width: 90%;
+      padding: 10px;
+    }
+  
+    .half-rectangle {
+      height: 160px;
+      font-size: 1.3rem;
+    }
+  
+    .balance {
+      font-size: 1.8rem;
+    }
+  
+    .history-section {
+      padding: 15px;
+    }
+  
+    .transaction-list {
+      max-height: 300px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .wallet-container {
+      width: 100%;
+      padding: 10px;
+    }
+  
+    .balance {
+      font-size: 1.6rem;
+    }
+  
+    .transaction-icon {
+      width: 30px;
+      height: 30px;
+      font-size: 1rem;
+    }
+  
+    .transaction-description {
+      font-size: 0.85rem;
+    }
+  
+    .transaction-date {
+      font-size: 0.75rem;
+    }
+  
+    .transaction-amount {
+      font-size: 0.85rem;
+    }
+  }
+  

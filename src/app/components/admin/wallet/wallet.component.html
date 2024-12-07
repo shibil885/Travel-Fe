@@ -1,0 +1,39 @@
+<div class="flex h-screen bg-[#F1F1F2]">
+    <app-side-bar></app-side-bar>
+    <div class="flex-1 flex flex-col overflow-hidden">
+        <app-header></app-header>
+        <main class="flex-1 overflow-y-auto bg-[#F1F1F2] p-6 sm:p-4 relative">
+            <div class="mx-auto p-5">
+                <h2 class="text-2xl font-semibold">Wallet</h2>
+                <div class="wallet-container">
+                    <div class="half-rectangle">
+                        <p>Your Balance: <span class="balance">{{ wallet?.balance | currency:'INR' }}</span></p>
+                    </div>
+                    <div class="main-rectangle history-section">
+                        <h2>Transaction History</h2>
+                        <div class="transaction-list">
+                            <div class="transaction" *ngFor="let transaction of wallet?.history">
+                                <div class="transaction-icon" [ngClass]="transaction.type.toLowerCase()">
+                                    <i class="fas"
+                                        [ngClass]="transaction.type === 'credit' ? 'fa-arrow-up' : 'fa-arrow-down'"></i>
+                                </div>
+                                <div class="transaction-details">
+                                    <p class="transaction-description">{{ transaction.description }}</p>
+                                    <p class="transaction-date">{{ transaction.createdAt | date:'MMM d, y, h:mm a' }}
+                                    </p>
+                                </div>
+                                <p class="transaction-amount"
+                                    [ngClass]="transaction.type === 'debit' ? 'negative' : ''">
+                                    {{ transaction.amount | currency:'INR' }} {{ transaction.type === 'credit' ? ' +' :
+                                    ' -' }}
+                                </p>
+                            </div>
+                        </div>
+                        <p *ngIf="wallet?.history?.length == 0" class="text-center text-sm text-slate-700">No
+                            transactions yet :)</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>

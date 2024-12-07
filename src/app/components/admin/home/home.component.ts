@@ -5,6 +5,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { StatsCardComponent } from '../../agency/home/stats-card/stats-card.component';
+import { AdminDashboardService } from '../../../shared/services/dashboard/admin/admin-dashboard.service';
 
 @Component({
   selector: 'app-home',
@@ -49,4 +50,17 @@ export class HomeComponent {
       isConfirmed: true,
     },
   ];
+
+  constructor(private _dashboardService: AdminDashboardService) {}
+  ngOnInit(): void {
+    this._dashboardService.statasCard().subscribe((res) => {
+      this.statsItem[0].value = String(res.result.users);
+      this.statsItem[1].value = String(res.result.agencies);
+      this.statsItem[2].value = String(res.result.packages);
+      this.statsItem[3].value = String(res.result.bookings);
+    });
+    this._dashboardService.revenue().subscribe((res) => {
+      this.statsItem[4].value = String(res.result);
+    });
+  }
 }

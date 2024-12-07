@@ -129,4 +129,13 @@ export const adminRouter: Routes = [
     canActivate: [authGuard],
     data: { role: 'admin' },
   },
+  {
+    path: 'admin/wallet',
+    loadComponent: () =>
+      import(
+        '../components/admin/wallet/wallet.component'
+      ).then((m) => m.WalletComponent),
+    canActivate: [authGuard],
+    data: { role: 'admin' },
+  },
 ];

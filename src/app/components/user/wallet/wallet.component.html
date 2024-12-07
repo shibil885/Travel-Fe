@@ -3,7 +3,6 @@
     <div class="half-rectangle">
         <p>Your Balance: <span class="balance">{{ wallet?.balance | currency:'INR' }}</span></p>
     </div>
-
     <div class="main-rectangle history-section">
         <h2>Transaction History</h2>
         <div class="transaction-list">
@@ -22,5 +21,4 @@
         </div>
         <p *ngIf="wallet?.history?.length == 0" class="text-center text-sm text-slate-700">No transactions yet :)</p>
     </div>
-
 </div>

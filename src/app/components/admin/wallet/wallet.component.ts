@@ -1,26 +1,19 @@
-import { Component, OnInit } from '@angular/core';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { Component } from '@angular/core';
 import { ITransaction, IWallet } from '../../../interfaces/wallet.interface';
+import { MatTableDataSource } from '@angular/material/table';
 import { WalletService } from '../../../shared/services/wallet.service';
-import { MatCardModule } from '@angular/material/card';
-import { MatIconModule } from '@angular/material/icon';
+import { HeaderComponent } from '../header/header.component';
+import { SideBarComponent } from '../side-bar/side-bar.component';
 import { CommonModule } from '@angular/common';
-import { HeaderSidebarComponent } from '../header-and-side-bar/header-and-side-bar.component';
 
 @Component({
   selector: 'app-wallet',
   standalone: true,
-  imports: [
-    HeaderSidebarComponent,
-    CommonModule,
-    MatCardModule,
-    MatIconModule,
-    MatTableModule,
-  ],
+  imports: [HeaderComponent, SideBarComponent, CommonModule],
   templateUrl: './wallet.component.html',
-  styleUrls: ['./wallet.component.css'],
+  styleUrl: './wallet.component.css',
 })
-export class WalletComponent  {
+export class WalletComponent {
   wallet: IWallet | null = null;
   dataSource: MatTableDataSource<ITransaction>;
   displayedColumns: string[] = ['date', 'type', 'description', 'amount'];
@@ -30,15 +23,14 @@ export class WalletComponent  {
   }
 
   ngOnInit() {
-    this._walletService.getOrCreateUserWallet().subscribe(
-      (wallet: IWallet) => {
+    this._walletService
+      .getOrCreateAdminWallet()
+      .subscribe((wallet: IWallet) => {
         this.wallet = wallet;
         this.dataSource.data = wallet.history.sort(
           (a, b) =>
             new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
         );
-      }
-    );
+      });
   }
 }
-
