@@ -27,10 +27,15 @@ export class FeedbackComponent {
       this._bookingService
         .isFeedBackExist(this.booking._id)
         .subscribe((res) => {
+          console.log('feedback', res);
           this.feedback.rating = res.rating;
           this.feedback.review = res.review;
         });
     }
+  }
+
+  onRatingChange(rating: number) {
+    this.feedback.rating = rating;
   }
 
   close() {
