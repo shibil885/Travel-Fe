@@ -45,6 +45,7 @@
 //   );
 // };
 // loading.interceptor.ts
+
 import { HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { LoadingService } from '../shared/services/loading.service';
@@ -76,8 +77,8 @@ export const errorInterceptorFn: HttpInterceptorFn = (req, next) => {
       } else if (error.status === 403) {
         toastService.showToast(
           error.error.message
-          ? error.error.message
-          : 'Forbidden. You do not have access to this resource.',
+            ? error.error.message
+            : 'Forbidden. You do not have access to this resource.',
           'error'
         );
       } else if (error.status === 404) {

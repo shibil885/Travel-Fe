@@ -70,17 +70,25 @@ export class ChatService {
   makeAllMessageAsRead(chatId: string, userType: string) {
     return this._http.patch<{ success: boolean; message: string }>(
       `${this._api}/makeMessageRead`,
-      { chatId,userType },
+      { chatId, userType },
       { withCredentials: true }
     );
   }
 
-  joinChat(chatId: string) {
-    this._socket.emit('joinChat', { chatId });
+  joinRooms(chats: string[]) {
+    this._socket.emit('joinRoom', chats);
   }
 
   receiveMessages() {
     return this._socket.fromEvent<IMessage>('message');
+  }
+
+  agencyReadAllMessages() {
+    return this._socket.fromEvent<{ chatId: string }>('agencyReadAllMessages');
+  }
+
+  userReadAllMessages() {
+    return this._socket.fromEvent<{ chatId: string }>('userReadAllMessages');
   }
 
   leaveChat(chatId: string) {
