@@ -70,4 +70,16 @@ export class SinglePackageComponent {
     this.info = false;
     this.plane = false;
   }
+
+  getStarCounts(averageRating: string) {
+    const fullStars = Math.floor(Number(averageRating));
+    const hasHalfStar = Number(averageRating) % 1 >= 0.5;
+    const emptyStars = 5 - Math.ceil(Number(averageRating));
+
+    return {
+      fullStars,
+      hasHalfStar,
+      emptyStars
+    };
+  }
 }

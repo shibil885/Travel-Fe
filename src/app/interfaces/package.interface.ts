@@ -1,6 +1,7 @@
 import { IAgency } from '../models/agency.model';
 import { ICategory } from './category.interface';
 import { IOffer } from './offer.interface';
+import { IReviewForPackage } from './rating-review-package.interface.ts';
 
 interface TourPlan {
   day: number;
@@ -26,4 +27,5 @@ export interface IPackage {
   images: string[];
   offerId: IOffer;
   isActive: boolean;
+  ratingAndReview: IReviewForPackage[]
 }

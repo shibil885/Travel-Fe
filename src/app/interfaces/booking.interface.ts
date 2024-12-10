@@ -5,6 +5,7 @@ import { IUser } from '../models/user.model';
 import { ICategory } from './category.interface';
 import { ICoupon } from './coupon.interface';
 import { IPackage } from './package.interface';
+import { IReviewForPackage } from './rating-review-package.interface.ts';
 
 export interface IBooking {
   _id: string;
@@ -33,5 +34,6 @@ export interface IBooking {
   package: IPackage;
   agency: IAgency;
   user: IUser;
-  category: ICategory
+  ratingAndReview: IReviewForPackage[];
+  category: ICategory;
 }

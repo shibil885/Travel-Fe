@@ -25,9 +25,8 @@ export class FeedbackComponent {
   ngOnInit(): void {
     if (this.booking) {
       this._bookingService
-        .isFeedBackExist(this.booking._id)
+        .isFeedBackExist(this.booking.package_id)
         .subscribe((res) => {
-          console.log('feedback', res);
           this.feedback.rating = res.rating;
           this.feedback.review = res.review;
         });

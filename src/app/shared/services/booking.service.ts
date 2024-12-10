@@ -4,6 +4,7 @@ import { IBooking } from '../../interfaces/booking.interface';
 import { TravelConfirmationStatus } from '../../enum/travelConfirmation.enum';
 import { FormGroup } from '@angular/forms';
 import { IAgencyBookingData } from '../../interfaces/agencyBookingsData.interface';
+import { IPackage } from '../../interfaces/package.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -88,7 +89,6 @@ export class BookingService {
     });
   }
   confirmBooking(bookingId: string, status: TravelConfirmationStatus) {
-    console.log(status);
     return this._http.patch<{ success: boolean; message: string }>(
       `${this._api}/booking/confirmBooking/${bookingId}`,
       { status },
@@ -165,7 +165,7 @@ export class BookingService {
   }
 
   createFeedback(
-    packageId: string,
+    packageId: IPackage,
     feedback: { rating: number; review: string }
   ) {
     return this._http.post<{ success: boolean; message: string }>(
@@ -175,7 +175,7 @@ export class BookingService {
     );
   }
 
-  isFeedBackExist(packageId: string) {
+  isFeedBackExist(packageId: IPackage) {
     return this._http.get<{ success: boolean; rating: number; review: string }>(
       `${this._api}/rating-review-package/isExisting/${packageId}`,
       {

@@ -281,6 +281,18 @@ export class BookingComponent {
     }
   }
 
+  getStarCounts(averageRating: string) {
+    const fullStars = Math.floor(Number(averageRating));
+    const hasHalfStar = Number(averageRating) % 1 >= 0.5;
+    const emptyStars = 5 - Math.ceil(Number(averageRating));
+
+    return {
+      fullStars,
+      hasHalfStar,
+      emptyStars,
+    };
+  }
+
   cancelCoupon() {
     this._fetchCoupons();
     this.discoundedPrice = 0;

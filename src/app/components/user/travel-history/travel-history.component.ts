@@ -35,10 +35,10 @@ export class TravelHistoryComponent {
   ) {}
 
   ngOnInit() {
-    this.fetchBookings();
+    this._fetchBookings();
   }
 
-  fetchBookings() {
+  private _fetchBookings() {
     this._bookingService
       .getTravelHistoryOfUser(this.currentPage, this.limit)
       .subscribe((res) => {
@@ -50,7 +50,7 @@ export class TravelHistoryComponent {
 
   onPageChange(page: number) {
     this.currentPage = page;
-    this.fetchBookings();
+    this._fetchBookings();
   }
 
   onSearch(searchTerm: Event) {
@@ -68,13 +68,14 @@ export class TravelHistoryComponent {
   }
 
   submitFeedback(feedback: { rating: number; review: string }) {
-    if (this.selectedBooking) {
+    if (this.selectedBooking && this.selectedBooking.package_id) {
       this._bookingService
-        .createFeedback(this.selectedBooking._id, feedback)
+        .createFeedback(this.selectedBooking.package_id, feedback)
         .subscribe((res) => {
           if (res.success) {
             this._toastService.showToast(res.message, 'success');
             this.closeFeedbackModal();
+            this._fetchBookings()
           }
         });
     }

@@ -19,7 +19,7 @@ export class StarComponent {
     this.ratingChange.emit(this.rating);
   }
 
-  hover(rating: number) {
-    this.rating = rating;
-  }
+  // hover(rating: number) {
+  //   this.rating = rating;
+  // }
 }

@@ -5,7 +5,6 @@ import { catchError, map, of, switchMap, take, tap } from 'rxjs';
 import { Router } from '@angular/router';
 import { UserService } from '../../shared/services/user.service';
 import { AuthService } from '../../auth/service/service.service';
-import { error } from 'console';
 import { CouponService } from '../../shared/services/coupon.service';
 import { BookingService } from '../../shared/services/booking.service';
 
@@ -18,7 +17,6 @@ export class UserEffect {
     private _router: Router,
     private _couponService: CouponService,
     private _bookingService: BookingService,
-    private _ngZone: NgZone
   ) {}
 
   userLogin$ = createEffect(() =>
