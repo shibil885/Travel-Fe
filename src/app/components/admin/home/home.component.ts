@@ -6,6 +6,11 @@ import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { StatsCardComponent } from '../../agency/home/stats-card/stats-card.component';
 import { AdminDashboardService } from '../../../shared/services/dashboard/admin/admin-dashboard.service';
+import { IAgency } from '../../../models/agency.model';
+import { FormsModule } from '@angular/forms';
+import { IPackage } from '../../../interfaces/package.interface';
+import { AgencyFilter } from '../../../enum/agency-filter.enum';
+import { PackageFilter } from '../../../enum/package-filter.enum';
 
 @Component({
   selector: 'app-home',
@@ -17,6 +22,7 @@ import { AdminDashboardService } from '../../../shared/services/dashboard/admin/
     MatIconModule,
     RouterModule,
     CommonModule,
+    FormsModule,
   ],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
@@ -24,6 +30,10 @@ import { AdminDashboardService } from '../../../shared/services/dashboard/admin/
 export class HomeComponent {
   isCollapsed = false;
   isMobileMenuOpen = false;
+  agencies: IAgency[] = [];
+  packages: IPackage[] = [];
+  agencyFilter: AgencyFilter = AgencyFilter.NEW_AGENCIES;
+  packageFilter: PackageFilter = PackageFilter.TOP_RATED;
   statsItem = [
     { title: 'Users', value: '0', icon: 'users' },
     { title: 'Agencies', value: '0', icon: 'agency' },
@@ -31,28 +41,19 @@ export class HomeComponent {
     { title: 'Bookings', value: '0', icon: 'briefcase' },
     { title: 'Revenue', value: '0', icon: 'rs-sign' },
   ];
-
-  agencies = [
-    {
-      name: 'Sky Travels',
-      firstName: 'Sky',
-      email: 'contact@skytravels.com',
-      joinedDate: '2023-12-01',
-      isActive: true,
-      isConfirmed: false,
-    },
-    {
-      name: 'Oceanic Tours',
-      firstName: 'Oceanic',
-      email: 'hello@oceanictours.com',
-      joinedDate: '2023-11-15',
-      isActive: false,
-      isConfirmed: true,
-    },
+  headers = [
+    { label: '#', key: '_id' },
+    { label: 'name', key: 'name' },
+    { label: 'rating', key: 'reviewofagency' },
+    { label: 'location', key: 'reviewofagency' },
+    { label: 'Total bookings', key: 'bookings' },
   ];
 
   constructor(private _dashboardService: AdminDashboardService) {}
+
   ngOnInit(): void {
+    this._fetchTopAgencies();
+    this._fetchTopPackages();
     this._dashboardService.statasCard().subscribe((res) => {
       this.statsItem[0].value = String(res.result.users);
       this.statsItem[1].value = String(res.result.agencies);
@@ -62,5 +63,31 @@ export class HomeComponent {
     this._dashboardService.revenue().subscribe((res) => {
       this.statsItem[4].value = String(res.result);
     });
+  }
+
+  private _fetchTopAgencies() {
+    this._dashboardService.topAgency(this.agencyFilter).subscribe((res) => {
+      if (res.success) {
+        this.agencies = res.agencies;
+      }
+    });
+  }
+
+  private _fetchTopPackages() {
+    this._dashboardService.topPackages(this.packageFilter).subscribe((res) => {
+      if (res.success) {
+        console.log(res.packages);
+        this.packages = res.packages;
+      }
+    });
+  }
+
+
+  onAgencyFilter() {
+    this._fetchTopAgencies();
+  }
+  onPackageFilter() {
+    console.log('filter', this.packageFilter);
+    this._fetchTopPackages();
   }
 }

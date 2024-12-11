@@ -1,4 +1,5 @@
 import { IBooking } from '../interfaces/booking.interface';
+import { IReviewForAgency } from '../interfaces/rating-review-agency.interface';
 
 export interface IAgency {
   _id: string;
@@ -14,4 +15,5 @@ export interface IAgency {
   createdAt?: Date;
   updatedAt?: Date;
   bookings: IBooking[];
+  ratings: IReviewForAgency[]
 }

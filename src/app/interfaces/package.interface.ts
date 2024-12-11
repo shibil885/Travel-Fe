@@ -1,4 +1,5 @@
 import { IAgency } from '../models/agency.model';
+import { IBooking } from './booking.interface';
 import { ICategory } from './category.interface';
 import { IOffer } from './offer.interface';
 import { IReviewForPackage } from './rating-review-package.interface.ts';
@@ -27,5 +28,8 @@ export interface IPackage {
   images: string[];
   offerId: IOffer;
   isActive: boolean;
-  ratingAndReview: IReviewForPackage[]
+  ratingAndReview: IReviewForPackage[];
+  categoryId: ICategory[];
+  agency: IAgency[];
+  bookings: IBooking[];
 }
