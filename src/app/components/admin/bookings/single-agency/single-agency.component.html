@@ -55,11 +55,11 @@
                 <section class="my-4">
                     <h1 class="text-2xl font-semibold text-[#3D52A0] mb-2 sm:mb-4"> Completed </h1>
                     <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-                        <ng-container *ngIf="completed && completed.length; else noData">
+                        <ng-container *ngIf="completed && completed.length; else noCompleted">
                             <div *ngFor="let booking of completed"
                                 class="bg-white rounded-lg shadow-lg overflow-hidden transform transition duration-300">
                                 <div class="relative">
-                                    <img [src]="booking.package_id.images[0]" [alt]="booking.package.name"
+                                    <img [src]="booking.package_id.images[0]" [alt]="booking.package_id.name"
                                         class="w-full h-48 object-cover">
                                     <span
                                         [class]="'absolute top-4 right-4 px-3 py-1 text-xs font-semibold text-white rounded-full ' + getStatusColor(booking.travel_status)">
@@ -116,7 +116,7 @@
                                 </div>
                             </div>
                         </ng-container>
-                        <ng-template #noData>
+                        <ng-template #noCompleted>
                             <div class="text-center text-gray-500 text-lg py-8">
                                 <p>No completed bookings found.</p>
                             </div>
@@ -127,7 +127,7 @@
                 <section class="my-4">
                     <h1 class="text-2xl font-semibold text-[#3D52A0] mb-2 sm:mb-4"> On going </h1>
                     <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-                        <ng-container *ngIf="started && started.length; else noData">
+                        <ng-container *ngIf="started && started.length; else noOngoing">
                             <div *ngFor="let booking of started"
                                 class="bg-white rounded-lg shadow-lg overflow-hidden transform transition duration-300">
                                 <div class="relative">
@@ -188,7 +188,7 @@
                                 </div>
                             </div>
                         </ng-container>
-                        <ng-template #noData>
+                        <ng-template #noOngoing>
                             <div class="text-center text-gray-500 text-lg py-8">
                                 <p>No On going bookings.</p>
                             </div>
@@ -199,7 +199,7 @@
                 <section class="my-4">
                     <h1 class="text-2xl font-semibold text-[#3D52A0] mb-2 sm:mb-4"> Pending </h1>
                     <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-                        <ng-container *ngIf="pending && pending.length; else noData">
+                        <ng-container *ngIf="pending && pending.length; else noPending">
                             <div *ngFor="let booking of pending"
                                 class="bg-white rounded-lg shadow-lg overflow-hidden transform transition duration-300">
                                 <div class="relative">
@@ -260,7 +260,7 @@
                                 </div>
                             </div>
                         </ng-container>
-                        <ng-template #noData>
+                        <ng-template #noPending>
                             <div class="text-center text-gray-500 text-lg py-8">
                                 <p>No pending bookings.</p>
                             </div>
@@ -271,7 +271,7 @@
                 <section class="my-4">
                     <h1 class="text-2xl font-semibold text-[#3D52A0] mb-2 sm:mb-4"> Cancelled </h1>
                     <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-                        <ng-container *ngIf="cancelled && cancelled.length; else noData">
+                        <ng-container *ngIf="cancelled && cancelled.length; else noCancelled">
                             <div *ngFor="let booking of cancelled"
                                 class="bg-white rounded-lg shadow-lg overflow-hidden transform transition duration-300">
                                 <div class="relative">
@@ -333,7 +333,7 @@
                                 </div>
                             </div>
                         </ng-container>
-                        <ng-template #noData>
+                        <ng-template #noCancelled>
                             <div class="text-center text-gray-500 text-lg py-8">
                                 <p>No cancelled bookings.</p>
                             </div>
