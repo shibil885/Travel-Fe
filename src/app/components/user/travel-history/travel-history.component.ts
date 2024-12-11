@@ -7,6 +7,7 @@ import { IBooking } from '../../../interfaces/booking.interface';
 import { BookingService } from '../../../shared/services/booking.service';
 import { FeedbackComponent } from './feedback/feedback.component';
 import { ToastService } from '../../../shared/services/toaster.service';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-travel-history',
@@ -67,17 +68,45 @@ export class TravelHistoryComponent {
     this.selectedBooking = null;
   }
 
-  submitFeedback(feedback: { rating: number; review: string }) {
-    if (this.selectedBooking && this.selectedBooking.package_id) {
-      this._bookingService
-        .createFeedback(this.selectedBooking.package_id, feedback)
-        .subscribe((res) => {
-          if (res.success) {
-            this._toastService.showToast(res.message, 'success');
-            this.closeFeedbackModal();
-            this._fetchBookings()
+  submitFeedback(feedback: {
+    packageFeedback: {
+      rating: number;
+      review: string;
+    };
+    agencyFeedback: {
+      rating: number;
+      review: string;
+    };
+  }) {
+    if (
+      this.selectedBooking &&
+      this.selectedBooking.package_id &&
+      this.selectedBooking.package_id
+    ) {
+      const agencyFeedBack$ = this._bookingService.createFeedbackForAgency(
+        this.selectedBooking.agency._id,
+        {
+          rating: feedback.agencyFeedback.rating,
+          review: feedback.agencyFeedback.review,
+        }
+      );
+
+      const packageFeedBack$ = this._bookingService.createFeedbackForPackage(
+        this.selectedBooking.package_id,
+        {
+          rating: feedback.packageFeedback.rating,
+          review: feedback.packageFeedback.review,
+        }
+      );
+      forkJoin([agencyFeedBack$, packageFeedBack$]).subscribe(
+        ([agencyFeedback, packageFeedback]) => {
+          if (agencyFeedback.success && packageFeedback.success) {
+            this._toastService.showToast(agencyFeedback.message, 'success');
+          } else {
+            this._toastService.showToast('Somthing went wrong', 'error');
           }
-        });
+        }
+      );
     }
   }
 }

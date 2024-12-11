@@ -5,6 +5,7 @@ import { TravelConfirmationStatus } from '../../enum/travelConfirmation.enum';
 import { FormGroup } from '@angular/forms';
 import { IAgencyBookingData } from '../../interfaces/agencyBookingsData.interface';
 import { IPackage } from '../../interfaces/package.interface';
+import { IAgency } from '../../models/agency.model';
 
 @Injectable({
   providedIn: 'root',
@@ -164,9 +165,26 @@ export class BookingService {
     });
   }
 
-  createFeedback(
+  createFeedbackForAgency(
+    agencyId: string,
+    feedback: {
+      rating: number;
+      review: string;
+    }
+  ) {
+    return this._http.post<{ success: boolean; message: string }>(
+      `${this._api}/rating-review-agency/${agencyId}`,
+      feedback,
+      { withCredentials: true }
+    );
+  }
+
+  createFeedbackForPackage(
     packageId: IPackage,
-    feedback: { rating: number; review: string }
+    feedback: {
+      rating: number;
+      review: string;
+    }
   ) {
     return this._http.post<{ success: boolean; message: string }>(
       `${this._api}/rating-review-package/${packageId}`,
@@ -175,7 +193,16 @@ export class BookingService {
     );
   }
 
-  isFeedBackExist(packageId: IPackage) {
+  isUserHaveFeedBackOnAgency(agencyId: string) {
+    return this._http.get<{ success: boolean; rating: number; review: string }>(
+      `${this._api}/rating-review-agency/isExisting/${agencyId}`,
+      {
+        withCredentials: true,
+      }
+    );
+  }
+
+  isUserHaveFeedBackOnPackge(packageId: IPackage) {
     return this._http.get<{ success: boolean; rating: number; review: string }>(
       `${this._api}/rating-review-package/isExisting/${packageId}`,
       {
