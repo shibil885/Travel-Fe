@@ -5,7 +5,6 @@ import { TravelConfirmationStatus } from '../../enum/travelConfirmation.enum';
 import { FormGroup } from '@angular/forms';
 import { IAgencyBookingData } from '../../interfaces/agencyBookingsData.interface';
 import { IPackage } from '../../interfaces/package.interface';
-import { IAgency } from '../../models/agency.model';
 
 @Injectable({
   providedIn: 'root',
@@ -50,6 +49,7 @@ export class BookingService {
       { withCredentials: true }
     );
   }
+
   getAllBookedPackages(page: number, limit: number) {
     const params = new HttpParams().set('page', page).set('limit', limit);
     return this._http.get<{

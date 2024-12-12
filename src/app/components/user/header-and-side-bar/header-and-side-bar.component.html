@@ -17,27 +17,44 @@
           <mat-icon class="text-gray-800 cursor-pointer" (click)="toggleModal()">
             notifications
           </mat-icon>
-          <span
-            *ngIf="notificationCount > 0"
-            class="absolute top-0 right-0 text-xs bg-red-600 text-white rounded-full px-1">
-            {{ notificationCount }}
-          </span>
-        
+          <ng-container *ngIf="notificationCount <= 5;else moreNotification">
+            <span class="absolute top-0 right-0 text-xs bg-red-600 text-white rounded-full px-1">
+              {{ notificationCount }}
+            </span>
+          </ng-container>
+          <ng-template #moreNotification>
+            <span class="absolute top-0 right-0 text-xs bg-red-600 text-white rounded-full px-1">
+              5+
+            </span>
+          </ng-template>
+
+
           <!-- Notification Modal -->
-          <div *ngIf="isModalOpen" class="notification-modal absolute top-12 right-0 w-80 p-4 bg-white rounded-lg shadow-lg z-50">
-            <h2 class="text-lg font-bold text-gray-800 mb-4">Notifications</h2>
-            <ul class="space-y-3">
-              <li *ngFor="let notification of notifications" class="p-2 border rounded-lg shadow hover:bg-gray-100">
-                <p class="text-sm text-gray-600">{{ notification.message }}</p>
-                <span class="text-xs text-gray-400">{{ notification.time }}</span>
-              </li>
-            </ul>
-            <button mat-button class="w-full mt-4 bg-indigo-600 text-white py-2 rounded-lg" (click)="closeModal()">
-              Close
-            </button>
-          </div>
+          <div *ngIf="isModalOpen"
+          class="notification-modal absolute top-12 right-0 w-80 p-4 bg-white rounded-lg shadow-lg z-50">
+          <h2 class="text-lg font-bold text-gray-800 mb-4">Notifications</h2>
+          <ul class="space-y-3">
+            <li *ngFor="let notification of notifications" 
+                class="p-2 border rounded-lg shadow hover:bg-gray-100 flex justify-between items-center">
+              <div>
+                <p class="text-sm text-gray-600">{{ notification.title }}</p>
+                <span class="text-xs text-gray-400">{{ notification.createdAt | date:'shortDate' }}</span>
+              </div>
+              <button 
+                class="text-gray-500 hover:text-indigo-600 focus:outline-none"
+                (click)="markAsRead(notification)">
+                <mat-icon *ngIf="!notification.is_read" class="text-indigo-500">mark_email_unread</mat-icon>
+                <mat-icon *ngIf="notification.is_read" class="text-green-500">done_all</mat-icon>
+              </button>
+            </li>
+          </ul>
+          <button mat-button class="w-full mt-4 bg-indigo-600 text-white py-2 rounded-lg" (click)="closeModal()">
+            Close
+          </button>
         </div>
-               
+        
+        </div>
+
         <button class="md:hidden text-gray-600 focus:outline-none" (click)="toggleMenu()">
           <mat-icon>{{ isMenuOpen ? 'close' : 'menu' }}</mat-icon>
         </button>

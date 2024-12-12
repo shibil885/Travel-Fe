@@ -58,7 +58,7 @@
 
     <div class="mt-10 flex space-x-5 justify-center">
         <button (click)="confirmBooking()"
-            [ngClass]="booking?.confirmation === 'confirmed' ? 'cursor-not-allowed':'' || booking?.travel_status === 'cancelled' ? 'cursor-not-allowed':''"
+            [ngClass]="(booking?.confirmation === 'confirmed' || booking?.travel_status === 'cancelled') ? 'cursor-not-allowed' : ''"
             class="bg-[#90AEAD] text-white font-semibold py-3 px-8 rounded-lg hover:bg-[#244855] transition-transform transform  shadow-lg hover:shadow-xl focus:outline-none"
             [hidden]="booking?.confirmation === 'confirmed' || booking?.travel_status === 'cancelled'">
             Confirm Booking

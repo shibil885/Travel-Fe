@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Notification } from '../../interfaces/notification.interface';
+import { INotification } from '../../interfaces/notification.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -11,8 +11,14 @@ export class NotificationService {
 
   constructor(private http: HttpClient) {}
 
-  getNotifications(): Observable<Notification[]> {
-    return this.http.get<Notification[]>(`${this.api}`, {
+  getNotifications(role: string, limit: number) {
+    const params = new HttpParams().set('limit', limit);
+    return this.http.get<{
+      success: boolean;
+      message: string;
+      notifications: INotification[];
+    }>(`${this.api}/${role}`, {
+      params,
       withCredentials: true,
     });
   }

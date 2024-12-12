@@ -41,6 +41,7 @@ import { Injectable } from '@angular/core';
 import { io, Socket } from 'socket.io-client';
 import { IMessage } from '../../../interfaces/message.interface';
 import { Observable } from 'rxjs';
+import { INotification } from '../../../interfaces/notification.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -103,5 +104,22 @@ export class SocketService {
 
   userLoged(userId: string) {
     this._socket.emit('userLoged', userId);
+  }
+  bookingConfirmed() {
+    return new Observable<INotification>((observer) => {
+      this._socket.on('bookingConfirmed', (data: INotification) => {
+        observer.next(data);
+      });
+      return () => this._socket.off('bookingConfirmed');
+    });
+  }
+
+  bookingCancelled() {
+    return new Observable<INotification>((observer) => {
+      this._socket.on('bookingCancelled', (data: INotification) => {
+        observer.next(data);
+      });
+      return () => this._socket.off('bookingCancelled');
+    });
   }
 }

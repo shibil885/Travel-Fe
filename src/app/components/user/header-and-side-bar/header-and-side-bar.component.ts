@@ -14,6 +14,9 @@ import {
   transition,
 } from '@angular/animations';
 import { MatDialog } from '@angular/material/dialog';
+import { INotification } from '../../../interfaces/notification.interface';
+import { NotificationService } from '../../../shared/services/notification.service';
+import { SocketService } from '../../../shared/services/socket/socket.service';
 
 @Component({
   selector: 'app-header-sidebar',
@@ -35,7 +38,8 @@ export class HeaderSidebarComponent {
   isModalOpen = false;
   windowWidth = window.innerWidth;
   user: IUser | null = null;
-  notificationCount = 5;
+  notificationCount: number = 0;
+  notifications: INotification[] = [];
   menuItems = [
     { icon: 'person', label: 'Profile', route: '/profile' },
     { icon: 'book', label: 'Booked', route: '/booked' },
@@ -46,13 +50,36 @@ export class HeaderSidebarComponent {
     { icon: 'chat', label: 'Chat', route: '/chat' },
   ];
 
-  constructor(private store: Store, private dialog: MatDialog) {}
+  constructor(
+    private store: Store,
+    private _notificationService: NotificationService,
+    private _socketService: SocketService
+  ) {}
 
   ngOnInit(): void {
+    this._socketService.bookingConfirmed().subscribe((res) => {
+      this._fetchNotification();
+    });
+
+    this._socketService.bookingCancelled().subscribe((res) => {
+      this._fetchNotification();
+    });
+
+    this._fetchNotification();
+
     this.store.select(selectUser).subscribe((user) => {
       this.user = user;
     });
   }
+
+  private _fetchNotification() {
+    this._notificationService.getNotifications('user', 5).subscribe((res) => {
+      this.notifications = res.notifications;
+      this.notificationCount = res.notifications.length;
+    });
+  }
+
+  markAsRead(notification: INotification): void {}
 
   toggleSidebar() {
     this.isOpen.update((v) => !v);
@@ -61,11 +88,6 @@ export class HeaderSidebarComponent {
   toggleMenu() {
     this.isMenuOpen = !this.isMenuOpen;
   }
-  notifications = [
-    { message: 'Your booking has been confirmed!', time: '2 hours ago' },
-    { message: 'New package added: Maldives Tour!', time: '1 day ago' },
-    { message: 'Your refund has been processed.', time: '3 days ago' },
-  ];
 
   toggleModal() {
     this.isModalOpen = !this.isModalOpen;

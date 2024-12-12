@@ -1,9 +1,8 @@
-export interface Notification {
-  _id: string;
+export interface INotification {
   from_id: string;
-  from_model: 'User' | 'Agency';
+  from_model: 'User' | 'Agency' | 'Admin';
   to_id: string;
-  to_model: 'User' | 'Agency';
+  to_model: 'User' | 'Agency' | 'Admin';
   title: string;
   description: string;
   is_read: boolean;
@@ -11,6 +10,6 @@ export interface Notification {
   type: 'info' | 'alert' | 'error' | 'success';
   priority: 1 | 2 | 3;
   is_deleted: boolean;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
