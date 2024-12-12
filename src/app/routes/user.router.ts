@@ -18,6 +18,7 @@ import { ForgotPasswordComponent } from '../components/user/forgot-password/forg
 import { ForgotPasswordFormComponent } from '../components/user/forgot-password/forgot-password-form/forgot-password-form.component';
 import { ChatComponent } from '../components/user/chat/chat.component';
 import { TravelHistoryComponent } from '../components/user/travel-history/travel-history.component';
+import { NotificationComponent } from '../components/user/notification/notification.component';
 
 export const userRouter: Routes = [
   {
@@ -120,6 +121,12 @@ export const userRouter: Routes = [
   {
     path: 'travelHistory',
     component: TravelHistoryComponent,
+    canActivate: [authGuard],
+    data: { role: 'user' },
+  },
+  {
+    path: 'notifications',
+    component: NotificationComponent,
     canActivate: [authGuard],
     data: { role: 'user' },
   },

@@ -1,4 +1,5 @@
 export interface INotification {
+  _id: string
   from_id: string;
   from_model: 'User' | 'Agency' | 'Admin';
   to_id: string;

@@ -11,7 +11,7 @@ export class NotificationService {
 
   constructor(private http: HttpClient) {}
 
-  getNotifications(role: string, limit: number) {
+  getNotifications(role: string, limit: number= Infinity) {
     const params = new HttpParams().set('limit', limit);
     return this.http.get<{
       success: boolean;
