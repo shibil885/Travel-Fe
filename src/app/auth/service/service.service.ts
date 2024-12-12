@@ -56,6 +56,7 @@ export class AuthService {
     message: string;
     valid: boolean;
     role: Role;
+    id: string;
   }> {
     return this._http
       .post<{
@@ -63,6 +64,7 @@ export class AuthService {
         message: string;
         valid: boolean;
         role: Role;
+        id: string;
       }>(`${this._api}/auth/validate-token`, {}, { withCredentials: true })
       .pipe(
         catchError((error) => {
@@ -71,6 +73,7 @@ export class AuthService {
             message: error.error?.message,
             valid: error.error.valid,
             role: error.error?.role,
+            id: error.error.id,
           });
         })
       );
@@ -81,6 +84,7 @@ export class AuthService {
     message: string;
     role: Role;
     isRefreshed: boolean;
+    id: string;
   }> {
     return this._http
       .post<{
@@ -88,14 +92,16 @@ export class AuthService {
         message: string;
         role: Role;
         isRefreshed: boolean;
+        id: string;
       }>(`${this._api}/auth/refresh`, {}, { withCredentials: true })
       .pipe(
         catchError((error) => {
           return of({
             success: error.error.success,
-            message: error.error?.message ,
+            message: error.error?.message,
             role: error.error?.role,
             isRefreshed: error.error.isRefreshed,
+            id: error.error.id,
           });
         })
       );

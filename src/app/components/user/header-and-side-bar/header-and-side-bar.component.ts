@@ -13,6 +13,7 @@ import {
   animate,
   transition,
 } from '@angular/animations';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-header-sidebar',
@@ -31,8 +32,10 @@ import {
 export class HeaderSidebarComponent {
   isOpen = signal(false);
   isMenuOpen = false;
+  isModalOpen = false;
   windowWidth = window.innerWidth;
   user: IUser | null = null;
+  notificationCount = 5;
   menuItems = [
     { icon: 'person', label: 'Profile', route: '/profile' },
     { icon: 'book', label: 'Booked', route: '/booked' },
@@ -43,7 +46,7 @@ export class HeaderSidebarComponent {
     { icon: 'chat', label: 'Chat', route: '/chat' },
   ];
 
-  constructor(private store: Store) {}
+  constructor(private store: Store, private dialog: MatDialog) {}
 
   ngOnInit(): void {
     this.store.select(selectUser).subscribe((user) => {
@@ -57,6 +60,19 @@ export class HeaderSidebarComponent {
 
   toggleMenu() {
     this.isMenuOpen = !this.isMenuOpen;
+  }
+  notifications = [
+    { message: 'Your booking has been confirmed!', time: '2 hours ago' },
+    { message: 'New package added: Maldives Tour!', time: '1 day ago' },
+    { message: 'Your refund has been processed.', time: '3 days ago' },
+  ];
+
+  toggleModal() {
+    this.isModalOpen = !this.isModalOpen;
+  }
+
+  closeModal() {
+    this.isModalOpen = false;
   }
 
   @HostListener('window:resize', ['$event'])

@@ -10,6 +10,7 @@ import { IAgency } from '../../../models/agency.model';
 import { MessageSenderType } from '../../../enum/messageSenderType.enum';
 import { ChatService } from '../../../shared/services/chat/chat.service';
 import { HeaderSidebarComponent } from '../header-and-side-bar/header-and-side-bar.component';
+import { SocketService } from '../../../shared/services/socket/socket.service';
 
 @Component({
   selector: 'app-chat',
@@ -29,27 +30,34 @@ export class ChatComponent {
   newMessage = '';
   colors: string[] = ['#ff6b54', '#34a853', '#4285f4', '#fbbc05'];
 
-  constructor(private _chatService: ChatService, private _dialog: MatDialog) {}
+  constructor(
+    private _chatService: ChatService,
+    private _socketService: SocketService,
+    private _dialog: MatDialog
+  ) {}
 
   ngOnInit() {
+    console.log('user chat opened');
     this.checkScreenSize();
     this._fetchChats();
-    this._chatService.receiveMessages().subscribe((res: IMessage) => {
+    this._socketService.receiveMessages().subscribe((res: IMessage) => {
+      console.log('response entered from user', res);
       this._fetchChats();
       this.messages.push(res);
     });
-    this._chatService.agencyReadAllMessages().subscribe((res) => {
-      this._fetchMessages(res.chatId)
+    this._socketService.agencyReadAllMessages().subscribe((res) => {
+      this._fetchMessages(res.chatId);
     });
   }
 
   private _fetchChats() {
     this._chatService.getAllChats(MessageSenderType.USER).subscribe((res) => {
       if (res.success) {
+        console.log('call invoked from fetch chats');
         this.chats = res.chats;
         this.recentChats = res.chats.filter((chat) => chat.lastMessageId);
         const chatId = this.chats.map((chat) => chat._id);
-        this._chatService.joinRooms(chatId);
+        this._socketService.joinRooms(chatId);
       }
     });
   }
@@ -166,7 +174,7 @@ export class ChatComponent {
           .initializeChat(selectedUser._id, userType)
           .subscribe((res) => {
             if (res.success) {
-              this._fetchChats()
+              this._fetchChats();
               this.selectChat(res.chat);
             }
           });

@@ -11,6 +11,7 @@ import { ChatListModalComponent } from '../../../shared/components/chat-list-mod
 import { IAgency } from '../../../models/agency.model';
 import { IUser } from '../../../models/user.model';
 import { FormsModule } from '@angular/forms';
+import { SocketService } from '../../../shared/services/socket/socket.service';
 
 @Component({
   selector: 'app-chat',
@@ -28,16 +29,22 @@ export class ChatComponent {
   isMobile: boolean = false;
   showChatWindow: boolean = false;
   newMessage = '';
-  constructor(private _chatService: ChatService, private _dialog: MatDialog) {}
+  constructor(
+    private _chatService: ChatService,
+    private _socketService: SocketService,
+    private _dialog: MatDialog
+  ) {}
 
   ngOnInit() {
+    console.log('agency chat opened');
     this.checkScreenSize();
     this._fetchChats();
-    this._chatService.receiveMessages().subscribe((res: IMessage) => {
+    this._socketService.receiveMessages().subscribe((res: IMessage) => {
       this._fetchChats();
+      console.log('response entered from agency', res);
       this.messages.push(res);
     });
-    this._chatService.userReadAllMessages().subscribe((res) => {
+    this._socketService.userReadAllMessages().subscribe((res) => {
       this._fetchMessages(res.chatId);
     });
   }
@@ -47,7 +54,7 @@ export class ChatComponent {
       this.chats = res.chats;
       this.recentChats = res.chats.filter((chat) => chat.lastMessageId);
       const chatId = this.chats.map((chat) => chat._id);
-      this._chatService.joinRooms(chatId);
+      this._socketService.joinRooms(chatId);
     });
   }
 

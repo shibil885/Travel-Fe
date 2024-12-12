@@ -6,14 +6,13 @@ import { IChat } from '../../../interfaces/chat.interface';
 import { tap } from 'rxjs';
 import { IUser } from '../../../models/user.model';
 import { IMessage } from '../../../interfaces/message.interface';
-import { Socket } from 'ngx-socket-io';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ChatService {
   private readonly _api = 'http://localhost:3000/chat';
-  constructor(private _http: HttpClient, private _socket: Socket) {}
+  constructor(private _http: HttpClient) {}
 
   getAllChats(userType: MessageSenderType) {
     const params = new HttpParams().set('userType', userType);
@@ -75,23 +74,5 @@ export class ChatService {
     );
   }
 
-  joinRooms(chats: string[]) {
-    this._socket.emit('joinRoom', chats);
-  }
-
-  receiveMessages() {
-    return this._socket.fromEvent<IMessage>('message');
-  }
-
-  agencyReadAllMessages() {
-    return this._socket.fromEvent<{ chatId: string }>('agencyReadAllMessages');
-  }
-
-  userReadAllMessages() {
-    return this._socket.fromEvent<{ chatId: string }>('userReadAllMessages');
-  }
-
-  leaveChat(chatId: string) {
-    this._socket.emit('leaveChat', { chatId });
-  }
+ 
 }

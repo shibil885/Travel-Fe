@@ -1,0 +1,20 @@
+.custom-modal .mat-dialog-container {
+    border-radius: 16px;
+    padding: 0;
+    background: #f9fafb;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  h2 {
+    color: #3d52a0;
+  }
+  
+  button.mat-button {
+    background-color: #3d52a0;
+    color: white;
+  }
+  
+  button.mat-button:hover {
+    background-color: #7091e6;
+  }
+  
