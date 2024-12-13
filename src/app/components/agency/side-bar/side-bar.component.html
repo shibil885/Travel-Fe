@@ -1,11 +1,11 @@
-<aside [ngClass]="{'w-64': !isCollapsed, 'w-20': isCollapsed}" 
+<aside [ngClass]="{'w-64': !isCollapsed, 'w-20': isCollapsed}"
     class="bg-[#244855] text-[#FBE9D0] transition-all duration-300 ease-in-out shadow-lg flex flex-col h-screen">
 
     <div class="flex items-center justify-between p-4 bg-[#E64833] text-[#FBE9D0]">
         <h1 [ngClass]="{'hidden': isCollapsed}" class="text-2xl font-bold">Agency</h1>
-        <button (click)="toggleSidebar()" 
+        <button (click)="toggleSidebar()"
             class="focus:outline-none hover:bg-[#90AEAD] rounded-full p-2 transition-colors duration-200">
-            <svg xmlns="http://www.w3.org/2000/svg" [ngClass]="{'rotate-180': !isCollapsed}" 
+            <svg xmlns="http://www.w3.org/2000/svg" [ngClass]="{'rotate-180': !isCollapsed}"
                 class="h-6 w-6 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
             </svg>
@@ -14,10 +14,10 @@
     <nav class="flex-1 overflow-y-auto py-4">
         <ul class="space-y-2 px-3">
             <li *ngFor="let item of menuItems" class="hover:bg-[#90AEAD] transition-colors duration-200 rounded-lg">
-                <a [routerLink]="item.route" routerLinkActive="bg-[#874F41] text-[#FBE9D0]" 
+                <a [routerLink]="item.route" routerLinkActive="bg-[#874F41] text-[#FBE9D0]"
                     class="flex items-center space-x-3 rounded-md p-2">
                     <span class="relative">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" 
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" [attr.d]="item.icon" />
                         </svg>
@@ -25,17 +25,37 @@
                     <span [ngClass]="{'hidden': isCollapsed}" class="text-sm">{{ item.label }}</span>
                 </a>
             </li>
+            <li class="hover:bg-[#ADBBDA] transition-colors duration-200 rounded-lg">
+                <a [routerLink]="'/agency/notifications'" routerLinkActive="bg-[#7091E6] text-[#EDE8F5]"
+                    class="flex items-center justify-between rounded-md p-2">
+                    <div class="flex items-center space-x-3">
+                        <span class="relative">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
+                                    d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0" />
+                            </svg>
+                        </span>
+                        <span [ngClass]="{'hidden': isCollapsed}" class="text-sm">Notifications</span>
+                    </div>
+                    <span *ngIf="notificationCount > 0"
+                        class="bg-red-600 text-white rounded-full text-xs w-4 h-4 flex items-center justify-center">
+                        {{ notificationCount }}
+                    </span>
+                </a>
+            </li>
         </ul>
     </nav>
     <div class="p-4">
         <hr class="border border-white mb-4">
-        <button class="flex items-center w-full p-2 rounded-lg text-sm text-red-600 hover:bg-[#90AEAD]" (click)="logout()">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" 
+        <button class="flex items-center w-full p-2 rounded-lg text-sm text-red-600 hover:bg-[#90AEAD]"
+            (click)="logout()">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                 stroke="currentColor" class="h-6 w-6 mr-2">
-                <path stroke-linecap="round" stroke-linejoin="round" 
+                <path stroke-linecap="round" stroke-linejoin="round"
                     d="M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15m-3 0-3-3m0 0 3-3m-3 3H15" />
             </svg>
             <span [ngClass]="{'hidden': isCollapsed}">Logout</span>
         </button>
-    </div>    
+    </div>
 </aside>

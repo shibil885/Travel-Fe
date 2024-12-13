@@ -1,15 +1,16 @@
 import { Component } from '@angular/core';
-import { HeaderSidebarComponent } from '../header-and-side-bar/header-and-side-bar.component';
+import { SideBarComponent } from '../side-bar/side-bar.component';
+import { HeaderComponent } from '../header/header.component';
 import { CommonModule } from '@angular/common';
-import { MatIcon } from '@angular/material/icon';
-import { NotificationService } from '../../../shared/services/notification.service';
 import { INotification } from '../../../interfaces/notification.interface';
+import { NotificationService } from '../../../shared/services/notification.service';
 import { SocketService } from '../../../shared/services/socket/socket.service';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'app-notification',
   standalone: true,
-  imports: [HeaderSidebarComponent, CommonModule, MatIcon],
+  imports: [SideBarComponent, HeaderComponent, CommonModule, MatIcon],
   templateUrl: './notification.component.html',
   styleUrl: './notification.component.css',
 })
@@ -38,10 +39,12 @@ export class NotificationComponent {
   }
 
   private _fetchNotifications() {
-    this._notificationService.getNotifications('user',true).subscribe((res) => {
-      console.log(res);
-      this.filteredNotifications = res.notifications;
-    });
+    this._notificationService
+      .getNotifications('agency', true)
+      .subscribe((res) => {
+        console.log('--->', res);
+        this.filteredNotifications = res.notifications;
+      });
   }
   filterNotifications(type: string) {
     this.selectedFilter = type;

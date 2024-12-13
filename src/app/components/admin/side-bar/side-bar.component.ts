@@ -61,8 +61,8 @@ export class SideBarComponent {
   ];
 
   ngOnInit(): void {
-    this._notificationService.getAllUnreadNotifications().subscribe((res) => {
-      this.notificationCount = res.length;
+    this._notificationService.getNotifications('admin', false).subscribe((res) => {
+      this.notificationCount = res.notifications.length;
     });
   }
   toggleSidebar() {

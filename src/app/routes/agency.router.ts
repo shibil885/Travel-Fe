@@ -1,36 +1,3 @@
-// import { Routes } from '@angular/router';
-// import { SignupComponent } from '../components/agency/signup/signup.component';
-// import { LoginComponent } from '../components/agency/login/login.component';
-// import { PackagesComponent } from '../components/agency/packages/packages.component';
-// import { agencyGuard } from '../auth/guards/agency/agency-guard.guard';
-// import { agencyLoggedGuard } from '../auth/guards/agency/logged-agency.guard';
-
-// export const agencyRouter: Routes = [
-//   { path: 'agency', redirectTo: 'agency/home', pathMatch: 'full' },
-//   {
-//     path: 'agency/home',
-//     loadComponent: () =>
-//       import('../components/agency/home/home.component').then(
-//         (m) => m.HomeComponent
-//       ),
-//     canActivate: [agencyGuard],
-//   },
-//   {
-//     path: 'agency/signup',
-//     component: SignupComponent,
-//     canActivate: [agencyLoggedGuard],
-//   },
-//   {
-//     path: 'agency/login',
-//     component: LoginComponent,
-//     canActivate: [agencyLoggedGuard],
-//   },
-//   {
-//     path: 'agency/packages',
-//     component: PackagesComponent,
-//     canActivate: [agencyGuard],
-//   },
-// ];
 import { Routes } from '@angular/router';
 import { SignupComponent } from '../components/agency/signup/signup.component';
 import { LoginComponent } from '../components/agency/login/login.component';
@@ -42,6 +9,7 @@ import { OffersComponent } from '../components/agency/offers/offers.component';
 import { OfferFormComponent } from '../components/agency/offers/offer-form/offer-form.component';
 import { ViewOfferComponent } from '../components/agency/offers/view-offer/view-offer.component';
 import { ChatComponent } from '../components/agency/chat/chat.component';
+import { NotificationComponent } from '../components/agency/notification/notification.component';
 
 export const agencyRouter: Routes = [
   { path: 'agency', redirectTo: 'agency/home', pathMatch: 'full' },
@@ -105,6 +73,12 @@ export const agencyRouter: Routes = [
   {
     path: 'agency/chat',
     component: ChatComponent,
+    canActivate: [authGuard],
+    data: { role: 'agency' },
+  },
+  {
+    path: 'agency/notifications',
+    component: NotificationComponent,
     canActivate: [authGuard],
     data: { role: 'agency' },
   },

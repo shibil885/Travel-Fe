@@ -11,23 +11,17 @@ export class NotificationService {
 
   constructor(private http: HttpClient) {}
 
-  getNotifications(role: string, limit: number= Infinity) {
+  getNotifications(role: string, is_read: boolean = false, limit: number = Infinity) {
     const params = new HttpParams().set('limit', limit);
     return this.http.get<{
       success: boolean;
       message: string;
       notifications: INotification[];
-    }>(`${this.api}/${role}`, {
+    }>(`${this.api}/${role}/${is_read}`, {
       params,
       withCredentials: true,
     });
   }
-  getAllUnreadNotifications(): Observable<Notification[]> {
-    return this.http.get<Notification[]>(`${this.api}/unread`, {
-      withCredentials: true,
-    });
-  }
-
   getNotificationById(id: string): Observable<Notification> {
     return this.http.get<Notification>(`${this.api}/${id}`, {
       withCredentials: true,

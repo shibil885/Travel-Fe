@@ -13,6 +13,7 @@ import { logout } from '../../../store/agency/agency.action';
 })
 export class SideBarComponent {
   isCollapsed = false;
+  notificationCount: number = 99
   menuItems = [
     {
       label: 'Dashboard',
