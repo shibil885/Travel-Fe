@@ -11,7 +11,11 @@ export class NotificationService {
 
   constructor(private http: HttpClient) {}
 
-  getNotifications(role: string, is_read: boolean = false, limit: number = Infinity) {
+  getNotifications(
+    role: string,
+    is_read: boolean = false,
+    limit: number = Infinity
+  ) {
     const params = new HttpParams().set('limit', limit);
     return this.http.get<{
       success: boolean;
@@ -28,8 +32,8 @@ export class NotificationService {
     });
   }
 
-  markAsRead(id: string): Observable<Notification> {
-    return this.http.patch<Notification>(
+  markAsRead(id: string) {
+    return this.http.patch<{ success: boolean; message: string }>(
       `${this.api}/${id}/read`,
       {},
       { withCredentials: true }

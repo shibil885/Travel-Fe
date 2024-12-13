@@ -16,9 +16,8 @@ import { SocketService } from '../../../shared/services/socket/socket.service';
 export class NotificationComponent {
   notifications: INotification[] = [];
 
-  notificationTypes = ['read', 'unread'];
-  selectedFilter = 'all';
-  filteredNotifications: INotification[] = this.notifications;
+  notificationTypes = ['unread', 'read'];
+  selectedFilter = 'unread';
 
   constructor(
     private _notificationService: NotificationService,
@@ -27,49 +26,44 @@ export class NotificationComponent {
 
   ngOnInit() {
     this._socketService.bookingConfirmed().subscribe((res) => {
-      this._fetchNotifications();
+      this._fetchNotifications(false);
     });
 
     this._socketService.bookingCancelled().subscribe((res) => {
-      this._fetchNotifications();
+      this._fetchNotifications(false);
     });
-    this._fetchNotifications();
-    this.applyFilter();
+    this._fetchNotifications(false);
   }
 
-  private _fetchNotifications() {
-    this._notificationService.getNotifications('user',true).subscribe((res) => {
-      console.log(res);
-      this.filteredNotifications = res.notifications;
-    });
+  private _fetchNotifications(isRead: boolean) {
+    this._notificationService
+      .getNotifications('user', isRead)
+      .subscribe((res) => {
+        console.log(res);
+        this.notifications = res.notifications;
+      });
   }
+
   filterNotifications(type: string) {
-    this.selectedFilter = type;
-    this.applyFilter();
-  }
-
-  applyFilter() {
-    if (this.selectedFilter === 'all') {
-      this.filteredNotifications = this.notifications;
+    if (type === 'unread') {
+      this.selectedFilter = type;
+      this._fetchNotifications(false);
     } else {
-      this.filteredNotifications = this.notifications.filter(
-        (n) => n.type === this.selectedFilter
-      );
+      this.selectedFilter = type;
+      this._fetchNotifications(true);
     }
   }
 
-  markAsRead(notification: any) {
-    notification.is_read = true;
+  markAsRead(notification: INotification) {
+    this._notificationService.markAsRead(notification._id).subscribe((res) => {
+      if (res.success) {
+        this._fetchNotifications(false);
+      }
+    });
   }
 
   markAllAsRead() {
     this.notifications.forEach((n) => (n.is_read = true));
-    this.applyFilter();
-  }
-
-  clearNotifications() {
-    this.notifications = [];
-    this.applyFilter();
   }
 
   getIcon(type: string) {
