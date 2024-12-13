@@ -3,7 +3,7 @@ import { IUser } from '../models/user.model';
 export interface IPost {
   _id: string;
   userId: IUser;
-  imageUrl: string;
+  imageUrls: string[];
   caption: string;
   likes: Array<{
     userId: string;

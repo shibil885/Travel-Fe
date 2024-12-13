@@ -1,4 +1,4 @@
-<app-header-sidebar></app-header-sidebar>
+<!-- <app-header-sidebar></app-header-sidebar>
 <div class="instagram-dashboard">
     <div class="container">
         <h1 class="text-2xl font-bold mt-5">Posts</h1>
@@ -55,27 +55,32 @@
             </div>
         </div>
     </div>
-
     <div class="modal" *ngIf="isUploadModalOpen" [@fadeInOut]>
         <div class="modal-background" (click)="closeUploadModal()"></div>
         <div class="modal-content">
             <div class="upload-modal">
                 <h2>Create New Post</h2>
                 <form [formGroup]="postForm" (ngSubmit)="uploadNewPost()">
-                    <div class="image-preview" *ngIf="newPostImage">
-                        <img [src]="newPostImage" alt="New post preview">
-                    </div>
-                    <div class="file-input-wrapper" *ngIf="!newPostImage">
-                        <label for="file-input" class="file-input-label">
-                            <i class="fas fa-camera"></i>
-                            <span>Select from your device</span>
-                        </label>
-                        <input type="file" id="file-input" (change)="onFileSelected($event)" accept="image/*" />
+                    <div class="image-preview-container" *ngIf="newPostImages.length > 0">
+                        <div class="image-preview" *ngFor="let imageObj of newPostImages; let i = index">
+                            <img [src]="imageObj.preview" alt="Post preview">
+                            <button type="button" class="remove-image" (click)="removeImage(i)">×</button>
+                        </div>
                     </div>
 
-                    <div class="error" *ngIf="imageError">
-                        <p>{{ imageError }}</p>
+                    <div class="file-input-wrapper" *ngIf="newPostImages.length < MAX_IMAGES">
+                        <label for="file-input" class="file-input-label">
+                            <i class="fas fa-camera"></i>
+                            <span>Select from your device ({{ newPostImages.length }}/{{ MAX_IMAGES }})</span>
+                        </label>
+                        <input type="file" id="file-input" (change)="onFilesSelected($event)" accept="image/*"
+                            multiple />
                     </div>
+
+                    <div class="error" *ngIf="imageErrors.length > 0">
+                        <p *ngFor="let error of imageErrors">{{ error }}</p>
+                    </div>
+
                     <textarea placeholder="Write a caption..." rows="3" formControlName="caption"></textarea>
 
                     <div *ngIf="captionControl?.invalid && captionControl?.touched" class="error">
@@ -87,10 +92,218 @@
                         </p>
                     </div>
 
-                    <button class="btn-primary" [disabled]="postForm.invalid">Share</button>
+                    <button class="btn-primary" [disabled]="postForm.invalid || newPostImages.length === 0">
+                        Share
+                    </button>
                 </form>
             </div>
+        </div>
+    </div>
+</div> -->
 
+<div class="bg-gray-50 min-h-screen">
+    <app-header-sidebar></app-header-sidebar>
+    
+    <div class="container mx-auto px-4 py-8 max-w-6xl">
+        <div class="flex justify-between items-center mb-6">
+            <h1 class="text-3xl font-bold text-gray-800">Posts</h1>
+            <button 
+                (click)="openUploadModal()" 
+                class="bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 text-white font-semibold py-2 px-4 rounded-full transition-all duration-300 flex items-center space-x-2 shadow-lg hover:shadow-xl"
+            >
+                <i class="fas fa-plus"></i>
+                <span>Create Post</span>
+            </button>
+        </div>
+
+        <div *ngIf="posts.length === 0" class="text-center bg-white rounded-xl shadow-md p-12 border border-gray-100">
+            <div class="mb-6">
+                <i class="fas fa-camera text-6xl text-gray-300"></i>
+            </div>
+            <h2 class="text-2xl font-semibold text-gray-700 mb-4">No Posts Yet</h2>
+            <p class="text-gray-500 mb-6">When you share photos, they'll appear here.</p>
+            <button 
+                (click)="openUploadModal()"
+                class="bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold py-3 px-6 rounded-full hover:scale-105 transition-all duration-300"
+            >
+                Create Your First Post
+            </button>
+        </div>
+
+        <div *ngIf="posts.length > 0" class="grid grid-cols-3 gap-4 md:gap-6">
+            <div 
+                *ngFor="let post of posts" 
+                class="aspect-square relative group overflow-hidden rounded-xl cursor-pointer"
+                (click)="openPostModal(post)"
+            >
+                <img 
+                    [src]="post.imageUrls[0]" 
+                    [alt]="post.caption" 
+                    class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                >
+                <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-300 flex items-center justify-center space-x-4 text-white">
+                    <span class="opacity-0 group-hover:opacity-100 transition-opacity">
+                        <i class="fas fa-heart mr-2"></i> 
+                        {{ formatNumber(post.likes.length) }}
+                    </span>
+                    <span class="opacity-0 group-hover:opacity-100 transition-opacity">
+                        <i class="fas fa-comment mr-2"></i> 
+                        {{ formatNumber(post.comments.length) }}
+                    </span>
+                </div>
+            </div>
+
+            <div 
+                class="aspect-square border-2 border-dashed border-gray-300 flex items-center justify-center rounded-xl hover:border-purple-500 transition-all duration-300"
+                (click)="openUploadModal()"
+            >
+                <button class="text-4xl text-gray-400 hover:text-purple-500 transition-colors">
+                    +
+                </button>
+            </div>
+        </div>
+
+        <!-- Post Detail Modal -->
+        <div *ngIf="selectedPost" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70" [@fadeInOut]>
+            <div class="bg-white rounded-2xl overflow-hidden shadow-2xl max-w-4xl w-full grid grid-cols-3 max-h-[80vh]">
+                <div class="col-span-2">
+                    <div class="carousel relative">
+                        <div class="flex overflow-x-auto snap-x snap-mandatory">
+                            <div *ngFor="let imageUrl of selectedPost.imageUrls" class="flex-shrink-0 w-full snap-center">
+                                <img 
+                                    [src]="imageUrl" 
+                                    class="w-full h-[600px] object-cover"
+                                >
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-span-1 p-6 flex flex-col">
+                    <div class="flex items-center mb-4 border-b pb-4">
+                        <img 
+                            [src]="selectedPost.userId.profilePicture" 
+                            [alt]="selectedPost.userId.username"
+                            class="w-10 h-10 rounded-full mr-3 object-cover"
+                        >
+                        <span class="font-semibold">{{ selectedPost.userId.username }}</span>
+                    </div>
+
+                    <div class="flex-grow overflow-y-auto">
+                        <p class="mb-4">
+                            <strong>{{ selectedPost.userId.username }}</strong> 
+                            {{ selectedPost.caption }}
+                        </p>
+                        
+                        <!-- Comments Section (Placeholder) -->
+                        <div class="text-gray-500 text-sm">
+                            No comments yet
+                        </div>
+                    </div>
+
+                    <div class="mt-4 border-t pt-4">
+                        <div class="flex justify-between mb-3">
+                            <div class="flex space-x-4">
+                                <button class="text-gray-600 hover:text-red-500 transition-colors">
+                                    <i class="far fa-heart text-2xl"></i>
+                                </button>
+                                <button class="text-gray-600 hover:text-blue-500 transition-colors">
+                                    <i class="far fa-comment text-2xl"></i>
+                                </button>
+                            </div>
+                            <button class="text-gray-600 hover:text-black transition-colors">
+                                <i class="far fa-bookmark text-2xl"></i>
+                            </button>
+                        </div>
+                        
+                        <p class="text-xs text-gray-400">
+                            {{ selectedPost.createdAt | date:'mediumDate' }}
+                        </p>
+                    </div>
+                </div>
+
+                <button 
+                    (click)="closePostModal()" 
+                    class="absolute top-4 right-4 text-3xl text-white bg-black bg-opacity-50 rounded-full w-10 h-10 flex items-center justify-center hover:bg-opacity-70 transition-all"
+                >
+                    &times;
+                </button>
+            </div>
+        </div>
+
+        <!-- Upload Modal -->
+        <div *ngIf="isUploadModalOpen" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70" [@fadeInOut]>
+            <div class="bg-white rounded-2xl overflow-hidden shadow-2xl max-w-md w-full p-8">
+                <h2 class="text-2xl font-bold text-center mb-6 text-gray-800">Create New Post</h2>
+                
+                <form [formGroup]="postForm" (ngSubmit)="uploadNewPost()" class="space-y-4">
+                    <div class="grid grid-cols-3 gap-2" *ngIf="newPostImages.length > 0">
+                        <div 
+                            *ngFor="let imageObj of newPostImages; let i = index" 
+                            class="relative rounded-lg overflow-hidden"
+                        >
+                            <img 
+                                [src]="imageObj.preview" 
+                                class="w-full h-24 object-cover"
+                            >
+                            <button 
+                                type="button" 
+                                (click)="removeImage(i)"
+                                class="absolute top-1 right-1 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs"
+                            >
+                                ×
+                            </button>
+                        </div>
+                    </div>
+
+                    <div 
+                        *ngIf="newPostImages.length < MAX_IMAGES" 
+                        class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-purple-500 transition-colors"
+                    >
+                        <input 
+                            type="file" 
+                            id="file-input" 
+                            (change)="onFilesSelected($event)" 
+                            accept="image/*" 
+                            multiple 
+                            class="hidden"
+                        />
+                        <label 
+                            for="file-input" 
+                            class="cursor-pointer flex flex-col items-center"
+                        >
+                            <i class="fas fa-cloud-upload-alt text-4xl text-gray-400 mb-3"></i>
+                            <span class="text-gray-600">
+                                Select {{ newPostImages.length }}/{{ MAX_IMAGES }} Images
+                            </span>
+                        </label>
+                    </div>
+
+                    <div *ngIf="imageErrors.length > 0" class="text-red-500 text-sm">
+                        <p *ngFor="let error of imageErrors">{{ error }}</p>
+                    </div>
+
+                    <textarea 
+                        placeholder="Write a caption..." 
+                        rows="3" 
+                        formControlName="caption"
+                        class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-purple-500 focus:outline-none"
+                    ></textarea>
+
+                    <div *ngIf="captionControl?.invalid && captionControl?.touched" class="text-red-500 text-sm">
+                        <p *ngIf="captionControl?.hasError('required')">Caption is required.</p>
+                        <p *ngIf="captionControl?.hasError('minLength')">Caption must be at least 3 characters long.</p>
+                        <p *ngIf="captionControl?.hasError('maxLength')">Caption must not exceed 255 characters.</p>
+                    </div>
+
+                    <button 
+                        type="submit"
+                        [disabled]="postForm.invalid || newPostImages.length === 0"
+                        class="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold py-3 rounded-full hover:from-purple-600 hover:to-pink-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                        Share Post
+                    </button>
+                </form>
+            </div>
         </div>
     </div>
 </div>

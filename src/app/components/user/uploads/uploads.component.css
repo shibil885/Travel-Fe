@@ -1,411 +1,411 @@
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap");
+  @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap");
 
-body {
-  font-family: "Roboto", sans-serif;
-  background-color: #fafafa;
-  color: #262626;
-  margin: 0;
-  padding: 0;
-}
-
-.container {
-  max-width: 935px;
-  margin: 0 auto;
-  padding: 0 20px;
-}
-
-.instagram-header {
-  background-color: white;
-  border-bottom: 1px solid #dbdbdb;
-  padding: 10px 0;
-}
-
-.instagram-header .container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.instagram-header h1 {
-  font-size: 24px;
-  font-weight: 700;
-  margin: 0;
-}
-
-.instagram-header nav {
-  display: flex;
-  gap: 20px;
-  align-items: center;
-}
-
-.instagram-header nav a {
-  color: #262626;
-  font-size: 24px;
-  text-decoration: none;
-}
-
-.instagram-header nav a.active {
-  color: #0095f6;
-}
-
-.instagram-header nav .upload-btn {
-  background: none;
-  border: none;
-  font-size: 24px;
-  color: #262626;
-  cursor: pointer;
-}
-
-.no-posts {
-  text-align: center;
-  padding: 40px 0;
-}
-
-.no-posts i {
-  font-size: 48px;
-  color: #dbdbdb;
-  margin-bottom: 16px;
-}
-
-.no-posts h2 {
-  font-size: 28px;
-  font-weight: 300;
-  margin-bottom: 16px;
-}
-
-.no-posts p {
-  font-size: 14px;
-  color: #8e8e8e;
-  margin-bottom: 24px;
-}
-
-.btn-primary {
-  /* background-color: #0095f6;
-   */
-  background-color: #e64833;
-  color: white;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 4px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.btn-primary:hover {
-  background-color: darken(#0095f6, 10%);
-}
-
-.btn-primary:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.post-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 28px;
-  margin-top: 24px;
-}
-
-.post-item {
-  position: relative;
-  aspect-ratio: 1 / 1;
-  overflow: hidden;
-  cursor: pointer;
-}
-
-.post-item:hover .post-overlay {
-  opacity: 1;
-}
-
-.post-item .post-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.post-item .post-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.3);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  opacity: 0;
-  transition: opacity 0.2s ease-in-out;
-}
-
-.post-item .post-overlay .post-info {
-  color: white;
-  font-size: 16px;
-  font-weight: 600;
-}
-
-.post-item .post-overlay .post-info span {
-  margin: 0 10px;
-}
-
-.post-item .post-overlay .post-info span i {
-  margin-right: 5px;
-}
-
-.modal {
-  position: fixed;
-  z-index: 1000;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.modal .modal-background {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-}
-
-.modal .modal-content {
-  position: relative;
-  background-color: white;
-  max-width: 935px;
-  width: 100%;
-  margin: 0 20px;
-  display: flex;
-  border-radius: 3px;
-  overflow: hidden;
-}
-
-.modal .modal-close {
-  position: absolute;
-  right: 10px;
-  top: 10px;
-  font-size: 24px;
-  color: white;
-  background: none;
-  border: none;
-  cursor: pointer;
-  z-index: 1;
-}
-
-.post-modal {
-  display: flex;
-  width: 100%;
-}
-
-.post-modal .post-image {
-  flex: 1;
-  max-width: 600px;
-}
-
-.post-modal .post-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.post-modal .post-details {
-  flex: 1;
-  max-width: 335px;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-}
-
-.post-modal .post-details .post-header {
-  display: flex;
-  align-items: center;
-  margin-bottom: 16px;
-}
-
-.post-modal .post-details .post-header .user-avatar {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  margin-right: 12px;
-}
-
-.post-modal .post-details .post-header .username {
-  font-weight: 600;
-}
-
-.post-modal .post-details .post-caption {
-  margin-bottom: 16px;
-  font-size: 14px;
-  line-height: 1.4;
-}
-
-.post-modal .post-details .post-stats {
-  margin-bottom: 16px;
-  font-size: 14px;
-}
-
-.post-modal .post-details .post-actions {
-  display: flex;
-  margin-bottom: 16px;
-}
-
-.post-modal .post-details .post-actions button {
-  background: none;
-  border: none;
-  font-size: 24px;
-  color: #262626;
-  cursor: pointer;
-  padding: 0;
-  margin-right: 16px;
-}
-
-.post-modal .post-details .post-actions button.bookmark {
-  margin-left: auto;
-  margin-right: 0;
-}
-
-.post-modal .post-details .post-date {
-  font-size: 10px;
-  color: #8e8e8e;
-  text-transform: uppercase;
-  margin-top: auto;
-}
-
-.upload-modal {
-  padding: 20px;
-  width: 100%;
-  max-width: 400px;
-}
-
-.upload-modal h2 {
-  font-size: 16px;
-  font-weight: 600;
-  margin-bottom: 20px;
-  text-align: center;
-}
-
-.upload-modal .image-preview {
-  margin-bottom: 20px;
-}
-
-.upload-modal .image-preview img {
-  width: 100%;
-  max-height: 300px;
-  object-fit: contain;
-}
-
-.upload-modal .file-input-wrapper {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 20px;
-}
-
-.upload-modal .file-input-wrapper .file-input-label {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  cursor: pointer;
-}
-
-.upload-modal .file-input-wrapper .file-input-label i {
-  font-size: 48px;
-  margin-bottom: 8px;
-}
-
-.upload-modal .file-input-wrapper .file-input-label span {
-  font-size: 14px;
-  font-weight: 600;
-  color: #0095f6;
-}
-
-.upload-modal .file-input-wrapper input[type="file"] {
-  display: none;
-}
-
-.upload-modal textarea {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 20px;
-  border: 1px solid #dbdbdb;
-  border-radius: 4px;
-  resize: vertical;
-}
-
-.upload-modal .btn-primary {
-  width: 100%;
-}
-
-@media (max-width: 935px) {
-  .post-grid {
-    gap: 3px;
+  body {
+    font-family: "Roboto", sans-serif;
+    background-color: #fafafa;
+    color: #262626;
+    margin: 0;
+    padding: 0;
   }
-}
 
-@media (max-width: 736px) {
+  .container {
+    max-width: 935px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  .instagram-header {
+    background-color: white;
+    border-bottom: 1px solid #dbdbdb;
+    padding: 10px 0;
+  }
+
+  .instagram-header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .instagram-header h1 {
+    font-size: 24px;
+    font-weight: 700;
+    margin: 0;
+  }
+
+  .instagram-header nav {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+  }
+
+  .instagram-header nav a {
+    color: #262626;
+    font-size: 24px;
+    text-decoration: none;
+  }
+
+  .instagram-header nav a.active {
+    color: #0095f6;
+  }
+
+  .instagram-header nav .upload-btn {
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: #262626;
+    cursor: pointer;
+  }
+
+  .no-posts {
+    text-align: center;
+    padding: 40px 0;
+  }
+
+  .no-posts i {
+    font-size: 48px;
+    color: #dbdbdb;
+    margin-bottom: 16px;
+  }
+
+  .no-posts h2 {
+    font-size: 28px;
+    font-weight: 300;
+    margin-bottom: 16px;
+  }
+
+  .no-posts p {
+    font-size: 14px;
+    color: #8e8e8e;
+    margin-bottom: 24px;
+  }
+
+  .btn-primary {
+    /* background-color: #0095f6;
+    */
+    background-color: #e64833;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .btn-primary:hover {
+    background-color: darken(#0095f6, 10%);
+  }
+
+  .btn-primary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .post-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+    margin-top: 24px;
+  }
+
+  .post-item {
+    position: relative;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    cursor: pointer;
+  }
+
+  .post-item:hover .post-overlay {
+    opacity: 1;
+  }
+
+  .post-item .post-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .post-item .post-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+  }
+
+  .post-item .post-overlay .post-info {
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+  }
+
+  .post-item .post-overlay .post-info span {
+    margin: 0 10px;
+  }
+
+  .post-item .post-overlay .post-info span i {
+    margin-right: 5px;
+  }
+
+  .modal {
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .modal .modal-background {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+  }
+
   .modal .modal-content {
-    flex-direction: column;
+    position: relative;
+    background-color: white;
+    max-width: 935px;
+    width: 100%;
+    margin: 0 20px;
+    display: flex;
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .modal .modal-close {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    font-size: 24px;
+    color: white;
+    background: none;
+    border: none;
+    cursor: pointer;
+    z-index: 1;
   }
 
   .post-modal {
-    flex-direction: column;
+    display: flex;
+    width: 100%;
   }
 
   .post-modal .post-image {
-    max-width: none;
+    flex: 1;
+    max-width: 600px;
+  }
+
+  .post-modal .post-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 
   .post-modal .post-details {
-    max-width: none;
+    flex: 1;
+    max-width: 335px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
   }
-}
-.error {
-  color: red;
-  font-size: 0.875rem;
-  margin-top: 4px;
-}
 
-.post-item.upload-item {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: 2px dashed #dbdbdb;
-  border-radius: 8px;
-  aspect-ratio: 1 / 1;
-  cursor: pointer;
-  background-color: #fafafa;
-  transition: border-color 0.3s ease, background-color 0.3s ease;
-}
+  .post-modal .post-details .post-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 16px;
+  }
 
-.post-item.upload-item:hover {
-  border-color: #0095f6;
-  background-color: #f0f8ff;
-}
+  .post-modal .post-details .post-header .user-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    margin-right: 12px;
+  }
 
-.post-item.upload-item .upload-button {
-  background-color: #e64833;
-  color: white;
-  font-size: 32px;
-  border: none;
-  border-radius: 50%;
-  width: 60px;
-  height: 60px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-}
+  .post-modal .post-details .post-header .username {
+    font-weight: 600;
+  }
 
-.post-item.upload-item .upload-button:hover {
-  background-color: #d83a2b;
-  transform: scale(1.1);
-}
+  .post-modal .post-details .post-caption {
+    margin-bottom: 16px;
+    font-size: 14px;
+    line-height: 1.4;
+  }
 
-.post-item.upload-item .upload-button:active {
-  transform: scale(0.95);
-}
+  .post-modal .post-details .post-stats {
+    margin-bottom: 16px;
+    font-size: 14px;
+  }
+
+  .post-modal .post-details .post-actions {
+    display: flex;
+    margin-bottom: 16px;
+  }
+
+  .post-modal .post-details .post-actions button {
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: #262626;
+    cursor: pointer;
+    padding: 0;
+    margin-right: 16px;
+  }
+
+  .post-modal .post-details .post-actions button.bookmark {
+    margin-left: auto;
+    margin-right: 0;
+  }
+
+  .post-modal .post-details .post-date {
+    font-size: 10px;
+    color: #8e8e8e;
+    text-transform: uppercase;
+    margin-top: auto;
+  }
+
+  .upload-modal {
+    padding: 20px;
+    width: 100%;
+    max-width: 400px;
+  }
+
+  .upload-modal h2 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  .upload-modal .image-preview {
+    margin-bottom: 20px;
+  }
+
+  .upload-modal .image-preview img {
+    width: 100%;
+    max-height: 300px;
+    object-fit: contain;
+  }
+
+  .upload-modal .file-input-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+
+  .upload-modal .file-input-wrapper .file-input-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+  }
+
+  .upload-modal .file-input-wrapper .file-input-label i {
+    font-size: 48px;
+    margin-bottom: 8px;
+  }
+
+  .upload-modal .file-input-wrapper .file-input-label span {
+    font-size: 14px;
+    font-weight: 600;
+    color: #0095f6;
+  }
+
+  .upload-modal .file-input-wrapper input[type="file"] {
+    display: none;
+  }
+
+  .upload-modal textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #dbdbdb;
+    border-radius: 4px;
+    resize: vertical;
+  }
+
+  .upload-modal .btn-primary {
+    width: 100%;
+  }
+
+  @media (max-width: 935px) {
+    .post-grid {
+      gap: 3px;
+    }
+  }
+
+  @media (max-width: 736px) {
+    .modal .modal-content {
+      flex-direction: column;
+    }
+
+    .post-modal {
+      flex-direction: column;
+    }
+
+    .post-modal .post-image {
+      max-width: none;
+    }
+
+    .post-modal .post-details {
+      max-width: none;
+    }
+  }
+  .error {
+    color: red;
+    font-size: 0.875rem;
+    margin-top: 4px;
+  }
+
+  .post-item.upload-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px dashed #dbdbdb;
+    border-radius: 8px;
+    aspect-ratio: 1 / 1;
+    cursor: pointer;
+    background-color: #fafafa;
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+  }
+
+  .post-item.upload-item:hover {
+    border-color: #0095f6;
+    background-color: #f0f8ff;
+  }
+
+  .post-item.upload-item .upload-button {
+    background-color: #e64833;
+    color: white;
+    font-size: 32px;
+    border: none;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+
+  .post-item.upload-item .upload-button:hover {
+    background-color: #d83a2b;
+    transform: scale(1.1);
+  }
+
+  .post-item.upload-item .upload-button:active {
+    transform: scale(0.95);
+  }
