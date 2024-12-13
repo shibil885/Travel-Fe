@@ -9,7 +9,7 @@ import { Component, Input } from '@angular/core';
   styleUrl: './stats-card.component.css',
 })
 export class StatsCardComponent {
-  @Input() title!: string;
-  @Input() value!: string;
-  @Input() icon!: string;
+  @Input() title!: string| number;
+  @Input() value!: string| number;
+  @Input() icon!: string| number;
 }

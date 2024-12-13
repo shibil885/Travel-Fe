@@ -5,6 +5,8 @@ import { IPackage } from '../../../../interfaces/package.interface';
 import { tap } from 'rxjs';
 import { AgencyFilter } from '../../../../enum/agency-filter.enum';
 import { PackageFilter } from '../../../../enum/package-filter.enum';
+import { IBooking } from '../../../../interfaces/booking.interface';
+import { BookingTrend } from '../../../../interfaces/bookingTrend.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -61,5 +63,33 @@ export class AdminDashboardService {
       params,
       withCredentials: true,
     });
+  }
+
+  generateReport(start_date: Date, end_date: Date) {
+    const params = new URLSearchParams({
+      start_date: start_date.toISOString(),
+      end_date: end_date.toISOString(),
+    }).toString();
+
+    return this._http.get<{
+      success: boolean;
+      message: string;
+      report: IBooking[];
+    }>(`${this._api}/admin-dashboard/generateReport?${params}`, {
+      withCredentials: true,
+    });
+  }
+  getBookingTrends(groupBy: 'month' | 'year') {
+    const params = new HttpParams().set('groupBy', groupBy);
+    return this._http
+      .get<{
+        success: boolean;
+        message: string;
+        data: BookingTrend[];
+      }>(`${this._api}/admin-dashboard/booking-trends`, {
+        params,
+        withCredentials: true,
+      })
+      .pipe(tap((res) => console.log('data to the graph -->', res)));
   }
 }

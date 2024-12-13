@@ -9,8 +9,30 @@ import { AdminDashboardService } from '../../../shared/services/dashboard/admin/
 import { IAgency } from '../../../models/agency.model';
 import { FormsModule } from '@angular/forms';
 import { IPackage } from '../../../interfaces/package.interface';
+import { IReport } from '../../../interfaces/report.interface';
 import { AgencyFilter } from '../../../enum/agency-filter.enum';
 import { PackageFilter } from '../../../enum/package-filter.enum';
+import { ReportFilter } from '../../../enum/reportFilter.enum';
+import { IBooking } from '../../../interfaces/booking.interface';
+import {
+  Chart,
+  LineController,
+  LineElement,
+  PointElement,
+  LinearScale,
+  Title,
+  CategoryScale,
+} from 'chart.js';
+
+// Register components
+Chart.register(
+  LineController,
+  LineElement,
+  PointElement,
+  LinearScale,
+  Title,
+  CategoryScale
+);
 
 @Component({
   selector: 'app-home',
@@ -32,8 +54,19 @@ export class HomeComponent {
   isMobileMenuOpen = false;
   agencies: IAgency[] = [];
   packages: IPackage[] = [];
+  bookings: IBooking[] = [];
+  reports: IReport[] = [];
   agencyFilter: AgencyFilter = AgencyFilter.NEW_AGENCIES;
   packageFilter: PackageFilter = PackageFilter.TOP_RATED;
+  reportFilter: ReportFilter = ReportFilter.RECENT_REPORTS;
+  startDate: Date = new Date(new Date().setDate(new Date().getDate() - 7));
+  endDate: Date = new Date();
+  isValid: boolean = false;
+  errorMessage: string = '';
+  reportType: string = 'all';
+  bookingTrendsChart: Chart | null = null;
+  selectedGroupBy: 'month' | 'year' = 'month';
+
   statsItem = [
     { title: 'Users', value: '0', icon: 'users' },
     { title: 'Agencies', value: '0', icon: 'agency' },
@@ -41,53 +74,188 @@ export class HomeComponent {
     { title: 'Bookings', value: '0', icon: 'briefcase' },
     { title: 'Revenue', value: '0', icon: 'rs-sign' },
   ];
+
   headers = [
     { label: '#', key: '_id' },
-    { label: 'name', key: 'name' },
-    { label: 'rating', key: 'reviewofagency' },
-    { label: 'location', key: 'reviewofagency' },
-    { label: 'Total bookings', key: 'bookings' },
+    { label: 'Name', key: 'name' },
+    { label: 'Rating', key: 'reviewofagency' },
+    { label: 'Location', key: 'location' },
+    { label: 'Total Bookings', key: 'bookings' },
   ];
 
-  constructor(private _dashboardService: AdminDashboardService) {}
+  reportHeaders = [
+    { label: '#', key: '_id' },
+    { label: 'Report Title', key: 'title' },
+    { label: 'Reported By', key: 'reportedBy' },
+    { label: 'Status', key: 'status' },
+    { label: 'Date', key: 'createdAt' },
+  ];
+
+  constructor(private dashboardService: AdminDashboardService) {}
 
   ngOnInit(): void {
-    this._fetchTopAgencies();
-    this._fetchTopPackages();
-    this._dashboardService.statasCard().subscribe((res) => {
-      this.statsItem[0].value = String(res.result.users);
-      this.statsItem[1].value = String(res.result.agencies);
-      this.statsItem[2].value = String(res.result.packages);
-      this.statsItem[3].value = String(res.result.bookings);
-    });
-    this._dashboardService.revenue().subscribe((res) => {
-      this.statsItem[4].value = String(res.result);
-    });
+    this.fetchStats();
+    this.fetchTopAgencies();
+    this.fetchTopPackages();
+    this.fetchReports();
+    this.initializeBookingTrendsChart();
+    this.fetchBookingTrends();
   }
 
-  private _fetchTopAgencies() {
-    this._dashboardService.topAgency(this.agencyFilter).subscribe((res) => {
-      if (res.success) {
-        this.agencies = res.agencies;
-      }
-    });
-  }
-
-  private _fetchTopPackages() {
-    this._dashboardService.topPackages(this.packageFilter).subscribe((res) => {
-      if (res.success) {
-        console.log(res.packages);
-        this.packages = res.packages;
-      }
+  fetchStats() {
+    this.dashboardService.statasCard().subscribe({
+      next: (res) => {
+        this.statsItem[0].value = String(res.result.users);
+        this.statsItem[1].value = String(res.result.agencies);
+        this.statsItem[2].value = String(res.result.packages);
+        this.statsItem[3].value = String(res.result.bookings);
+      },
+      error: (err) => {
+        console.error('Error fetching stats:', err);
+      },
     });
   }
 
-
-  onAgencyFilter() {
-    this._fetchTopAgencies();
+  fetchTopAgencies() {
+    this.dashboardService.topAgency(this.agencyFilter).subscribe({
+      next: (res) => {
+        if (res.success) {
+          this.agencies = res.agencies;
+        }
+      },
+      error: (err) => {
+        console.error('Error fetching top agencies:', err);
+      },
+    });
   }
-  onPackageFilter() {
-    console.log('filter', this.packageFilter);
-    this._fetchTopPackages();
+
+  fetchTopPackages() {
+    this.dashboardService.topPackages(this.packageFilter).subscribe({
+      next: (res) => {
+        if (res.success) {
+          this.packages = res.packages;
+        }
+      },
+      error: (err) => {
+        console.error('Error fetching top packages:', err);
+      },
+    });
+  }
+
+  fetchReports() {
+    this.dashboardService
+      .generateReport(this.startDate, this.endDate)
+      .subscribe((res) => {
+        this.bookings = res.report;
+        console.log(res);
+      });
+  }
+
+  validateDates() {
+    if (!this.startDate || !this.endDate) {
+      this.isValid = false;
+      this.errorMessage = 'Both dates must be selected.';
+      return;
+    }
+
+    const start = new Date(this.startDate);
+    const end = new Date(this.endDate);
+
+    if (start > end) {
+      this.isValid = false;
+      this.errorMessage = 'Start Date cannot be after End Date.';
+    } else {
+      this.isValid = true;
+      this.errorMessage = '';
+    }
+  }
+
+  initializeBookingTrendsChart(): void {
+    const canvas = document.getElementById(
+      'bookingTrendsChart'
+    ) as HTMLCanvasElement;
+    if (!canvas) {
+      return;
+    }
+    if (this.bookingTrendsChart) {
+      this.bookingTrendsChart.destroy();
+    }
+    this.bookingTrendsChart = new Chart(canvas, {
+      type: 'line',
+      data: {
+        labels: [],
+        datasets: [
+          {
+            data: [],
+            backgroundColor: 'rgba(61, 82, 160, 0.2)',
+            borderColor: '#3D52A0',
+            borderWidth: 2,
+            pointBackgroundColor: '#7091E6',
+            tension: 0.4,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          x: {
+            title: { display: true, text: 'Months or Years' },
+          },
+          y: {
+            beginAtZero: true,
+            title: { display: true, text: 'Bookings' },
+          },
+        },
+      },
+    });
+  }
+
+  fetchBookingTrends() {
+    this.dashboardService.getBookingTrends(this.selectedGroupBy).subscribe({
+      next: (res) => {
+        const labels = res.data.map((item) =>
+          this.selectedGroupBy === 'month'
+            ? `${item.month} ${item.year}`
+            : `${item.year}`
+        );
+        const bookingCounts = res.data.map((item) => item.bookings);
+
+        if (this.bookingTrendsChart) {
+          this.bookingTrendsChart.data.labels = labels;
+          this.bookingTrendsChart.data.datasets[0].data = bookingCounts;
+          this.bookingTrendsChart.update();
+        }
+      },
+      error: (err) => {
+        console.error('Error fetching booking trends:', err);
+      },
+    });
+  }
+
+  onAgencyFilterChange() {
+    this.fetchTopAgencies();
+  }
+
+  onPackageFilterChange() {
+    this.fetchTopPackages();
+  }
+
+  onFilterChange() {
+    this.fetchReports();
+  }
+  onChangeToYeart() {
+    if (this.selectedGroupBy == 'year') {
+      return;
+    }
+    this.selectedGroupBy = 'year';
+    this.fetchBookingTrends();
+  }
+  onChangeToMonth() {
+    if (this.selectedGroupBy == 'month') {
+      return;
+    }
+    this.selectedGroupBy = 'month';
+    this.fetchBookingTrends();
   }
 }
