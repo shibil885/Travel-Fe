@@ -6,6 +6,7 @@ import { NotificationService } from '../../../shared/services/notification.servi
 import { INotification } from '../../../interfaces/notification.interface';
 import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
+import { SocketService } from '../../../shared/services/socket/socket.service';
 
 @Component({
   selector: 'app-notification',
@@ -21,20 +22,28 @@ export class NotificationComponent {
   loading: boolean = false;
   errorMessage: string | null = null;
 
-  constructor(private _notificationService: NotificationService) {}
+  constructor(
+    private _notificationService: NotificationService,
+    private _socket: SocketService
+  ) {}
 
   ngOnInit() {
+    this._socket.userBookedNewPackage().subscribe(() => {
+      this.loadNotifications();
+    });
     this.loadNotifications();
   }
 
   loadNotifications() {
     this.loading = true;
     this.errorMessage = null;
-    this._notificationService.getNotifications('admin',true).subscribe((data) => {
-      this.notifications = data.notifications;
-      this.applyFilter();
-      this.loading = false;
-    });
+    this._notificationService
+      .getNotifications('admin', false)
+      .subscribe((data) => {
+        this.notifications = data.notifications;
+        this.applyFilter();
+        this.loading = false;
+      });
   }
 
   applyFilter() {

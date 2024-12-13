@@ -16,7 +16,11 @@ export const authGuard: CanActivateFn = (route): Observable<boolean> => {
     switchMap((res) => {
       if (res.valid && res.role === role) {
         if (role === Role.USER) {
-          socket.userLoged(res.id)
+          socket.userLoged(res.id);
+        } else if (role === Role.AGENCY) {
+          socket.agencyLoged(res.id);
+        } else {
+          socket.adminLoged(res.id);
         }
         return of(true);
       } else if (res.valid && res.role !== role) {
@@ -27,7 +31,11 @@ export const authGuard: CanActivateFn = (route): Observable<boolean> => {
           map((refreshRes) => {
             if (refreshRes.isRefreshed && refreshRes.role === role) {
               if (role === Role.USER) {
-                socket.userLoged(res.id)
+                socket.userLoged(res.id);
+              } else if (role === Role.AGENCY) {
+                socket.agencyLoged(res.id);
+              } else {
+                socket.adminLoged(res.id);
               }
               return true;
             } else if (refreshRes.isRefreshed && refreshRes.role !== role) {

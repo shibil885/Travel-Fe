@@ -4,6 +4,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { RouterModule } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { logout } from '../../../store/agency/agency.action';
+import { NotificationService } from '../../../shared/services/notification.service';
+import { SocketService } from '../../../shared/services/socket/socket.service';
 @Component({
   selector: 'app-side-bar',
   standalone: true,
@@ -13,7 +15,7 @@ import { logout } from '../../../store/agency/agency.action';
 })
 export class SideBarComponent {
   isCollapsed = false;
-  notificationCount: number = 99
+  notificationCount: number = 99;
   menuItems = [
     {
       label: 'Dashboard',
@@ -42,7 +44,23 @@ export class SideBarComponent {
     },
   ];
 
-  constructor(private _store: Store) {}
+  constructor(
+    private _store: Store,
+    private _notificationService: NotificationService,
+    private _socket: SocketService
+  ) {}
+
+  ngOnInit(): void {
+    this._socket.userBookedNewPackage().subscribe((res) => {
+      this._fetchNotificationCount();
+    });
+    this._fetchNotificationCount();
+  }
+  private _fetchNotificationCount() {
+    this._notificationService.getNotifications('agency').subscribe((res) => {
+      this.notificationCount = res.notifications.length;
+    });
+  }
   toggleSidebar() {
     this.isCollapsed = !this.isCollapsed;
   }

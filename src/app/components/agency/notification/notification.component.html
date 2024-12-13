@@ -7,7 +7,7 @@
                 <div class="flex items-center justify-between mb-6">
                     <h2 class="text-2xl font-bold text-gray-800">Notifications</h2>
                     <button mat-icon-button aria-label="Mark all as read" class="text-indigo-600 hover:text-indigo-800"
-                        (click)="markAllAsRead()" *ngIf="filteredNotifications.length">
+                        (click)="markAllAsRead()" *ngIf="notifications.length">
                         <mat-icon>done_all</mat-icon>
                     </button>
                 </div>
@@ -27,8 +27,8 @@
 
                 <!-- Notification Items -->
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <ng-container *ngIf="filteredNotifications.length; else noNotifications">
-                        <div *ngFor="let notification of filteredNotifications"
+                    <ng-container *ngIf="notifications.length; else noNotifications">
+                        <div *ngFor="let notification of notifications"
                             class="p-4 border rounded-lg shadow hover:bg-gray-50 flex items-start space-x-4">
                             <div class="flex-shrink-0">
                                 <mat-icon class="text-4xl" [ngClass]="{
@@ -60,12 +60,6 @@
                             notifications :)</span>
                     </ng-template>
 
-                </div>
-                <div class="mt-8 text-center" *ngIf="filteredNotifications.length">
-                    <button mat-button class="w-64 bg-indigo-600 text-white py-3 rounded-lg hover:bg-indigo-700"
-                        (click)="clearNotifications()">
-                        Clear All Notifications
-                    </button>
                 </div>
             </div>
         </main>

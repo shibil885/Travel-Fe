@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { logout } from '../../../store/admin/admin.action';
 import { NotificationService } from '../../../shared/services/notification.service';
+import { SocketService } from '../../../shared/services/socket/socket.service';
 
 @Component({
   selector: 'app-side-bar',
@@ -19,7 +20,8 @@ export class SideBarComponent {
 
   constructor(
     private _store: Store,
-    private _notificationService: NotificationService
+    private _notificationService: NotificationService,
+    private _socket: SocketService
   ) {}
 
   menuItems = [
@@ -61,9 +63,18 @@ export class SideBarComponent {
   ];
 
   ngOnInit(): void {
-    this._notificationService.getNotifications('admin', false).subscribe((res) => {
-      this.notificationCount = res.notifications.length;
+    this._socket.userBookedNewPackage().subscribe(() => {
+      this._fetchNotification();
     });
+    this._fetchNotification();
+  }
+
+  _fetchNotification() {
+    this._notificationService
+      .getNotifications('admin', false)
+      .subscribe((res) => {
+        this.notificationCount = res.notifications.length;
+      });
   }
   toggleSidebar() {
     this.isCollapsed = !this.isCollapsed;
