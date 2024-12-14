@@ -217,8 +217,8 @@
                         <div class="mt-4">
                             <h3 class="text-xl font-semibold text-indigo-900">{{packageDetails.finalDestination}},
                                 {{packageDetails.country}}</h3>
-                            <div class="flex items-center mt-2">
-                                <div class="flex items-center mb-4" *ngIf="packageDetails.ratingAndReview.length">
+                            <div class="flex items-center mt-2" *ngIf="packageDetails.ratingAndReview.length">
+                                <div class="flex items-center mb-4">
                                     <div class="flex items-center">
                                         <ng-container
                                             *ngFor="let star of [].constructor(getStarCounts(packageDetails.ratingAndReview[0].averageRating).fullStars)">
@@ -365,10 +365,10 @@
                             <small class="text-gray-700">Total Price:</small>
                             <small class="text-gray-900">{{ packageDetails.price | currency:'INR' }}</small>
                         </div>
-                        <div class="flex justify-between">
+                        <!-- <div class="flex justify-between">
                             <small class="text-gray-700">Service charge:</small>
                             <small class="text-gray-900">+ 50</small>
-                        </div>
+                        </div> -->
                         <div class="flex justify-between">
                             <small class="text-green-600" *ngIf="discount">Discount:</small>
                             <small class="text-green-600" *ngIf="discount">- {{ discount | currency:'INR' }}</small>
@@ -382,9 +382,9 @@
                         </div>
                         <div class="flex justify-between mb-4">
                             <small class="text-gray-700 font-bold">Final Price:</small>
-                            <small class="font-bold text-green-500" *ngIf="discoundedPrice">{{ discoundedPrice|
+                            <small class="font-bold text-green-500" *ngIf="!discoundedPrice">{{ packageDetails.price|
                                 currency:'INR' }}</small>
-                            <small class="font-bold text-green-500" *ngIf="!discoundedPrice">
+                            <small class="font-bold text-green-500" *ngIf="discoundedPrice">
                                 {{packageDetails.price| discount: packageDetails.offerId | currency:'INR'}}
                             </small>
                         </div>

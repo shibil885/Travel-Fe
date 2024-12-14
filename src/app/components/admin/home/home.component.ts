@@ -100,8 +100,13 @@ export class HomeComponent {
     this.fetchReports();
     this.initializeBookingTrendsChart();
     this.fetchBookingTrends();
+    this._fetchRevenue()
   }
-
+  private _fetchRevenue() {
+    this.dashboardService.revenue().subscribe((res) => {
+      this.statsItem[4].value = res.result.toString();
+    });
+  }
   fetchStats() {
     this.dashboardService.statasCard().subscribe({
       next: (res) => {
@@ -147,7 +152,7 @@ export class HomeComponent {
       .generateReport(this.startDate, this.endDate)
       .subscribe((res) => {
         this.bookings = res.report;
-        console.log(res);
+        console.log('--->', res);
       });
   }
 
