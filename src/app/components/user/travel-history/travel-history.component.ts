@@ -102,6 +102,7 @@ export class TravelHistoryComponent {
         ([agencyFeedback, packageFeedback]) => {
           if (agencyFeedback.success && packageFeedback.success) {
             this._toastService.showToast(agencyFeedback.message, 'success');
+            this._fetchBookings();
           } else {
             this._toastService.showToast('Somthing went wrong', 'error');
           }
