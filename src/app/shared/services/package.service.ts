@@ -83,4 +83,13 @@ export class PackageService {
       withCredentials: true,
     });
   }
+  getTopBookedPackages() {
+    return this._http.get<{
+      success: boolean;
+      message: string;
+      packages: IPackage[];
+    }>(`${this._api}/package/topBooked`, {
+      withCredentials: true,
+    });
+  }
 }

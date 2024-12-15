@@ -91,7 +91,7 @@ export class HomeComponent {
     { label: 'Date', key: 'createdAt' },
   ];
 
-  constructor(private dashboardService: AdminDashboardService) {}
+  constructor(private _dashboardService: AdminDashboardService) {}
 
   ngOnInit(): void {
     this.fetchStats();
@@ -103,12 +103,12 @@ export class HomeComponent {
     this._fetchRevenue()
   }
   private _fetchRevenue() {
-    this.dashboardService.revenue().subscribe((res) => {
+    this._dashboardService.revenue().subscribe((res) => {
       this.statsItem[4].value = res.result.toString();
     });
   }
   fetchStats() {
-    this.dashboardService.statasCard().subscribe({
+    this._dashboardService.statasCard().subscribe({
       next: (res) => {
         this.statsItem[0].value = String(res.result.users);
         this.statsItem[1].value = String(res.result.agencies);
@@ -122,7 +122,7 @@ export class HomeComponent {
   }
 
   fetchTopAgencies() {
-    this.dashboardService.topAgency(this.agencyFilter).subscribe({
+    this._dashboardService.topAgency(this.agencyFilter).subscribe({
       next: (res) => {
         if (res.success) {
           this.agencies = res.agencies;
@@ -135,7 +135,7 @@ export class HomeComponent {
   }
 
   fetchTopPackages() {
-    this.dashboardService.topPackages(this.packageFilter).subscribe({
+    this._dashboardService.topPackages(this.packageFilter).subscribe({
       next: (res) => {
         if (res.success) {
           this.packages = res.packages;
@@ -148,7 +148,7 @@ export class HomeComponent {
   }
 
   fetchReports() {
-    this.dashboardService
+    this._dashboardService
       .generateReport(this.startDate, this.endDate)
       .subscribe((res) => {
         this.bookings = res.report;
@@ -217,7 +217,7 @@ export class HomeComponent {
   }
 
   fetchBookingTrends() {
-    this.dashboardService.getBookingTrends(this.selectedGroupBy).subscribe({
+    this._dashboardService.getBookingTrends(this.selectedGroupBy).subscribe({
       next: (res) => {
         const labels = res.data.map((item) =>
           this.selectedGroupBy === 'month'

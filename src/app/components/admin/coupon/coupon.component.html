@@ -70,7 +70,7 @@
         </app-single-coupon>
       </div>
 
-      <app-pagination [totalItems]="totalCoupons" [itemsPerPage]="limit" [currentPage]="currentPage"
+      <app-pagination *ngIf="renderCouponList" [totalItems]="totalCoupons" [itemsPerPage]="limit" [currentPage]="currentPage"
         [typeOfUser]="'admin'" (pageChange)="onPageChange($event)">
       </app-pagination>
     </section>

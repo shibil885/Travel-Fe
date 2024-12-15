@@ -57,12 +57,13 @@
                   </span>
                 </ng-container>
                 <ng-template #otherContents>
-                  <ng-container *ngIf="column.key === 'description'; else normalContent">
+                  <ng-container *ngIf="column.key === 'description'">
                     {{ cell[column.key] | truncate:50 }}
                   </ng-container>
-                  <ng-template #normalContent>
-                    <!-- {{ cell[column.key] }} -->
-                  </ng-template>
+                  <ng-container *ngIf="column.key === 'name'">
+                    {{ cell[column.key] }}
+                  </ng-container>
+
                 </ng-template>
               </td>
               <td class="text-green-500 cursor-pointer">
@@ -73,7 +74,7 @@
 
         </table>
       </div>
-      <app-pagination [totalItems]="totalCategories" [itemsPerPage]="limit" [currentPage]="currentPage"
+      <app-pagination *ngIf="!showAddForm" [totalItems]="totalCategories" [itemsPerPage]="limit" [currentPage]="currentPage"
         [typeOfUser]="'admin'" (pageChange)="onPageChange($event)">
       </app-pagination>
     </section>

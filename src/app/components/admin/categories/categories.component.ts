@@ -69,6 +69,7 @@ export class CategoriesComponent {
     this._categoryService
       .getCategories(this.currentPage, this.limit)
       .subscribe((data) => {
+        console.log(data);
         this.categories = data.categories;
         this.totalCategories = data.totalCategories;
         this.currentPage = data.currentPage;

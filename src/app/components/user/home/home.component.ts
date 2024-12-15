@@ -12,19 +12,29 @@ import { PackageService } from '../../../shared/services/package.service';
   styleUrl: './home.component.css',
 })
 export class HomeComponent {
-  packages: IPackage[] = [];
-
+  offerPackages: IPackage[] = [];
+  topBookedPackages: IPackage[] = [];
+  name: string = 'travel';
   constructor(private readonly _packageService: PackageService) {}
 
   ngOnInit(): void {
-    this.fetchOfferPackages()
+    this._fetchOfferPackages();
+    this._fetchTopBookedPackages();
   }
-  fetchOfferPackages() {
+
+  private _fetchOfferPackages() {
     this._packageService.getOfferPackages().subscribe((res) => {
       if (res.success) {
-        console.log('res -->', res.packages);
-        this.packages = res.packages
+        this.offerPackages = res.packages;
       }
-    })
+    });
+  }
+  private _fetchTopBookedPackages() {
+    this._packageService.getTopBookedPackages().subscribe((res) => {
+      if (res.success) {
+        console.log(res);
+        this.topBookedPackages = res.packages;
+      }
+    });
   }
 }

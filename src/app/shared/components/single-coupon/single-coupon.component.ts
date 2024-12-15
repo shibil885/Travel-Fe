@@ -49,7 +49,7 @@ export class SingleCouponComponent {
 
   getDiscountValue(): string {
     if (this.selectedCoupon.discount_type === 'percentage') {
-      return `${this.selectedCoupon.percentage}₹`;
+      return `${this.selectedCoupon.percentage}%`;
     } else {
       return `₹${this.selectedCoupon.discount_value.toFixed(2)}`;
     }
