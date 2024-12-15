@@ -56,7 +56,10 @@ import { ToastService } from '../shared/services/toaster.service';
 export const errorInterceptorFn: HttpInterceptorFn = (req, next) => {
   const loadingService = inject(LoadingService);
   const toastService = inject(ToastService);
-  loadingService.showLoading();
+  const skipLoding = req.headers.get('skip-loading');
+  if (!skipLoding) {
+    loadingService.showLoading();
+  }
 
   return next(req).pipe(
     finalize(() => loadingService.hideLoading()),

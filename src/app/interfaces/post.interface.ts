@@ -18,4 +18,5 @@ export interface IPost {
   deleted: boolean;
   createdAt?: Date;
   updatedAt?: Date;
+  user: IUser;
 }

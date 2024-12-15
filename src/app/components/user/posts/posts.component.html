@@ -19,7 +19,7 @@
                     </svg>
                     {{ post.likes.length }}
                 </button>
-                <button class="comment-btn flex items-center">
+                <button class="comment-btn flex items-center" (click)="openPostModal(post)">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="size-6">
                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -71,11 +71,13 @@
                     {{ selectedPost.caption }}
                 </p>
             </div>
-            <div class="post-comments mt-6">
-                <div *ngFor="let comment of selectedPost.comments" class="comment flex items-center">
-                    <img [src]="comment.userId.profilePicture" [alt]="comment.userId.username" class="comment-avatar" />
-                    <div class="comment-text ml-2">
-                        <strong>{{ comment.userId.username }}</strong> {{ comment.comment }}
+            <div class="post-comments lg:mt-6 overflow-y-auto lg:p-4 rounded-md" style="max-height: 300px;">
+                <div *ngFor="let comment of selectedPost.comments" class="comment flex items-start mb-4 gap-4">
+                    <img [src]="comment.userId.profilePicture" [alt]="'Avatar of ' + comment.userId.username"
+                        class="comment-avatar w-10 h-10 rounded-full object-cover flex-shrink-0" />
+                    <div class="comment-text flex-1">
+                        <strong class="block text-sm text-gray-800 truncate">{{ comment.userId.username }}</strong>
+                        <p class="text-gray-700 text-sm break-words">{{ comment.comment }}</p>
                     </div>
                 </div>
             </div>

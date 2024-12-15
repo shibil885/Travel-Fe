@@ -37,11 +37,9 @@ export class ChatComponent {
   ) {}
 
   ngOnInit() {
-    console.log('user chat opened');
     this.checkScreenSize();
     this._fetchChats();
     this._socketService.receiveMessages().subscribe((res: IMessage) => {
-      console.log('response entered from user', res);
       this._fetchChats();
       this.messages.push(res);
     });
@@ -53,7 +51,6 @@ export class ChatComponent {
   private _fetchChats() {
     this._chatService.getAllChats(MessageSenderType.USER).subscribe((res) => {
       if (res.success) {
-        console.log('call invoked from fetch chats');
         this.chats = res.chats;
         this.recentChats = res.chats.filter((chat) => chat.lastMessageId);
         const chatId = this.chats.map((chat) => chat._id);

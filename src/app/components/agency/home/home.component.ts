@@ -5,12 +5,9 @@ import { AgencyService } from '../../../shared/services/agency.service';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { Store } from '@ngrx/store';
-import { SearchComponent } from '../../../shared/components/search/search.component';
 import { StatsCardComponent } from './stats-card/stats-card.component';
 import { RecentBookingComponent } from './recent-booking/recent-booking.component';
-import { NewCategoriesComponent } from './new-categories/new-categories.component';
 import { CurrentTravellingsComponent } from './current-travellings/current-travellings.component';
-import { title } from 'process';
 import { AgencyDashboardService } from '../../../shared/services/dashboard/agency/agency-dashboard.service';
 
 @Component({

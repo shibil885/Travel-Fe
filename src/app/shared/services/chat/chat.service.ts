@@ -1,4 +1,4 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { IAgency } from '../../../models/agency.model';
 import { MessageSenderType } from '../../../enum/messageSenderType.enum';
@@ -16,40 +16,46 @@ export class ChatService {
 
   getAllChats(userType: MessageSenderType) {
     const params = new HttpParams().set('userType', userType);
+    const headers = new HttpHeaders().set('skip-loading', 'true');
     return this._http.get<{
       success: boolean;
       message: string;
       chats: IChat[];
     }>(`${this._api}`, {
       params,
+      headers,
       withCredentials: true,
     });
   }
 
   getAllMessages(chatId: string) {
+    const headers = new HttpHeaders().set('skip-loading', 'true');
     return this._http.get<{
       success: boolean;
       message: string;
       messages: IMessage[];
     }>(`${this._api}/messages/${chatId}`, {
+      headers,
       withCredentials: true,
     });
   }
 
   usersOrAgenciesToChat() {
+    const headers = new HttpHeaders().set('skip-loading', 'true');
     return this._http.get<{
       success: boolean;
       message: string;
       users: (IAgency | IUser)[];
-    }>(`${this._api}/users`, { withCredentials: true });
+    }>(`${this._api}/users`, { headers, withCredentials: true });
   }
 
   initializeChat(id: string, userType: MessageSenderType) {
+    const headers = new HttpHeaders().set('skip-loading', 'true');
     return this._http
       .post<{ success: boolean; message: string; chat: IChat }>(
         `${this._api}/initialize`,
         { id, userType },
-        { withCredentials: true }
+        { headers, withCredentials: true }
       )
       .pipe(
         tap((res) => {
@@ -59,20 +65,20 @@ export class ChatService {
   }
 
   addMessage(chatId: string, content: string) {
+    const headers = new HttpHeaders().set('skip-loading', 'true');
     return this._http.post<{ success: boolean; message: string }>(
       `${this._api}/addMessage/${chatId}`,
       { content },
-      { withCredentials: true }
+      { headers, withCredentials: true }
     );
   }
 
   makeAllMessageAsRead(chatId: string, userType: string) {
+    const headers = new HttpHeaders().set('skip-loading', 'true');
     return this._http.patch<{ success: boolean; message: string }>(
       `${this._api}/makeMessageRead`,
       { chatId, userType },
-      { withCredentials: true }
+      { headers, withCredentials: true }
     );
   }
-
- 
 }

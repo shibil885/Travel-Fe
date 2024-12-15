@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { IPost } from '../../interfaces/post.interface';
@@ -29,34 +29,38 @@ export class PostService {
   }
 
   fetchAllPosts() {
+    const headers = new HttpHeaders().set('skip-loading', 'true');
     return this._http.get<{
       success: boolean;
       message: string;
       posts: IPost[];
       userId: string;
-    }>(`${this._api}`, { withCredentials: true });
+    }>(`${this._api}`, { headers, withCredentials: true });
   }
 
   addLike(postId: string) {
+    const headers = new HttpHeaders().set('skip-loading', 'true');
     return this._http.patch<{ success: boolean; message: string }>(
       `${this._api}/like/${postId}`,
       {},
-      { withCredentials: true }
+      { headers, withCredentials: true }
     );
   }
 
   removeLike(postId: string) {
+    const headers = new HttpHeaders().set('skip-loading', 'true');
     return this._http.patch<{ success: boolean; message: string }>(
       `${this._api}/unlike/${postId}`,
       {},
-      { withCredentials: true }
+      { headers, withCredentials: true }
     );
   }
   addComment(postId: string, comment: string) {
+    const headers = new HttpHeaders().set('skip-loading', 'true');
     return this._http.patch<{ success: boolean; message: string }>(
       `${this._api}/addComment/${postId}`,
       { comment },
-      { withCredentials: true }
+      { headers, withCredentials: true }
     );
   }
 }
