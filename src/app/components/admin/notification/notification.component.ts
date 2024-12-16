@@ -7,11 +7,14 @@ import { INotification } from '../../../interfaces/notification.interface';
 import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { SocketService } from '../../../shared/services/socket/socket.service';
+import { MatIconModule } from '@angular/material/icon';
+import { Role } from '../../../enum/role.enum';
+import { ToastService } from '../../../shared/services/toaster.service';
 
 @Component({
   selector: 'app-notification',
   standalone: true,
-  imports: [HeaderComponent, SideBarComponent, CommonModule],
+  imports: [HeaderComponent, SideBarComponent, CommonModule, MatIconModule],
   templateUrl: './notification.component.html',
   styleUrls: ['./notification.component.css'],
 })
@@ -24,7 +27,8 @@ export class NotificationComponent {
 
   constructor(
     private _notificationService: NotificationService,
-    private _socket: SocketService
+    private _socket: SocketService,
+    private _toastService: ToastService
   ) {}
 
   ngOnInit() {
@@ -80,6 +84,15 @@ export class NotificationComponent {
           this.applyFilter();
         });
     }
+  }
+
+  markAllAsRead() {
+    this._notificationService.markAllAsRead(Role.ADMIN).subscribe((res) => {
+      if (res.success) {
+        this._toastService.showToast(res.message, 'success');
+        this.applyFilter();
+      }
+    });
   }
 
   deleteNotification(notification: INotification) {
