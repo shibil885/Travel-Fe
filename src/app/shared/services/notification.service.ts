@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { INotification } from '../../interfaces/notification.interface';
+import { Role } from '../../enum/role.enum';
 
 @Injectable({
   providedIn: 'root',
@@ -35,6 +36,13 @@ export class NotificationService {
   markAsRead(id: string) {
     return this.http.patch<{ success: boolean; message: string }>(
       `${this.api}/${id}/read`,
+      {},
+      { withCredentials: true }
+    );
+  }
+  markAllAsRead(role: Role) {
+    return this.http.patch<{ success: boolean; message: string }>(
+      `${this.api}/markAllAsRead/${role}`,
       {},
       { withCredentials: true }
     );

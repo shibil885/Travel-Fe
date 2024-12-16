@@ -5,6 +5,8 @@ import { MatIcon } from '@angular/material/icon';
 import { NotificationService } from '../../../shared/services/notification.service';
 import { INotification } from '../../../interfaces/notification.interface';
 import { SocketService } from '../../../shared/services/socket/socket.service';
+import { ToastService } from '../../../shared/services/toaster.service';
+import { Role } from '../../../enum/role.enum';
 
 @Component({
   selector: 'app-notification',
@@ -21,7 +23,8 @@ export class NotificationComponent {
 
   constructor(
     private _notificationService: NotificationService,
-    private _socketService: SocketService
+    private _socketService: SocketService,
+    private _toastService: ToastService
   ) {}
 
   ngOnInit() {
@@ -63,7 +66,12 @@ export class NotificationComponent {
   }
 
   markAllAsRead() {
-    this.notifications.forEach((n) => (n.is_read = true));
+    this._notificationService.markAllAsRead(Role.USER).subscribe((res) => {
+      if (res.success) {
+        this._toastService.showToast(res.message, 'success');
+        this._fetchNotifications(false);
+      }
+    });
   }
 
   getIcon(type: string) {
