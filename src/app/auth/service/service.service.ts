@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, Observable, of, tap } from 'rxjs';
 import { Role } from '../../enum/role.enum';
@@ -58,6 +58,7 @@ export class AuthService {
     role: Role;
     id: string;
   }> {
+    const headers = new HttpHeaders().set('skip-loading', 'true');
     return this._http
       .post<{
         success: boolean;
@@ -65,7 +66,11 @@ export class AuthService {
         valid: boolean;
         role: Role;
         id: string;
-      }>(`${this._api}/auth/validate-token`, {}, { withCredentials: true })
+      }>(
+        `${this._api}/auth/validate-token`,
+        {},
+        { headers, withCredentials: true }
+      )
       .pipe(
         catchError((error) => {
           return of({
@@ -86,6 +91,7 @@ export class AuthService {
     isRefreshed: boolean;
     id: string;
   }> {
+    const headers = new HttpHeaders().set('skip-loading', 'true');
     return this._http
       .post<{
         success: string;
@@ -93,7 +99,7 @@ export class AuthService {
         role: Role;
         isRefreshed: boolean;
         id: string;
-      }>(`${this._api}/auth/refresh`, {}, { withCredentials: true })
+      }>(`${this._api}/auth/refresh`, {}, { headers, withCredentials: true })
       .pipe(
         catchError((error) => {
           return of({

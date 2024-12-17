@@ -12,7 +12,9 @@ import { IPost } from '../../../interfaces/post.interface';
 import { PostService } from '../../../shared/services/post.service';
 import { IsLikedPipe } from '../../../shared/pipes/is-liked.pipe';
 import { animate, style, transition, trigger } from '@angular/animations';
-
+import { MatDialog } from '@angular/material/dialog';
+import { ReportModalComponent } from '../../../shared/components/report-modal/report-modal.component';
+import { ReportType } from '../../../enum/report.enum';
 @Component({
   selector: 'app-posts',
   standalone: true,
@@ -40,7 +42,8 @@ export class PostsComponent {
 
   constructor(
     private readonly _postService: PostService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private _dialog: MatDialog
   ) {}
 
   ngOnInit() {
@@ -110,5 +113,14 @@ export class PostsComponent {
     if (this.selectedPost && this.currentImageIndex > 0) {
       this.currentImageIndex--;
     }
+  }
+
+  onOpenReportModal(modalType: string) {
+    this._dialog.open(ReportModalComponent, {
+      panelClass: 'custom-dialog-container',
+      hasBackdrop: true,
+      autoFocus: false,
+      data: ReportType.POST == modalType ? ReportType.POST : ReportType.COMMENT,
+    });
   }
 }

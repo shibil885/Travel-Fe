@@ -1,0 +1,174 @@
+<div class="fixed inset-0 bg-black/30 flex items-center justify-center z-50">
+    <div class="bg-white rounded-lg w-96 shadow-lg" *ngIf="initialModal">
+        <div class="flex flex-col">
+            <button
+                class="w-full py-3 text-red-500 font-semibold text-center border-b border-gray-200 hover:bg-gray-100"
+                (click)="onReport()">
+                Report
+            </button>
+            <button class="w-full py-3 text-gray-600 font-semibold text-center hover:bg-gray-100" (click)="onCancel()">
+                Cancel
+            </button>
+        </div>
+    </div>
+
+    <div class="bg-white rounded-lg w-96 shadow-lg" *ngIf="postReport">
+        <div class="text-lg font-semibold text-gray-700 p-4 border-b border-gray-200">
+            Report Post
+        </div>
+        <div class="flex flex-col p-4 space-y-3">
+            <label class="flex items-center space-x-2">
+                <input type="radio" name="reportReason" value="spam" class="form-radio h-5 w-5 text-red-500"
+                    [(ngModel)]="selectedReason" />
+                <span class="text-gray-700">Spam</span>
+            </label>
+            <label class="flex items-center space-x-2">
+                <input type="radio" name="reportReason" value="abusive" class="form-radio h-5 w-5 text-red-500"
+                    [(ngModel)]="selectedReason" />
+                <span class="text-gray-700">Abusive Content</span>
+            </label>
+            <label class="flex items-center space-x-2">
+                <input type="radio" name="reportReason" value="misleading" class="form-radio h-5 w-5 text-red-500"
+                    [(ngModel)]="selectedReason" />
+                <span class="text-gray-700">Misleading Information</span>
+            </label>
+            <label class="flex items-center space-x-2">
+                <input type="radio" name="reportReason" value="other" class="form-radio h-5 w-5 text-red-500"
+                    [(ngModel)]="selectedReason" />
+                <span class="text-gray-700">Other</span>
+            </label>
+            <textarea [(ngModel)]="reportDescription" class="w-full border-gray-300 rounded-lg p-2 text-gray-700"
+                rows="3" placeholder="Additional details (optional)"></textarea>
+        </div>
+        <div class="flex items-center justify-between border-t border-gray-200 p-4">
+            <button class="w-1/2 py-2 mr-2 text-gray-600 font-semibold hover:bg-gray-100" (click)="onCancel()">
+                Cancel
+            </button>
+            <button class="w-1/2 py-2 ml-2 text-white bg-red-500 font-semibold rounded hover:bg-red-600"
+                [disabled]="!selectedReason" (click)="onSubmitReport()">
+                Submit
+            </button>
+        </div>
+    </div>
+
+
+
+    <div class="bg-white rounded-lg w-96 shadow-lg" *ngIf="commantReport">
+        <div class="text-lg font-semibold text-gray-700 p-4 border-b border-gray-200">
+            Report Comment
+        </div>
+        <div class="flex flex-col p-4 space-y-3">
+            <label class="flex items-center space-x-2">
+                <input type="radio" name="reportReason" value="spam" class="form-radio h-5 w-5 text-red-500"
+                    [(ngModel)]="selectedReason" />
+                <span class="text-gray-700">Spam</span>
+            </label>
+            <label class="flex items-center space-x-2">
+                <input type="radio" name="reportReason" value="abusive" class="form-radio h-5 w-5 text-red-500"
+                    [(ngModel)]="selectedReason" />
+                <span class="text-gray-700">Abusive or Offensive</span>
+            </label>
+            <label class="flex items-center space-x-2">
+                <input type="radio" name="reportReason" value="irrelevant" class="form-radio h-5 w-5 text-red-500"
+                    [(ngModel)]="selectedReason" />
+                <span class="text-gray-700">Irrelevant or Off-topic</span>
+            </label>
+            <label class="flex items-center space-x-2">
+                <input type="radio" name="reportReason" value="other" class="form-radio h-5 w-5 text-red-500"
+                    [(ngModel)]="selectedReason" />
+                <span class="text-gray-700">Other</span>
+            </label>
+            <textarea [(ngModel)]="reportDescription" class="w-full border-gray-300 rounded-lg p-2 text-gray-700"
+                rows="3" placeholder="Add more details (optional)"></textarea>
+        </div>
+        <div class="flex items-center justify-between border-t border-gray-200 p-4">
+            <button class="w-1/2 py-2 mr-2 text-gray-600 font-semibold hover:bg-gray-100" (click)="onCancel()">
+                Cancel
+            </button>
+            <button class="w-1/2 py-2 ml-2 text-white bg-red-500 font-semibold rounded hover:bg-red-600"
+                [disabled]="!selectedReason" (click)="onSubmitReport()">
+                Submit
+            </button>
+        </div>
+    </div>
+
+    <div class="bg-white rounded-lg w-96 shadow-lg" *ngIf="packageReport">
+        <div class="text-lg font-semibold text-gray-700 p-4 border-b border-gray-200">
+            Report Package
+        </div>
+        <div class="flex flex-col p-4 space-y-3">
+            <label class="flex items-center space-x-2">
+                <input type="radio" name="reportReason" value="misleading" class="form-radio h-5 w-5 text-red-500"
+                    [(ngModel)]="selectedReason" />
+                <span class="text-gray-700">Misleading Information</span>
+            </label>
+            <label class="flex items-center space-x-2">
+                <input type="radio" name="reportReason" value="overpriced" class="form-radio h-5 w-5 text-red-500"
+                    [(ngModel)]="selectedReason" />
+                <span class="text-gray-700">Overpriced</span>
+            </label>
+            <label class="flex items-center space-x-2">
+                <input type="radio" name="reportReason" value="fraudulent" class="form-radio h-5 w-5 text-red-500"
+                    [(ngModel)]="selectedReason" />
+                <span class="text-gray-700">Fraudulent</span>
+            </label>
+            <label class="flex items-center space-x-2">
+                <input type="radio" name="reportReason" value="other" class="form-radio h-5 w-5 text-red-500"
+                    [(ngModel)]="selectedReason" />
+                <span class="text-gray-700">Other</span>
+            </label>
+            <textarea [(ngModel)]="reportDescription" class="w-full border-gray-300 rounded-lg p-2 text-gray-700"
+                rows="3" placeholder="Add more details (optional)"></textarea>
+        </div>
+        <div class="flex items-center justify-between border-t border-gray-200 p-4">
+            <button class="w-1/2 py-2 mr-2 text-gray-600 font-semibold hover:bg-gray-100" (click)="onCancel()">
+                Cancel
+            </button>
+            <button class="w-1/2 py-2 ml-2 text-white bg-red-500 font-semibold rounded hover:bg-red-600"
+                [disabled]="!selectedReason" (click)="onSubmitReport()">
+                Submit
+            </button>
+        </div>
+    </div>
+
+
+    <div class="bg-white rounded-lg w-96 shadow-lg" *ngIf="agencyReport">
+        <div class="text-lg font-semibold text-gray-700 p-4 border-b border-gray-200">
+            Report Agency
+        </div>
+        <div class="flex flex-col p-4 space-y-3">
+            <label class="flex items-center space-x-2">
+                <input type="radio" name="reportReason" value="fraudulent" class="form-radio h-5 w-5 text-red-500"
+                    [(ngModel)]="selectedReason" />
+                <span class="text-gray-700">Fraudulent Activity</span>
+            </label>
+            <label class="flex items-center space-x-2">
+                <input type="radio" name="reportReason" value="poorService" class="form-radio h-5 w-5 text-red-500"
+                    [(ngModel)]="selectedReason" />
+                <span class="text-gray-700">Poor Service</span>
+            </label>
+            <label class="flex items-center space-x-2">
+                <input type="radio" name="reportReason" value="misleading" class="form-radio h-5 w-5 text-red-500"
+                    [(ngModel)]="selectedReason" />
+                <span class="text-gray-700">Misleading Information</span>
+            </label>
+            <label class="flex items-center space-x-2">
+                <input type="radio" name="reportReason" value="other" class="form-radio h-5 w-5 text-red-500"
+                    [(ngModel)]="selectedReason" />
+                <span class="text-gray-700">Other</span>
+            </label>
+            <textarea [(ngModel)]="reportDescription" class="w-full border-gray-300 rounded-lg p-2 text-gray-700"
+                rows="3" placeholder="Add more details (optional)"></textarea>
+        </div>
+        <div class="flex items-center justify-between border-t border-gray-200 p-4">
+            <button class="w-1/2 py-2 mr-2 text-gray-600 font-semibold hover:bg-gray-100" (click)="onCancel()">
+                Cancel
+            </button>
+            <button class="w-1/2 py-2 ml-2 text-white bg-red-500 font-semibold rounded hover:bg-red-600"
+                [disabled]="!selectedReason" (click)="onSubmitReport()">
+                Submit
+            </button>
+        </div>
+    </div>
+
+</div>

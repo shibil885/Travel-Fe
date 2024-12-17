@@ -114,7 +114,7 @@
   width: 100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.6);
-  z-index: 1000;
+  z-index: 48;
 }
 
 .selected-post-content {
@@ -129,7 +129,7 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  z-index: 1010;
+  z-index: 49;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
   animation: fadeIn 0.3s ease-in-out;
 }
@@ -234,4 +234,15 @@
   to {
     opacity: 1;
   }
+}
+.hidden {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s, visibility 0.3s;
+}
+
+.visible {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.3s, visibility 0.3s;
 }

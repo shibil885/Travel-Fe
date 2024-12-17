@@ -20,142 +20,132 @@
     </div>
   </div>
 </section>
-<section class="mb-10">
-  <ng-container *ngIf="topBookedPackages.length">
-    <div class="container mx-auto my-10 text-center px-4 lg:px-8">
-      <p class="text-gray-600 text-lg mb-3">Packages</p>
-      <p class="text-blue-950 text-5xl font-semibold">We Offer Best Packages</p>
-    </div>
-  </ng-container>
-  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 px-4 lg:px-8">
-    <div
-      class="max-w-sm mx-auto bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 ease-in-out"
-      *ngFor="let package of topBookedPackages">
-      <div class="relative">
-        <img class="h-48 w-full object-cover" [src]="package.images[0]">
-        <div class="absolute top-3 right-3 bg-white rounded-full p-2">
-          <small class="text-red-600 font-bold px-2">{{package.categoryId[0].name}}</small>
-        </div>
+
+
+<section class="travel-packages-container">
+  <div class="top-rated-section">
+    <div class="container mx-auto px-4">
+      <div class="section-header text-center mb-12">
+        <h2 class="text-sm uppercase tracking-wider text-blue-600 mb-3">
+          Traveler's Choice
+        </h2>
+        <h3 class="text-4xl font-extrabold text-gray-800">
+          Top Booked Packages
+        </h3>
       </div>
-      <div class="p-6">
-        <div class="flex justify-between items-start">
-          <div>
-            <h2 class="text-xl font-semibold text-gray-800">{{package.name}}</h2>
-            <p class="text-gray-600">{{package.finalDestination}}, {{package.country}}</p>
-          </div>
-          <ng-container *ngIf="package.ratingAndReview.length; else noRating">
-            <div class="flex items-center">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-500" viewBox="0 0 20 20"
-                fill="currentColor">
-                <path
-                  d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-              </svg>
-              <span class="ml-1 text-sm font-semibold text-gray-700">{{package.ratingAndReview[0].averageRating}}</span>
-              <span class="ml-1 text-sm text-gray-500">({{package.ratingAndReview[0].reviews.length}})</span>
+      <div class="top-rated-grid grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div *ngFor="let package of topBookedPackages" class="top-rated-card group">
+          <div class="card-content">
+            <div class="image-container relative">
+              <img [src]="package.images[0]" [alt]="package.name" class="w-full h-64 object-cover rounded-t-2xl" />
+              <ng-container *ngIf="package.ratingAndReview.length; else noRatingOffer">
+                <div class="rating-badge absolute top-4 right-4">
+                  <span class="flex items-center bg-white text-yellow-500 px-3 py-1 rounded-full">
+                    <i class="fas fa-star mr-2"></i>
+                    {{ package.ratingAndReview[0].averageRating }}/5.00
+                  </span>
+                </div>
+              </ng-container>
+              <ng-template #noRatingOffer>
+                <div class="rating-badge absolute top-4 right-4">
+                  <span class="flex items-center bg-white text-yellow-500 px-3 py-1 rounded-full">
+                    <i class="fas fa-star mr-2"></i>
+                    0/5
+                  </span>
+                </div>
+              </ng-template>
             </div>
-          </ng-container>
-          <ng-template #noRating>
-            <div class="flex items-center">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-500" viewBox="0 0 20 20"
-                fill="currentColor">
-                <path
-                  d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-              </svg>
-              <span class="ml-1 text-sm font-semibold text-gray-700">0.0</span>
-              <span class="ml-1 text-sm text-gray-500">(0)</span>
+            <div class="package-details p-6">
+              <h4 class="text-xl font-bold text-gray-800 mb-2">
+                {{ package.name }}
+              </h4>
+              <div class="package-meta flex justify-between items-center mb-4">
+                <div class="location flex items-center text-gray-600">
+                  <i class="fas fa-map-marker-alt mr-2"></i>
+                  <span>{{ package.country }}</span>
+                </div>
+                <div class="duration text-gray-600">
+                  <i class="fas fa-clock mr-2"></i>
+                  {{ package.days }} Days
+                </div>
+              </div>
+              <p class="text-green-500 mb-4 line-clamp-2 text-center font-bold text-xl">
+                {{package.bookings.length}} (bookings)
+              </p>
+              <div class="package-footer flex justify-between items-center">
+                <div class="price text-2xl font-bold text-blue-600">
+                  {{ package.price |currency:"INR" }}
+                </div>
+                <button class="btn-book bg-rose-500 text-white px-4 py-2 hover:bg-rose-600 transition">
+                  Book Now
+                </button>
+              </div>
             </div>
-          </ng-template>
-        </div>
-        <div class="mt-2">
-          <div class="flex items-center text-gray-700">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-4">
-              <path fill-rule="evenodd"
-                d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25ZM12.75 6a.75.75 0 0 0-1.5 0v6c0 .414.336.75.75.75h4.5a.75.75 0 0 0 0-1.5h-3.75V6Z"
-                clip-rule="evenodd" />
-            </svg>
-            <span class="ml-2">{{package.days}} day (s)</span>
           </div>
-          <div class="flex items-center text-gray-700 mt-2">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24"
-              stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-            </svg>
-            <span>{{package.country}}</span>
-          </div>
-          <div>
-            <small class="text-green-500">(tolal {{package.bookings.length}} bookings)</small>
-          </div>
-        </div>
-        <div class="mt-6 flex items-center justify-between">
-          <div>
-            <span class="text-2xl font-bold text-gray-900">{{package.price | currency:'INR'}}</span>
-          </div>
-          <button
-            class="px-4 py-2 bg-rose-500 text-white text-sm font-semibold rounded-lg hover:bg-rose-600 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2 transition-colors duration-300">
-            Book
-          </button>
         </div>
       </div>
     </div>
   </div>
-</section>
-<section class="bg-gradient-to-b from-blue-50 to-white py-16">
-  <div class="container mx-auto px-4">
-    <h2 class="text-sm uppercase text-blue-600 text-center mb-4 tracking-wider">Available offer packages</h2>
-    <h3 class="text-4xl font-extrabold text-center mb-12 text-gray-800">Top Travel Packages</h3>
 
-    <!-- Package Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-      <div *ngFor="let package of offerPackages"
-        class="bg-white rounded-xl shadow-lg overflow-hidden transform transition duration-300 hover:shadow-xl">
-        <div class="relative">
-          <img [src]="package.images[0]" [alt]="package.name" class="w-full h-64 object-cover">
-          <div class="absolute top-4 right-4 bg-red-500 text-white px-2 py-1 rounded-full text-sm font-semibold">
-            {{ package.offerId.discount_value? package.offerId.discount_value : package.offerId.percentage }}% OFF
+
+  <section class="travel-packages-container">
+    <div class="packages-header">
+      <div class="header-content">
+        <h2 class="subtitle">Discover Amazing Journeys</h2>
+        <h1 class="main-title">Our Offered Packages </h1>
+      </div>
+    </div>
+    <div class="packages-grid">
+      <div *ngFor="let package of offerPackages" class="package-card group">
+        <div class="package-image-container">
+          <img [src]="package.images[0]" [alt]="package.name" class="package-image" />
+          <div class="discount-badge">
+            {{getOfferPrice(package.offerId)}}
+          </div>
+          <div class="package-overlay">
+            <div class="overlay-content">
+              <div class="overlay-stats">
+                <div class="stat">
+                  <i class="fas fa-calendar"></i>
+                  <span>{{ package.days }} Days</span>
+                </div>
+                <div class="stat">
+                  <i class="fas fa-map-marker-alt"></i>
+                  <span>{{ package.country }}</span>
+                </div>
+              </div>
+              <button class="explore-button">
+                Explore Journey
+                <i class="fas fa-arrow-right ml-2"></i>
+              </button>
+            </div>
           </div>
         </div>
-        <div class="p-6">
-          <h4 class="text-xl font-semibold mb-2 text-gray-800">{{ package.name }}</h4>
-          <p class="text-gray-600 mb-4 line-clamp-2">{{ package.description }}</p>
-          <div class="flex justify-between items-center mb-4">
-            <span class="text-2xl font-bold text-blue-600">${{ package.price }}</span>
-            <span class="text-sm text-gray-500">{{ package.days }} Days</span>
+        <div class="package-details">
+          <h3 class="package-title">{{ package.name }}</h3>
+          <p class="package-description">{{ package.description }}</p>
+          <div class="package-footer">
+            <div class="price-container">
+              <span class="current-price">{{ getCurrentPrice(package.price, package.offerId) }}</span>
+              <span class="original-price" *ngIf="package.price">
+                ${{ package.price }}
+              </span>
+            </div>
+            <ng-container *ngIf="package.ratingAndReview.length; else noRatingTopBooked">
+              <div class="rating">
+                <i class="fas fa-star text-yellow-400"></i>
+                <span>{{ package.ratingAndReview[0].averageRating || 'Not Rated' }}</span>
+              </div>
+            </ng-container>
+            <ng-template #noRatingTopBooked>
+              <div class="rating">
+                <i class="fas fa-star text-yellow-400"></i>
+                <span>Not Rated</span>
+              </div>
+            </ng-template>
           </div>
-          <div class="flex items-center mb-4">
-            <i class="fas fa-map-marker-alt text-red-500 mr-2"></i>
-            <span class="text-gray-700">{{ package.finalDestination }}</span>
-          </div>
-          <div class="flex items-center mb-4">
-            <!-- <i class="fas fa-star text-yellow-400 mr-1"></i> -->
-            <!-- <span class="text-gray-700">{{ package.rating }} ({{ package.reviewCount }} reviews)</span> -->
-          </div>
-          <button
-            class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition duration-300 flex items-center justify-center">
-            <i class="fas fa-info-circle mr-2"></i> View Details
-          </button>
         </div>
       </div>
     </div>
-
-    <!-- Loading Spinner -->
-    <!-- <div *ngIf="loading" class="flex justify-center items-center h-64">
-      <div class="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-blue-500"></div>
-    </div> -->
-
-    <!-- No Results Message -->
-    <div *ngIf="offerPackages.length === 0" class="text-center text-gray-600 mt-8">
-      No packages found matching your criteria.
-    </div>
-
-    <!-- View All Packages Button -->
-    <div class="text-center mt-12">
-      <button
-        class="bg-blue-600 text-white px-8 py-3 rounded-full hover:bg-blue-700 transition duration-300 transform hover:scale-105">
-        View All Packages
-      </button>
-    </div>
-  </div>
+  </section>
 </section>
