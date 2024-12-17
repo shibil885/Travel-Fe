@@ -15,6 +15,9 @@ import { animate, style, transition, trigger } from '@angular/animations';
 import { MatDialog } from '@angular/material/dialog';
 import { ReportModalComponent } from '../../../shared/components/report-modal/report-modal.component';
 import { ReportType } from '../../../enum/report.enum';
+import { ReportService } from '../../../shared/services/report/report.service';
+import { ToastService } from '../../../shared/services/toaster.service';
+import { IReportData } from '../../../interfaces/reportData.interface';
 @Component({
   selector: 'app-posts',
   standalone: true,
@@ -43,7 +46,9 @@ export class PostsComponent {
   constructor(
     private readonly _postService: PostService,
     private cdr: ChangeDetectorRef,
-    private _dialog: MatDialog
+    private _dialog: MatDialog,
+    private _reportService: ReportService,
+    private _toastService: ToastService
   ) {}
 
   ngOnInit() {
@@ -115,12 +120,27 @@ export class PostsComponent {
     }
   }
 
-  onOpenReportModal(modalType: string) {
-    this._dialog.open(ReportModalComponent, {
+  onOpenReportModal(modalType: string, targetId: string) {
+    const dialogRef = this._dialog.open(ReportModalComponent, {
       panelClass: 'custom-dialog-container',
       hasBackdrop: true,
       autoFocus: false,
       data: ReportType.POST == modalType ? ReportType.POST : ReportType.COMMENT,
+    });
+
+    dialogRef.afterClosed().subscribe((res) => {
+      if (res) {
+        const reportData: IReportData = {
+          targetType: modalType,
+          targetId,
+          ...res,
+        };
+        this._reportService.addReport(reportData).subscribe((res) => {
+          if (res.success) {
+            this._toastService.showToast(res.message, 'success');
+          }
+        });
+      }
     });
   }
 }

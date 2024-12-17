@@ -1,0 +1,21 @@
+<h2 mat-dialog-title>Report Details</h2>
+<mat-dialog-content>
+    <div class="report-detail">
+        <p><strong>Reported By:</strong> {{data.reportedBy}}</p>
+        <p><strong>Target Type:</strong> {{data.targetType}}</p>
+        <p><strong>Target ID:</strong> {{data.targetId}}</p>
+        <p><strong>Reason:</strong> {{data.reason}}</p>
+        <p><strong>Description:</strong> {{data.description}}</p>
+        <p><strong>Status:</strong> <span class="status-badge" [ngClass]="data.status">{{data.status}}</span></p>
+        <p><strong>Created At:</strong> {{data.createdAt | date:'medium'}}</p>
+        <p *ngIf="data.resolvedAt"><strong>Resolved At:</strong> {{data.resolvedAt | date:'medium'}}</p>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button (click)="updateStatus('pending')" [disabled]="data.status === 'pending'">Mark as Pending</button>
+    <button mat-button (click)="updateStatus('reviewed')" [disabled]="data.status === 'reviewed'">Mark as
+        Reviewed</button>
+    <button mat-button (click)="updateStatus('resolved')" [disabled]="data.status === 'resolved'">Mark as
+        Resolved</button>
+    <button mat-button (click)="close()">Close</button>
+</mat-dialog-actions>

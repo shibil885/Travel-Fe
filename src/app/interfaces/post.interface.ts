@@ -10,6 +10,7 @@ export interface IPost {
     createdAt: Date;
   }>;
   comments: Array<{
+    _id: string;
     userId: IUser;
     comment: string;
     createdAt: Date;

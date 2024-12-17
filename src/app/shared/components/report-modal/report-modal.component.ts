@@ -23,7 +23,7 @@ export class ReportModalComponent {
     @Inject(MAT_DIALOG_DATA) private _data: string,
     private _dialogRef: MatDialogRef<ReportModalComponent>
   ) {}
-  
+
   onReport() {
     switch (this._data) {
       case ReportType.POST:
@@ -48,5 +48,11 @@ export class ReportModalComponent {
   onCancel() {
     this._dialogRef.close();
   }
-  onSubmitReport() {}
+  onSubmitReport() {
+    const reportData = {
+      reason: this.selectedReason,
+      description: this.reportDescription,
+    };
+    this._dialogRef.close(reportData);
+  }
 }
