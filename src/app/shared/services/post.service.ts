@@ -7,7 +7,8 @@ import { IPost } from '../../interfaces/post.interface';
   providedIn: 'root',
 })
 export class PostService {
-  private readonly _api = 'http://localhost:3000/posts';
+  private readonly _BASE_URL = import.meta.env.NG_APP_BASE_URL;
+  private readonly _api = `${this._BASE_URL}/posts`;
   constructor(private readonly _http: HttpClient) {}
 
   uploadPost(postFormData: FormData) {

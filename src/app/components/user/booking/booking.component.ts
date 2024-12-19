@@ -85,6 +85,7 @@ export class BookingComponent {
   discount: number = 0;
   selectedCouponId: string = '';
   invalidForm: boolean = false;
+  private _RAZORPAY_KEY_ID = import.meta.env.NG_APP_RAZORPAY_KEY_ID;
 
   constructor(
     private _fb: FormBuilder,
@@ -319,7 +320,7 @@ export class BookingComponent {
         this.currency$.subscribe((currency) => (this.currency = currency));
         this.orderId$.subscribe((orderId) => (this.orderId = orderId));
         const options = {
-          key_id: 'rzp_test_ihsNz6lracNIu3',
+          key_id: this._RAZORPAY_KEY_ID,
           amount: this.amount,
           currency: this.currency,
           name: 'Travel',

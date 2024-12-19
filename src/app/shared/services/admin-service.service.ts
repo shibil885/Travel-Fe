@@ -11,7 +11,8 @@ import { ICategory } from '../../interfaces/category.interface';
   providedIn: 'root',
 })
 export class AdminService {
-  private api = 'http://localhost:3000';
+  private readonly _BASE_URL = import.meta.env.NG_APP_BASE_URL;
+  private api = this._BASE_URL;
 
   constructor(private _http: HttpClient) {}
 

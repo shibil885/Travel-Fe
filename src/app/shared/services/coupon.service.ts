@@ -7,7 +7,8 @@ import { takeUntil } from 'rxjs';
   providedIn: 'root',
 })
 export class CouponService {
-  private _api = 'http://localhost:3000/coupon';
+  private readonly _BASE_URL = import.meta.env.NG_APP_BASE_URL;
+  private _api = `${this._BASE_URL}/coupon`;
 
   constructor(private _http: HttpClient) {}
 

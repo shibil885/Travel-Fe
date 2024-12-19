@@ -12,7 +12,8 @@ import { BookingTrend } from '../../../../interfaces/bookingTrend.interface';
   providedIn: 'root',
 })
 export class AdminDashboardService {
-  private _api = 'http://localhost:3000';
+  private readonly _BASE_URL = import.meta.env.NG_APP_BASE_URL;
+  private _api = this._BASE_URL;
   constructor(private _http: HttpClient) {}
 
   statasCard() {

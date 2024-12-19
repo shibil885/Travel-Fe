@@ -6,7 +6,8 @@ import { IBooking } from '../../../../interfaces/booking.interface';
   providedIn: 'root',
 })
 export class AgencyDashboardService {
-  private readonly _api = 'http://localhost:3000/agency-dashboard';
+  private readonly _BASE_URL = import.meta.env.NG_APP_BASE_URL;
+  private readonly _api = `${this._BASE_URL}/agency-dashboard`;
   constructor(private readonly _http: HttpClient) {}
 
   getRecentBookings() {

@@ -9,10 +9,11 @@ import { IPackage } from '../../../interfaces/package.interface';
   providedIn: 'root',
 })
 export class SocketService {
+  private readonly _BASE_URL = import.meta.env.NG_APP_BASE_URL;
   private _socket: Socket;
 
   constructor() {
-    this._socket = io('http://localhost:3000', {
+    this._socket = io(this._BASE_URL, {
       withCredentials: true,
     });
 

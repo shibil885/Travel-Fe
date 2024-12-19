@@ -11,7 +11,8 @@ import { IMessage } from '../../../interfaces/message.interface';
   providedIn: 'root',
 })
 export class ChatService {
-  private readonly _api = 'http://localhost:3000/chat';
+  private readonly _BASE_URL = import.meta.env.NG_APP_BASE_URL;
+  private readonly _api = `${this._BASE_URL}/chat`;
   constructor(private _http: HttpClient) {}
 
   getAllChats(userType: MessageSenderType) {

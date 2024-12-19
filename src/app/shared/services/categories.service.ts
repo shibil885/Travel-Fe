@@ -8,7 +8,8 @@ import { FormGroup } from '@angular/forms';
   providedIn: 'root',
 })
 export class CategoryService {
-  private _api = 'http://localhost:3000/category';
+  private readonly _BASE_URL = import.meta.env.NG_APP_BASE_URL;
+  private _api = `${this._BASE_URL}/category`;
 
   constructor(private _http: HttpClient) {}
 

@@ -10,7 +10,8 @@ import { FormGroup } from '@angular/forms';
   providedIn: 'root',
 })
 export class UserService {
-  private readonly _api = 'http://localhost:3000';
+  private readonly _BASE_URL = import.meta.env.NG_APP_BASE_URL;
+  private readonly _api = this._BASE_URL;
   constructor(private _http: HttpClient, private _authService: AuthService) {}
 
   findEmail(email: string) {
