@@ -118,7 +118,6 @@ export class BookingComponent {
               .getSinglePackage(packageId)
               .pipe(take(1))
               .subscribe((response) => {
-                console.log('package for booking', response.package);
                 this.packageDetails = response.package;
               });
           } else {
@@ -239,40 +238,8 @@ export class BookingComponent {
           })
         );
       }
-
-      //////////////////////////////
-
       this.price$.subscribe((result) => {
-        // if (this.packageDetails.offerId) {
-        //   if (
-        //     this.packageDetails.offerId.discount_type === DiscountType.FIXED
-        //   ) {
-        //     const newAmt =
-        //       result - Number(this.packageDetails.offerId.discount_value) + 50;
-        //     if (newAmt <= 0) {
-        //       this.discoundedPrice = 50;
-        //     } else {
-        //       this.discoundedPrice = newAmt;
-        //     }
-        //   } else if (
-        //     this.packageDetails.offerId.discount_type ===
-        //     DiscountType.PERCENTAGE
-        //   ) {
-        //     this.discoundedPrice;
-        //     const newAmt =
-        //       result -
-        //       Number(this.packageDetails.price) *
-        //         (Number(this.packageDetails.offerId.percentage) / 100) +
-        //       50;
-        //     if (newAmt <= 0) {
-        //       this.discoundedPrice = 50;
-        //     } else {
-        //       this.discoundedPrice = newAmt;
-        //     }
-        //   }
-        // // }
-        // console.log('result', result);
-        // console.log('discounted price', this.discoundedPrice);
+        console.log('pric from ts file', result);
         this.discoundedPrice = result;
         this.discount = Number(this.packageDetails.price) - result;
         this.selectedCouponId = id;
@@ -306,6 +273,7 @@ export class BookingComponent {
       this.invalidForm = true;
       return;
     }
+    this.invalidForm = false;
 
     this._store.dispatch(
       initiatePayment({
@@ -370,4 +338,5 @@ export class BookingComponent {
       });
     });
   }
+  getOfferPrice() {}
 }

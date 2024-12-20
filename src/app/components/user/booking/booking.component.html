@@ -195,12 +195,6 @@
                             <p class="text-center text-sm font-semibold text-slate-300"> Max person(s) is
                                 {{packageDetails.people}}</p>
                         </ng-template>
-
-
-                        <!-- <button type="button" (click)="addTraveler()"
-                            class="mt-4 bg-[#FF7D68] text-white py-2 font-semibold px-4 rounded-md hover:bg-[rgb(255,100,77)] transition duration-300">Add
-                            Traveler
-                        </button> -->
                     </div>
                 </div>
 
@@ -252,15 +246,6 @@
                                     ({{packageDetails.ratingAndReview[0].reviews.length}} ratings)</small>
                             </div>
                             <p class="mt-2 text-gray-600">{{packageDetails.description | truncate: 60}}</p>
-                            <!-- <ul class="mt-4 space-y-2">
-                                <li class="flex items-center" *ngFor="let item of packageDetails.included">
-                                    <svg class="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 13l4 4L19 7"></path>
-                                    </svg> {{item}}
-                                </li>
-                            </ul> -->
                             <div class="mt-4 flex items-center justify-between">
                                 <div>
                                     <p class="text-3xl font-bold text-black">{{packageDetails.price | currency:'INR'}}
@@ -365,32 +350,32 @@
                             <small class="text-gray-700">Total Price:</small>
                             <small class="text-gray-900">{{ packageDetails.price | currency:'INR' }}</small>
                         </div>
-                        <!-- <div class="flex justify-between">
-                            <small class="text-gray-700">Service charge:</small>
-                            <small class="text-gray-900">+ 50</small>
-                        </div> -->
                         <div class="flex justify-between">
-                            <small class="text-green-600" *ngIf="discount">Discount:</small>
-                            <small class="text-green-600" *ngIf="discount">- {{ discount | currency:'INR' }}</small>
-                        </div>
-                        <div class="flex justify-between">
-                            <small class="text-green-600" *ngIf="packageDetails.offerId">offer:</small>
-                            <small class="text-green-600" *ngIf="packageDetails.offerId">- {{
+                            <small class="text-green-600" *ngIf="packageDetails.offerId && !discount">offer:</small>
+                            <small class="text-green-600" *ngIf="packageDetails.offerId && !discount">- {{
                                 packageDetails.offerId.discount_type === 'fixed' ? '₹' +
                                 packageDetails.offerId.discount_value
                                 : packageDetails.offerId.percentage + '%' }}</small>
                         </div>
+                        <div class="flex justify-between">
+                            <small class="text-green-600" *ngIf="discount">Total discount:</small>
+                            <small class="text-green-600" *ngIf="discount">- {{ discount | currency:'INR' }}</small>
+                        </div>
                         <div class="flex justify-between mb-4">
                             <small class="text-gray-700 font-bold">Final Price:</small>
-                            <small class="font-bold text-green-500" *ngIf="!discoundedPrice">{{ packageDetails.price|
+                            <small class="font-bold text-green-500" *ngIf="!packageDetails.offerId">{{
+                                packageDetails.price|
                                 currency:'INR' }}</small>
-                            <small class="font-bold text-green-500" *ngIf="discoundedPrice">
+                            <small class="font-bold text-green-500" *ngIf="packageDetails.offerId && !discoundedPrice">
                                 {{packageDetails.price| discount: packageDetails.offerId | currency:'INR'}}
+                            </small>
+                            <small class="font-bold text-green-500" *ngIf="packageDetails.offerId && discoundedPrice">
+                                {{discoundedPrice | currency:'INR'}}
                             </small>
                         </div>
                         <div>
                             <small class="text-green-500 font-bold" *ngIf="discoundedPrice">You saved ₹{{discount}} on
-                                this order🎉</small>
+                                this booking</small>
                             <button type="button"
                                 class="text-red-500 border border-red-500 bg-white hover:text-white hover:bg-red-500 rounded-full px-2 ml-10"
                                 *ngIf="discoundedPrice" (click)="cancelCoupon()">X</button>

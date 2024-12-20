@@ -146,7 +146,7 @@ export const UserReducer = createReducer(
     };
   }),
   on(userActions.applyCoupon, (state, { id, packagePrice, offer }) => {
-    let price = packagePrice + 50;
+    let price = packagePrice;
     if (offer) {
       if (offer.discount_type === DiscountType.FIXED) {
         price = price - Number(offer.discount_value);
@@ -173,8 +173,8 @@ export const UserReducer = createReducer(
           console.log('dicount', discount);
           console.log('max', coupon.maxAmt);
           if (coupon.maxAmt && discount > coupon.maxAmt) {
-            price = price -  coupon.maxAmt;
-          }else {
+            price = price - coupon.maxAmt;
+          } else {
             price = price - discount;
           }
           console.log('price after reduce percentage coupon price', price);

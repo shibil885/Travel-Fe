@@ -8,17 +8,19 @@ import { DiscountType } from '../../interfaces/coupon.interface';
 })
 export class DiscountPipe implements PipeTransform {
   transform(price: string, offer: IOffer): number {
-    const parsedPrice = Number(price)
+    const parsedPrice = Number(price);
     if (offer.discount_type === DiscountType.FIXED) {
-      return offer.discount_value ? parsedPrice - offer.discount_value + 50 : parsedPrice + 50;
+      return offer.discount_value
+        ? parsedPrice - offer.discount_value
+        : parsedPrice;
     }
 
     if (offer.discount_type === DiscountType.PERCENTAGE) {
       return offer.percentage
-        ? parsedPrice - parsedPrice * (offer.percentage / 100) + 50
-        : parsedPrice + 50;
+        ? parsedPrice - parsedPrice * (offer.percentage / 100)
+        : parsedPrice;
     }
 
-    return parsedPrice; 
+    return parsedPrice;
   }
 }
