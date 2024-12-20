@@ -5,11 +5,12 @@ import { IPackage } from '../../../interfaces/package.interface';
 import { PackageService } from '../../../shared/services/package.service';
 import { IOffer } from '../../../interfaces/offer.interface';
 import { DiscountType } from '../../../interfaces/coupon.interface';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [HeaderSidebarComponent, CommonModule],
+  imports: [HeaderSidebarComponent, CommonModule, FormsModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
 })
@@ -61,4 +62,30 @@ export class HomeComponent {
     }
     return `₹${Number(price)}`;
   }
+  topAgencies = [
+    {
+      name: 'Wanderlust Adventures',
+      description: 'Crafting unforgettable journeys since 1995',
+      rating: 4.9,
+      logo: '/assets/agency1.jpg',
+    },
+    {
+      name: 'Global Explorers',
+      description: 'Your passport to extraordinary experiences',
+      rating: 4.8,
+      logo: '/assets/agency2.jpg',
+    },
+    {
+      name: 'Luxury Voyages',
+      description: 'Elevating travel to an art form',
+      rating: 4.9,
+      logo: '/assets/agency3.jpg',
+    },
+    {
+      name: 'EcoTravel Co.',
+      description: 'Sustainable adventures for conscious travelers',
+      rating: 4.7,
+      logo: '/assets/agency4.jpg',
+    },
+  ];
 }

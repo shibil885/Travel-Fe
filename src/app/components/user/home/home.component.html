@@ -1,151 +1,148 @@
+
 <app-header-sidebar></app-header-sidebar>
-<section>
-  <div class="container mx-auto flex flex-col md:flex-row items-center justify-evenly px-4">
-    <div class="md:w-1/2 text-center md:text-left lg:ms-24 mb-8 md:mb-0">
-      <p class="text-red-500 font-semibold mb-3">BEST DESTINATIONS AROUND THE WORLD</p>
-      <p class="text-blue-950 font-semibold text-4xl md:text-6xl lg:text-7xl leading-tight">Travel, enjoy</p>
-      <p class="text-blue-950 font-semibold text-4xl md:text-6xl lg:text-7xl  leading-tight">and live a new</p>
-      <p class="text-blue-950 font-semibold text-4xl md:text-6xl lg:text-7xl leading-tight">and full life</p>
-      <div class="mt-5 text-gray-700">
-        <p class="text-blue-800">Built Wicket longer admire do barton vanity itself do in it.</p>
-        <p class="text-blue-800">Preferred to sportsmen it engrossed listening. Park gate</p>
-        <p class="text-blue-800">sell they west hard for the.</p>
-      </div>
-      <button class="px-10 py-2 mt-5 bg-yellow-500 hover:bg-yellow-600 text-white font-semibold rounded-lg">
-        Book
+
+<section class="bg-black text-white py-32 md:py-48">
+  <div class="container mx-auto px-4 flex flex-col md:flex-row items-center">
+    <div class="md:w-1/2 mb-8 md:mb-0">
+      <h1 class="text-4xl md:text-6xl font-bold mb-4 leading-tight">Discover the World in Black & White</h1>
+      <p class="text-xl mb-8 text-gray-300">Experience travel through a new lens. Timeless adventures await.</p>
+      <button
+        class="bg-white text-black px-8 py-3 rounded-full text-lg font-semibold hover:bg-gray-200 transition duration-300">
+        Start Your Journey
       </button>
     </div>
-    <div class="md:w-1/2">
-      <img src="assets/images/traveling.avif" alt="" class="rounded-full w-full md:w-4/5 lg:w-[500px] mx-auto">
+  </div>
+</section>
+
+<section class="py-16 bg-gray-100">
+  <div class="container mx-auto px-4">
+    <h2 class="text-3xl font-bold text-center mb-12 text-black">Our Curated Packages</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div *ngFor="let package of offerPackages" class="bg-white rounded-lg overflow-hidden shadow-lg group">
+        <div class="relative">
+          <img [src]="package.images[0]" [alt]="package.name"
+            class="w-full h-48 object-cover transition duration-300 group-hover:scale-110">
+          <div
+            class="absolute top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-300">
+            <button
+              class="bg-white text-black px-6 py-2 rounded-full font-semibold hover:bg-gray-200 transition duration-300">
+              View Details
+            </button>
+          </div>
+        </div>
+        <div class="p-6">
+          <h3 class="text-xl font-semibold mb-2 text-black">{{package.name}}</h3>
+          <p class="text-gray-600 mb-4">{{package.description}}</p>
+          <div class="flex justify-between items-center">
+            <span class="text-2xl font-bold text-black">{{package.price | currency}}</span>
+            <div class="flex items-center" *ngIf="package.ratingAndReview.length">
+              <span class="text-yellow-500 mr-1">★</span>
+              <span class="text-gray-600">{{package.ratingAndReview[0].averageRating}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="text-center mt-12">
+      <button
+        class="bg-black text-white px-8 py-3 rounded-full text-lg font-semibold hover:bg-gray-800 transition duration-300">
+        Explore All Packages
+      </button>
     </div>
   </div>
 </section>
 
 
-<section class="travel-packages-container">
-  <div class="top-rated-section">
-    <div class="container mx-auto px-4">
-      <div class="section-header text-center mb-12">
-        <h2 class="text-sm uppercase tracking-wider text-blue-600 mb-3">
-          Traveler's Choice
-        </h2>
-        <h3 class="text-4xl font-extrabold text-gray-800">
-          Top Booked Packages
-        </h3>
-      </div>
-      <div class="top-rated-grid grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div *ngFor="let package of topBookedPackages" class="top-rated-card group">
-          <div class="card-content">
-            <div class="image-container relative">
-              <img [src]="package.images[0]" [alt]="package.name" class="w-full h-64 object-cover rounded-t-2xl" />
-              <ng-container *ngIf="package.ratingAndReview.length; else noRatingOffer">
-                <div class="rating-badge absolute top-4 right-4">
-                  <span class="flex items-center bg-white text-yellow-500 px-3 py-1 rounded-full">
-                    <i class="fas fa-star mr-2"></i>
-                    {{ package.ratingAndReview[0].averageRating }}/5.00
-                  </span>
-                </div>
-              </ng-container>
-              <ng-template #noRatingOffer>
-                <div class="rating-badge absolute top-4 right-4">
-                  <span class="flex items-center bg-white text-yellow-500 px-3 py-1 rounded-full">
-                    <i class="fas fa-star mr-2"></i>
-                    0/5
-                  </span>
-                </div>
-              </ng-template>
-            </div>
-            <div class="package-details p-6">
-              <h4 class="text-xl font-bold text-gray-800 mb-2">
-                {{ package.name }}
-              </h4>
-              <div class="package-meta flex justify-between items-center mb-4">
-                <div class="location flex items-center text-gray-600">
-                  <i class="fas fa-map-marker-alt mr-2"></i>
-                  <span>{{ package.country }}</span>
-                </div>
-                <div class="duration text-gray-600">
-                  <i class="fas fa-clock mr-2"></i>
-                  {{ package.days }} Days
-                </div>
-              </div>
-              <p class="text-green-500 mb-4 line-clamp-2 text-center font-bold text-xl">
-                {{package.bookings.length}} (bookings)
-              </p>
-              <div class="package-footer flex justify-between items-center">
-                <div class="price text-2xl font-bold text-blue-600">
-                  {{ package.price |currency:"INR" }}
-                </div>
-                <button class="btn-book bg-rose-500 text-white px-4 py-2 hover:bg-rose-600 transition">
-                  Book Now
-                </button>
-              </div>
-            </div>
+<section class="py-16 bg-white">
+  <div class="container mx-auto px-4">
+    <h2 class="text-3xl font-bold text-center mb-12 text-black">Top Booked Packages</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div *ngFor="let package of topBookedPackages"
+        class="bg-gray-100 rounded-lg overflow-hidden shadow-lg transition duration-300 hover:shadow-2xl">
+        <img [src]="package.images[0]" [alt]="package.name" class="w-full h-48 object-cover">
+        <div class="p-6">
+          <h3 class="text-xl font-semibold mb-2 text-black">{{package.name}}</h3>
+          <p class="text-gray-600 mb-4">{{package.description}}</p>
+          <div class="flex justify-between items-center">
+            <span class="text-2xl font-bold text-black">{{package.price | currency}}</span>
+            <button class="bg-black text-white px-4 py-2 rounded-full hover:bg-gray-800 transition duration-300">
+              Book Now
+            </button>
           </div>
         </div>
       </div>
     </div>
   </div>
-
-
-  <section class="travel-packages-container">
-    <div class="packages-header">
-      <div class="header-content">
-        <h2 class="subtitle">Discover Amazing Journeys</h2>
-        <h1 class="main-title">Our Offered Packages </h1>
-      </div>
-    </div>
-    <div class="packages-grid">
-      <div *ngFor="let package of offerPackages" class="package-card group">
-        <div class="package-image-container">
-          <img [src]="package.images[0]" [alt]="package.name" class="package-image" />
-          <div class="discount-badge">
-            {{getOfferPrice(package.offerId)}}
-          </div>
-          <div class="package-overlay">
-            <div class="overlay-content">
-              <div class="overlay-stats">
-                <div class="stat">
-                  <i class="fas fa-calendar"></i>
-                  <span>{{ package.days }} Days</span>
-                </div>
-                <div class="stat">
-                  <i class="fas fa-map-marker-alt"></i>
-                  <span>{{ package.country }}</span>
-                </div>
-              </div>
-              <button class="explore-button">
-                Explore Journey
-                <i class="fas fa-arrow-right ml-2"></i>
-              </button>
-            </div>
-          </div>
-        </div>
-        <div class="package-details">
-          <h3 class="package-title">{{ package.name }}</h3>
-          <p class="package-description">{{ package.description }}</p>
-          <div class="package-footer">
-            <div class="price-container">
-              <span class="current-price">{{ getCurrentPrice(package.price, package.offerId) }}</span>
-              <span class="original-price" *ngIf="package.price">
-                ${{ package.price }}
-              </span>
-            </div>
-            <ng-container *ngIf="package.ratingAndReview.length; else noRatingTopBooked">
-              <div class="rating">
-                <i class="fas fa-star text-yellow-400"></i>
-                <span>{{ package.ratingAndReview[0].averageRating || 'Not Rated' }}</span>
-              </div>
-            </ng-container>
-            <ng-template #noRatingTopBooked>
-              <div class="rating">
-                <i class="fas fa-star text-yellow-400"></i>
-                <span>Not Rated</span>
-              </div>
-            </ng-template>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
 </section>
+
+
+
+<section class="py-16 bg-black text-white">
+  <div class="container mx-auto px-4">
+    <h2 class="text-3xl font-bold text-center mb-12">Premier Travel Agencies</h2>
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+      <div *ngFor="let agency of topAgencies"
+        class="bg-gray-900 rounded-lg p-6 text-center transition duration-300 hover:bg-gray-800">
+        <img [src]="agency.logo" [alt]="agency.name" class="w-24 h-24 mx-auto mb-4 rounded-full border-4 border-white">
+        <h3 class="text-xl font-semibold mb-2">{{agency.name}}</h3>
+        <p class="text-gray-400 mb-4">{{agency.description}}</p>
+        <div class="flex justify-center items-center">
+          <span class="text-yellow-500 mr-1">★</span>
+          <span>{{agency.rating}}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<footer class="bg-black text-white py-12">
+  <div class="container mx-auto px-4">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div>
+        <h3 class="text-2xl font-bold mb-4">TravelNoir</h3>
+        <p class="mb-4 text-gray-400">Redefining travel through a monochrome lens.</p>
+        <div class="flex space-x-4">
+          <a href="#" class="text-white hover:text-gray-300"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" class="text-white hover:text-gray-300"><i class="fab fa-twitter"></i></a>
+          <a href="#" class="text-white hover:text-gray-300"><i class="fab fa-instagram"></i></a>
+          <a href="#" class="text-white hover:text-gray-300"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+      </div>
+      <div>
+        <h4 class="text-xl font-semibold mb-4">Quick Links</h4>
+        <ul class="space-y-2">
+          <li><a href="#" class="text-gray-400 hover:text-white transition duration-300">Home</a></li>
+          <li><a href="#" class="text-gray-400 hover:text-white transition duration-300">About Us</a></li>
+          <li><a href="#" class="text-gray-400 hover:text-white transition duration-300">Packages</a></li>
+          <li><a href="#" class="text-gray-400 hover:text-white transition duration-300">Destinations</a></li>
+          <li><a href="#" class="text-gray-400 hover:text-white transition duration-300">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-xl font-semibold mb-4">Contact Us</h4>
+        <ul class="space-y-2 text-gray-400">
+          <li>123 Noir Street, Monochrome City</li>
+          <li>Phone: +1 234 567 890</li>
+          <li>Email: infotravelnoir.com</li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-xl font-semibold mb-4">Newsletter</h4>
+        <p class="mb-4 text-gray-400">Stay updated with our latest offers and travel tips.</p>
+        <form class="flex">
+          <input type="email" placeholder="Your email"
+            class="flex-grow px-4 py-2 rounded-l-full focus:outline-none focus:ring-2 focus:ring-white text-black">
+          <button type="submit"
+            class="bg-white text-black px-4 py-2 rounded-r-full hover:bg-gray-200 transition duration-300">
+            Subscribe
+          </button>
+        </form>
+      </div>
+    </div>
+    <div class="mt-8 pt-8 border-t border-gray-800 text-center text-gray-400">
+      <p>&copy; 2023 TravelNoir. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
