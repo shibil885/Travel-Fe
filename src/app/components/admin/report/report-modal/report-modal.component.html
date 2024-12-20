@@ -1,4 +1,4 @@
-<h2 mat-dialog-title>Report Details</h2>
+<!-- <h2 mat-dialog-title>Report Details</h2>
 <mat-dialog-content>
     <div class="report-detail">
         <p><strong>Reported By:</strong> {{data.reportedBy}}</p>
@@ -18,4 +18,86 @@
     <button mat-button (click)="updateStatus('resolved')" [disabled]="data.status === 'resolved'">Mark as
         Resolved</button>
     <button mat-button (click)="close()">Close</button>
-</mat-dialog-actions>
+</mat-dialog-actions> -->
+
+<div class="bg-gradient-to-br from-purple-50 to-indigo-100 rounded-lg shadow-xl max-w-3xl mx-auto p-8">
+    <h2 class="text-3xl font-bold mb-6 text-indigo-800 border-b border-indigo-200 pb-3">Report Details</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="bg-white rounded-lg shadow-md p-6 space-y-4">
+            <div class="flex items-center space-x-3">
+                <span class="text-indigo-500"><i class="fas fa-user"></i></span>
+                <div>
+                    <p class="text-sm text-gray-500">Reported By</p>
+                    <p class="font-semibold text-gray-800">{{data.reportedBy.username}}</p>
+                </div>
+            </div>
+            <div class="flex items-center space-x-3">
+                <span class="text-indigo-500"><i class="fas fa-bullseye"></i></span>
+                <div>
+                    <p class="text-sm text-gray-500">Target Type</p>
+                    <p class="font-semibold text-gray-800">{{data.targetType}}</p>
+                </div>
+            </div>
+            <div class="flex items-center space-x-3">
+                <span class="text-indigo-500"><i class="fas fa-fingerprint"></i></span>
+                <div>
+                    <p class="text-sm text-gray-500">Target</p>
+                    <p class="font-semibold text-gray-800">{{data.targetId}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="bg-white rounded-lg shadow-md p-6 space-y-4">
+            <div class="flex items-center space-x-3">
+                <span class="text-indigo-500"><i class="fas fa-exclamation-circle"></i></span>
+                <div>
+                    <p class="text-sm text-gray-500">Reason</p>
+                    <p class="font-semibold text-gray-800">{{data.reason}}</p>
+                </div>
+            </div>
+            <div class="flex items-center space-x-3">
+                <span class="text-indigo-500"><i class="fas fa-flag"></i></span>
+                <div>
+                    <p class="text-sm text-gray-500">Status</p>
+                    <span class="status-badge" [ngClass]="getStatusClass()">{{data.status}}</span>
+                </div>
+            </div>
+            <div class="flex items-center space-x-3">
+                <span class="text-indigo-500"><i class="fas fa-calendar-alt"></i></span>
+                <div>
+                    <p class="text-sm text-gray-500">Created At</p>
+                    <p class="font-semibold text-gray-800">{{data.createdAt | date:'shortDate'}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="mt-6 bg-white rounded-lg shadow-md p-6">
+        <div class="flex items-center space-x-3 mb-3">
+            <span class="text-indigo-500"><i class="fas fa-align-left"></i></span>
+            <p class="text-sm text-gray-500">Description</p>
+        </div>
+        <p class="text-gray-800">{{data.description}}</p>
+    </div>
+    <div *ngIf="data.resolvedAt" class="mt-6 bg-white rounded-lg shadow-md p-6">
+        <div class="flex items-center space-x-3">
+            <span class="text-green-500"><i class="fas fa-check-circle"></i></span>
+            <div>
+                <p class="text-sm text-gray-500">Resolved At</p>
+                <p class="font-semibold text-gray-800">{{data.resolvedAt | date:'medium'}}</p>
+            </div>
+        </div>
+    </div>
+    <div class="mt-8 flex justify-end space-x-4">
+        <button (click)="updateStatus('pending')" [disabled]="data.status === 'pending'" class="btn btn-secondary">
+            <i class="fas fa-clock mr-2"></i> Mark as Pending
+        </button>
+        <button (click)="updateStatus('reviewed')" [disabled]="data.status === 'reviewed'" class="btn btn-primary">
+            <i class="fas fa-eye mr-2"></i> Mark as Reviewed
+        </button>
+        <button (click)="updateStatus('resolved')" [disabled]="data.status === 'resolved'" class="btn btn-success">
+            <i class="fas fa-check-circle mr-2"></i> Mark as Resolved
+        </button>
+        <button (click)="close()" class="btn btn-outline">
+            <i class="fas fa-times mr-2"></i> Close
+        </button>
+    </div>
+</div>

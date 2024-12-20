@@ -103,4 +103,16 @@ export class ReportService {
       }
     );
   }
+
+  getSingleReport(reportId: string, targetType: string, commentId = '') {
+    const params = new HttpParams().set('commentId', commentId);
+    return this._http.get<{
+      success: boolean;
+      message: string;
+      reportData: IReport;
+    }>(`${this._api}/getsinglereport/${reportId}/${targetType}`, {
+      params,
+      withCredentials: true,
+    });
+  }
 }

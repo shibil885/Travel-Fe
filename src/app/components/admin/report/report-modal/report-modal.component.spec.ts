@@ -1,18 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ReportModalComponent } from './report-modal.component';
+import { ReportDetailDialogComponent } from './report-modal.component';
 
 describe('ReportModalComponent', () => {
-  let component: ReportModalComponent;
-  let fixture: ComponentFixture<ReportModalComponent>;
+  let component: ReportDetailDialogComponent;
+  let fixture: ComponentFixture<ReportDetailDialogComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ReportModalComponent]
-    })
-    .compileComponents();
-    
-    fixture = TestBed.createComponent(ReportModalComponent);
+      imports: [ReportDetailDialogComponent],
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(ReportDetailDialogComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

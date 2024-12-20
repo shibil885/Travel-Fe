@@ -24,7 +24,9 @@
                                     <div class="ml-4">
                                         <h2 class="text-xl font-semibold text-gray-800 tracking-wide">{{
                                             report.reportedBy.username }}</h2>
-                                        <p class="text-sm text-gray-500">{{ report.targetType }}</p>
+                                        <p class="text-sm text-gray-500"><small class="text-black"><b>Traget:
+                                                </b></small> <span class="uppercase font-bold">{{ report.targetType
+                                                }}</span></p>
                                     </div>
                                 </div>
                                 <div class="flex justify-between items-center mb-6">
@@ -50,7 +52,7 @@
                                     </p>
                                 </div>
                                 <div class="flex justify-between items-center">
-                                    <button (click)="viewReport(report)"
+                                    <button (click)="viewReport(report._id, report.targetType, report.targetId)"
                                         class="py-2 px-5 bg-indigo-600 text-white text-xs font-semibold rounded-lg shadow-md hover:bg-indigo-700 transition-all duration-200 focus:outline-none">
                                         View
                                     </button>

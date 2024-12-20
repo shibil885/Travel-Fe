@@ -10,6 +10,8 @@ import { IAgencyBookingData } from '../../../interfaces/agencyBookingsData.inter
 import { Router } from '@angular/router';
 import { IReport } from '../../../interfaces/report.interface';
 import { ReportService } from '../../../shared/services/report/report.service';
+import { MatDialog } from '@angular/material/dialog';
+import { ReportDetailDialogComponent } from './report-modal/report-modal.component';
 
 @Component({
   selector: 'app-bookings',
@@ -41,7 +43,8 @@ export class ReportComponent {
   constructor(
     private _bookingService: BookingService,
     private _reportService: ReportService,
-    private _router: Router
+    private _router: Router,
+    private _dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -60,6 +63,7 @@ export class ReportComponent {
         }
       });
   }
+
   private _fetchAllReports() {
     this._reportService
       .getAllReports(this.currentPage, this.limit)
@@ -71,21 +75,37 @@ export class ReportComponent {
         }
       });
   }
+
   onPageChange(page: number) {
     this.currentPage = page;
     this._fetchBookingsByAgencies();
   }
+
   getColors(cuurrentIndex: number) {
     return this.colours[cuurrentIndex % this.colours.length];
   }
+
   viewBookings(index: number) {
     console.log(this.bookingsByAgencies[index]);
     this._router.navigate([
       `/admin/bookingsByAgency/${this.bookingsByAgencies[index].id}`,
     ]);
   }
-  viewReport(report: IReport) {
-    console.log('Viewing Report:', report);
+
+  viewReport(reportId: string, targetType: string, commentId = '') {
+    let id = '';
+    if (targetType === 'Comment') {
+      id = commentId;
+    }
+    this._reportService
+      .getSingleReport(reportId, targetType, id)
+      .subscribe((res) => {
+        console.log('data of single report', res);
+        this._dialog.open(ReportDetailDialogComponent, {
+          data: res.reportData,
+          autoFocus: false,
+        });
+      });
   }
 
   reviewReport(report: IReport) {
