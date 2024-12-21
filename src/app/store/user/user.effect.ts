@@ -16,7 +16,7 @@ export class UserEffect {
     private _authService: AuthService,
     private _router: Router,
     private _couponService: CouponService,
-    private _bookingService: BookingService,
+    private _bookingService: BookingService
   ) {}
 
   userLogin$ = createEffect(() =>
@@ -60,8 +60,9 @@ export class UserEffect {
   userSignup$ = createEffect(() =>
     this._actions$.pipe(
       ofType(userActions.userSignup),
-      switchMap((data) =>
-        this._userService.registerUser(data.userdata).pipe(
+      switchMap(({userdata}) => {
+        console.log('user data from effect', userdata);
+        return this._userService.registerUser(userdata).pipe(
           map((response) => {
             return userActions.otpRenderFromSignup({
               user: response.user,
@@ -71,8 +72,8 @@ export class UserEffect {
             console.log('from catch error', error);
             return of(userActions.userSignupError(error.error.message));
           })
-        )
-      )
+        );
+      })
     )
   );
 
@@ -221,7 +222,7 @@ export class UserEffect {
       ),
     { dispatch: false }
   );
- 
+
   initiatePayment$ = createEffect(() =>
     this._actions$.pipe(
       ofType(userActions.initiatePayment),
@@ -277,8 +278,8 @@ export class UserEffect {
         ofType(userActions.verifyPaymentSuccess),
         tap(() => {
           console.log('payment success listern from effect');
-            console.log('log from ng zone');
-            this._router.navigate(['/packages']);
+          console.log('log from ng zone');
+          this._router.navigate(['/packages']);
         })
       ),
     { dispatch: false }

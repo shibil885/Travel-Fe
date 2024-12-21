@@ -30,7 +30,7 @@ export const otpRenderFromSignup = createAction(
 
 export const userSignup = createAction(
   '[Signup Component] userSignup',
-  props<{ userdata: FormGroup }>()
+  props<{ userdata: IUser }>()
 );
 
 export const userSignupSuccess = createAction(

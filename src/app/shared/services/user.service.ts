@@ -30,7 +30,7 @@ export class UserService {
       );
   }
 
-  registerUser(formData: FormGroup) {
+  registerUser(formData: IUser) {
     console.log('formdata', formData);
     return this._http.post<{ user: IUser; message: string; success: boolean }>(
       `${this._api}/user/signup`,
