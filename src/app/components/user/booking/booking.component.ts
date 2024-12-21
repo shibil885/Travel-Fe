@@ -34,7 +34,7 @@ import {
   verifyPayment,
 } from '../../../store/user/user.action';
 import { DiscountType, ICoupon } from '../../../interfaces/coupon.interface';
-import { Observable, take } from 'rxjs';
+import { Observable, Subscription, take } from 'rxjs';
 import { dateValidator } from '../../../validatores/date.validator';
 import {
   endWithSpace,
@@ -85,8 +85,9 @@ export class BookingComponent {
   discount: number = 0;
   selectedCouponId: string = '';
   invalidForm: boolean = false;
+  proceedPayment = false;
   private _RAZORPAY_KEY_ID = import.meta.env.NG_APP_RAZORPAY_KEY_ID;
-
+  private _subcriptions = new Subscription();
   constructor(
     private _fb: FormBuilder,
     private _store: Store,
@@ -281,38 +282,42 @@ export class BookingComponent {
         couponId: this.selectedCouponId,
       })
     );
-
-    this.success$.subscribe((success) => {
-      if (success) {
-        this.amount$.subscribe((amount) => (this.amount = amount));
-        this.currency$.subscribe((currency) => (this.currency = currency));
-        this.orderId$.subscribe((orderId) => (this.orderId = orderId));
-        const options = {
-          key_id: this._RAZORPAY_KEY_ID,
-          amount: this.amount,
-          currency: this.currency,
-          name: 'Travel',
-          description: 'Test Transaction',
-          order_id: this.orderId,
-          handler: (response: {
-            razorpay_order_id: string;
-            razorpay_payment_id: string;
-            razorpay_signature: string;
-          }) => this._handlePayment(response),
-          prefill: {
-            name: 'testUser',
-            email: 'test@gmail.com',
-            contact: '1234567890',
-          },
-          theme: {
-            color: '#6196cc',
-          },
-        };
-        const razorpay = new Razorpay(options);
-        razorpay.open();
-      }
-      return;
-    });
+    this._subcriptions.add(
+      this.success$.subscribe((success) => {
+        if (success) {
+          this.amount$.subscribe((amount) => (this.amount = amount));
+          this.currency$.subscribe((currency) => (this.currency = currency));
+          this.orderId$.subscribe((orderId) => (this.orderId = orderId));
+          const options = {
+            key_id: this._RAZORPAY_KEY_ID,
+            amount: this.amount,
+            currency: this.currency,
+            name: 'Travel',
+            description: 'Test Transaction',
+            order_id: this.orderId,
+            handler: (response: {
+              razorpay_order_id: string;
+              razorpay_payment_id: string;
+              razorpay_signature: string;
+            }) => this._handlePayment(response),
+            prefill: {
+              name: 'testUser',
+              email: 'test@gmail.com',
+              contact: '1234567890',
+            },
+            theme: {
+              color: '#6196cc',
+            },
+          };
+          console.log('razor pay initiated 1');
+          const razorpay = new Razorpay(options);
+          console.log('razor pay initiated 2');
+          razorpay.open();
+          console.log('razor pay initiated 3');
+        }
+        return;
+      })
+    );
   }
 
   private _handlePayment(response: {
@@ -339,4 +344,7 @@ export class BookingComponent {
     });
   }
   getOfferPrice() {}
+  ngOnDestroy(): void {
+    this._subcriptions.unsubscribe();
+  }
 }
