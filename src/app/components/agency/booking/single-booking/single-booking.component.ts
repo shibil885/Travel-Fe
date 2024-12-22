@@ -1,65 +1,81 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { IBooking } from '../../../../interfaces/booking.interface';
+import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BookingService } from '../../../../shared/services/booking.service';
 import { ToastService } from '../../../../shared/services/toaster.service';
+import { IBooking } from '../../../../interfaces/booking.interface';
 import { TravelConfirmationStatus } from '../../../../enum/travelConfirmation.enum';
+import { animate, style, transition, trigger } from '@angular/animations';
+import { TravelStatus } from '../../../../enum/travelStatus.enum';
 
 @Component({
   selector: 'app-single-booking',
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './single-booking.component.html',
+  animations: [
+    trigger('fadeInUp', [
+      transition(':enter', [
+        style({ opacity: 0, transform: 'translateY(20px)' }),
+        animate(
+          '0.3s ease-out',
+          style({ opacity: 1, transform: 'translateY(0)' })
+        ),
+      ]),
+    ]),
+  ],
   styleUrl: './single-booking.component.css',
 })
-export class SingleBookingComponent {
-  booking!: IBooking | null;
+export class SingleBookingComponent implements OnInit {
   @Input() id!: string;
   @Output() closePageEvent = new EventEmitter();
+
+  booking: IBooking | null = null;
+
+  travelStatusOptions = ['pending', 'started', 'completed', 'cancelled'];
 
   constructor(
     private _bookingService: BookingService,
     private _toastService: ToastService
   ) {}
 
-  travelStatusOptions = ['Not Started', 'In Progress', 'Completed'];
-
   ngOnInit(): void {
-    this.fetchbookingdata();
+    this.fetchBookingData();
   }
 
-  fetchbookingdata() {
+  fetchBookingData() {
     this._bookingService.getSingleBookedPackage(this.id).subscribe((res) => {
       if (res.success) {
         this.booking = res.bookedPackage;
-        return;
       }
-      this._toastService.showToast('Somthing went wrong', 'error');
     });
   }
 
   confirmBooking() {
-    if (!this.booking) {
-      this._toastService.showToast('Somthing Went wrong', 'error');
+    if (!this.booking?._id) {
+      this._toastService.showToast('Invalid booking details', 'error');
       return;
     }
     this._bookingService
-      .confirmBooking(this.booking?._id, TravelConfirmationStatus.CONFIRMED)
+      .confirmBooking(this.booking._id, TravelConfirmationStatus.CONFIRMED)
       .subscribe((res) => {
         if (res.success) {
           this._toastService.showToast(res.message, 'success');
-          this.fetchbookingdata();
+          this.fetchBookingData();
         }
       });
   }
 
   cancelBooking(bookingId: string | undefined) {
-    console.log('Booking cancelled:', this.booking);
+    if (!bookingId) {
+      this._toastService.showToast('Invalid booking ID', 'error');
+      return;
+    }
     this._bookingService.cancelBooking(bookingId, 'agency').subscribe((res) => {
       if (res.success) {
-        if (this.booking?.confirmation)
+        if (this.booking) {
           this.booking.confirmation = TravelConfirmationStatus.REJECTED;
+        }
         this._toastService.showToast(res.message, 'success');
       }
     });
@@ -67,5 +83,13 @@ export class SingleBookingComponent {
 
   closePage() {
     this.closePageEvent.emit();
+  }
+  onstatusChange(bookingId: string, status: string) {
+    this._bookingService.changeStatus(bookingId, status).subscribe((res) => {
+      if (res.success) {
+        this._toastService.showToast(res.message, 'success');
+        this.fetchBookingData();
+      }
+    });
   }
 }

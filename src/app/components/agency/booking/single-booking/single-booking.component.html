@@ -1,74 +1,190 @@
-<div
-    class="max-w-xl mx-auto bg-gradient-to-r from-[#FBE9D0] to-[#F8F2E7] rounded-lg shadow-2xl p-10 mt-12 text-[#244855] border border-gray-300 relative">
-    <!-- Title Section -->
-    <div class="text-center mb-10">
-        <h2 class="text-3xl font-bold text-[#244855] tracking-wide uppercase">Booking Details</h2>
-        <p class="text-sm text-gray-500">Manage the booking status and review details</p>
-    </div>
-
-    <!-- Booking Details Grid -->
-    <div class="grid gap-6" *ngIf="booking">
-        <div class="bg-white p-5 rounded-xl shadow-md border border-gray-200">
-            <label class="block font-semibold text-xs uppercase text-gray-500">Booking ID</label>
-            <p class="text-xl text-[#244855]">{{ booking._id }}</p>
+<div class="min-h-screen bg-gradient-to-br from-[#EEF2F3] to-[#F8F2E7] p-8">
+    <div class="max-w-4xl mx-auto">
+        <div class="relative mb-12 text-center">
+            <div class="absolute inset-0 flex items-center justify-center">
+                <div class="w-32 h-32 bg-[#244855] opacity-5 rounded-full blur-2xl"></div>
+            </div>
+            <h2 class="relative text-4xl font-bold text-[#244855] tracking-tight">
+                Booking Details
+            </h2>
+            <div class="mt-2 flex items-center justify-center gap-2">
+                <span class="h-1 w-8 bg-[#90AEAD] rounded-full"></span>
+                <p class="text-sm text-gray-500 font-medium">Manage Reservation</p>
+                <span class="h-1 w-8 bg-[#90AEAD] rounded-full"></span>
+            </div>
         </div>
+        <div class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-gray-100 p-8" *ngIf="booking">
+            <div class="mb-8 flex items-center justify-between p-4 rounded-xl" [ngClass]="{
+               'bg-green-50 border border-green-100': booking.confirmation === 'confirmed',
+               'bg-red-50 border border-red-100': booking.confirmation === 'rejected',
+               'bg-gray-50 border border-gray-100': booking.confirmation === 'pending'
+             }">
+                <div class="flex items-center gap-3">
+                    <div class="w-12 h-12 rounded-full flex items-center justify-center" [ngClass]="{
+                   'bg-green-100': booking.confirmation === 'confirmed',
+                   'bg-red-100': booking.confirmation === 'rejected',
+                   'bg-gray-100': booking.confirmation === 'pending'
+                 }">
+                        <i class="text-xl" [ngClass]="{
+                   'fas fa-check text-green-600': booking.confirmation === 'confirmed',
+                   'fas fa-times text-red-600': booking.confirmation === 'rejected',
+                   'fas fa-clock text-gray-600': booking.confirmation === 'pending'
+                 }"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-gray-800">Booking Status</h3>
+                        <p class="text-sm capitalize" [ngClass]="{
+                   'text-green-600': booking.confirmation === 'confirmed',
+                   'text-red-600': booking.confirmation === 'rejected',
+                   'text-gray-600': booking.confirmation === 'pending'
+                 }">
+                            {{booking.confirmation}}
+                        </p>
+                    </div>
+                </div>
+                <div class="text-right">
+                    <p class="text-sm text-gray-500">Booking ID</p>
+                    <p class="font-mono text-gray-800">{{booking._id}}</p>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="space-y-6">
+                    <div class="bg-gray-50 p-6 rounded-xl border border-gray-100">
+                        <label class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Package</label>
+                        <p class="mt-2 text-xl font-semibold text-[#244855]">{{booking.package_id.name}}</p>
+                    </div>
 
-        <div class="bg-white p-5 rounded-xl shadow-md border border-gray-200">
-            <label class="block font-semibold text-xs uppercase text-gray-500">Package Name</label>
-            <p class="text-xl text-[#244855]">{{ booking.package_id.name }}</p>
+                    <div class="bg-gray-50 p-6 rounded-xl border border-gray-100">
+                        <label class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Guest</label>
+                        <p class="mt-2 text-xl font-semibold text-[#244855]">{{booking.user_id.username}}</p>
+                    </div>
+                </div>
+                <div class="space-y-6">
+                    <div class="bg-gray-50 p-6 rounded-xl border border-gray-100">
+                        <label class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Booked On</label>
+                        <p class="mt-2 text-xl font-semibold text-[#244855]">{{booking.createdAt | date:'longDate'}}</p>
+                    </div>
+
+                    <div class="bg-gray-50 p-6 rounded-xl border border-gray-100">
+                        <label class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Travel Date</label>
+                        <p class="mt-2 text-xl font-semibold text-[#244855]">{{booking.start_date | date:'longDate'}}
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="booking.confirmation === 'confirmed'" class="mt-8">
+                <div class="bg-gray-50 p-6 rounded-xl border border-gray-100">
+                    <div class="flex items-center justify-between mb-6">
+                        <label class="text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                            Travel Status
+                        </label>
+                        <span class="px-4 py-1 rounded-full text-sm font-medium" [ngClass]="{
+                                'bg-yellow-100 text-yellow-800': booking.travel_status === 'pending',
+                                'bg-blue-100 text-blue-800': booking.travel_status === 'started',
+                                'bg-green-100 text-green-800': booking.travel_status === 'completed'
+                              }">
+                            {{booking.travel_status}}
+                        </span>
+                    </div>
+
+                    <!-- Status Timeline -->
+                    <div class="relative">
+                        <div class="absolute left-0 top-5 w-full h-1 bg-gray-200 rounded"></div>
+                        <div class="relative flex justify-between">
+                            <!-- Not Started -->
+                            <div class="relative flex flex-col items-center group">
+                                <div class="w-10 h-10 rounded-full border-2 flex items-center justify-center bg-white"
+                                    [ngClass]="{
+                                        'border-gray-300': booking.travel_status === 'pending',
+                                        'border-blue-500 bg-blue-50': booking.travel_status === 'started',
+                                        'border-green-500 bg-green-50': booking.travel_status === 'completed'
+                                     }">
+                                    <i class="fas fa-hourglass text-lg" [ngClass]="{
+                                        'text-gray-400': booking.travel_status === 'pending',
+                                        'text-blue-500': booking.travel_status === 'started',
+                                        'text-green-500': booking.travel_status === 'completed'
+                                       }"></i>
+                                </div>
+                                <span class="mt-2 text-sm font-medium text-gray-600">Not Started</span>
+                            </div>
+
+                            <!-- In Progress -->
+                            <div class="relative flex flex-col items-center group">
+                                <div class="w-10 h-10 rounded-full border-2 flex items-center justify-center bg-white"
+                                    [ngClass]="{
+                                        'border-gray-300': booking.travel_status === 'pending',
+                                        'border-blue-500 bg-blue-50': booking.travel_status === 'started',
+                                        'border-green-500 bg-green-50': booking.travel_status === 'completed'
+                                     }">
+                                    <i class="fas fa-plane text-lg" [ngClass]="{
+                                        'text-gray-400': booking.travel_status === 'pending',
+                                        'text-blue-500': booking.travel_status === 'started',
+                                        'text-green-500': booking.travel_status === 'completed'
+                                       }"></i>
+                                </div>
+                                <span class="mt-2 text-sm font-medium text-gray-600">In Progress</span>
+                            </div>
+
+                            <!-- Completed -->
+                            <div class="relative flex flex-col items-center group">
+                                <div class="w-10 h-10 rounded-full border-2 flex items-center justify-center bg-white"
+                                    [ngClass]="{
+                                        'border-gray-300': booking.travel_status !== 'completed',
+                                        'border-green-500 bg-green-50': booking.travel_status === 'completed'
+                                     }">
+                                    <i class="fas fa-check text-lg" [ngClass]="{
+                                        'text-gray-400': booking.travel_status !== 'completed',
+                                        'text-green-500': booking.travel_status === 'completed'
+                                       }"></i>
+                                </div>
+                                <span class="mt-2 text-sm font-medium text-gray-600">Completed</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="mt-8 flex justify-end gap-4">
+                        <button *ngIf="booking.travel_status === 'pending'"
+                            (click)="onstatusChange(booking._id, 'started')"
+                            class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors duration-200 flex items-center gap-2">
+                            <i class="fas fa-play text-sm"></i>
+                            Start Journey
+                        </button>
+
+                        <button *ngIf="booking.travel_status === 'started'"
+                            (click)="onstatusChange(booking._id, 'completed')"
+                            class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors duration-200 flex items-center gap-2">
+                            <i class="fas fa-check text-sm"></i>
+                            Complete Journey
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
+                <button (click)="confirmBooking()"
+                    *ngIf="booking?.confirmation !== 'confirmed' && booking?.travel_status !== 'cancelled'"
+                    class="group relative px-8 py-4 bg-[#244855] text-white font-semibold rounded-xl hover:bg-[#1a353f] transition-all duration-300 shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-[#244855] focus:ring-offset-2">
+                    <span class="flex items-center justify-center gap-2">
+                        <i class="fas fa-check-circle"></i>
+                        Confirm Booking
+                    </span>
+                    <div
+                        class="absolute inset-0 bg-white/10 rounded-xl scale-0 group-hover:scale-100 transition-transform duration-300">
+                    </div>
+                </button>
+
+                <button (click)="cancelBooking(booking._id)"
+                    *ngIf="booking?.travel_status == 'pending' && booking?.confirmation !== 'pending'"
+                    class="group relative px-8 py-4 bg-[#E64833] text-white font-semibold rounded-xl hover:bg-[#d13a27] transition-all duration-300 shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-[#E64833] focus:ring-offset-2">
+                    <span class="flex items-center justify-center gap-2">
+                        <i class="fas fa-times-circle"></i>
+                        Cancel Booking
+                    </span>
+                    <div
+                        class="absolute inset-0 bg-white/10 rounded-xl scale-0 group-hover:scale-100 transition-transform duration-300">
+                    </div>
+                </button>
+            </div>
         </div>
-
-        <div class="bg-white p-5 rounded-xl shadow-md border border-gray-200">
-            <label class="block font-semibold text-xs uppercase text-gray-500">User Name</label>
-            <p class="text-xl text-[#244855]">{{ booking.user_id.username }}</p>
-        </div>
-
-        <div class="bg-white p-5 rounded-xl shadow-md border border-gray-200">
-            <label class="block font-semibold text-xs uppercase text-gray-500">Booking Date</label>
-            <p class="text-xl text-[#244855]">{{ booking.createdAt | date: 'longDate' }}</p>
-        </div>
-
-        <div class="bg-white p-5 rounded-xl shadow-md border border-gray-200">
-            <label class="block font-semibold text-xs uppercase text-gray-500">Start date</label>
-            <p class="text-xl text-[#244855]">{{ booking.start_date | date: 'longDate' }}</p>
-        </div>
-
-        <div class="bg-white p-5 rounded-xl shadow-md border border-gray-200 flex items-center">
-            <label class="block font-semibold text-xs uppercase text-gray-500 mr-4">Confirmation </label>
-            <span class=" uppercase px-4 py-1 text-sm font-semibold rounded-full transition duration-200 tracking-wide"
-                [ngClass]="{
-                    'bg-green-100 text-green-800': booking.confirmation === 'confirmed', 
-                    'bg-red-100 text-red-800': booking.confirmation === 'rejected',
-                    'bg-gray-100 text-gray-950': booking.confirmation === 'pending'
-                }">
-                {{ booking.confirmation }}
-            </span>
-        </div>
-
-        <div *ngIf="booking.confirmation === 'confirmed'"
-            class="bg-white p-5 rounded-xl shadow-md border border-gray-200">
-            <label for="travelStatus" class="block font-semibold text-xs uppercase text-gray-500 mb-2">Travel
-                Status</label>
-            <select [(ngModel)]="booking.travel_status" id="travelStatus"
-                class="w-full p-3 border border-[#90AEAD] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#244855] transition">
-                <option *ngFor="let status of travelStatusOptions" [value]="status">{{ status }}</option>
-            </select>
-        </div>
-    </div>
-
-    <div class="mt-10 flex space-x-5 justify-center">
-        <button (click)="confirmBooking()"
-            [ngClass]="(booking?.confirmation === 'confirmed' || booking?.travel_status === 'cancelled') ? 'cursor-not-allowed' : ''"
-            class="bg-[#90AEAD] text-white font-semibold py-3 px-8 rounded-lg hover:bg-[#244855] transition-transform transform  shadow-lg hover:shadow-xl focus:outline-none"
-            [hidden]="booking?.confirmation === 'confirmed' || booking?.travel_status === 'cancelled'">
-            Confirm Booking
-        </button>
-
-        <button (click)="cancelBooking(booking?._id)"
-            [ngClass]="booking?.travel_status === 'cancelled' ? 'cursor-not-allowed':''"
-            class="bg-[#E64833] text-white font-semibold py-3 px-8 rounded-lg hover:bg-[#874F41] transition-transform transform shadow-lg hover:shadow-xl focus:outline-none"
-            [hidden]="booking?.travel_status === 'cancelled' || booking?.confirmation === 'pending'">
-            Cancel Booking
-        </button>
     </div>
 </div>

@@ -14,7 +14,7 @@ import { SocketService } from '../../../shared/services/socket/socket.service';
   styleUrl: './side-bar.component.css',
 })
 export class SideBarComponent {
-  isCollapsed = false;
+  isCollapsed = true;
   notificationCount: number = 99;
   menuItems = [
     {

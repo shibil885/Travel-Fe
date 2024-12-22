@@ -5,6 +5,7 @@ import { TravelConfirmationStatus } from '../../enum/travelConfirmation.enum';
 import { FormGroup } from '@angular/forms';
 import { IAgencyBookingData } from '../../interfaces/agencyBookingsData.interface';
 import { IPackage } from '../../interfaces/package.interface';
+import { TravelStatus } from '../../enum/travelStatus.enum';
 
 @Injectable({
   providedIn: 'root',
@@ -209,6 +210,16 @@ export class BookingService {
       {
         withCredentials: true,
       }
+    );
+  }
+
+  changeStatus(bookingId: string, status: string) {
+    return this._http.patch<{ success: boolean; message: string }>(
+      `${this._api}/booking/changestatus/${bookingId}`,
+      {
+        status,
+      },
+      { withCredentials: true }
     );
   }
 }

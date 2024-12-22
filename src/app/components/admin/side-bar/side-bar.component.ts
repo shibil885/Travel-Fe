@@ -14,7 +14,7 @@ import { SocketService } from '../../../shared/services/socket/socket.service';
   imports: [CommonModule, RouterModule],
 })
 export class SideBarComponent {
-  @Input() isCollapsed = false;
+  isCollapsed = true;
   isMobileView = false;
   notificationCount: number = 0;
 
