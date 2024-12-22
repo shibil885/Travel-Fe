@@ -40,6 +40,7 @@ export class UserService {
   }
 
   verifyOtpUser(formData: { otp: string; email: string | null | undefined }) {
+    console.log('verify otp data user ', formData);
     return this._http.post<{
       message: string;
       success: boolean;
@@ -49,6 +50,7 @@ export class UserService {
   }
 
   resendOtp(formData: { email: string | null | undefined }) {
+    console.log('resend otp data from service', formData);
     return this._http.post<{ user: IUser; success: boolean; message: string }>(
       `${this._api}/otp/resend`,
       formData,

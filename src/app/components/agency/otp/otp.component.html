@@ -21,7 +21,7 @@
         </button>
     </form>
     <div class="mt-4 text-center">
-        <p class="text-teal-400">OTP expires in <b>{{ timeLeft }}</b> sec</p>
+        <p class="text-teal-400" *ngIf="timeLeft">OTP expires in <b>{{ timeLeft }}</b> sec</p>
         <a (click)="resendOtp()" [class.cursor-not-allowed]="!isResendEnabled" [class.text-teal-400]="isResendEnabled"
             [class.text-gray-400]="!isResendEnabled" class="hover: cursor-pointer">Resend OTP</a>
     </div>

@@ -3,7 +3,8 @@
         <h2 class="text-3xl font-extrabold mb-3 text-center text-gray-900">Register Your Account</h2>
         <p class="text-red-500 text-center mb-4 " *ngIf="isInvalidForm">Fill required inputes</p>
         <form (ngSubmit)="onSubmit()" [formGroup]="reactiveForm" class="space-y-6">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">                <div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
                     <label for="userName" class="block text-sm font-semibold text-gray-700">Username</label>
                     <input id="userName" formControlName="userName" type="text"
                         class="form-input w-full p-3 rounded-md bg-gray-100 text-gray-900 focus:ring focus:ring-gray-500">

@@ -48,20 +48,20 @@ export const submitOtp = createAction(
   props<{ otp: string; email: string | null | undefined }>()
 );
 export const submitOtpError = createAction(
-  '[Otp Component] submitOtpError',
+  '[Otp Component] User submitOtpError',
   props<{ error: string }>()
 );
 
 export const resendOtp = createAction(
-  '[Otp Component] resendOtp',
+  '[Otp Component] resendOtpUser',
   props<{ email: string | null | undefined }>()
 );
 export const resendOtpSuccess = createAction(
-  '[Otp Component] resendOtpSuccess',
+  '[Otp Component] resendOtpSuccessUser',
   props<{ user: IUser }>()
 );
 export const resendOtpError = createAction(
-  '[Otp Component] resendOtpError',
+  '[Otp Component] resendOtpErrorUser',
   props<{ error: string }>()
 );
 

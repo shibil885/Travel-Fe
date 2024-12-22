@@ -60,7 +60,7 @@ export class UserEffect {
   userSignup$ = createEffect(() =>
     this._actions$.pipe(
       ofType(userActions.userSignup),
-      switchMap(({userdata}) => {
+      switchMap(({ userdata }) => {
         console.log('user data from effect', userdata);
         return this._userService.registerUser(userdata).pipe(
           map((response) => {
@@ -80,8 +80,9 @@ export class UserEffect {
   submitOtp$ = createEffect(() =>
     this._actions$.pipe(
       ofType(userActions.submitOtp),
-      switchMap((data) =>
-        this._userService
+      switchMap((data) => {
+        console.log('submitted data from effect', data);
+        return this._userService
           .verifyOtpUser({ otp: data.otp, email: data.email })
           .pipe(
             map((response) => {
@@ -92,8 +93,8 @@ export class UserEffect {
             catchError((error) =>
               of(userActions.submitOtpError(error.error.message))
             )
-          )
-      )
+          );
+      })
     )
   );
   userSignupSuccess$ = createEffect(
@@ -109,9 +110,11 @@ export class UserEffect {
   resendOtp$ = createEffect(() =>
     this._actions$.pipe(
       ofType(userActions.resendOtp),
-      switchMap((data) =>
-        this._userService.resendOtp({ email: data.email }).pipe(
+      switchMap((data) => {
+        console.log('resend otp data from effect', data);
+        return this._userService.resendOtp({ email: data.email }).pipe(
           map((res) => {
+            console.log('user from effect', res);
             return userActions.resendOtpSuccess({ user: res.user });
           }),
           catchError((error) => {
@@ -119,8 +122,8 @@ export class UserEffect {
               userActions.resendOtpError({ error: error.error.message })
             );
           })
-        )
-      )
+        );
+      })
     )
   );
   logout$ = createEffect(

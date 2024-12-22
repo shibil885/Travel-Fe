@@ -18,7 +18,7 @@ export const initialAgencyState: AgencyState = {
 
 export const AgencyReducer = createReducer(
   initialAgencyState,
-  on(agencyActions.agencyLoginSuccess, (state, {agency }) => {
+  on(agencyActions.agencyLoginSuccess, (state, { agency }) => {
     return {
       ...state,
       agency: agency,
@@ -64,9 +64,10 @@ export const AgencyReducer = createReducer(
     };
   }),
   on(agencyActions.resendOtpSuccess, (state, { agency }) => {
+    const updated = { ...state.agency, ...agency };
     return {
       ...state,
-      agency: agency,
+      agency: updated,
       renderOtp: true,
     };
   }),
@@ -77,10 +78,10 @@ export const AgencyReducer = createReducer(
       renderOtp: true,
     };
   }),
-  on(agencyActions.logoutSuccess,(state) => {
+  on(agencyActions.logoutSuccess, (state) => {
     return {
       ...state,
       agency: null,
-    }
+    };
   })
 );

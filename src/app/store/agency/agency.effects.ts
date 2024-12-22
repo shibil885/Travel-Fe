@@ -105,7 +105,7 @@ export class AgencyEffect {
       switchMap((data) =>
         this._agencyService.resendOtp({ email: data.email }).pipe(
           map((res) => {
-            return agencyActions.resendOtpSuccess({ agency: res.agency });
+            return agencyActions.resendOtpSuccess({ agency: res.user });
           }),
           catchError((error) => {
             return of(

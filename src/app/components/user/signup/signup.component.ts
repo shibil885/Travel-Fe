@@ -28,7 +28,7 @@ import * as userActions from '../../../store/user/user.action';
 @Component({
   selector: 'app-signup',
   standalone: true,
-  imports: [OtpComponent, RouterLink, ReactiveFormsModule, CommonModule],
+  imports: [OtpComponent,  ReactiveFormsModule, CommonModule],
   templateUrl: './signup.component.html',
   styleUrl: './signup.component.css',
 })
@@ -36,7 +36,7 @@ export class SignupComponent {
   reactiveForm!: FormGroup;
   isInvalidForm: boolean = false;
   renderOtp$ = this._store.select(selectRenderOtpUser);
-  renderSignup!: boolean;
+  renderSignup: boolean = true;
   mailToOtp$ = this._store.select(selectEmail);
   constructor(
     private _userService: UserService,
@@ -45,7 +45,6 @@ export class SignupComponent {
   ) {}
 
   ngOnInit(): void {
-    this.renderSignup = true;
     const existing = new Existing(this._agencyService, this._userService);
     this.reactiveForm = new FormGroup(
       {

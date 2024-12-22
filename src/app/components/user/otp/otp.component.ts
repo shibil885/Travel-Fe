@@ -28,7 +28,7 @@ export class OtpComponent {
   constructor(private _store: Store) {}
 
   ngOnInit(): void {
-    this._store.select(selectEmail).subscribe((data) => this.email = data)
+    this._store.select(selectEmail).subscribe((data) => (this.email = data));
     this.otpForm = new FormGroup({
       otp: new FormControl('', [
         Validators.required,
@@ -59,8 +59,9 @@ export class OtpComponent {
   }
 
   onFormSubmit() {
+    this._store.select(selectEmail).subscribe((data) => (this.email = data));
+    console.log('sub mit email', this.email);
     this.submitted = true;
-
     if (this.otpForm.invalid) {
       return;
     }
@@ -75,6 +76,8 @@ export class OtpComponent {
   }
 
   resendOtp() {
+    this._store.select(selectEmail).subscribe((data) => (this.email = data));
+    console.log('email', this.email);
     if (this.isResendEnabled) {
       this._store.dispatch(userActions.resendOtp({ email: this.email }));
       this.startOtpTimer();

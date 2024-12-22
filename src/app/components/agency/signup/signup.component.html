@@ -34,7 +34,7 @@
                             name need at least 6 characters
                         </small>
                         <small class="text-red-600 block"
-                            *ngIf="reactiveForm.get('agencyName')?.errors?.['isExistingName'] && reactiveForm.get('agencyName')?.invalid">*Agency
+                            *ngIf="reactiveForm.get('agencyName')?.errors?.['isExistingName'] && reactiveForm.get('agencyName')?.invalid &&reactiveForm.get('agencyName')?.touched">*Agency
                             name in use
                         </small>
                     </div>

@@ -60,6 +60,7 @@ export class OtpComponent {
   }
 
   onFormSubmit() {
+    this._store.select(selectEmail).subscribe((data) => (this.email = data));
     this.submitted = true;
 
     if (this.otpForm.invalid) {
@@ -76,6 +77,7 @@ export class OtpComponent {
   }
 
   resendOtp() {
+    this._store.select(selectEmail).subscribe((data) => (this.email = data));
     if (this.isResendEnabled) {
       this._store.dispatch(agencyActions.resendOtp({ email: this.email }));
       this.startOtpTimer();

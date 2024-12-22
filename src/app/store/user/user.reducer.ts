@@ -82,9 +82,11 @@ export const UserReducer = createReducer(
     };
   }),
   on(userActions.resendOtpSuccess, (state, { user }) => {
+    console.log('user from reducer', user);
+    const updateed = { ...state.user, ...user };
     return {
       ...state,
-      user: user,
+      user: updateed,
       renderOtp: true,
     };
   }),

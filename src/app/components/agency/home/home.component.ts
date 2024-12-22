@@ -43,16 +43,18 @@ export class HomeComponent {
     this._agencyService.isConfirmed().subscribe((status) => {
       this.isConfirmed = status;
     });
-    this._agencyDashboardService.getStatsdata().subscribe((res) => {
-      for (let i = 0; i < this.statsItem.length; i++) {
-        if (this.statsItem[i].icon === 'package') {
-          this.statsItem[i].value = res.packagesCount;
-        } else if (this.statsItem[i].icon === 'briefcase') {
-          this.statsItem[i].value = res.totalBookings;
-        } else if (this.statsItem[i].icon === 'rs-sign') {
-          this.statsItem[i].value = res.totalRevenue;
+    if (this.isConfirmed) {
+      this._agencyDashboardService.getStatsdata().subscribe((res) => {
+        for (let i = 0; i < this.statsItem.length; i++) {
+          if (this.statsItem[i].icon === 'package') {
+            this.statsItem[i].value = res.packagesCount;
+          } else if (this.statsItem[i].icon === 'briefcase') {
+            this.statsItem[i].value = res.totalBookings;
+          } else if (this.statsItem[i].icon === 'rs-sign') {
+            this.statsItem[i].value = res.totalRevenue;
+          }
         }
-      }
-    });
+      });
+    }
   }
 }

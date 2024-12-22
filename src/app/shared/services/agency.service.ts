@@ -92,7 +92,7 @@ export class AgencyService {
     }>(`${this._api}/otp/agency`, formData, { withCredentials: true });
   }
   resendOtp(formData: { email: string | null | undefined }) {
-    return this._http.post<{ agency: IAgency }>(
+    return this._http.post<{ user: IAgency }>(
       `${this._api}/otp/resend`,
       formData,
       { withCredentials: true }

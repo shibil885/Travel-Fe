@@ -81,7 +81,7 @@ export class HeaderSidebarComponent {
 
   private _fetchNotification() {
     this._notificationService
-      .getNotifications('user', false, 5)
+      .getNotifications('user', false, 6)
       .subscribe((res) => {
         this.notifications = res.notifications;
         this.notificationCount = res.notifications.length;
