@@ -28,7 +28,6 @@ export class HomeComponent {
   private _fetchOfferPackages() {
     this._packageService.getOfferPackages().subscribe((res) => {
       if (res.success) {
-        console.log('offer packages', res.packages);
         this.offerPackages = res.packages;
       }
     });
@@ -36,8 +35,6 @@ export class HomeComponent {
   private _fetchTopBookedPackages() {
     this._packageService.getTopBookedPackages().subscribe((res) => {
       if (res.success) {
-        console.log('booked packages', res.packages);
-        console.log(res);
         this.topBookedPackages = res.packages;
       }
     });

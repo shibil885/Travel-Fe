@@ -16,7 +16,6 @@ export class AuthService {
     loginData: { email: string; password: string },
     role: 'admin' | 'agency' | 'user'
   ) {
-    console.info('URL:', this._BASE_URL);
     const endpoints: { [key in 'admin' | 'agency' | 'user']: string } = {
       admin: `${this._api}/auth/admin`,
       agency: `${this._api}/auth/agency`,
@@ -60,8 +59,6 @@ export class AuthService {
     role: Role;
     id: string;
   }> {
-    console.info('URL from 000 env --->>:', import.meta.env);
-    console.info('URL --->>:', this._BASE_URL);
     const headers = new HttpHeaders().set('skip-loading', 'true');
     return this._http
       .post<{

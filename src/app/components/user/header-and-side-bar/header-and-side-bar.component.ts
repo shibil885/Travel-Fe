@@ -1,4 +1,4 @@
-import { Component, signal, HostListener } from '@angular/core';
+import { Component, signal, HostListener, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
@@ -13,10 +13,10 @@ import {
   animate,
   transition,
 } from '@angular/animations';
-import { MatDialog } from '@angular/material/dialog';
 import { INotification } from '../../../interfaces/notification.interface';
 import { NotificationService } from '../../../shared/services/notification.service';
 import { SocketService } from '../../../shared/services/socket/socket.service';
+import { UserService } from '../../../shared/services/user.service';
 
 @Component({
   selector: 'app-header-sidebar',
@@ -52,49 +52,92 @@ export class HeaderSidebarComponent {
 
   constructor(
     private store: Store,
+    private elementRef: ElementRef,
     private _notificationService: NotificationService,
-    private _socketService: SocketService
+    private _socketService: SocketService,
+    private _userService: UserService
   ) {}
 
   ngOnInit(): void {
-    this._socketService.bookingConfirmed().subscribe((res) => {
+    this._socketService.bookingConfirmed().subscribe(() => {
       this._fetchNotification();
     });
 
-    this._socketService.bookingCancelled().subscribe((res) => {
+    this._socketService.bookingCancelled().subscribe(() => {
       this._fetchNotification();
     });
 
     this._fetchNotification();
-
+    this._fetchUserData();
     this.store.select(selectUser).subscribe((user) => {
       this.user = user;
     });
+    document.addEventListener('click', this.onDocumentClick.bind(this));
+  }
+
+  ngOnDestroy(): void {
+    document.removeEventListener('click', this.onDocumentClick.bind(this));
   }
 
   private _fetchNotification() {
-    this._notificationService.getNotifications('user',false, 5).subscribe((res) => {
-      this.notifications = res.notifications;
-      this.notificationCount = res.notifications.length;
+    this._notificationService
+      .getNotifications('user', false, 5)
+      .subscribe((res) => {
+        this.notifications = res.notifications;
+        this.notificationCount = res.notifications.length;
+      });
+  }
+  private _fetchUserData() {
+    this._userService.getUserData().subscribe((res) => {
+      this.user = res.user;
     });
   }
 
-  markAsRead(notification: INotification): void {}
+  markAsRead(notification: INotification): void {
+    // Implement mark as read logic
+  }
 
   toggleSidebar() {
     this.isOpen.update((v) => !v);
+    if (this.isOpen()) {
+      this.isMenuOpen = false;
+      this.isModalOpen = false;
+    }
   }
 
-  toggleMenu() {
+  toggleMenu(event: Event) {
+    event.stopPropagation();
     this.isMenuOpen = !this.isMenuOpen;
+    if (this.isMenuOpen) {
+      this.isModalOpen = false;
+      this.isOpen.set(false);
+    }
+  }
+
+  closeMenu() {
+    this.isMenuOpen = false;
   }
 
   toggleModal() {
     this.isModalOpen = !this.isModalOpen;
+    if (this.isModalOpen) {
+      this.isMenuOpen = false;
+      this.isOpen.set(false);
+    }
   }
 
   closeModal() {
     this.isModalOpen = false;
+  }
+
+  onDocumentClick(event: MouseEvent) {
+    const target = event.target as HTMLElement;
+    const isClickInsideHeader = this.elementRef.nativeElement.contains(target);
+
+    if (!isClickInsideHeader) {
+      this.isMenuOpen = false;
+      this.isModalOpen = false;
+    }
   }
 
   @HostListener('window:resize', ['$event'])
