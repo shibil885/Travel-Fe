@@ -17,7 +17,7 @@ import { ToastService } from '../../../../shared/services/toaster.service';
 export class FeedbackComponent {
   @Input() booking: IBooking | null = null;
   @Output() closeModal = new EventEmitter<void>();
-  @Output() submitFeedbackEvent = new EventEmitter<any>();
+  @Output() submitFeedbackEvent = new EventEmitter();
 
   packageFeedback = {
     rating: 0,

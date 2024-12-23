@@ -50,23 +50,16 @@
                                         <span class="font-semibold text-gray-700">Description:</span> {{
                                         report.description }}
                                     </p>
+                                    <p class="text-xs font-medium text-gray-600" *ngIf="report.reviewComment">
+                                        <span class="font-semibold text-gray-700">review:</span> {{
+                                        report.reviewComment }}
+                                    </p>
                                 </div>
-                                <div class="flex justify-between items-center">
+                                <div class="flex justify-center items-center">
                                     <button (click)="viewReport(report._id, report.targetType, report.targetId)"
-                                        class="py-2 px-5 bg-indigo-600 text-white text-xs font-semibold rounded-lg shadow-md hover:bg-indigo-700 transition-all duration-200 focus:outline-none">
+                                        class="py-3 px-10 bg-indigo-600 text-white text-xs font-semibold rounded-lg shadow-md hover:bg-indigo-700 transition-all duration-200 focus:outline-none">
                                         View
                                     </button>
-
-                                    <div class="flex space-x-2">
-                                        <button *ngIf="report.status === 'pending'" (click)="reviewReport(report)"
-                                            class="py-2 px-5 bg-yellow-600 text-white text-xs font-semibold rounded-lg shadow-md hover:bg-yellow-700 transition-all duration-200 focus:outline-none">
-                                            Review
-                                        </button>
-                                        <button *ngIf="report.status === 'reviewed'" (click)="resolveReport(report)"
-                                            class="py-2 px-5 bg-green-600 text-white text-xs font-semibold rounded-lg shadow-md hover:bg-green-700 transition-all duration-200 focus:outline-none">
-                                            Resolve
-                                        </button>
-                                    </div>
                                 </div>
                             </div>
                         </div>

@@ -115,4 +115,20 @@ export class ReportService {
       withCredentials: true,
     });
   }
+
+  submitAdminReview(review: string, reportId: string) {
+    return this._http.post<{ success: boolean; message: string }>(
+      `${this._api}/addreview/${reportId}`,
+      { review },
+      { withCredentials: true }
+    );
+  }
+  
+  statusChange(status: string, reportId: string) {
+    return this._http.patch<{ success: boolean; message: string }>(
+      `${this._api}/changestatus/${reportId}`,
+      { status },
+      { withCredentials: true }
+    );
+  }
 }

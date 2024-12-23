@@ -101,10 +101,13 @@ export class ReportComponent {
       .getSingleReport(reportId, targetType, id)
       .subscribe((res) => {
         console.log('data of single report', res);
-        this._dialog.open(ReportDetailDialogComponent, {
+        const dialogRef = this._dialog.open(ReportDetailDialogComponent, {
           data: res.reportData,
           autoFocus: false,
         });
+        dialogRef.afterClosed().subscribe(() =>{
+          this._fetchAllReports()
+        })
       });
   }
 
