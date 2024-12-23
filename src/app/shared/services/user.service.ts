@@ -68,7 +68,7 @@ export class UserService {
   }
 
   uploadProfileImg(data: FormData) {
-    return this._http.patch(`${this._api}/user/profileImage-update`, data, {
+    return this._http.patch<{success: boolean, message: string}>(`${this._api}/user/profileImage-update`, data, {
       withCredentials: true,
       reportProgress: true,
       observe: 'events',

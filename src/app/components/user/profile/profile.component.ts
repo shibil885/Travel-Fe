@@ -127,7 +127,7 @@ export class ProfileComponent implements OnInit {
         this.progress = 0;
 
         this._userService.uploadProfileImg(formData).subscribe({
-          next: (event: HttpEvent<any>) => {
+          next: (event: HttpEvent<{ success: boolean; message: string }>) => {
             if (event.type === HttpEventType.UploadProgress && event.total) {
               this.progress = Math.round((100 * event.loaded) / event.total);
             } else if (event.type === HttpEventType.Response) {

@@ -5,7 +5,6 @@ declare interface Env {
   // Example: NGX_VERSION: string;
   readonly NG_APP_RAZORPAY_KEY_ID: string;
   readonly NG_APP_BASE_URL: string;
-  // [key: string]: any;
 }
 
 // Choose how to access the environment variables.
