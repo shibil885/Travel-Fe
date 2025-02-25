@@ -52,7 +52,6 @@ export class LoadingService {
   constructor(@Inject(PLATFORM_ID) private platformId: Object) {
     this.isServer = isPlatformServer(this.platformId);
 
-    // Set loading to true initially if running on the server
     if (this.isServer) {
       this._loading.next(true);
     }
@@ -63,9 +62,9 @@ export class LoadingService {
   }
 
   hideLoading() {
-    // Avoid unnecessary operations on the server
     if (!this.isServer) {
       this._loading.next(false);
     }
   }
 }
+  
