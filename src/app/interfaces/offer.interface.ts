@@ -16,3 +16,4 @@ export interface IOffer {
   updatedAt?: Date;
   packages?: IPackage;
 }
+  

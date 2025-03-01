@@ -19,6 +19,7 @@ import { ForgotPasswordFormComponent } from '../components/user/forgot-password/
 import { ChatComponent } from '../components/user/chat/chat.component';
 import { TravelHistoryComponent } from '../components/user/travel-history/travel-history.component';
 import { NotificationComponent } from '../components/user/notification/notification.component';
+import { AgenciesComponent } from '../components/user/agencies/agencies.component';
 
 export const userRouter: Routes = [
   {
@@ -128,6 +129,11 @@ export const userRouter: Routes = [
     path: 'notifications',
     component: NotificationComponent,
     canActivate: [authGuard],
+    data: { role: 'user' },
+  },
+  {
+    path: 'agencies',
+    component: AgenciesComponent,
     data: { role: 'user' },
   },
 ];

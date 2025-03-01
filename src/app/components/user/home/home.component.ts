@@ -6,11 +6,14 @@ import { PackageService } from '../../../shared/services/package.service';
 import { IOffer } from '../../../interfaces/offer.interface';
 import { DiscountType } from '../../../interfaces/coupon.interface';
 import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
+import { IReviewForPackage } from '../../../interfaces/rating-review-package.interface.ts';
+import { OfferType } from '../../../enum/offerType.enum';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [HeaderSidebarComponent, CommonModule, FormsModule],
+  imports: [HeaderSidebarComponent, CommonModule, FormsModule, RouterModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
 })
@@ -18,6 +21,7 @@ export class HomeComponent {
   offerPackages: IPackage[] = [];
   topBookedPackages: IPackage[] = [];
   name: string = 'travel';
+  selectedPackage: IPackage = this.offerPackages[0];
   constructor(private readonly _packageService: PackageService) {}
 
   ngOnInit(): void {
@@ -39,12 +43,6 @@ export class HomeComponent {
       }
     });
   }
-  getOfferPrice(offer: IOffer) {
-    if (offer.discount_type === DiscountType.FIXED) {
-      return `₹ ${offer.discount_value} OFF`;
-    }
-    return `${offer.percentage} % OFF`;
-  }
 
   getCurrentPrice(price: string, offer: IOffer) {
     if (offer.discount_type === DiscountType.FIXED) {
@@ -59,6 +57,24 @@ export class HomeComponent {
     }
     return `₹${Number(price)}`;
   }
+
+  getAverageRating(reviews: IReviewForPackage[]): number {
+    if (!reviews || reviews.length === 0) return 0;
+    const total = reviews.reduce(
+      (sum, review) => sum + +review.averageRating,
+      0
+    );
+    return total / reviews.length;
+  }
+
+  offer(offer: IOffer) {
+    if (offer.discount_type == DiscountType.FIXED) {
+      return `${offer.discount_value} OFF`;
+    }
+    return `${offer.percentage}% OFF`;
+  }
+
+
   topAgencies = [
     {
       name: 'Wanderlust Adventures',

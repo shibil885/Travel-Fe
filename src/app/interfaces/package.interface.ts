@@ -32,4 +32,5 @@ export interface IPackage {
   categoryId: ICategory[];
   agency: IAgency[];
   bookings: IBooking[];
+  bookingsCount?: number
 }

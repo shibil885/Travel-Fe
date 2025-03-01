@@ -2,8 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, map, Observable, tap, throwError } from 'rxjs';
 import { IAgency } from '../../models/agency.model';
-import { Router } from '@angular/router';
-import { AuthService } from '../../auth/service/service.service';
 
 @Injectable({
   providedIn: 'root',
@@ -11,11 +9,7 @@ import { AuthService } from '../../auth/service/service.service';
 export class AgencyService {
   private readonly _BASE_URL = import.meta.env.NG_APP_BASE_URL;
   private _api = this._BASE_URL;
-  constructor(
-    private _http: HttpClient,
-    private _authService: AuthService,
-    private _router: Router
-  ) {}
+  constructor(private _http: HttpClient) {}
 
   findEmail(email: string) {
     return this._http
@@ -55,6 +49,12 @@ export class AgencyService {
         })
       );
   }
+
+  findAgencies() {
+    return this._http
+      .get(`${this._api}/agency`, { withCredentials: true })
+      .pipe(map((data) => data as IAgency[]));
+  }
   isConfirmed() {
     return this._http
       .get<{ isConfirmed: boolean }>(`${this._api}/agency/isConfirmed`, {
@@ -80,10 +80,7 @@ export class AgencyService {
       { withCredentials: true }
     );
   }
-  verifyOtp(formData: {
-    otp: string;
-    email: string | null | undefined;
-  }) {
+  verifyOtp(formData: { otp: string; email: string | null | undefined }) {
     return this._http.post<{
       agency: IAgency;
       message: string;
