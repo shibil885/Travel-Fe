@@ -94,6 +94,15 @@
                 </button>
             </div>
         </form>
+
+        <!-- Add Agency login link here -->
+        <div class="mt-4 text-center">
+            <p class="text-sm text-gray-600">
+                Are you an agency?
+                <a href="#" class="font-medium text-gray-600 hover:text-gray-500" [routerLink]="['/agency/login']">
+                    Login as Agency </a>
+            </p>
+        </div>
     </div>
     <app-otp *ngIf="renderOtp$ | async"></app-otp>
 </main>

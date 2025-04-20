@@ -32,7 +32,8 @@
         </div>
         <div class="flex items-center justify-between">
           <div class="text-sm">
-            <a  [routerLink]="[ '/forgotPassword' ]" class="font-medium text-gray-600 hover:text-gray-500"> Forgot your password? </a>
+            <a [routerLink]="[ '/forgotPassword' ]" class="font-medium text-gray-600 hover:text-gray-500"> Forgot your
+              password? </a>
           </div>
         </div>
       </div>
@@ -47,6 +48,15 @@
           Don't have an account? <a href="#" class="font-medium text-gray-600 hover:text-gray-500"
             [routerLink]="[ '/signup' ]"> Sign up </a>
         </p>
+      </div>
+
+      <div class="mt-4 text-center">
+        <p class="text-sm text-gray-600">
+          Are you an agency?
+          <a href="#" class="font-medium text-gray-600 hover:text-gray-500" [routerLink]="['/agency/login']"> Login as
+            Agency </a>
+        </p>
+
       </div>
     </form>
   </div>

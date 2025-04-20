@@ -1,0 +1,42 @@
+<div class="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+    <div class="w-full max-w-lg rounded-2xl bg-white shadow-2xl p-8 mx-4">
+        <!-- Header -->
+        <div class="text-center space-y-1 mb-6">
+            <h2 class="text-3xl font-bold text-gray-800">Welcome Back</h2>
+            <p class="text-base text-gray-500">
+                Sign in to your account or create a new one
+            </p>
+        </div>
+
+        <!-- Buttons -->
+        <div class="grid gap-4">
+            <!-- Login Button -->
+            <a href="/login"
+                class="group relative flex h-12 items-center justify-center gap-2 rounded-lg border border-gray-300 text-gray-700 hover:border-indigo-500 hover:text-indigo-600 transition">
+                <svg class="h-5 w-5 text-gray-400 group-hover:text-indigo-500" fill="none" stroke="currentColor"
+                    stroke-width="2" viewBox="0 0 24 24">
+                    <path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4" />
+                    <path d="M10 17l5-5-5-5M15 12H3" />
+                </svg>
+                <span class="text-base font-medium">Login to Your Account</span>
+                <svg class="absolute right-4 h-5 w-5 opacity-0 translate-x-3 group-hover:translate-x-0 group-hover:opacity-100 transition-transform duration-300"
+                    fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+            </a>
+
+            <!-- Signup Button -->
+            <a href="/signup"
+                class="group relative flex h-12 items-center justify-center gap-2 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 transition">
+                <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path d="M12 4v16m8-8H4" />
+                </svg>
+                <span class="text-base font-medium">Create New Account</span>
+                <svg class="absolute right-4 h-5 w-5 opacity-0 translate-x-3 group-hover:translate-x-0 group-hover:opacity-100 transition-transform duration-300"
+                    fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+            </a>
+        </div>
+    </div>
+</div>

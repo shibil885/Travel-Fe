@@ -6,7 +6,6 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { RouterLink } from '@angular/router';
 import {
   confirmPasswordValidator,
   lowerCase,
@@ -25,10 +24,11 @@ import {
   selectRenderOtpUser,
 } from '../../../store/user/user.selector';
 import * as userActions from '../../../store/user/user.action';
+import { RouterLink } from '@angular/router';
 @Component({
   selector: 'app-signup',
   standalone: true,
-  imports: [OtpComponent,  ReactiveFormsModule, CommonModule],
+  imports: [OtpComponent,  ReactiveFormsModule, CommonModule, RouterLink],
   templateUrl: './signup.component.html',
   styleUrl: './signup.component.css',
 })
