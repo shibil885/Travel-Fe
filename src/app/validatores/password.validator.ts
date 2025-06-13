@@ -1,34 +1,40 @@
-import { AbstractControl, ValidationErrors, ValidatorFn } from "@angular/forms";
+import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 
-export const upperCase = (control: AbstractControl): ValidationErrors | null => {
-    if ( typeof control.value === 'string' && !(/[A-Z]/).test(control.value)) {
-        return { upperCase: true }
-    }
-    return null
-}
-export const lowerCase = (control: AbstractControl): ValidationErrors | null => {
-    if ( typeof control.value === 'string' && !(/[a-z]/).test(control.value)) {
-        return { lowerCase: true }
-    }
-    return null
-}
+export const upperCase = (
+  control: AbstractControl
+): ValidationErrors | null => {
+  if (typeof control.value === 'string' && !/[A-Z]/.test(control.value)) {
+    return { upperCase: true };
+  }
+  return null;
+};
+export const lowerCase = (
+  control: AbstractControl
+): ValidationErrors | null => {
+  if (typeof control.value === 'string' && !/[a-z]/.test(control.value)) {
+    return { lowerCase: true };
+  }
+  return null;
+};
 export const noDigit = (control: AbstractControl): ValidationErrors | null => {
-    if ( typeof control.value === 'string' && !(/\d/).test(control.value)) {
-        return { noDigit: true }
-    }
-    return null
-}
-export const specialChar = (control: AbstractControl): ValidationErrors | null => {
-    if ( typeof control.value === 'string' && !(/[@$!%*?&]/).test(control.value)) {
-        return { specialChar: true }
-    }
-    return null
-}
+  if (typeof control.value === 'string' && !/\d/.test(control.value)) {
+    return { noDigit: true };
+  }
+  return null;
+};
+export const specialChar = (
+  control: AbstractControl
+): ValidationErrors | null => {
+  if (typeof control.value === 'string' && !/[@$!%*?&]/.test(control.value)) {
+    return { specialChar: true };
+  }
+  return null;
+};
 
-export function confirmPasswordValidator(password: string, confirmPassword: string): ValidatorFn {
-  console.log('new', password);
-  console.log('confirm', confirmPassword);
-  
+export function confirmPasswordValidator(
+  password: string,
+  confirmPassword: string
+): ValidatorFn {
   return (formGroup: AbstractControl): ValidationErrors | null => {
     const passwordControl = formGroup.get(password);
     const confirmPasswordControl = formGroup.get(confirmPassword);
@@ -37,7 +43,10 @@ export function confirmPasswordValidator(password: string, confirmPassword: stri
       return null;
     }
 
-    if (confirmPasswordControl.errors && !confirmPasswordControl.errors['passwordMismatch']) {
+    if (
+      confirmPasswordControl.errors &&
+      !confirmPasswordControl.errors['passwordMismatch']
+    ) {
       return null;
     }
 
