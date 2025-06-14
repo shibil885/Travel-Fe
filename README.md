@@ -30,3 +30,5 @@ git clone https://github.com/shibil885/Travel-fe.git
 cd Travel-fe
 npm install
 ng serve
+
+⚠️ Backend should be running at the same time
