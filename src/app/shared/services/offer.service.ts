@@ -8,7 +8,7 @@ import { IPackage } from '../../interfaces/package.interface';
   providedIn: 'root',
 })
 export class OfferService {
-  private readonly _BASE_URL = import.meta.env.NG_APP_BASE_URL;
+  private readonly _BASE_URL = 'https:travelapi.anine.site';
   private readonly _api = `${this._BASE_URL}/offers`;
   constructor(private readonly _http: HttpClient) {}
 

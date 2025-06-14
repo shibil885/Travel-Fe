@@ -9,7 +9,7 @@ import { IPackage } from '../../../interfaces/package.interface';
   providedIn: 'root',
 })
 export class SocketService {
-  private readonly _BASE_URL = import.meta.env.NG_APP_BASE_URL;
+  private readonly _BASE_URL = 'https:travelapi.anine.site';
   private _socket: Socket;
 
   constructor() {

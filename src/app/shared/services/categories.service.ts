@@ -8,7 +8,7 @@ import { FormGroup } from '@angular/forms';
   providedIn: 'root',
 })
 export class CategoryService {
-  private readonly _BASE_URL = import.meta.env.NG_APP_BASE_URL;
+  private readonly _BASE_URL = 'https:travelapi.anine.site';
   private _api = `${this._BASE_URL}/category`;
 
   constructor(private _http: HttpClient) {}

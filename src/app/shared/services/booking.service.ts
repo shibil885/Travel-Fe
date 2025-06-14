@@ -11,7 +11,7 @@ import { TravelStatus } from '../../enum/travelStatus.enum';
   providedIn: 'root',
 })
 export class BookingService {
-  private readonly _BASE_URL = import.meta.env.NG_APP_BASE_URL;
+  private readonly _BASE_URL = 'https:travelapi.anine.site';
   private _api = this._BASE_URL;
   constructor(private _http: HttpClient) {}
 

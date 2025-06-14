@@ -8,7 +8,7 @@ import { IReport } from '../../../interfaces/report.interface';
   providedIn: 'root',
 })
 export class ReportService {
-  private readonly _BASE_URL = import.meta.env.NG_APP_BASE_URL;
+  private readonly _BASE_URL = 'https:travelapi.anine.site';
   private readonly _api = `${this._BASE_URL}/report`;
   constructor(private _http: HttpClient) {}
 

@@ -86,7 +86,7 @@ export class BookingComponent {
   selectedCouponId: string = '';
   invalidForm: boolean = false;
   proceedPayment = false;
-  private _RAZORPAY_KEY_ID = import.meta.env.NG_APP_RAZORPAY_KEY_ID;
+  private _RAZORPAY_KEY_ID = 'rzp_test_ihsNz6lracNIu3';
   private _subcriptions = new Subscription();
   constructor(
     private _fb: FormBuilder,
