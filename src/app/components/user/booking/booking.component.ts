@@ -295,7 +295,7 @@ export class BookingComponent {
           this.orderId$.subscribe((orderId) => (this.orderId = orderId));
 
           const options: any = {
-            key_id: 'rzp_test_ihsNz6lracNIu3',
+            key: 'rzp_test_ihsNz6lracNIu3',
             amount: this.amount,
             currency: this.currency,
             name: 'Travel',
@@ -321,7 +321,7 @@ export class BookingComponent {
               },
             },
           };
-          console.log('options',options);
+          console.log('options', options);
           const razorpay = new Razorpay(options) as any;
 
           razorpay.on('payment.failed', (response: any) => {
