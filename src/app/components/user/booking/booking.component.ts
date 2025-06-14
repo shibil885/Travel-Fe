@@ -269,6 +269,11 @@ export class BookingComponent {
     this.selectedCouponId = '';
   }
 
+  private _handlePaymentFailure(message: string, error?: any) {
+    this._toastService.showToast(message, 'error');
+    console.log('Payment Error Details:', error);
+  }
+
   async onSubmit() {
     if (this.bookingForm.invalid) {
       this.invalidForm = true;
@@ -288,7 +293,8 @@ export class BookingComponent {
           this.amount$.subscribe((amount) => (this.amount = amount));
           this.currency$.subscribe((currency) => (this.currency = currency));
           this.orderId$.subscribe((orderId) => (this.orderId = orderId));
-          const options = {
+
+          const options: any = {
             key_id: 'rzp_test_ihsNz6lracNIu3',
             amount: this.amount,
             currency: this.currency,
@@ -308,14 +314,23 @@ export class BookingComponent {
             theme: {
               color: '#6196cc',
             },
+            modal: {
+              ondismiss: () => {
+                console.warn('User closed Razorpay popup ❌');
+                this._handlePaymentFailure('Payment cancelled by user');
+              },
+            },
           };
-          console.log('razor pay initiated 1');
-          const razorpay = new Razorpay(options);
-          console.log('razor pay initiated 2');
+
+          const razorpay = new Razorpay(options) as any;
+
+          razorpay.on('payment.failed', (response: any) => {
+            console.error('Payment failed ❌', response);
+            this._handlePaymentFailure('Payment failed', response);
+          });
+
           razorpay.open();
-          console.log('razor pay initiated 3');
         }
-        return;
       })
     );
   }
