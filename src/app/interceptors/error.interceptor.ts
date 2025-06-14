@@ -54,6 +54,7 @@ import { throwError } from 'rxjs';
 import { ToastService } from '../shared/services/toaster.service';
 
 export const errorInterceptorFn: HttpInterceptorFn = (req, next) => {
+  console.log('req:', req);
   const loadingService = inject(LoadingService);
   const toastService = inject(ToastService);
   const skipLoding = req.headers.get('skip-loading');
