@@ -82,7 +82,6 @@ export const UserReducer = createReducer(
     };
   }),
   on(userActions.resendOtpSuccess, (state, { user }) => {
-    console.log('user from reducer', user);
     const updateed = { ...state.user, ...user };
     return {
       ...state,
@@ -156,7 +155,6 @@ export const UserReducer = createReducer(
         price = price * (Number(offer.percentage) / 100);
       }
     }
-    console.log('price after reduce offer price', price);
     if (state.coupons) {
       const coupon = state.coupons.find((coupon) => coupon._id === id);
 
@@ -166,24 +164,19 @@ export const UserReducer = createReducer(
           coupon.discount_value
         ) {
           price = price - coupon.discount_value;
-          console.log('price after reduce fixed coupon price', price);
         } else if (
           coupon.discount_type === DiscountType.PERCENTAGE &&
           coupon.percentage
         ) {
           let discount = (price * coupon.percentage) / 100;
-          console.log('dicount', discount);
-          console.log('max', coupon.maxAmt);
           if (coupon.maxAmt && discount > coupon.maxAmt) {
             price = price - coupon.maxAmt;
           } else {
             price = price - discount;
           }
-          console.log('price after reduce percentage coupon price', price);
         }
       }
     }
-    console.log('last price', price);
     return {
       ...state,
       price: price <= 50 ? 50 : price,

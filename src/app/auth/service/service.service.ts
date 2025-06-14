@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
   providedIn: 'root',
 })
 export class AuthService {
-  private _BASE_URL = 'https:travelapi.anine.site';
+  private _BASE_URL = 'https://travelapi.anine.site';
   private readonly _api = this._BASE_URL;
   constructor(private _http: HttpClient, private readonly _router: Router) {}
 

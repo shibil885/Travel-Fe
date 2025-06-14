@@ -7,7 +7,7 @@ import { takeUntil } from 'rxjs';
   providedIn: 'root',
 })
 export class CouponService {
-  private readonly _BASE_URL = 'https:travelapi.anine.site';
+  private readonly _BASE_URL = 'https://travelapi.anine.site';
   private _api = `${this._BASE_URL}/coupon`;
 
   constructor(private _http: HttpClient) {}

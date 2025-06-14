@@ -12,7 +12,7 @@ import { BookingTrend } from '../../../../interfaces/bookingTrend.interface';
   providedIn: 'root',
 })
 export class AdminDashboardService {
-  private readonly _BASE_URL = 'https:travelapi.anine.site';
+  private readonly _BASE_URL = 'https://travelapi.anine.site';
   private _api = this._BASE_URL;
   constructor(private _http: HttpClient) {}
 
@@ -91,6 +91,5 @@ export class AdminDashboardService {
         params,
         withCredentials: true,
       })
-      .pipe(tap((res) => console.log('data to the graph -->', res)));
   }
 }

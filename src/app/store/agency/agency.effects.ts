@@ -64,7 +64,6 @@ export class AgencyEffect {
             });
           }),
           catchError((error) => {
-            console.log('from catch error', error);
             return of(agencyActions.agencySignupError(error.error.message));
           })
         )
@@ -92,8 +91,7 @@ export class AgencyEffect {
     () =>
       this._actions$.pipe(
         ofType(agencyActions.agencySignupSuccess),
-        tap((response) => {
-          console.log();
+        tap(() => {
           this._router.navigate(['/agency/home']);
         })
       ),

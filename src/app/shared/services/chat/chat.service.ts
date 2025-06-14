@@ -11,7 +11,7 @@ import { IMessage } from '../../../interfaces/message.interface';
   providedIn: 'root',
 })
 export class ChatService {
-  private readonly _BASE_URL = 'https:travelapi.anine.site';
+  private readonly _BASE_URL = 'https://travelapi.anine.site';
   private readonly _api = `${this._BASE_URL}/chat`;
   constructor(private _http: HttpClient) {}
 

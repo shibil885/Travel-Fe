@@ -25,7 +25,6 @@ export class AdminEffects {
             })
           ),
           catchError((error) => {
-            console.log(error);
             return of(
               adminActions.adminLoginError({ error: error.error.message })
             );

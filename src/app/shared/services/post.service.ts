@@ -7,7 +7,7 @@ import { IPost } from '../../interfaces/post.interface';
   providedIn: 'root',
 })
 export class PostService {
-  private readonly _BASE_URL = 'https:travelapi.anine.site';
+  private readonly _BASE_URL = 'https://travelapi.anine.site';
   private readonly _api = `${this._BASE_URL}/posts`;
   constructor(private readonly _http: HttpClient) {}
 

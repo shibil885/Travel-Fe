@@ -50,7 +50,6 @@ export class UserEffect {
       this._actions$.pipe(
         ofType(userActions.userLoginSuccess),
         tap(() => {
-          console.log('entered to home');
           this._router.navigate(['/home']);
         })
       ),
@@ -61,7 +60,6 @@ export class UserEffect {
     this._actions$.pipe(
       ofType(userActions.userSignup),
       switchMap(({ userdata }) => {
-        console.log('user data from effect', userdata);
         return this._userService.registerUser(userdata).pipe(
           map((response) => {
             return userActions.otpRenderFromSignup({
@@ -69,7 +67,6 @@ export class UserEffect {
             });
           }),
           catchError((error) => {
-            console.log('from catch error', error);
             return of(userActions.userSignupError(error.error.message));
           })
         );
@@ -81,7 +78,6 @@ export class UserEffect {
     this._actions$.pipe(
       ofType(userActions.submitOtp),
       switchMap((data) => {
-        console.log('submitted data from effect', data);
         return this._userService
           .verifyOtpUser({ otp: data.otp, email: data.email })
           .pipe(
@@ -111,10 +107,8 @@ export class UserEffect {
     this._actions$.pipe(
       ofType(userActions.resendOtp),
       switchMap((data) => {
-        console.log('resend otp data from effect', data);
         return this._userService.resendOtp({ email: data.email }).pipe(
           map((res) => {
-            console.log('user from effect', res);
             return userActions.resendOtpSuccess({ user: res.user });
           }),
           catchError((error) => {
@@ -280,9 +274,7 @@ export class UserEffect {
       this._actions$.pipe(
         ofType(userActions.verifyPaymentSuccess),
         tap(() => {
-          console.log('payment success listern from effect');
-          console.log('log from ng zone');
-          this._router.navigate(['/packages']);
+           this._router.navigate(['/packages']);
         })
       ),
     { dispatch: false }

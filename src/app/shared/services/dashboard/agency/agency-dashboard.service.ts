@@ -6,7 +6,7 @@ import { IBooking } from '../../../../interfaces/booking.interface';
   providedIn: 'root',
 })
 export class AgencyDashboardService {
-  private readonly _BASE_URL = 'https:travelapi.anine.site';
+  private readonly _BASE_URL = 'https://travelapi.anine.site';
   private readonly _api = `${this._BASE_URL}/agency-dashboard`;
   constructor(private readonly _http: HttpClient) {}
 
