@@ -321,7 +321,7 @@ export class BookingComponent {
               },
             },
           };
-
+          console.log('options',options);
           const razorpay = new Razorpay(options) as any;
 
           razorpay.on('payment.failed', (response: any) => {
