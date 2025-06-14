@@ -289,7 +289,7 @@ export class BookingComponent {
           this.currency$.subscribe((currency) => (this.currency = currency));
           this.orderId$.subscribe((orderId) => (this.orderId = orderId));
           const options = {
-            key_id: this._RAZORPAY_KEY_ID,
+            key_id: 'rzp_test_ihsNz6lracNIu3',
             amount: this.amount,
             currency: this.currency,
             name: 'Travel',
