@@ -6,12 +6,13 @@ import { FilterData } from '../../interfaces/filterData.interface';
 import { IAgency } from '../../models/agency.model';
 import { IUser } from '../../models/user.model';
 import { ICategory } from '../../interfaces/category.interface';
+import { environment } from '../../../Environment/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AdminService {
-  private readonly _BASE_URL = import.meta.env.NG_APP_BASE_URL;
+  private readonly _BASE_URL = environment.apiUrl;
   private api = this._BASE_URL;
 
   constructor(private _http: HttpClient) {}

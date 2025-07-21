@@ -4,12 +4,13 @@ import { catchError, map, Observable, tap, throwError } from 'rxjs';
 import { IAgency } from '../../models/agency.model';
 import { Router } from '@angular/router';
 import { AuthService } from '../../auth/service/service.service';
+import { environment } from '../../../Environment/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AgencyService {
-  private readonly _BASE_URL = import.meta.env.NG_APP_BASE_URL;
+  private readonly _BASE_URL = environment.apiUrl;
   private _api = this._BASE_URL;
   constructor(
     private _http: HttpClient,

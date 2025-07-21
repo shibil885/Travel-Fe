@@ -2,12 +2,13 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { IPost } from '../../interfaces/post.interface';
+import { environment } from '../../../Environment/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PostService {
-  private readonly _BASE_URL = import.meta.env.NG_APP_BASE_URL;
+  private readonly _BASE_URL = environment.apiUrl;
   private readonly _api = `${this._BASE_URL}/posts`;
   constructor(private readonly _http: HttpClient) {}
 

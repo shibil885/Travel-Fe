@@ -125,6 +125,7 @@ export const initiatePaymentSuccess = createAction(
     amount: number;
     currency: string;
     orderId: string;
+    key_id: string;
   }>()
 );
 

@@ -3,12 +3,13 @@ import { Injectable } from '@angular/core';
 import { catchError, Observable, of, tap } from 'rxjs';
 import { Role } from '../../enum/role.enum';
 import { Router } from '@angular/router';
+import { environment } from '../../../Environment/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private _BASE_URL = import.meta.env.NG_APP_BASE_URL;
+  private _BASE_URL = environment.apiUrl;
   private readonly _api = this._BASE_URL;
   constructor(private _http: HttpClient, private readonly _router: Router) {}
 

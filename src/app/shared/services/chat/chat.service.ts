@@ -6,12 +6,13 @@ import { IChat } from '../../../interfaces/chat.interface';
 import { tap } from 'rxjs';
 import { IUser } from '../../../models/user.model';
 import { IMessage } from '../../../interfaces/message.interface';
+import { environment } from '../../../../Environment/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ChatService {
-  private readonly _BASE_URL = import.meta.env.NG_APP_BASE_URL;
+  private readonly _BASE_URL = environment.apiUrl;
   private readonly _api = `${this._BASE_URL}/chat`;
   constructor(private _http: HttpClient) {}
 

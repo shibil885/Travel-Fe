@@ -3,12 +3,13 @@ import { Injectable } from '@angular/core';
 import { IOffer } from '../../interfaces/offer.interface';
 import { FormBuilder } from '@angular/forms';
 import { IPackage } from '../../interfaces/package.interface';
+import { environment } from '../../../Environment/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class OfferService {
-  private readonly _BASE_URL = import.meta.env.NG_APP_BASE_URL;
+  private readonly _BASE_URL = environment.apiUrl;
   private readonly _api = `${this._BASE_URL}/offers`;
   constructor(private readonly _http: HttpClient) {}
 

@@ -5,13 +5,13 @@ import { TravelConfirmationStatus } from '../../enum/travelConfirmation.enum';
 import { FormGroup } from '@angular/forms';
 import { IAgencyBookingData } from '../../interfaces/agencyBookingsData.interface';
 import { IPackage } from '../../interfaces/package.interface';
-import { TravelStatus } from '../../enum/travelStatus.enum';
+import { environment } from '../../../Environment/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class BookingService {
-  private readonly _BASE_URL = import.meta.env.NG_APP_BASE_URL;
+  private readonly _BASE_URL = environment.apiUrl;
   private _api = this._BASE_URL;
   constructor(private _http: HttpClient) {}
 
@@ -21,6 +21,7 @@ export class BookingService {
       amount: number;
       currency: string;
       id: string;
+      key_id: string;
     }>(
       `${this._api}/payment/create-order/`,
       { packageId, couponId },

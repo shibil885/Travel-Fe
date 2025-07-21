@@ -4,12 +4,13 @@ import { IMessage } from '../../../interfaces/message.interface';
 import { Observable } from 'rxjs';
 import { INotification } from '../../../interfaces/notification.interface';
 import { IPackage } from '../../../interfaces/package.interface';
+import { environment } from '../../../../Environment/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SocketService {
-  private readonly _BASE_URL = import.meta.env.NG_APP_BASE_URL;
+  private readonly _BASE_URL = environment.apiUrl;
   private _socket: Socket;
 
   constructor() {

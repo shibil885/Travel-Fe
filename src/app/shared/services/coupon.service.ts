@@ -2,12 +2,13 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ICoupon } from '../../interfaces/coupon.interface';
 import { takeUntil } from 'rxjs';
+import { environment } from '../../../Environment/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CouponService {
-  private readonly _BASE_URL = import.meta.env.NG_APP_BASE_URL;
+  private readonly _BASE_URL = environment.apiUrl;
   private _api = `${this._BASE_URL}/coupon`;
 
   constructor(private _http: HttpClient) {}

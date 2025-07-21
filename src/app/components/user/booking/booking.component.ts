@@ -17,6 +17,7 @@ import {
   selectCoupons,
   selectCurrency,
   selectError,
+  selectKey_id,
   selectMessage,
   selectOrderId,
   selectPackage,
@@ -77,16 +78,17 @@ export class BookingComponent {
   orderId$: Observable<string> = this._store.select(selectOrderId);
   success$: Observable<boolean> = this._store.select(selectSuccess);
   message$: Observable<string> = this._store.select(selectMessage);
+  key_id$: Observable<string> = this._store.select(selectKey_id);
   error$: Observable<string> = this._store.select(selectError);
   amount!: number;
   currency!: string;
   orderId!: string;
+  key!: string;
   discoundedPrice: number = 0;
   discount: number = 0;
   selectedCouponId: string = '';
   invalidForm: boolean = false;
   proceedPayment = false;
-  private _RAZORPAY_KEY_ID = import.meta.env.NG_APP_RAZORPAY_KEY_ID;
   private _subcriptions = new Subscription();
   constructor(
     private _fb: FormBuilder,
@@ -288,8 +290,9 @@ export class BookingComponent {
           this.amount$.subscribe((amount) => (this.amount = amount));
           this.currency$.subscribe((currency) => (this.currency = currency));
           this.orderId$.subscribe((orderId) => (this.orderId = orderId));
+          this.key_id$.subscribe((key) => (this.key = key));
           const options = {
-            key_id: this._RAZORPAY_KEY_ID,
+            key_id: this.key,
             amount: this.amount,
             currency: this.currency,
             name: 'Travel',
@@ -309,11 +312,8 @@ export class BookingComponent {
               color: '#6196cc',
             },
           };
-          console.log('razor pay initiated 1');
           const razorpay = new Razorpay(options);
-          console.log('razor pay initiated 2');
           razorpay.open();
-          console.log('razor pay initiated 3');
         }
         return;
       })

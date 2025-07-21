@@ -90,7 +90,6 @@ export const errorInterceptorFn: HttpInterceptorFn = (req, next) => {
           error.error.info ? 'info' : 'error'
         );
       } else {
-        console.log('interceptor else --> ', error.error);
         toastService.showToast(
           `${error.error.message || 'An error occurred.'}`,
           error.error.warning ? 'warning' : error.error.info ? 'info' : 'error'

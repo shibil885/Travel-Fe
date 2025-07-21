@@ -5,12 +5,13 @@ import { IUser } from '../../models/user.model';
 import { IPackage } from '../../interfaces/package.interface';
 import { AuthService } from '../../auth/service/service.service';
 import { FormGroup } from '@angular/forms';
+import { environment } from '../../../Environment/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
-  private readonly _BASE_URL = import.meta.env.NG_APP_BASE_URL;
+  private readonly _BASE_URL = environment.apiUrl;
   private readonly _api = this._BASE_URL;
   constructor(private _http: HttpClient, private _authService: AuthService) {}
 

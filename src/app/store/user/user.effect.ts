@@ -61,7 +61,6 @@ export class UserEffect {
     this._actions$.pipe(
       ofType(userActions.userSignup),
       switchMap(({ userdata }) => {
-        console.log('user data from effect', userdata);
         return this._userService.registerUser(userdata).pipe(
           map((response) => {
             return userActions.otpRenderFromSignup({
@@ -69,7 +68,6 @@ export class UserEffect {
             });
           }),
           catchError((error) => {
-            console.log('from catch error', error);
             return of(userActions.userSignupError(error.error.message));
           })
         );
@@ -237,6 +235,7 @@ export class UserEffect {
               amount: response.amount,
               currency: response.currency,
               orderId: response.id,
+              key_id: response.key_id,
             })
           )
         )

@@ -7,12 +7,13 @@ import { AgencyFilter } from '../../../../enum/agency-filter.enum';
 import { PackageFilter } from '../../../../enum/package-filter.enum';
 import { IBooking } from '../../../../interfaces/booking.interface';
 import { BookingTrend } from '../../../../interfaces/bookingTrend.interface';
+import { environment } from '../../../../../Environment/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AdminDashboardService {
-  private readonly _BASE_URL = import.meta.env.NG_APP_BASE_URL;
+  private readonly _BASE_URL = environment.apiUrl;
   private _api = this._BASE_URL;
   constructor(private _http: HttpClient) {}
 

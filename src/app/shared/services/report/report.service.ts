@@ -3,12 +3,13 @@ import { Observable, of } from 'rxjs';
 import { IReportData } from '../../../interfaces/reportData.interface';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { IReport } from '../../../interfaces/report.interface';
+import { environment } from '../../../../Environment/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ReportService {
-  private readonly _BASE_URL = import.meta.env.NG_APP_BASE_URL;
+  private readonly _BASE_URL = environment.apiUrl;
   private readonly _api = `${this._BASE_URL}/report`;
   constructor(private _http: HttpClient) {}
 
