@@ -242,7 +242,6 @@ export class BookingComponent {
         );
       }
       this.price$.subscribe((result) => {
-        console.log('pric from ts file', result);
         this.discoundedPrice = result;
         this.discount = Number(this.packageDetails.price) - result;
         this.selectedCouponId = id;
@@ -292,7 +291,7 @@ export class BookingComponent {
           this.orderId$.subscribe((orderId) => (this.orderId = orderId));
           this.key_id$.subscribe((key) => (this.key = key));
           const options = {
-            key_id: this.key,
+            key_id: this.key || 'rzp_test_ihsNz6lracNIu3',
             amount: this.amount,
             currency: this.currency,
             name: 'Travel',
