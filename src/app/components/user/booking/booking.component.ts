@@ -291,7 +291,7 @@ export class BookingComponent {
           this.orderId$.subscribe((orderId) => (this.orderId = orderId));
           this.key_id$.subscribe((key) => (this.key = key));
           const options = {
-            key_id: this.key || 'rzp_test_ihsNz6lracNIu3',
+            key_id: 'rzp_test_ihsNz6lracNIu3',
             amount: this.amount,
             currency: this.currency,
             name: 'Travel',
