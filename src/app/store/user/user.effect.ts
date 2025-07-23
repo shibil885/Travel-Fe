@@ -235,7 +235,7 @@ export class UserEffect {
               amount: response.amount,
               currency: response.currency,
               orderId: response.id,
-              key_id: response.key_id,
+              key_id: 'rzp_test_ihsNz6lracNIu3',
             })
           )
         )
