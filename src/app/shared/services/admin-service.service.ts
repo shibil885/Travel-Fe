@@ -1,13 +1,12 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
-import { IAgency } from '../../models/agency.model';
-import { IUser } from '../../models/user.model';
+import { catchError, map } from 'rxjs/operators';
 import { ICategory } from '../../interfaces/common/category.interface';
 import { environment } from '../../../Environment/environment';
 import { AllAgencyRespose, ApiResponse, FilterData } from '../../interfaces';
 import { AllUsersReposnse } from '../../interfaces/user/response/users.interface';
+import { AgencyStatusUpdationResponse } from '../../interfaces/agency/response/statusUpdate.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -24,7 +23,7 @@ export class AdminService {
       .set('limit', limit.toString());
 
     return this._http.get<ApiResponse<AllAgencyRespose>>(
-      `${this.api}/admin/agencies`,
+      `${this.api}/admin/agency`,
       {
         params,
         withCredentials: true,
@@ -60,15 +59,18 @@ export class AdminService {
         })
       );
   }
+
   changeUserStatus(
     id: string,
     status: string
   ): Observable<{ message: string; success: boolean }> {
+    const headers = new HttpHeaders().set('skip-loading', 'true');
+
     return this._http
       .patch<{ message: string; success: boolean }>(
         `${this.api}/admin/changeUserStatus/${id}`,
         { status },
-        { withCredentials: true }
+        { withCredentials: true, headers }
       )
       .pipe(
         map((data) => data),
@@ -80,35 +82,25 @@ export class AdminService {
         })
       );
   }
-  changeAgencyStatus(
-    id: string,
-    status: string
-  ): Observable<{ message: string; success: boolean }> {
-    return this._http
-      .patch<{ message: string; success: boolean }>(
-        `${this.api}/admin/changeAgencyStatus/${id}`,
-        { status },
-        { withCredentials: true }
-      )
-      .pipe(
-        map((data) => data),
-        catchError((error) => {
-          console.log('Error:', error);
-          return throwError(
-            () => new Error('Error while chage status of agency')
-          );
-        })
-      );
+  changeAgencyStatus(agencyId: string, status: string) {
+    const headers = new HttpHeaders().set('skip-loading', 'true');
+    return this._http.patch<ApiResponse<AgencyStatusUpdationResponse>>(
+      `${this.api}/admin/agency/${agencyId}`,
+      { status },
+      { withCredentials: true, headers }
+    );
   }
   confirmation(
     id: string,
     status: string
   ): Observable<{ message: string; success: boolean }> {
+    const headers = new HttpHeaders().set('skip-loading', 'true');
+
     return this._http
       .patch<{ message: string; success: boolean }>(
         `${this.api}/admin/confirmation/${id}`,
         { status },
-        { withCredentials: true }
+        { withCredentials: true, headers }
       )
       .pipe(
         map((data) => data),

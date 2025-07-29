@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AdminService } from '../../services/admin-service.service';
+import { ToastService } from '../../services/toaster.service';
 @Component({
   selector: 'app-show-details',
   standalone: true,
@@ -14,10 +15,12 @@ export class ShowDetailsComponent {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private _dialogRef: MatDialogRef<ShowDetailsComponent>,
-    private _adminService: AdminService
+    private _adminService: AdminService,
+    private _toasterService: ToastService
   ) {
     this.isUser = !!data.username;
   }
+
   toggleActive(id: string, isActiveValue: boolean) {
     const action = isActiveValue ? 'block' : 'unblock';
     if (this.isUser) {
@@ -26,8 +29,12 @@ export class ShowDetailsComponent {
       });
       return;
     }
-    this._adminService.changeAgencyStatus(id, action).subscribe(() => {
-      this.data.isActive = !this.data.isActive;
+    this._adminService.changeAgencyStatus(id, action).subscribe((res) => {
+      const data = res.data;
+      if (data && res.success) {
+        this._toasterService.showToast(res.message, 'success');
+        this.data.isActive = data.isActive;
+      }
     });
     return;
   }
