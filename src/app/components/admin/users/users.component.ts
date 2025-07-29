@@ -31,7 +31,6 @@ import { FilterData } from '../../../interfaces';
 export class UsersComponent {
   users: IUser[] = [];
   totalUsers: number = 0;
-  totalPages: number = 0;
   currentPage: number = 1;
   limit: number = 5;
 
@@ -57,10 +56,16 @@ export class UsersComponent {
     this._adminService
       .getAllUsers(page, this.limit)
       .subscribe((response) => {
-        this.users = response.users;
-        this.totalUsers = response.totalUsers;
-        this.totalPages = response.totalPages;
-        this.currentPage = response.currentPage;
+        const data = response.data
+        if (!data || !data.totalUsers) {
+          this.totalUsers = 0;
+          this.users = [];
+          return
+        }
+        this.totalUsers = data.totalUsers;
+        this.users = data.users;
+        this.currentPage = data.currentPage
+
       });
   }
 

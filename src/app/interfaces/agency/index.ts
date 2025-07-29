@@ -1,2 +1,2 @@
 export * from './login.interface';
-export * from './response/all-agency.interface';
+export * from './response/agencies.interface';

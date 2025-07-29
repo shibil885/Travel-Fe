@@ -7,6 +7,7 @@ import { IUser } from '../../models/user.model';
 import { ICategory } from '../../interfaces/common/category.interface';
 import { environment } from '../../../Environment/environment';
 import { AllAgencyRespose, ApiResponse, FilterData } from '../../interfaces';
+import { AllUsersReposnse } from '../../interfaces/user/response/users.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -22,24 +23,23 @@ export class AdminService {
       .set('page', page.toString())
       .set('limit', limit.toString());
 
-    return this._http
-      .get<ApiResponse<AllAgencyRespose>>(`${this.api}/admin/agencies`, {
+    return this._http.get<ApiResponse<AllAgencyRespose>>(
+      `${this.api}/admin/agencies`,
+      {
         params,
         withCredentials: true,
-      })
+      }
+    );
   }
   getAllUsers(page: number = 1, limit: number) {
     const params = new HttpParams()
       .set('page', page.toString())
       .set('limit', limit.toString());
 
-    return this._http.get<{
-      success: boolean;
-      users: IUser[];
-      totalUsers: number;
-      currentPage: number;
-      totalPages: number;
-    }>(`${this.api}/admin/users`, { params, withCredentials: true });
+    return this._http.get<ApiResponse<AllUsersReposnse>>(
+      `${this.api}/admin/users`,
+      { params, withCredentials: true }
+    );
   }
 
   getAllCategories(): Observable<{
