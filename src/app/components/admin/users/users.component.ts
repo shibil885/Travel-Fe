@@ -33,6 +33,7 @@ export class UsersComponent {
   totalUsers: number = 0;
   currentPage: number = 1;
   limit: number = 5;
+  isSearching: boolean = false;
 
   showFilters!: boolean;
   userHeaders = [
@@ -44,8 +45,7 @@ export class UsersComponent {
 
   constructor(
     private _adminService: AdminService,
-    private _dialog: MatDialog,
-    private _snackBar: MatSnackBar
+    private _dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -69,15 +69,6 @@ export class UsersComponent {
   onPageChange(page: number) {
     this.currentPage = page;
     this.fetchUsers(this.currentPage);
-  }
-
-  showToast(message: string, type: 'success' | 'error') {
-    this._snackBar.open(message, '😒', {
-      duration: 3000,
-      panelClass: type === 'success' ? 'snack-success' : 'snack-error',
-      horizontalPosition: 'right',
-      verticalPosition: 'top',
-    });
   }
 
   showSortAndFilter() {
@@ -105,13 +96,26 @@ export class UsersComponent {
         this.users = [];
       });
   }
+
   onSearch(searchText: string) {
     if (searchText.length == 0) {
+      this.isSearching = false;
       this.fetchUsers(this.currentPage);
       return;
     }
-    this._adminService.searchUsers(searchText, 'user').subscribe((res) => {
-      this.users = res as IUser[];
-    });
+    this.isSearching = true;
+    this._adminService.searchUsers(searchText, 'user').subscribe(
+      (res) => {
+        const data = res.data;
+        if (data) {
+          this.users = data.users as IUser[];
+          return;
+        }
+        this.users = [];
+      },
+      (err) => {
+        this.users = [];
+      }
+    );
   }
 }

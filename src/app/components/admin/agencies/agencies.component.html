@@ -17,7 +17,8 @@
             </div>
             <app-search (searchUsersEvent)="onSearch($event)"></app-search>
             <app-reusable-table [headers]="agencyHeaders" [data]="agencies"></app-reusable-table>
-            <app-pagination
+            <app-pagination 
+            *ngIf="!isSearching"
             [totalItems]="totalAgencies"
             [itemsPerPage]="limit"
             [currentPage]="currentPage"

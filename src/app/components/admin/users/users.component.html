@@ -15,6 +15,7 @@
             <app-reusable-table [headers]="userHeaders" [data]="users"></app-reusable-table>
             <app-pagination
             [totalItems]="totalUsers"
+            *ngIf="!isSearching"
             [itemsPerPage]="limit"
             [currentPage]="currentPage"
             [typeOfUser]="'admin'"

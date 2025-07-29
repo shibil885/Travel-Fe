@@ -37,6 +37,7 @@ export class AgenciesComponent implements OnInit {
   totalAgencies: number = 0;
   currentPage: number = 1;
   limit: number = 5;
+  isSearching: boolean = false;
 
   agencyHeaders = [
     { label: 'Agency Name', key: 'name' },
@@ -48,8 +49,7 @@ export class AgenciesComponent implements OnInit {
 
   constructor(
     private _adminService: AdminService,
-    private _dialog: MatDialog,
-    private _snackBar: MatSnackBar
+    private _dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -108,11 +108,24 @@ export class AgenciesComponent implements OnInit {
 
   onSearch(searchText: string) {
     if (searchText.length === 0) {
+      this.isSearching = false;
       this.fetchAgencies(this.currentPage);
       return;
     }
-    this._adminService.searchUsers(searchText, 'agency').subscribe((res) => {
-      this.agencies = res as IAgency[];
-    });
+
+    this.isSearching = true;
+    this._adminService.searchUsers(searchText, 'agency').subscribe(
+      (res) => {
+        const data = res.data;
+        if (data) {
+          this.agencies = data.users as IAgency[];
+          return;
+        }
+        this.agencies = [];
+      },
+      () => {
+        this.agencies = [];
+      }
+    );
   }
 }

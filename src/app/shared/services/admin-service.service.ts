@@ -10,6 +10,7 @@ import { AgencyStatusUpdationResponse } from '../../interfaces/agency/response/s
 import { UserStatusUpdationResponse } from '../../interfaces/user/response/userStatusUpdation.interface';
 import { AgencyConfirmationResponse } from '../../interfaces/agency/response/confirmation.interface';
 import { FilteredUserResponse } from '../../interfaces/common/response/filteredUser.interface';
+import { SearchedUserResponse } from '../../interfaces/common/response/searchedUser.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -115,7 +116,7 @@ export class AdminService {
 
   searchUsers(searchText: string, user: string) {
     let params = new HttpParams().set('searchText', searchText);
-    return this._http.post(
+    return this._http.post<ApiResponse<SearchedUserResponse>>(
       `${this.api}/admin/searchUsers`,
       { user },
       { params, withCredentials: true }
