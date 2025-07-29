@@ -7,6 +7,7 @@ import { environment } from '../../../Environment/environment';
 import { AllAgencyRespose, ApiResponse, FilterData } from '../../interfaces';
 import { AllUsersReposnse } from '../../interfaces/user/response/users.interface';
 import { AgencyStatusUpdationResponse } from '../../interfaces/agency/response/statusUpdate.interface';
+import { UserStatusUpdationResponse } from '../../interfaces/user/response/userStatusUpdation.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -36,7 +37,7 @@ export class AdminService {
       .set('limit', limit.toString());
 
     return this._http.get<ApiResponse<AllUsersReposnse>>(
-      `${this.api}/admin/users`,
+      `${this.api}/admin/user`,
       { params, withCredentials: true }
     );
   }
@@ -60,27 +61,14 @@ export class AdminService {
       );
   }
 
-  changeUserStatus(
-    id: string,
-    status: string
-  ): Observable<{ message: string; success: boolean }> {
+  changeUserStatus(userId: string, status: string) {
     const headers = new HttpHeaders().set('skip-loading', 'true');
 
-    return this._http
-      .patch<{ message: string; success: boolean }>(
-        `${this.api}/admin/changeUserStatus/${id}`,
-        { status },
-        { withCredentials: true, headers }
-      )
-      .pipe(
-        map((data) => data),
-        catchError((error) => {
-          console.log('Error:', error);
-          return throwError(
-            () => new Error('Error while chage status of user')
-          );
-        })
-      );
+    return this._http.patch<ApiResponse<UserStatusUpdationResponse>>(
+      `${this.api}/admin/user/${userId}`,
+      { status },
+      { withCredentials: true, headers }
+    );
   }
   changeAgencyStatus(agencyId: string, status: string) {
     const headers = new HttpHeaders().set('skip-loading', 'true');

@@ -24,8 +24,12 @@ export class ShowDetailsComponent {
   toggleActive(id: string, isActiveValue: boolean) {
     const action = isActiveValue ? 'block' : 'unblock';
     if (this.isUser) {
-      this._adminService.changeUserStatus(id, action).subscribe(() => {
-        this.data.isActive = !this.data.isActive;
+      this._adminService.changeUserStatus(id, action).subscribe((res) => {
+        const data = res.data;
+        if (data && res.success) {
+          this._toasterService.showToast(res.message, 'success');
+          this.data.isActive = data.isActive;
+        }
       });
       return;
     }
