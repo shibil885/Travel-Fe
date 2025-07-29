@@ -1,7 +1,7 @@
-import { IAgency } from '../models/agency.model';
-import { IUser } from '../models/user.model';
-import { IPackage } from './package.interface';
-import { IPost } from './post.interface';
+import { IAgency } from "../../models/agency.model";
+import { IUser } from "../../models/user.model";
+import { IPackage } from "../package";
+import { IPost } from "../post";
 
 export interface IReport {
   _id: string;

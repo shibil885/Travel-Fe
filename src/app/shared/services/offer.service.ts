@@ -1,9 +1,9 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { IOffer } from '../../interfaces/offer.interface';
 import { FormBuilder } from '@angular/forms';
-import { IPackage } from '../../interfaces/package.interface';
+import { IPackage } from '../../interfaces/package/package.interface';
 import { environment } from '../../../Environment/environment';
+import { IOffer } from '../../interfaces';
 @Injectable({
   providedIn: 'root',
 })

@@ -12,7 +12,7 @@ import { animate, style, transition, trigger } from '@angular/animations';
 import { validateCaption } from '../../../validatores/caption.validator';
 import { PostService } from '../../../shared/services/post.service';
 import { ToastService } from '../../../shared/services/toaster.service';
-import { IPost } from '../../../interfaces/post.interface';
+import { IPost } from '../../../interfaces';
 
 @Component({
   selector: 'app-uploads',

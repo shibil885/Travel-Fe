@@ -4,9 +4,9 @@ import { SideBarComponent } from '../side-bar/side-bar.component';
 import { CommonModule } from '@angular/common';
 import { SearchComponent } from '../../../shared/components/search/search.component';
 import { PaginationComponent } from '../../../shared/components/pagination/pagination.component';
-import { IBooking } from '../../../interfaces/booking.interface';
 import { BookingService } from '../../../shared/services/booking.service';
 import { SingleBookingComponent } from './single-booking/single-booking.component';
+import { IBooking } from '../../../interfaces';
 
 @Component({
   selector: 'app-booking',

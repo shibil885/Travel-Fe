@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { IWallet } from '../../interfaces/wallet.interface';
 import { environment } from '../../../Environment/environment';
+import { IWallet } from '../../interfaces';
 
 @Injectable({
   providedIn: 'root',

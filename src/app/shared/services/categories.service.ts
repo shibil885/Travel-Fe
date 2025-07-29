@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { ICategory } from '../../interfaces/category.interface';
+import { ICategory } from '../../interfaces/common/category.interface';
 import { FormGroup } from '@angular/forms';
 import { environment } from '../../../Environment/environment';
 

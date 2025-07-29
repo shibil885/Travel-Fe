@@ -2,8 +2,7 @@ import { Component, HostListener } from '@angular/core';
 import { HeaderComponent } from '../header/header.component';
 import { SideBarComponent } from '../side-bar/side-bar.component';
 import { CommonModule } from '@angular/common';
-import { IChat } from '../../../interfaces/chat.interface';
-import { IMessage } from '../../../interfaces/message.interface';
+import { IChat } from '../../../interfaces/chat/chat.interface';
 import { ChatService } from '../../../shared/services/chat/chat.service';
 import { MatDialog } from '@angular/material/dialog';
 import { MessageSenderType } from '../../../enum/messageSenderType.enum';
@@ -12,6 +11,7 @@ import { IAgency } from '../../../models/agency.model';
 import { IUser } from '../../../models/user.model';
 import { FormsModule } from '@angular/forms';
 import { SocketService } from '../../../shared/services/socket/socket.service';
+import { IMessage } from '../../../interfaces';
 
 @Component({
   selector: 'app-chat',

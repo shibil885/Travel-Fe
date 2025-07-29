@@ -1,11 +1,11 @@
-import { TravelConfirmationStatus } from '../enum/travelConfirmation.enum';
-import { TravelStatus } from '../enum/travelStatus.enum';
-import { IAgency } from '../models/agency.model';
-import { IUser } from '../models/user.model';
-import { ICategory } from './category.interface';
-import { ICoupon } from './coupon.interface';
-import { IPackage } from './package.interface';
-import { IReviewForPackage } from './rating-review-package.interface.ts';
+import { TravelConfirmationStatus } from "../../enum/travelConfirmation.enum";
+import { TravelStatus } from "../../enum/travelStatus.enum";
+import { IAgency } from "../../models/agency.model";
+import { IUser } from "../../models/user.model";
+import { ICategory } from "../common";
+import { ICoupon } from "../coupon";
+import { IPackage } from "../package";
+import { IReviewForPackage } from "../review";
 
 export interface IBooking {
   _id: string;

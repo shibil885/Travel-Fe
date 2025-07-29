@@ -3,7 +3,7 @@ import { HeaderComponent } from '../header/header.component';
 import { SideBarComponent } from '../side-bar/side-bar.component';
 import { CommonModule } from '@angular/common';
 import { NotificationService } from '../../../shared/services/notification.service';
-import { INotification } from '../../../interfaces/notification.interface';
+import { INotification } from '../../../interfaces/common/notification.interface';
 import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { SocketService } from '../../../shared/services/socket/socket.service';

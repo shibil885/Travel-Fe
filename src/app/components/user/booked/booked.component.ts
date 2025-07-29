@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
-import { IBooking } from '../../../interfaces/booking.interface';
 import { BookingService } from '../../../shared/services/booking.service';
 import { LocalStorageService } from '../../../shared/services/local-storage.service';
 import { SearchComponent } from '../../../shared/components/search/search.component';
 import { PaginationComponent } from '../../../shared/components/pagination/pagination.component';
 import { HeaderSidebarComponent } from '../header-and-side-bar/header-and-side-bar.component';
+import { IBooking } from '../../../interfaces';
 
 @Component({
   selector: 'app-booking-list',

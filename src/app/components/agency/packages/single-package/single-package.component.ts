@@ -8,7 +8,7 @@ import {
   state,
 } from '@angular/animations';
 import { FormsModule } from '@angular/forms';
-import { IPackage } from '../../../../interfaces/package.interface';
+import { IPackage } from '../../../../interfaces/package/package.interface';
 import { PackageService } from '../../../../shared/services/package.service';
 import { ToastService } from '../../../../shared/services/toaster.service';
 import { MatIconModule } from '@angular/material/icon';

@@ -10,10 +10,10 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ReusableTableComponent } from '../../../shared/components/table/table.component';
 import { FilterComponent } from '../../../shared/components/filter/filter.component';
 import { CommonModule } from '@angular/common';
-import { FilterData } from '../../../interfaces/filterData.interface';
 import { SearchComponent } from '../../../shared/components/search/search.component';
 import { PaginationComponent } from '../../../shared/components/pagination/pagination.component';
 import { IAgency } from '../../../models/agency.model';
+import { FilterData } from '../../../interfaces';
 
 @Component({
   selector: 'app-agencies',
@@ -58,6 +58,7 @@ export class AgenciesComponent implements OnInit {
 
   fetchAgencies(page: number) {
     this._adminService.getAllAgencies(page, this.limit).subscribe((response) => {
+      console.log('agencies in component', this.agencies);
       this.agencies = response.agencies;
       this.currentPage = response.currentPage;
       this.totalAgencies = response.totalAgencies;

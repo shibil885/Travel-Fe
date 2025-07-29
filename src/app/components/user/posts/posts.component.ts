@@ -8,7 +8,6 @@ import {
 import { HeaderSidebarComponent } from '../header-and-side-bar/header-and-side-bar.component';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { IPost } from '../../../interfaces/post.interface';
 import { PostService } from '../../../shared/services/post.service';
 import { IsLikedPipe } from '../../../shared/pipes/is-liked.pipe';
 import { animate, style, transition, trigger } from '@angular/animations';
@@ -17,7 +16,8 @@ import { ReportModalComponent } from '../../../shared/components/report-modal/re
 import { ReportType } from '../../../enum/report.enum';
 import { ReportService } from '../../../shared/services/report/report.service';
 import { ToastService } from '../../../shared/services/toaster.service';
-import { IReportData } from '../../../interfaces/reportData.interface';
+import { IReportData } from '../../../interfaces/report/report-data.interface';
+import { IPost } from '../../../interfaces';
 @Component({
   selector: 'app-posts',
   standalone: true,

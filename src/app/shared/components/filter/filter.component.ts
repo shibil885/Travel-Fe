@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Inject, Input, Output } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { FilterData } from '../../../interfaces/filterData.interface';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
+import { FilterData } from '../../../interfaces';
 
 @Component({
   selector: 'app-search-and-filter',

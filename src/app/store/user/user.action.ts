@@ -1,9 +1,9 @@
 import { createAction, props } from '@ngrx/store';
 import { IUser } from '../../models/user.model';
-import { IPackage } from '../../interfaces/package.interface';
-import { ICoupon } from '../../interfaces/coupon.interface';
+import { IPackage } from '../../interfaces/package/package.interface';
+import { ICoupon } from '../../interfaces/coupon/coupon.interface';
 import { FormGroup } from '@angular/forms';
-import { IOffer } from '../../interfaces/offer.interface';
+import { IOffer } from '../../interfaces';
 
 export const userLogin = createAction(
   '[Login Component] userLogin',

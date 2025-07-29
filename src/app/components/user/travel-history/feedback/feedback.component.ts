@@ -3,9 +3,9 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { StarComponent } from '../star/star.component';
 import { BookingService } from '../../../../shared/services/booking.service';
-import { IBooking } from '../../../../interfaces/booking.interface';
 import { forkJoin } from 'rxjs';
 import { ToastService } from '../../../../shared/services/toaster.service';
+import { IBooking } from '../../../../interfaces';
 
 @Component({
   selector: 'app-feedback',

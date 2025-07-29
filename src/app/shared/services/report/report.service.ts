@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { IReportData } from '../../../interfaces/reportData.interface';
+import { IReportData } from '../../../interfaces/report/report-data.interface';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { IReport } from '../../../interfaces/report.interface';
 import { environment } from '../../../../Environment/environment';
+import { IReport } from '../../../interfaces';
 
 @Injectable({
   providedIn: 'root',

@@ -1,6 +1,6 @@
-import { IAgency } from '../models/agency.model';
-import { IUser } from '../models/user.model';
-import { IMessage } from './message.interface';
+import { IAgency } from '../../models/agency.model';
+import { IUser } from '../../models/user.model';
+import { IMessage } from '../common';
 
 export interface IChat {
   _id: string;

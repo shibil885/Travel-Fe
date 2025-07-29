@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { IOffer } from '../../interfaces/offer.interface';
-import { DiscountType } from '../../interfaces/coupon.interface';
+import { DiscountType } from '../../interfaces/coupon/coupon.interface';
+import { IOffer } from '../../interfaces';
 
 @Pipe({
   name: 'discount',

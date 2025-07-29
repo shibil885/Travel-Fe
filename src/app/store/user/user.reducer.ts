@@ -1,8 +1,8 @@
 import { createReducer, on } from '@ngrx/store';
 import * as userActions from './user.action';
 import { IUser } from '../../models/user.model';
-import { IPackage } from '../../interfaces/package.interface';
-import { DiscountType, ICoupon } from '../../interfaces/coupon.interface';
+import { IPackage } from '../../interfaces/package/package.interface';
+import { DiscountType, ICoupon } from '../../interfaces/coupon/coupon.interface';
 
 export interface UserState {
   user: IUser | null;

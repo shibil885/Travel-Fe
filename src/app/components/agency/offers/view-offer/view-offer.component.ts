@@ -4,10 +4,10 @@ import { SideBarComponent } from '../../side-bar/side-bar.component';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { OfferService } from '../../../../shared/services/offer.service';
-import { IOffer } from '../../../../interfaces/offer.interface';
 import { ToastService } from '../../../../shared/services/toaster.service';
-import { IPackage } from '../../../../interfaces/package.interface';
+import { IPackage } from '../../../../interfaces/package/package.interface';
 import { DaysLeftPipe } from '../../../../shared/pipes/days-left.pipe';
+import { IOffer } from '../../../../interfaces';
 
 @Component({
   selector: 'app-view-offer',

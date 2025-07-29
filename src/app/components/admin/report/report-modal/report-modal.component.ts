@@ -7,9 +7,9 @@ import {
 import { ReportService } from '../../../../shared/services/report/report.service';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
-import { IReport } from '../../../../interfaces/report.interface';
 import { FormsModule } from '@angular/forms';
 import { ToastService } from '../../../../shared/services/toaster.service';
+import { IReport } from '../../../../interfaces';
 
 @Component({
   selector: 'app-report-detail-dialog',

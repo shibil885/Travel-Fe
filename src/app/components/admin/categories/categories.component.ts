@@ -13,7 +13,7 @@ import { CommonModule } from '@angular/common';
 import { PaginationComponent } from '../../../shared/components/pagination/pagination.component';
 import { TruncatePipe } from '../../../shared/pipes/truncate.pipe';
 import { ToastService } from '../../../shared/services/toaster.service';
-import { ICategory } from '../../../interfaces/category.interface';
+import { ICategory } from '../../../interfaces/common/category.interface';
 
 @Component({
   selector: 'app-categories',

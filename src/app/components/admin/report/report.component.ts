@@ -4,14 +4,13 @@ import { SideBarComponent } from '../side-bar/side-bar.component';
 import { SearchComponent } from '../../../shared/components/search/search.component';
 import { CommonModule } from '@angular/common';
 import { BookingService } from '../../../shared/services/booking.service';
-import { IAgency } from '../../../models/agency.model';
 import { PaginationComponent } from '../../../shared/components/pagination/pagination.component';
-import { IAgencyBookingData } from '../../../interfaces/agencyBookingsData.interface';
+import { IAgencyBookingData } from '../../../interfaces/booking/agency-bookings-data.interface';
 import { Router } from '@angular/router';
-import { IReport } from '../../../interfaces/report.interface';
 import { ReportService } from '../../../shared/services/report/report.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ReportDetailDialogComponent } from './report-modal/report-modal.component';
+import { IReport } from '../../../interfaces';
 
 @Component({
   selector: 'app-bookings',

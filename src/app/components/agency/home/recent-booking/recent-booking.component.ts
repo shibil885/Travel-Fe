@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { IBooking } from '../../../../interfaces/booking.interface';
 import { AgencyDashboardService } from '../../../../shared/services/dashboard/agency/agency-dashboard.service';
+import { IBooking } from '../../../../interfaces';
 
 @Component({
   selector: 'app-recent-booking',

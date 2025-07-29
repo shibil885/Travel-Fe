@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { IBooking } from '../../../../interfaces/booking.interface';
 import { environment } from '../../../../../Environment/environment';
+import { IBooking } from '../../../../interfaces';
 
 @Injectable({
   providedIn: 'root',

@@ -1,7 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { IBooking } from '../../../../interfaces/booking.interface';
 import { LocalStorageService } from '../../../../shared/services/local-storage.service';
 import { ToastService } from '../../../../shared/services/toaster.service';
 import { Router } from '@angular/router';
@@ -9,6 +8,7 @@ import { BookingService } from '../../../../shared/services/booking.service';
 import { TravelConfirmationStatus } from '../../../../enum/travelConfirmation.enum';
 import { TravelStatus } from '../../../../enum/travelStatus.enum';
 import { HeaderSidebarComponent } from '../../header-and-side-bar/header-and-side-bar.component';
+import { IBooking } from '../../../../interfaces';
 
 @Component({
   selector: 'app-booking-detail', 

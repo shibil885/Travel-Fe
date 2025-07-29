@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { ITransaction, IWallet } from '../../../interfaces/wallet.interface';
 import { MatTableDataSource } from '@angular/material/table';
 import { WalletService } from '../../../shared/services/wallet.service';
 import { HeaderComponent } from '../header/header.component';
 import { SideBarComponent } from '../side-bar/side-bar.component';
 import { CommonModule } from '@angular/common';
+import { ITransaction, IWallet } from '../../../interfaces';
 
 @Component({
   selector: 'app-wallet',

@@ -3,11 +3,11 @@ import { HeaderSidebarComponent } from '../header-and-side-bar/header-and-side-b
 import { PaginationComponent } from '../../../shared/components/pagination/pagination.component';
 import { SearchComponent } from '../../../shared/components/search/search.component';
 import { CommonModule } from '@angular/common';
-import { IBooking } from '../../../interfaces/booking.interface';
 import { BookingService } from '../../../shared/services/booking.service';
 import { FeedbackComponent } from './feedback/feedback.component';
 import { ToastService } from '../../../shared/services/toaster.service';
 import { forkJoin } from 'rxjs';
+import { IBooking } from '../../../interfaces';
 
 @Component({
   selector: 'app-travel-history',

@@ -3,14 +3,14 @@ import { Component, HostListener } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ChatListModalComponent } from '../../../shared/components/chat-list-modal/chat-list-modal.component';
 import { MatDialog } from '@angular/material/dialog';
-import { IChat } from '../../../interfaces/chat.interface';
-import { IMessage } from '../../../interfaces/message.interface';
+import { IChat } from '../../../interfaces/chat/chat.interface';
 import { IUser } from '../../../models/user.model';
 import { IAgency } from '../../../models/agency.model';
 import { MessageSenderType } from '../../../enum/messageSenderType.enum';
 import { ChatService } from '../../../shared/services/chat/chat.service';
 import { HeaderSidebarComponent } from '../header-and-side-bar/header-and-side-bar.component';
 import { SocketService } from '../../../shared/services/socket/socket.service';
+import { IMessage } from '../../../interfaces';
 
 @Component({
   selector: 'app-chat',

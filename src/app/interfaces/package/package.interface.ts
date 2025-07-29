@@ -1,8 +1,8 @@
-import { IAgency } from '../models/agency.model';
-import { IBooking } from './booking.interface';
-import { ICategory } from './category.interface';
-import { IOffer } from './offer.interface';
-import { IReviewForPackage } from './rating-review-package.interface.ts';
+import { IAgency } from "../../models/agency.model";
+import { IBooking } from "../booking";
+import { ICategory } from "../common";
+import { IOffer } from "../offer";
+import { IReviewForPackage } from "../review";
 
 interface TourPlan {
   day: number;

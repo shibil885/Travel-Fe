@@ -5,8 +5,8 @@ import { HeaderComponent } from '../../header/header.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ToastService } from '../../../../shared/services/toaster.service';
-import { IBooking } from '../../../../interfaces/booking.interface';
 import { BookingService } from '../../../../shared/services/booking.service';
+import { IBooking } from '../../../../interfaces';
 
 @Component({
   selector: 'app-single-agency',

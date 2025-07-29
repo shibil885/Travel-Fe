@@ -1,6 +1,6 @@
-import { IUser } from '../models/user.model';
+import { IUser } from "../../models/user.model";
 
-export interface IReviewForAgency {
+export interface IReviewForPackage {
   agencyId: string;
   reviews: Array<{
     userId: IUser;

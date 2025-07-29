@@ -10,7 +10,7 @@ import {
 import { CalendarModule } from 'primeng/calendar';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputNumberModule } from 'primeng/inputnumber';
-import { IPackage } from '../../../interfaces/package.interface';
+import { IPackage } from '../../../interfaces/package/package.interface';
 import { Store } from '@ngrx/store';
 import {
   selectAmount,
@@ -34,7 +34,7 @@ import {
   showSinglePackage,
   verifyPayment,
 } from '../../../store/user/user.action';
-import { DiscountType, ICoupon } from '../../../interfaces/coupon.interface';
+import { DiscountType, ICoupon } from '../../../interfaces/coupon/coupon.interface';
 import { Observable, Subscription, take } from 'rxjs';
 import { dateValidator } from '../../../validatores/date.validator';
 import {

@@ -20,7 +20,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
 import { PackageService } from '../../../../shared/services/package.service';
-import { ICategory } from '../../../../interfaces/category.interface';
+import { ICategory } from '../../../../interfaces/common/category.interface';
 import { ToastService } from '../../../../shared/services/toaster.service';
 import {
   endWithSpace,

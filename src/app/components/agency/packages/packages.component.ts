@@ -8,7 +8,7 @@ import { PackageService } from '../../../shared/services/package.service';
 import { AddPackageComponent } from './add-package/add-package.component';
 import { SinglePackageComponent } from './single-package/single-package.component';
 import { trigger, transition, style, animate } from '@angular/animations';
-import { IPackage } from '../../../interfaces/package.interface';
+import { IPackage } from '../../../interfaces/package/package.interface';
 import { PaginationComponent } from '../../../shared/components/pagination/pagination.component';
 @Component({
   selector: 'app-packages',

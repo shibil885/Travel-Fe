@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, map, Observable, tap, throwError } from 'rxjs';
 import { IUser } from '../../models/user.model';
-import { IPackage } from '../../interfaces/package.interface';
+import { IPackage } from '../../interfaces/package/package.interface';
 import { AuthService } from '../../auth/service/service.service';
 import { FormGroup } from '@angular/forms';
 import { environment } from '../../../Environment/environment';

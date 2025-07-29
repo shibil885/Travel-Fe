@@ -4,7 +4,7 @@ import { SideBarComponent } from '../side-bar/side-bar.component';
 import { CommonModule } from '@angular/common';
 import { SearchComponent } from '../../../shared/components/search/search.component';
 import { PaginationComponent } from '../../../shared/components/pagination/pagination.component';
-import { ICoupon } from '../../../interfaces/coupon.interface';
+import { ICoupon } from '../../../interfaces/coupon/coupon.interface';
 import { trigger, transition, style, animate } from '@angular/animations';
 
 import { MatInputModule } from '@angular/material/input';

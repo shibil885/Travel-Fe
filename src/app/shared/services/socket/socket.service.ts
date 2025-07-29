@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { io, Socket } from 'socket.io-client';
-import { IMessage } from '../../../interfaces/message.interface';
 import { Observable } from 'rxjs';
-import { INotification } from '../../../interfaces/notification.interface';
-import { IPackage } from '../../../interfaces/package.interface';
+import { INotification } from '../../../interfaces/common/notification.interface';
+import { IPackage } from '../../../interfaces/package/package.interface';
 import { environment } from '../../../../Environment/environment';
+import { IMessage } from '../../../interfaces';
 
 @Injectable({
   providedIn: 'root',

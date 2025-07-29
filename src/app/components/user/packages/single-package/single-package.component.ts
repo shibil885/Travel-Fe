@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IPackage } from '../../../../interfaces/package.interface';
+import { IPackage } from '../../../../interfaces/package/package.interface';
 import { Store } from '@ngrx/store';
 import {
   selectPackage,

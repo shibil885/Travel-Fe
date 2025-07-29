@@ -1,13 +1,13 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { IAgency } from '../../../../models/agency.model';
-import { IPackage } from '../../../../interfaces/package.interface';
+import { IPackage } from '../../../../interfaces/package/package.interface';
 import { tap } from 'rxjs';
 import { AgencyFilter } from '../../../../enum/agency-filter.enum';
 import { PackageFilter } from '../../../../enum/package-filter.enum';
-import { IBooking } from '../../../../interfaces/booking.interface';
-import { BookingTrend } from '../../../../interfaces/bookingTrend.interface';
+import { BookingTrend } from '../../../../interfaces/booking/booking-trend.interface';
 import { environment } from '../../../../../Environment/environment';
+import { IBooking } from '../../../../interfaces';
 
 @Injectable({
   providedIn: 'root',

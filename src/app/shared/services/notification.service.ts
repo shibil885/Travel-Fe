@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { INotification } from '../../interfaces/notification.interface';
+import { INotification } from '../../interfaces/common/notification.interface';
 import { Role } from '../../enum/role.enum';
 import { environment } from '../../../Environment/environment';
 

@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { HeaderSidebarComponent } from '../header-and-side-bar/header-and-side-bar.component';
 import { CommonModule } from '@angular/common';
-import { IPackage } from '../../../interfaces/package.interface';
+import { IPackage } from '../../../interfaces/package/package.interface';
 import { PackageService } from '../../../shared/services/package.service';
-import { IOffer } from '../../../interfaces/offer.interface';
-import { DiscountType } from '../../../interfaces/coupon.interface';
+import { DiscountType } from '../../../interfaces/coupon/coupon.interface';
 import { FormsModule } from '@angular/forms';
+import { IOffer } from '../../../interfaces';
 
 @Component({
   selector: 'app-home',

@@ -1,5 +1,5 @@
-import { IBooking } from '../interfaces/booking.interface';
-import { IReviewForAgency } from '../interfaces/rating-review-agency.interface';
+import { IBooking, IReviewForAgency } from "../interfaces";
+
 
 export interface IAgency {
   _id: string;

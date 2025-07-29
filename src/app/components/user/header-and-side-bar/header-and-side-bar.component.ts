@@ -13,7 +13,7 @@ import {
   animate,
   transition,
 } from '@angular/animations';
-import { INotification } from '../../../interfaces/notification.interface';
+import { INotification } from '../../../interfaces/common/notification.interface';
 import { NotificationService } from '../../../shared/services/notification.service';
 import { SocketService } from '../../../shared/services/socket/socket.service';
 import { UserService } from '../../../shared/services/user.service';

@@ -11,12 +11,12 @@ import { SideBarComponent } from '../../side-bar/side-bar.component';
 import { invalidCoupon } from '../../../../validatores/couponCode.validator';
 import { descriptionValidator } from '../../../../validatores/description.validator';
 import { dateValidator } from '../../../../validatores/date.validator';
-import { DiscountType } from '../../../../interfaces/coupon.interface';
+import { DiscountType } from '../../../../interfaces/coupon/coupon.interface';
 import { priceValidator } from '../../../../validatores/price.validator';
 import { OfferService } from '../../../../shared/services/offer.service';
 import { ToastService } from '../../../../shared/services/toaster.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { IOffer } from '../../../../interfaces/offer.interface';
+import { IOffer } from '../../../../interfaces';
 
 @Component({
   selector: 'app-offer-form',

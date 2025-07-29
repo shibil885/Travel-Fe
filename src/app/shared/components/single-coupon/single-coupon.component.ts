@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { CommonModule } from '@angular/common';
-import { ICoupon } from '../../../interfaces/coupon.interface';
+import { ICoupon } from '../../../interfaces/coupon/coupon.interface';
 import { DaysLeftPipe } from '../../pipes/days-left.pipe';
 import { CouponService } from '../../services/coupon.service';
 import { ToastService } from '../../services/toaster.service';

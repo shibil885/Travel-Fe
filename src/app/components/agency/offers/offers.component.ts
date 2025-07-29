@@ -6,8 +6,8 @@ import { PaginationComponent } from '../../../shared/components/pagination/pagin
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { OfferService } from '../../../shared/services/offer.service';
-import { IOffer } from '../../../interfaces/offer.interface';
 import { ToastService } from '../../../shared/services/toaster.service';
+import { IOffer } from '../../../interfaces';
 
 @Component({
   selector: 'app-offers',

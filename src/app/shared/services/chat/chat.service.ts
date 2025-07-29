@@ -2,11 +2,11 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { IAgency } from '../../../models/agency.model';
 import { MessageSenderType } from '../../../enum/messageSenderType.enum';
-import { IChat } from '../../../interfaces/chat.interface';
+import { IChat } from '../../../interfaces/chat/chat.interface';
 import { tap } from 'rxjs';
 import { IUser } from '../../../models/user.model';
-import { IMessage } from '../../../interfaces/message.interface';
 import { environment } from '../../../../Environment/environment';
+import { IMessage } from '../../../interfaces';
 
 @Injectable({
   providedIn: 'root',

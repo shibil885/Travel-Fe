@@ -7,12 +7,12 @@ import { DialogComponent } from '../../../shared/components/dialog/dialog.compon
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FilterComponent } from '../../../shared/components/filter/filter.component';
-import { FilterData } from '../../../interfaces/filterData.interface';
 import { CommonModule } from '@angular/common';
 import { ReusableTableComponent } from '../../../shared/components/table/table.component';
 import { SearchComponent } from '../../../shared/components/search/search.component';
 import { PaginationComponent } from '../../../shared/components/pagination/pagination.component';
 import { IUser } from '../../../models/user.model';
+import { FilterData } from '../../../interfaces';
 @Component({
   selector: 'app-users',
   standalone: true,

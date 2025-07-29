@@ -3,7 +3,7 @@ import { HeaderSidebarComponent } from '../header-and-side-bar/header-and-side-b
 import { CommonModule } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
 import { NotificationService } from '../../../shared/services/notification.service';
-import { INotification } from '../../../interfaces/notification.interface';
+import { INotification } from '../../../interfaces/common/notification.interface';
 import { SocketService } from '../../../shared/services/socket/socket.service';
 import { ToastService } from '../../../shared/services/toaster.service';
 import { Role } from '../../../enum/role.enum';

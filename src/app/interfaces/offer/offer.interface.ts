@@ -1,5 +1,5 @@
-import { DiscountType } from './coupon.interface';
-import { IPackage } from './package.interface';
+import { DiscountType } from "../coupon";
+import { IPackage } from "../package";
 
 export interface IOffer {
   _id: string

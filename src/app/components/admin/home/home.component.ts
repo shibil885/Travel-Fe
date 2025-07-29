@@ -8,12 +8,10 @@ import { StatsCardComponent } from '../../agency/home/stats-card/stats-card.comp
 import { AdminDashboardService } from '../../../shared/services/dashboard/admin/admin-dashboard.service';
 import { IAgency } from '../../../models/agency.model';
 import { FormsModule } from '@angular/forms';
-import { IPackage } from '../../../interfaces/package.interface';
-import { IReport } from '../../../interfaces/report.interface';
+import { IPackage } from '../../../interfaces/package/package.interface';
 import { AgencyFilter } from '../../../enum/agency-filter.enum';
 import { PackageFilter } from '../../../enum/package-filter.enum';
 import { ReportFilter } from '../../../enum/reportFilter.enum';
-import { IBooking } from '../../../interfaces/booking.interface';
 import {
   Chart,
   LineController,
@@ -23,8 +21,8 @@ import {
   Title,
   CategoryScale,
 } from 'chart.js';
+import { IBooking, IReport } from '../../../interfaces';
 
-// Register components
 Chart.register(
   LineController,
   LineElement,

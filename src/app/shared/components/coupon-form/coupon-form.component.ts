@@ -7,7 +7,7 @@ import {
 } from '@angular/forms';
 import { CouponService } from '../../services/coupon.service';
 import { ToastService } from '../../services/toaster.service';
-import { DiscountType, ICoupon } from '../../../interfaces/coupon.interface';
+import { DiscountType, ICoupon } from '../../../interfaces/coupon/coupon.interface';
 import { descriptionValidator } from '../../../validatores/description.validator';
 import { CommonModule } from '@angular/common';
 import { invalidCoupon } from '../../../validatores/couponCode.validator';

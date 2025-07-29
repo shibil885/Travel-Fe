@@ -1,11 +1,11 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { IBooking } from '../../interfaces/booking.interface';
 import { TravelConfirmationStatus } from '../../enum/travelConfirmation.enum';
 import { FormGroup } from '@angular/forms';
-import { IAgencyBookingData } from '../../interfaces/agencyBookingsData.interface';
-import { IPackage } from '../../interfaces/package.interface';
+import { IAgencyBookingData } from '../../interfaces/booking/agency-bookings-data.interface';
+import { IPackage } from '../../interfaces/package/package.interface';
 import { environment } from '../../../Environment/environment';
+import { IBooking } from '../../interfaces';
 
 @Injectable({
   providedIn: 'root',

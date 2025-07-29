@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ICoupon } from '../../interfaces/coupon.interface';
+import { ICoupon } from '../../interfaces/coupon/coupon.interface';
 import { takeUntil } from 'rxjs';
 import { environment } from '../../../Environment/environment';
 

@@ -6,7 +6,7 @@ import { CommonModule } from '@angular/common';
 import { BookingService } from '../../../shared/services/booking.service';
 import { IAgency } from '../../../models/agency.model';
 import { PaginationComponent } from '../../../shared/components/pagination/pagination.component';
-import { IAgencyBookingData } from '../../../interfaces/agencyBookingsData.interface';
+import { IAgencyBookingData } from '../../../interfaces/booking/agency-bookings-data.interface';
 import { Router } from '@angular/router';
 
 @Component({

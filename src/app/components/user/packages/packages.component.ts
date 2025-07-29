@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IPackage } from '../../../interfaces/package.interface';
+import { IPackage } from '../../../interfaces/package/package.interface';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { UserService } from '../../../shared/services/user.service';

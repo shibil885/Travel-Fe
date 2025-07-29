@@ -1,8 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormGroup } from '@angular/forms';
-import { IPost } from '../../interfaces/post.interface';
 import { environment } from '../../../Environment/environment';
+import { IPost } from '../../interfaces';
 
 @Injectable({
   providedIn: 'root',

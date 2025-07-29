@@ -3,10 +3,10 @@ import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BookingService } from '../../../../shared/services/booking.service';
 import { ToastService } from '../../../../shared/services/toaster.service';
-import { IBooking } from '../../../../interfaces/booking.interface';
 import { TravelConfirmationStatus } from '../../../../enum/travelConfirmation.enum';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { TravelStatus } from '../../../../enum/travelStatus.enum';
+import { IBooking } from '../../../../interfaces';
 
 @Component({
   selector: 'app-single-booking',
