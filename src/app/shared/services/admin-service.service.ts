@@ -8,6 +8,7 @@ import { AllAgencyRespose, ApiResponse, FilterData } from '../../interfaces';
 import { AllUsersReposnse } from '../../interfaces/user/response/users.interface';
 import { AgencyStatusUpdationResponse } from '../../interfaces/agency/response/statusUpdate.interface';
 import { UserStatusUpdationResponse } from '../../interfaces/user/response/userStatusUpdation.interface';
+import { AgencyConfirmationResponse } from '../../interfaces/agency/response/confirmation.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -78,25 +79,16 @@ export class AdminService {
       { withCredentials: true, headers }
     );
   }
-  confirmation(
-    id: string,
-    status: string
-  ): Observable<{ message: string; success: boolean }> {
+  changeAgencyConfirmation(id: string, status: string) {
+    console.log('ssss', status);
+    
     const headers = new HttpHeaders().set('skip-loading', 'true');
 
-    return this._http
-      .patch<{ message: string; success: boolean }>(
-        `${this.api}/admin/confirmation/${id}`,
-        { status },
-        { withCredentials: true, headers }
-      )
-      .pipe(
-        map((data) => data),
-        catchError((error) => {
-          console.log('Error:', error);
-          return throwError(() => new Error(`Error while ${status} of agency`));
-        })
-      );
+    return this._http.patch<ApiResponse<AgencyConfirmationResponse>>(
+      `${this.api}/admin/agency/${id}/confirm`,
+      { status },
+      { withCredentials: true, headers }
+    );
   }
   getFilteredData(filters: FilterData, user: string): Observable<Object> {
     let params = new HttpParams();

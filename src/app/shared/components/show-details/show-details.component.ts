@@ -42,11 +42,18 @@ export class ShowDetailsComponent {
     });
     return;
   }
-  toggleConfirmed(id: string, isConfirmedValue: boolean) {
-    const action = isConfirmedValue ? 'declin' : 'confirm';
-    this._adminService.confirmation(id, action).subscribe(() => {
-      this.data.isConfirmed = !this.data.isConfirmed;
-    });
+
+  toggleConfirmed(agencyId: string, isConfirmedValue: boolean) {
+    const action = isConfirmedValue ? 'decline' : 'confirm';
+    this._adminService
+      .changeAgencyConfirmation(agencyId, action)
+      .subscribe((res) => {
+        const data = res.data;
+        if (data && res.success) {
+          this._toasterService.showToast(res.message, 'success');
+          this.data.isConfirmed = data.isConfirmed;
+        }
+      });
   }
   closeComponent() {
     this._dialogRef.close();
