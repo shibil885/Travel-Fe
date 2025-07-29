@@ -37,7 +37,7 @@ export class AgenciesComponent implements OnInit {
   totalAgencies: number = 0;
   currentPage: number = 1;
   limit: number = 5;
-  
+
   agencyHeaders = [
     { label: 'Agency Name', key: 'name' },
     { label: 'Email', key: 'email' },
@@ -57,12 +57,20 @@ export class AgenciesComponent implements OnInit {
   }
 
   fetchAgencies(page: number) {
-    this._adminService.getAllAgencies(page, this.limit).subscribe((response) => {
-      console.log('agencies in component', this.agencies);
-      this.agencies = response.agencies;
-      this.currentPage = response.currentPage;
-      this.totalAgencies = response.totalAgencies;
-    });
+    this._adminService
+      .getAllAgencies(page, this.limit)
+      .subscribe((response) => {
+        const data = response?.data;
+        if (!data || !data.agencies) {
+          this.agencies = [];
+          this.totalAgencies = 0;
+          return;
+        }
+
+        this.agencies = data.agencies;
+        this.currentPage = data.currentPage ?? 1;
+        this.totalAgencies = data.totalAgencies ?? 0;
+      });
   }
 
   onPageChange(page: number) {

@@ -6,7 +6,7 @@ import { IAgency } from '../../models/agency.model';
 import { IUser } from '../../models/user.model';
 import { ICategory } from '../../interfaces/common/category.interface';
 import { environment } from '../../../Environment/environment';
-import { FilterData } from '../../interfaces';
+import { AllAgencyRespose, ApiResponse, FilterData } from '../../interfaces';
 
 @Injectable({
   providedIn: 'root',
@@ -23,17 +23,10 @@ export class AdminService {
       .set('limit', limit.toString());
 
     return this._http
-      .get<{
-        success: boolean;
-        agencies: IAgency[];
-        totalAgencies: number;
-        currentPage: number;
-      }>(`${this.api}/admin/agencies`, { params, withCredentials: true })
-      .pipe(
-        tap((res) => {
-          console.log('res from service tap', res);
-        })
-      );
+      .get<ApiResponse<AllAgencyRespose>>(`${this.api}/admin/agencies`, {
+        params,
+        withCredentials: true,
+      })
   }
   getAllUsers(page: number = 1, limit: number) {
     const params = new HttpParams()
