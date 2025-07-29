@@ -53,20 +53,17 @@ export class UsersComponent {
   }
 
   fetchUsers(page: number) {
-    this._adminService
-      .getAllUsers(page, this.limit)
-      .subscribe((response) => {
-        const data = response.data
-        if (!data || !data.totalUsers) {
-          this.totalUsers = 0;
-          this.users = [];
-          return
-        }
-        this.totalUsers = data.totalUsers;
-        this.users = data.users;
-        this.currentPage = data.currentPage
-
-      });
+    this._adminService.getAllUsers(page, this.limit).subscribe((response) => {
+      const data = response.data;
+      if (!data || !data.totalUsers) {
+        this.totalUsers = 0;
+        this.users = [];
+        return;
+      }
+      this.totalUsers = data.totalUsers;
+      this.users = data.users;
+      this.currentPage = data.currentPage;
+    });
   }
 
   onPageChange(page: number) {
@@ -100,7 +97,12 @@ export class UsersComponent {
     this._adminService
       .getFilteredData(filterData, 'user')
       .subscribe((response) => {
-        this.users = response as IUser[];
+        const data = response.data;
+        if (data) {
+          this.users = data.filteredData as IUser[];
+          return;
+        }
+        this.users = [];
       });
   }
   onSearch(searchText: string) {

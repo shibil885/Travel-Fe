@@ -78,15 +78,6 @@ export class AgenciesComponent implements OnInit {
     this.fetchAgencies(page);
   }
 
-  showToast(message: string, type: 'success' | 'error') {
-    this._snackBar.open(message, '😒', {
-      duration: 3000,
-      panelClass: type === 'success' ? 'snack-success' : 'snack-error',
-      horizontalPosition: 'right',
-      verticalPosition: 'top',
-    });
-  }
-
   showSortAndFilter() {
     const dialogRef = this._dialog.open(FilterComponent, {
       height: 'auto',
@@ -106,7 +97,12 @@ export class AgenciesComponent implements OnInit {
     this._adminService
       .getFilteredData(filterData, 'agency')
       .subscribe((response) => {
-        this.agencies = response as IAgency[];
+        const data = response.data;
+        if (data) {
+          this.agencies = data.filteredData as IAgency[];
+          return;
+        }
+        this.agencies = [];
       });
   }
 

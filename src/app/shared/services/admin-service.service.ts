@@ -9,6 +9,7 @@ import { AllUsersReposnse } from '../../interfaces/user/response/users.interface
 import { AgencyStatusUpdationResponse } from '../../interfaces/agency/response/statusUpdate.interface';
 import { UserStatusUpdationResponse } from '../../interfaces/user/response/userStatusUpdation.interface';
 import { AgencyConfirmationResponse } from '../../interfaces/agency/response/confirmation.interface';
+import { FilteredUserResponse } from '../../interfaces/common/response/filteredUser.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -80,29 +81,35 @@ export class AdminService {
     );
   }
   changeAgencyConfirmation(id: string, status: string) {
-    console.log('ssss', status);
-    
     const headers = new HttpHeaders().set('skip-loading', 'true');
-
     return this._http.patch<ApiResponse<AgencyConfirmationResponse>>(
       `${this.api}/admin/agency/${id}/confirm`,
       { status },
       { withCredentials: true, headers }
     );
   }
-  getFilteredData(filters: FilterData, user: string): Observable<Object> {
+  getFilteredData(
+    filters: FilterData,
+    user: 'user' | 'agency'
+  ): Observable<ApiResponse<FilteredUserResponse>> {
     let params = new HttpParams();
 
     if (filters.isActive !== undefined)
-      params = params.append('isActive', filters.isActive.toString());
+      params = params.set('isActive', filters.isActive.toString());
+
     if (filters.isVerified !== undefined)
-      params = params.append('isVerified', filters.isVerified.toString());
+      params = params.set('isVerified', filters.isVerified.toString());
+
     if (filters.isConfirmed !== undefined)
-      params = params.append('isConfirmed', filters.isConfirmed.toString());
-    return this._http.post(
+      params = params.set('isConfirmed', filters.isConfirmed.toString());
+
+    return this._http.post<ApiResponse<FilteredUserResponse>>(
       `${this.api}/admin/filter`,
       { user },
-      { params, withCredentials: true }
+      {
+        params,
+        withCredentials: true,
+      }
     );
   }
 
