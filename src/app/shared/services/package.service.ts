@@ -3,6 +3,8 @@ import { Injectable } from '@angular/core';
 import { IPackage } from '../../interfaces/package/package.interface';
 import { ICategory } from '../../interfaces/common/category.interface';
 import { environment } from '../../../Environment/environment';
+import { ApiResponse } from '../../interfaces';
+import { AllPackagesResponse } from '../../interfaces/package/response/packages.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -14,8 +16,8 @@ export class PackageService {
   constructor(private _http: HttpClient) {}
 
   addPackages(packageData: FormData) {
-    return this._http.post<{ success: boolean; message: string }>(
-      `${this._api}/package/add`,
+    return this._http.post<ApiResponse<{ package: IPackage }>>(
+      `${this._api}/package`,
       packageData,
       {
         withCredentials: true,
@@ -35,30 +37,27 @@ export class PackageService {
 
   getPackages(page: number, limit: number) {
     const params = new HttpParams().set('page', page).set('limit', limit);
-    return this._http.get<{
-      success: boolean;
-      message: string;
-      totalItems: number;
-      currentPage: number;
-      packages: IPackage[];
-    }>(`${this._api}/package/getAllPackages`, {
-      params,
-      withCredentials: true,
-    });
+    return this._http.get<ApiResponse<AllPackagesResponse>>(
+      `${this._api}/package`,
+      {
+        params,
+        withCredentials: true,
+      }
+    );
   }
 
   onChangeStatus(packageId: string | undefined, action: boolean) {
     if (!packageId) return;
-    return this._http.patch(
-      `${this._api}/package/changeStatus/${packageId}`,
+    return this._http.patch<ApiResponse<{ isActive: boolean }>>(
+      `${this._api}/package/${packageId}/status`,
       { action },
       { withCredentials: true }
     );
   }
 
   onSaveChanges(chagedData: IPackage, packagId: string | undefined) {
-    return this._http.put<{ message: string; success: boolean }>(
-      `${this._api}/package/saveChanges/${packagId}`,
+    return this._http.put<ApiResponse<{}>>(
+      `${this._api}/package/${packagId}`,
       chagedData,
       {
         withCredentials: true,
@@ -67,8 +66,8 @@ export class PackageService {
   }
   onSearchPackages(searchText: string) {
     const params = new HttpParams().set('searchText', searchText);
-    return this._http.get<{ success: boolean; packages: IPackage[] }>(
-      `${this._api}/package/searchPackage`,
+    return this._http.get<ApiResponse<{ packages: IPackage[] }>>(
+      `${this._api}/package/search`,
       {
         params,
         withCredentials: true,
@@ -77,21 +76,19 @@ export class PackageService {
   }
 
   getOfferPackages() {
-    return this._http.get<{
-      success: boolean;
-      message: string;
-      packages: IPackage[];
-    }>(`${this._api}/package/offer`, {
-      withCredentials: true,
-    });
+    return this._http.get<ApiResponse<{ packages: IPackage[] }>>(
+      `${this._api}/package/offers`,
+      {
+        withCredentials: true,
+      }
+    );
   }
   getTopBookedPackages() {
-    return this._http.get<{
-      success: boolean;
-      message: string;
-      packages: IPackage[];
-    }>(`${this._api}/package/topBooked`, {
-      withCredentials: true,
-    });
+    return this._http.get<ApiResponse<{ packages: IPackage[] }>>(
+      `${this._api}/package/top-booked`,
+      {
+        withCredentials: true,
+      }
+    );
   }
 }

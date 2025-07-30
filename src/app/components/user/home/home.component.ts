@@ -28,15 +28,23 @@ export class HomeComponent {
   private _fetchOfferPackages() {
     this._packageService.getOfferPackages().subscribe((res) => {
       if (res.success) {
-        this.offerPackages = res.packages;
+        const data = res.data;
+        if (!data) {
+          this.offerPackages = [];
+          return;
+        }
+        this.offerPackages = data?.packages;
       }
     });
   }
   private _fetchTopBookedPackages() {
     this._packageService.getTopBookedPackages().subscribe((res) => {
-      if (res.success) {
-        this.topBookedPackages = res.packages;
+      const data = res.data;
+      if (res.success && data) {
+        this.topBookedPackages = data.packages;
+        return;
       }
+      this.topBookedPackages = [];
     });
   }
   getOfferPrice(offer: IOffer) {

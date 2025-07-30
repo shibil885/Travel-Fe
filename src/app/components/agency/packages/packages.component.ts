@@ -66,16 +66,21 @@ export class PackagesComponent {
     this._packageService
       .getPackages(this.currentPage, this.limit)
       .subscribe((res) => {
-        console.log(res);
-        this.packages = res.packages;
-        this.currentPage = res.currentPage;
-        this.totalItems = res.totalItems;
+        const data = res.data;
+        if (!data) {
+          this.packages = [];
+          this.totalItems = 0;
+          return;
+        }
+        this.packages = data?.packages;
+        this.currentPage = data.currentPage;
+        this.totalItems = data.packagesCount;
       });
   }
 
   onPageChange(page: number) {
     this.currentPage = page;
-    this.renderTableData()
+    this.renderTableData();
   }
 
   viewPackageDetails(packag: IPackage) {
@@ -86,13 +91,18 @@ export class PackagesComponent {
   }
 
   onSearch(searchText: string) {
-    if( searchText.length === 0 ){
+    if (searchText.length === 0) {
       this.renderTableData();
-      return
+      return;
     }
-    this._packageService.onSearchPackages(searchText).subscribe((res) =>{
-      this.packages = res.packages;
-    })
+    this._packageService.onSearchPackages(searchText).subscribe((res) => {
+      const data = res.data;
+      if (!data) {
+        this.packages = [];
+        return;
+      }
+      this.packages = data.packages;
+    });
   }
 
   showSortAndFilter() {}
