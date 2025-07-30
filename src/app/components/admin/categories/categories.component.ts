@@ -13,7 +13,7 @@ import { CommonModule } from '@angular/common';
 import { PaginationComponent } from '../../../shared/components/pagination/pagination.component';
 import { TruncatePipe } from '../../../shared/pipes/truncate.pipe';
 import { ToastService } from '../../../shared/services/toaster.service';
-import { ICategory } from '../../../interfaces/common/category.interface';
+import { ICategory } from '../../../interfaces/category/category.interface';
 
 @Component({
   selector: 'app-categories',
@@ -68,8 +68,13 @@ export class CategoriesComponent {
   getCategories() {
     this._categoryService
       .getCategories(this.currentPage, this.limit)
-      .subscribe((data) => {
-        console.log(data);
+      .subscribe((res) => {
+        const data = res.data;        
+        if (!data) {
+          this.categories = [];
+          this.totalCategories = 0;
+          return;
+        }
         this.categories = data.categories;
         this.totalCategories = data.totalCategories;
         this.currentPage = data.currentPage;

@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { IPackage } from '../../interfaces/package/package.interface';
-import { ICategory } from '../../interfaces/common/category.interface';
+import { ICategory } from '../../interfaces/category/category.interface';
 import { environment } from '../../../Environment/environment';
 import { ApiResponse } from '../../interfaces';
 import { AllPackagesResponse } from '../../interfaces/package/response/packages.interface';

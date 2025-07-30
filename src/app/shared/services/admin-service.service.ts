@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { ICategory } from '../../interfaces/common/category.interface';
+import { ICategory } from '../../interfaces/category/category.interface';
 import { environment } from '../../../Environment/environment';
 import { AllAgencyRespose, ApiResponse, FilterData } from '../../interfaces';
 import { AllUsersReposnse } from '../../interfaces/user/response/users.interface';

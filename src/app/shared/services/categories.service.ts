@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { ICategory } from '../../interfaces/common/category.interface';
+import { ICategory } from '../../interfaces/category/category.interface';
 import { FormGroup } from '@angular/forms';
 import { environment } from '../../../Environment/environment';
+import { ApiResponse } from '../../interfaces';
+import { CategoryResponse } from '../../interfaces/category/response/category.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -18,39 +19,34 @@ export class CategoryService {
     const params = new HttpParams()
       .set('currentPage', currentPage)
       .set('limit', limit);
-    return this._http.get<{
-      success: boolean;
-      categories: ICategory[];
-      totalCategories: number;
-      currentPage: number;
-    }>(`${this._api}/categories`, {
+    return this._http.get<ApiResponse<CategoryResponse>>(`${this._api}`, {
       params,
       withCredentials: true,
     });
   }
 
   addCategory(category: FormGroup) {
-    return this._http.post<{
-      success: boolean;
-      message: string;
-      newCategory: ICategory;
-    }>(`${this._api}/add`, category, {
-      withCredentials: true,
-    });
+    return this._http.post<ApiResponse<{ category: ICategory }>>(
+      `${this._api}`,
+      category,
+      {
+        withCredentials: true,
+      }
+    );
   }
   updateCategory(id: string | null, category: FormGroup) {
-    return this._http.put(`${this._api}/edit/${id}`, category, {
-      withCredentials: true,
-    });
+    return this._http.put<ApiResponse<{ category: ICategory }>>(
+      `${this._api}/${id}`,
+      category,
+      {
+        withCredentials: true,
+      }
+    );
   }
   changeStatus(id: string, status: boolean) {
-    return this._http.patch<{
-      success: boolean;
-      message: string;
-      warning: boolean;
-    }>(
-      `${this._api}/changeStatus/${id}`,
-      { status },
+    return this._http.patch<ApiResponse<{}>>(
+      `${this._api}/${id}/status`,
+      { status: status ? 'block' : 'unblock' },
       { withCredentials: true }
     );
   }
