@@ -45,8 +45,9 @@ export class OffersComponent {
         if (res.info) {
           this._toastService.showToast(res.message, 'info');
         }
-        this.offers = res.offers;
-        this.totalOffers = res.totalItems;
+        if (res.data)
+          (this.offers = res.data?.offers),
+            (this.totalOffers = res.data?.totalCount);
       });
   }
 

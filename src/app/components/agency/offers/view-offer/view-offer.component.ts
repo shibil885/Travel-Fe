@@ -46,7 +46,7 @@ export class ViewOfferComponent {
     }
   }
   get getDate() {
-    return new Date()
+    return new Date();
   }
   getOfferData() {
     if (!this.selectedOfferId) {
@@ -54,8 +54,8 @@ export class ViewOfferComponent {
       this._router.navigate(['agency/offers']);
     }
     this._OfferService.getOneOffer(this.selectedOfferId).subscribe((res) => {
-      if (res.success) {
-        this.selectedOffer = res.offer;
+      if (res.success && res.data) {
+        this.selectedOffer = res.data?.offer;
       }
     });
   }
@@ -72,7 +72,7 @@ export class ViewOfferComponent {
         if (res.info) {
           this._toastService.showToast(res.message, 'info');
         }
-        this.packages = res.packages;
+        if (res.data) this.packages = res.data?.packages;
         return;
       });
   }
@@ -86,8 +86,7 @@ export class ViewOfferComponent {
     this._OfferService
       .applicableOffer(this.selectedOfferId)
       .subscribe((res) => {
-        console.log('---->', res.packages);
-        this.applycable_Packages = res.packages;
+        if (res.data) this.applycable_Packages = res.data?.packages;
         return;
       });
   }
@@ -105,12 +104,12 @@ export class ViewOfferComponent {
           this._toastService.showToast(res.message, 'success');
           this.getOfferData();
           this.getPackagesForApplyOffer();
-          this.getApplicableOffers()
+          this.getApplicableOffers();
         }
       });
-    }
-    
-    removeOffer(packageId: string | undefined) {
+  }
+
+  removeOffer(packageId: string | undefined) {
     if (!this.selectedOfferId || !packageId) {
       this._toastService.showToast('Somthing went wrong', 'error');
       this._router.navigate(['agency/offers']);
@@ -123,10 +122,10 @@ export class ViewOfferComponent {
           this._toastService.showToast(res.message, 'success');
           this.getOfferData();
           this.getPackagesForApplyOffer();
-          this.getApplicableOffers()
+          this.getApplicableOffers();
         }
       });
-  } 
+  }
 
   toggleOfferStatus(): void {
     if (!this.selectedOfferId) {

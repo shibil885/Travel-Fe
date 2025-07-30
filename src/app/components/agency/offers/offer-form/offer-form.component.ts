@@ -49,11 +49,11 @@ export class OfferFormComponent {
     if (offerId) {
       this.isEditMode = true;
       this._offerService.getOneOffer(offerId).subscribe((res) => {
-        if (res.success) {
-          this.selectedOffer = res.offer;
+        if (res.success && res.data) {
+          this.selectedOffer = res.data.offer;
           this.initializeForm({
             ...this.selectedOffer,
-            expiry_date: new Date(res.offer.expiry_date)
+            expiry_date: new Date(res.data.offer.expiry_date)
               .toISOString()
               .split('T')[0],
           });
@@ -124,12 +124,14 @@ export class OfferFormComponent {
       const offerData = this.offerForm.value;
 
       if (this.isEditMode && this.selectedOffer) {
-        this._offerService.editOffer(this.selectedOffer._id, offerData).subscribe((res) => {
-          if (res.success) {
-            this._toastService.showToast(res.message, 'success');
-            this._router.navigate(['agency/offers']);
-          }
-        });
+        this._offerService
+          .editOffer(this.selectedOffer._id, offerData)
+          .subscribe((res) => {
+            if (res.success) {
+              this._toastService.showToast(res.message, 'success');
+              this._router.navigate(['agency/offers']);
+            }
+          });
       } else {
         this._offerService.addOffer(offerData).subscribe((res) => {
           if (res.success) {
