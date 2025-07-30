@@ -212,12 +212,15 @@ export class UserEffect {
       ofType(userActions.getAllCoupon),
       switchMap((data) =>
         this._couponService.getCouponsToUser(data.packageId).pipe(
-          map((response) =>
-            userActions.getAllCouponSuccess({
-              success: response.success,
-              coupons: response.coupons,
-            })
-          )
+          map((response) => {
+            if (response.data && response.success) {
+              return userActions.getAllCouponSuccess({
+                success: response.success,
+                coupons: response.data?.coupons,
+              });
+            }
+            throw new Error('Something went wrong');
+          })
         )
       ),
       catchError((error) => of(userActions.bookingPageError({ error: error })))

@@ -1,8 +1,9 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ICoupon } from '../../interfaces/coupon/coupon.interface';
-import { takeUntil } from 'rxjs';
 import { environment } from '../../../Environment/environment';
+import { ApiResponse } from '../../interfaces';
+import { CouponResponse } from '../../interfaces/coupon/response/coupo.response';
 
 @Injectable({
   providedIn: 'root',
@@ -14,18 +15,14 @@ export class CouponService {
   constructor(private _http: HttpClient) {}
 
   createCoupon(couponData: ICoupon) {
-    return this._http.post<{ success: boolean; message: string }>(
-      `${this._api}/createCoupon`,
-      couponData,
-      {
-        withCredentials: true,
-      }
-    );
+    return this._http.post<ApiResponse<{}>>(`${this._api}`, couponData, {
+      withCredentials: true,
+    });
   }
 
   editCoupon(id: string | undefined, editCouponData: ICoupon) {
-    return this._http.put<{ success: boolean; message: string }>(
-      `${this._api}/editCoupon/${id}`,
+    return this._http.put<ApiResponse<{}>>(
+      `${this._api}/${id}`,
       editCouponData,
       {
         withCredentials: true,
@@ -34,8 +31,8 @@ export class CouponService {
   }
 
   changeStatus(id: string | undefined, status: boolean | undefined) {
-    return this._http.patch<{ success: boolean; message: string }>(
-      `${this._api}/changeStatus/${id}`,
+    return this._http.patch<ApiResponse<{}>>(
+      `${this._api}/${id}`,
       { status },
       { withCredentials: true }
     );
@@ -44,21 +41,15 @@ export class CouponService {
   getAllCoupons(limit: number, currentPage: number) {
     const params = new HttpParams()
       .set('limit', limit)
-      .set('currentPage', currentPage);
-    return this._http.get<{
-      success: boolean;
-      message: string;
-      currentPage: number;
-      totalItems: number;
-      coupons: ICoupon[];
-    }>(`${this._api}/getAllCoupons`, {
+      .set('page', currentPage);
+    return this._http.get<ApiResponse<CouponResponse>>(`${this._api}`, {
       params,
       withCredentials: true,
     });
   }
   getCouponsToUser(packageId: string | undefined) {
-    return this._http.get<{ success: boolean; coupons: ICoupon[] }>(
-      `${this._api}/getCouponsForUser/${packageId}`,
+    return this._http.get<ApiResponse<{ coupons: ICoupon[] }>>(
+      `${this._api}/package/${packageId}`,
       {
         withCredentials: true,
       }

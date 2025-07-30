@@ -87,7 +87,10 @@ export class CouponComponent {
     { label: 'Status', key: 'isActive' },
     { label: 'Discount', key: 'discount_value' },
   ];
-  constructor(private _fb: FormBuilder, private _couponService: CouponService) {}
+  constructor(
+    private _fb: FormBuilder,
+    private _couponService: CouponService
+  ) {}
 
   ngOnInit(): void {
     this.fetchAllCoupons();
@@ -96,10 +99,15 @@ export class CouponComponent {
     this._couponService
       .getAllCoupons(this.limit, this.currentPage)
       .subscribe((res) => {
-        console.log(res);
-        this.currentPage = res.currentPage;
-        this.totalCoupons = res.totalItems;
-        this.coupons = res.coupons;
+        const data = res.data;
+        if (!data) {
+          this.coupons = [];
+          this.totalCoupons = 0;
+          return;
+        }
+        this.currentPage = data.currentPage;
+        this.totalCoupons = data.totalCount;
+        this.coupons = data.coupons;
       });
   }
   onPageChange(page: number) {
