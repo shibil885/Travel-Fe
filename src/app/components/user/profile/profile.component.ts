@@ -27,6 +27,7 @@ import {
   specialChar,
   upperCase,
 } from '../../../validatores/password.validator';
+import { ApiResponse } from '../../../interfaces';
 
 @Component({
   selector: 'app-user-profile',
@@ -90,7 +91,7 @@ export class ProfileComponent implements OnInit {
   fetchUserData() {
     this._userService.getUserData().subscribe((res) => {
       if (res.success) {
-        this.user = res.user;
+        if (res.data) this.user = res.data.user;
         this.profileForm = new FormGroup({
           username: new FormControl(this.user.username, [
             Validators.required,
@@ -127,7 +128,7 @@ export class ProfileComponent implements OnInit {
         this.progress = 0;
 
         this._userService.uploadProfileImg(formData).subscribe({
-          next: (event: HttpEvent<{ success: boolean; message: string }>) => {
+          next: (event: HttpEvent<ApiResponse<{}>>) => {
             if (event.type === HttpEventType.UploadProgress && event.total) {
               this.progress = Math.round((100 * event.loaded) / event.total);
             } else if (event.type === HttpEventType.Response) {

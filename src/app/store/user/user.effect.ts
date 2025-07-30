@@ -63,8 +63,9 @@ export class UserEffect {
       switchMap(({ userdata }) => {
         return this._userService.registerUser(userdata).pipe(
           map((response) => {
+            if (!response.data) throw new Error('Something went wrong');
             return userActions.otpRenderFromSignup({
-              user: response.user,
+              user: response.data.user,
             });
           }),
           catchError((error) => {
@@ -84,8 +85,9 @@ export class UserEffect {
           .verifyOtpUser({ otp: data.otp, email: data.email })
           .pipe(
             map((response) => {
+              if (!response.data) throw new Error('Something went wrong');
               return userActions.userSignupSuccess({
-                user: response.user,
+                user: response.data.user,
               });
             }),
             catchError((error) =>
@@ -109,11 +111,12 @@ export class UserEffect {
     this._actions$.pipe(
       ofType(userActions.resendOtp),
       switchMap((data) => {
-        console.log('resend otp data from effect', data);
         return this._userService.resendOtp({ email: data.email }).pipe(
           map((res) => {
-            console.log('user from effect', res);
-            return userActions.resendOtpSuccess({ user: res.user });
+            if (!res.data) {
+              throw new Error('Something went wrong');
+            }
+            return userActions.resendOtpSuccess({ user: res.data.user });
           }),
           catchError((error) => {
             return of(
@@ -131,6 +134,7 @@ export class UserEffect {
         switchMap(() =>
           this._authService.logout('user').pipe(
             tap(() => {
+              console.log('hit the tap');
               this._router.navigate(['/login']);
             }),
             catchError((error) => {
@@ -148,12 +152,15 @@ export class UserEffect {
       ofType(userActions.showSinglePackage),
       switchMap((data) =>
         this._userService.getSinglePackage(data.id).pipe(
-          map((response) =>
-            userActions.showSinglePackageSuccess({
-              success: response.success,
-              singlePackage: response.package,
-            })
-          )
+          map((response) => {
+            if (response.data && response.success) {
+              userActions.showSinglePackageSuccess({
+                success: response.success,
+                singlePackage: response.data.package,
+              });
+            }
+            throw new Error('Something went wrong');
+          })
         )
       ),
       catchError((error) =>
@@ -176,12 +183,15 @@ export class UserEffect {
       ofType(userActions.bookingPage),
       switchMap((data) =>
         this._userService.getSinglePackage(data.id).pipe(
-          map((response) =>
-            userActions.bookingPageSuccess({
-              success: response.success,
-              selectedPackage: response.package,
-            })
-          )
+          map((response) => {
+            if (response.success && response.data) {
+              userActions.bookingPageSuccess({
+                success: response.success,
+                selectedPackage: response.data.package,
+              });
+            }
+            throw new Error('Something went wrong');
+          })
         )
       ),
       catchError((error) => of(userActions.bookingPageError({ error: error })))

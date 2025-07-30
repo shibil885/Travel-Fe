@@ -62,9 +62,15 @@ export class PackagesComponent {
     this._userService
       .getPackages(this.currentPage, this.limit)
       .subscribe((res) => {
-        this.packages = res.packages;
-        this.currentPage = res.currentPage;
-        this.totalPackages = res.packagesCount;
+        const data = res.data;
+        if (!res.data) {
+          this.packages = [];
+          this.totalPackages = 0;
+          return;
+        }
+        this.packages = res.data.packages;
+        this.currentPage = res.data.currentPage;
+        this.totalPackages = res.data.packagesCount;
       });
   }
 

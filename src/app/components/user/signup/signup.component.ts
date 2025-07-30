@@ -79,7 +79,6 @@ export class SignupComponent {
     }
     this.renderSignup = false;
     const formValue = this.reactiveForm.value;
-    console.log('data from ts', formValue);
     this._store.dispatch(userActions.userSignup({ userdata: formValue }));
   }
 }

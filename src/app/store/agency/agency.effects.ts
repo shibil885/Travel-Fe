@@ -12,14 +12,14 @@ export class AgencyEffect {
     private _actions$: Actions,
     private _agencyService: AgencyService,
     private _router: Router,
-    private _authService: AuthService,
+    private _authService: AuthService
   ) {}
 
   agencyLogin$ = createEffect(() =>
     this._actions$.pipe(
       ofType(agencyActions.agencyLogin),
       switchMap((data) =>
-        this._authService.login(data,'agency').pipe(
+        this._authService.login(data, 'agency').pipe(
           map((data) => {
             return agencyActions.agencyLoginSuccess({
               agency: data['agency'],
@@ -59,12 +59,14 @@ export class AgencyEffect {
       switchMap(({ agencyData: data }) =>
         this._agencyService.registerAgency(data).pipe(
           map((response) => {
-            return agencyActions.otpRenderFromSignup({
-              agency: response?.agency,
-            });
+            if (response.data) {
+              return agencyActions.otpRenderFromSignup({
+                agency: response?.data.agency,
+              });
+            }
+            throw new Error('Please try again');
           }),
           catchError((error) => {
-            console.log('from catch error', error);
             return of(agencyActions.agencySignupError(error.error.message));
           })
         )
@@ -75,16 +77,21 @@ export class AgencyEffect {
     this._actions$.pipe(
       ofType(agencyActions.submitOtp),
       switchMap((data) =>
-        this._agencyService.verifyOtp({ otp: data.otp, email: data.email }).pipe(
-          map((response) => {
-            return agencyActions.agencySignupSuccess({
-              agency: response.agency,
-            });
-          }),
-          catchError((error) =>
-            of(agencyActions.submitOtpError(error.message))
+        this._agencyService
+          .verifyOtp({ otp: data.otp, email: data.email })
+          .pipe(
+            map((response) => {
+              if (response.data) {
+                return agencyActions.agencySignupSuccess({
+                  agency: response.data,
+                });
+              }
+              throw new Error('Failed to fetch agency');
+            }),
+            catchError((error) =>
+              of(agencyActions.submitOtpError(error.message))
+            )
           )
-        )
       )
     )
   );
@@ -105,7 +112,8 @@ export class AgencyEffect {
       switchMap((data) =>
         this._agencyService.resendOtp({ email: data.email }).pipe(
           map((res) => {
-            return agencyActions.resendOtpSuccess({ agency: res.user });
+            if (!res.data) throw new Error('Something went wrong')
+            return agencyActions.resendOtpSuccess({ agency: res.data.agency });
           }),
           catchError((error) => {
             return of(
@@ -123,7 +131,7 @@ export class AgencyEffect {
         switchMap(() =>
           this._authService.logout('agency').pipe(
             tap(() => {
-              this._router.navigate(['/agency/login'])
+              this._router.navigate(['/agency/login']);
             }),
             catchError((error) => {
               console.error('Logout error: ', error);
@@ -133,5 +141,5 @@ export class AgencyEffect {
         )
       ),
     { dispatch: false }
-  ); 
+  );
 }

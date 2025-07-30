@@ -1,11 +1,11 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, map, Observable, tap, throwError } from 'rxjs';
 import { IUser } from '../../models/user.model';
 import { IPackage } from '../../interfaces/package/package.interface';
-import { AuthService } from '../../auth/service/service.service';
 import { FormGroup } from '@angular/forms';
 import { environment } from '../../../Environment/environment';
+import { ApiResponse } from '../../interfaces';
+import { AllPackagesResponse } from '../../interfaces/package/response/packages.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -13,27 +13,21 @@ import { environment } from '../../../Environment/environment';
 export class UserService {
   private readonly _BASE_URL = environment.apiUrl;
   private readonly _api = this._BASE_URL;
-  constructor(private _http: HttpClient, private _authService: AuthService) {}
+  constructor(private _http: HttpClient) {}
 
   findEmail(email: string) {
-    return this._http
-      .post<{ isExisting: boolean }>(`${this._api}/user/isExistingMail`, {
+    const headers = new HttpHeaders().set('skip-loading', 'true');
+    return this._http.post<ApiResponse<{ isExisting: boolean }>>(
+      `${this._api}/user/check-email`,
+      {
         email,
-      })
-      .pipe(
-        map((data) => data),
-        catchError((error) => {
-          console.log('error while checking email exist or not', error);
-          return throwError(
-            () => new Error('error while checking email exist or not')
-          );
-        })
-      );
+      },
+      { headers }
+    );
   }
 
   registerUser(formData: IUser) {
-    console.log('formdata', formData);
-    return this._http.post<{ user: IUser; message: string; success: boolean }>(
+    return this._http.post<ApiResponse<{ user: IUser }>>(
       `${this._api}/user/signup`,
       formData,
       { withCredentials: true }
@@ -41,18 +35,15 @@ export class UserService {
   }
 
   verifyOtpUser(formData: { otp: string; email: string | null | undefined }) {
-    console.log('verify otp data user ', formData);
-    return this._http.post<{
-      message: string;
-      success: boolean;
-      user: IUser;
-      token: string;
-    }>(`${this._api}/otp/user`, formData, { withCredentials: true });
+    return this._http.post<ApiResponse<{ user: IUser }>>(
+      `${this._api}/otp/verify/user`,
+      formData,
+      { withCredentials: true }
+    );
   }
 
   resendOtp(formData: { email: string | null | undefined }) {
-    console.log('resend otp data from service', formData);
-    return this._http.post<{ user: IUser; success: boolean; message: string }>(
+    return this._http.post<ApiResponse<{ user: IUser }>>(
       `${this._api}/otp/resend`,
       formData,
       { withCredentials: true }
@@ -60,8 +51,8 @@ export class UserService {
   }
 
   getUserData() {
-    return this._http.get<{ success: boolean; user: IUser; message: string }>(
-      `${this._api}/user/details`,
+    return this._http.get<ApiResponse<{ user: IUser }>>(
+      `${this._api}/user/profile`,
       {
         withCredentials: true,
       }
@@ -69,15 +60,19 @@ export class UserService {
   }
 
   uploadProfileImg(data: FormData) {
-    return this._http.patch<{success: boolean, message: string}>(`${this._api}/user/profileImage-update`, data, {
-      withCredentials: true,
-      reportProgress: true,
-      observe: 'events',
-    });
+    return this._http.patch<ApiResponse<{}>>(
+      `${this._api}/user/profile-image`,
+      data,
+      {
+        withCredentials: true,
+        reportProgress: true,
+        observe: 'events',
+      }
+    );
   }
   updateUserProfile(userData: FormGroup) {
-    return this._http.patch<{ success: boolean; message: string }>(
-      `${this._api}/user/update-userProfile`,
+    return this._http.patch<ApiResponse<{}>>(
+      `${this._api}/user/profile`,
       userData,
       {
         withCredentials: true,
@@ -89,17 +84,14 @@ export class UserService {
     const params = new HttpParams()
       .set('limit', limit)
       .set('currentPage', page);
-    return this._http.get<{
-      success: boolean;
-      message: string;
-      packages: IPackage[];
-      packagesCount: number;
-      currentPage: number;
-    }>(`${this._api}/user/getPackages`, { params, withCredentials: true });
+    return this._http.get<ApiResponse<AllPackagesResponse>>(
+      `${this._api}/user/packages`,
+      { params, withCredentials: true }
+    );
   }
 
   getSinglePackage(id: string) {
-    return this._http.get<{ success: boolean; package: IPackage }>(
+    return this._http.get<ApiResponse<{ package: IPackage }>>(
       `${this._api}/user/package/${id}`,
       {
         withCredentials: true,
@@ -108,8 +100,8 @@ export class UserService {
   }
 
   changePassword(passworData: FormGroup) {
-    return this._http.patch<{ success: boolean; message: string }>(
-      `${this._api}/user/changePassword`,
+    return this._http.patch<ApiResponse<{}>>(
+      `${this._api}/user/change-password`,
       passworData,
       {
         withCredentials: true,

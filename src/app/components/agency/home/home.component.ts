@@ -41,7 +41,7 @@ export class HomeComponent {
   ) {}
   ngOnInit(): void {
     this._agencyService.isConfirmed().subscribe((status) => {
-      this.isConfirmed = status;
+      status ? (this.isConfirmed = status) : false;
     });
     if (this.isConfirmed) {
       this._agencyDashboardService.getStatsdata().subscribe((res) => {

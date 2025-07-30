@@ -121,7 +121,8 @@ export class BookingComponent {
               .getSinglePackage(packageId)
               .pipe(take(1))
               .subscribe((response) => {
-                this.packageDetails = response.package;
+                if (response.data)
+                this.packageDetails = response.data.package;
               });
           } else {
             this._toastService.showToast('Package ID not found', 'error');

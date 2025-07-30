@@ -13,7 +13,7 @@ export class Existing {
   ): Observable<ValidationErrors | null> {
     return this._userService.findEmail(control.value).pipe(
       map((data) => {
-        return data.isExisting ? { isExistingEmail: true } : null;
+        return data.data?.isExisting ? { isExistingEmail: true } : null;
       })
     );
   }
@@ -22,7 +22,7 @@ export class Existing {
   ): Observable<ValidationErrors | null> {
     return this._agencyService.findEmail(control.value).pipe(
       map((data) => {
-        return data.isExisting ? { isExistingEmail: true } : null;
+        return data.data?.isExisting ? { isExistingEmail: true } : null;
       })
     );
   }
@@ -31,7 +31,7 @@ export class Existing {
   ): Observable<ValidationErrors | null> {
     return this._agencyService.findName(control.value).pipe(
       map((data) => {
-        return data.isExisting ? { isExistingEmail: true } : null;
+        return data.data?.isExisting ? { isExistingName: true } : null;
       })
     );
   }

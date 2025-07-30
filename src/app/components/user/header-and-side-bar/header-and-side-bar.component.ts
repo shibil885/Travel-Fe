@@ -89,7 +89,8 @@ export class HeaderSidebarComponent {
   }
   private _fetchUserData() {
     this._userService.getUserData().subscribe((res) => {
-      this.user = res.user;
+      if (res.data)
+      this.user = res.data.user;
     });
   }
 

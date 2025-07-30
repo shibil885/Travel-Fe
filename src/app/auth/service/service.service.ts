@@ -2,8 +2,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, Observable, of, tap } from 'rxjs';
 import { Role } from '../../enum/role.enum';
-import { Router } from '@angular/router';
 import { environment } from '../../../Environment/environment';
+import { ApiResponse } from '../../interfaces';
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +11,7 @@ import { environment } from '../../../Environment/environment';
 export class AuthService {
   private _BASE_URL = environment.apiUrl;
   private readonly _api = this._BASE_URL;
-  constructor(private _http: HttpClient, private readonly _router: Router) {}
+  constructor(private _http: HttpClient) {}
 
   login(
     loginData: { email: string; password: string },
@@ -33,23 +33,33 @@ export class AuthService {
 
   logout(role: string) {
     if (role === 'admin') {
-      return this._http.patch(
+      return this._http.patch<ApiResponse<{}>>(
         `${this._api}/admin/logout`,
         {},
         { withCredentials: true }
       );
     } else if (role === 'agency') {
-      return this._http.patch(
+      return this._http.patch<ApiResponse<{}>>(
         `${this._api}/agency/logout`,
         {},
         { withCredentials: true }
       );
     } else {
-      return this._http.patch(
-        `${this._api}/user/logout`,
-        {},
-        { withCredentials: true }
-      );
+      return this._http
+        .patch<ApiResponse<{}>>(
+          `${this._api}/user/logout`,
+          {},
+          { withCredentials: true }
+        )
+        .pipe(
+          tap((res) => {
+            console.log('res from bE', res);
+          }),
+          catchError((err) => {
+            console.error(err);
+            return '';
+          })
+        );
     }
   }
 

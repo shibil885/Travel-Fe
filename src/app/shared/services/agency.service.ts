@@ -1,10 +1,9 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, map, Observable, tap, throwError } from 'rxjs';
+import { map } from 'rxjs';
 import { IAgency } from '../../models/agency.model';
-import { Router } from '@angular/router';
-import { AuthService } from '../../auth/service/service.service';
 import { environment } from '../../../Environment/environment';
+import { ApiResponse } from '../../interfaces';
 
 @Injectable({
   providedIn: 'root',
@@ -12,88 +11,63 @@ import { environment } from '../../../Environment/environment';
 export class AgencyService {
   private readonly _BASE_URL = environment.apiUrl;
   private _api = this._BASE_URL;
-  constructor(
-    private _http: HttpClient,
-    private _authService: AuthService,
-    private _router: Router
-  ) {}
+  constructor(private _http: HttpClient) {}
 
   findEmail(email: string) {
-    return this._http
-      .post<{ isExisting: boolean }>(
-        `${this._api}/agency/isExistingMail`,
-        {
-          email,
-        },
-        { withCredentials: true }
-      )
-      .pipe(
-        map((data) => data),
-        catchError((error) => {
-          console.log('error while checking email exist or not', error);
-          return throwError(
-            () => new Error('error while checking email exist or not')
-          );
-        })
-      );
+    const headers = new HttpHeaders().set('skip-loading', 'true');
+
+    return this._http.post<ApiResponse<{ isExisting: boolean }>>(
+      `${this._api}/agency/check-email`,
+      {
+        email,
+      },
+      { withCredentials: true, headers }
+    );
   }
   findName(name: string) {
-    return this._http
-      .post<{ isExisting: boolean }>(
-        `${this._api}/agency/isExistingName`,
-        {
-          name,
-        },
-        { withCredentials: true }
-      )
-      .pipe(
-        map((data) => data),
-        catchError((error) => {
-          console.log('error while checking email exist or not', error);
-          return throwError(
-            () => new Error('error while checking name exist or not')
-          );
-        })
-      );
+    const headers = new HttpHeaders().set('skip-loading', 'true');
+    return this._http.post<ApiResponse<{ isExisting: boolean }>>(
+      `${this._api}/agency/check-name`,
+      {
+        name,
+      },
+      { withCredentials: true, headers }
+    );
   }
   isConfirmed() {
+    const headers = new HttpHeaders().set('skip-loading', 'true');
     return this._http
-      .get<{ isConfirmed: boolean }>(`${this._api}/agency/isConfirmed`, {
-        withCredentials: true,
-      })
+      .get<ApiResponse<{ isConfirmed: boolean }>>(
+        `${this._api}/agency/confirmation-status`,
+        {
+          withCredentials: true,
+          headers,
+        }
+      )
       .pipe(
         map((data) => {
-          console.log(data);
-          return data.isConfirmed;
-        }),
-        catchError((error) => {
-          console.log('error while checking agency confirmed or not', error);
-          return throwError(
-            () => new Error('error while checking agency confirmed or not')
-          );
+          return data.data?.isConfirmed;
         })
       );
   }
   registerAgency(formData: FormData) {
-    return this._http.post<{ agency: IAgency }>(
-      `${this._api}/agency/signup`,
+    return this._http.post<ApiResponse<{ agency: IAgency }>>(
+      `${this._api}/agency`,
       formData,
       { withCredentials: true }
     );
   }
-  verifyOtp(formData: {
-    otp: string;
-    email: string | null | undefined;
-  }) {
-    return this._http.post<{
-      agency: IAgency;
-      message: string;
-      success: boolean;
-      token: string;
-    }>(`${this._api}/otp/agency`, formData, { withCredentials: true });
+  verifyOtp(formData: { otp: string; email: string | null | undefined }) {
+    return this._http.post<ApiResponse<IAgency>>(
+      `${this._api}/otp/verify/agency`,
+      formData,
+      {
+        withCredentials: true,
+      }
+    );
   }
   resendOtp(formData: { email: string | null | undefined }) {
-    return this._http.post<{ user: IAgency }>(
+    return this._http.post<ApiResponse<{ agency: IAgency }>>(
       `${this._api}/otp/resend`,
       formData,
       { withCredentials: true }
